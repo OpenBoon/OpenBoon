@@ -135,7 +135,7 @@ class BoonClient:
             dict: A dictionary which can be used to fetch the file.
         """
         headers = self.headers(content_type="")
-        headers['Content-Length'] = size or sys.getsizeof(data)
+        headers['Content-Length'] = str(size or sys.getsizeof(data))
         return self.__handle_rsp(requests.post(
             self.get_url(path), headers=headers, data=data), True)
 
@@ -153,7 +153,7 @@ class BoonClient:
             dict: The response body of the request.
         """
         try:
-            post_files = [("file", (os.path.basename(file), open(file, 'rb')))]
+            post_files = [("file", (os.path.basename(file), FileInputStream(file, 'rb')))]
             if body is not None:
                 post_files.append(
                     ["body", (None, to_json(body), 'application/json')])
@@ -554,7 +554,7 @@ class FileInputStream:
     A partially implemented File object which just supports reading the
     entire file and then closing the file handle.
     """
-    def __init__(self, filename, mode):
+    def __init__(self, filename, mode='rb'):
         self.filename = filename
         self.mode = mode
 

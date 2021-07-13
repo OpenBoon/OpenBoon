@@ -17,7 +17,7 @@ import requests
 
 from boonsdk import Asset, StoredFile, AnalysisModule, \
     BoonSdkException, util
-from .base import BoonEnv, app_instance
+from .env import BoonEnv, app_instance
 from .cloud import get_cached_google_storage_client, \
     get_cached_aws_client, get_cached_azure_storage_client
 

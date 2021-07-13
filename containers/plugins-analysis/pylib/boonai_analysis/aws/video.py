@@ -9,7 +9,8 @@ from botocore.exceptions import ClientError
 from boonai_analysis.aws.awscloud import AwsCloudResources
 from boonai_analysis.aws.util import AwsEnv
 from boonai_analysis.utils.prechecks import Prechecks
-from boonflow import AssetProcessor, FileTypes, BoonEnv, file_storage, proxy, clips
+from boonflow import AssetProcessor, FileTypes, file_storage, proxy, clips
+from boonflow.env import BoonEnv
 from boonflow.analysis import LabelDetectionAnalysis
 from boonflow.video import save_timeline
 

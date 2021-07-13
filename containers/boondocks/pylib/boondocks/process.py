@@ -319,11 +319,12 @@ class ProcessorWrapper:
             # the pipeline checksums don't work.
             self.reactor.write_event("preprocess", {})
 
-    def process(self, frame):
+    def process(self, frame, force=False):
         """
         Run the Processor instance on the given Frame.
         Args:
-            frame (Frame):
+            frame (Frame): The Frame to process.
+            force (bool): Force processing even if the file was processed or has no type.
 
         """
         start_time = time.monotonic()
@@ -341,14 +342,15 @@ class ProcessorWrapper:
                                .format(self.ref))
                 return
 
-            if self.is_already_processed(frame.asset):
-                logger.debug("The asset {} is already processed".format(frame.asset.id))
-                return
-
-            if self.instance.file_types:
-                if not is_file_type_allowed(frame.asset, self.instance.file_types):
-                    # No need to log, this is normal.
+            if not force:
+                if self.is_already_processed(frame.asset):
+                    logger.debug("The asset {} is already processed".format(frame.asset.id))
                     return
+
+                if self.instance.file_types:
+                    if not is_file_type_allowed(frame.asset, self.instance.file_types):
+                        # No need to log, this is normal.
+                        return
 
             self.instance.logger.info("started processor")
 
@@ -382,7 +384,7 @@ class ProcessorWrapper:
                 frame.skip = True
                 self.increment_stat("unrecoverable_error_count")
             else:
-                error = "warning"
+                error = "error"
                 self.increment_stat("error_count")
             self.reactor.error(frame, self.ref, e,
                                self.instance.fatal_errors, "execute", sys.exc_info()[2])
@@ -531,7 +533,7 @@ class ProcessorWrapper:
 
         for service in modules:
             body = {
-                'project': BoonEnv.get_project_id(),
+                'project': BoonEnv.get_project_id() or asset.get_attr("system.projectId"),
                 'service': service,
                 'asset_id': asset.id,
                 'asset_path': source_path,

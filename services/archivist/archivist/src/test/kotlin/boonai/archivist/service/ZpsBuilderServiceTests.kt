@@ -1,7 +1,7 @@
 package boonai.archivist.service
 
 import boonai.archivist.AbstractTest
-import boonai.archivist.domain.ApplyModulesToAssetRequest
+import boonai.archivist.domain.BuildZpsScriptRequest
 import boonai.archivist.domain.AssetSpec
 import boonai.archivist.domain.BatchCreateAssetsRequest
 import junit.framework.Assert.assertEquals
@@ -27,12 +27,12 @@ class ZpsBuilderServiceTests : AbstractTest() {
 
         refreshElastic()
         var asset = assetService.getAsset(assetService.batchCreate(create).created[0])
-        val req = ApplyModulesToAssetRequest(
+        val req = BuildZpsScriptRequest(
             asset.id,
             modules = listOf("boonai-face-detection")
         )
 
-        val zps = zpsBuilderService.buildApplyModulesToAssetScript(req)
+        val zps = zpsBuilderService.buildZpsScript(req)
         assertEquals(zps.assets?.get(0)?.id, asset.id)
         assertEquals(zps.execute?.get(0)?.className, "boonai_analysis.boonai.ZviFaceDetectionProcessor")
     }

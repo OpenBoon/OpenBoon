@@ -1,9 +1,11 @@
+import os
+
 import requests
 
 from boonai_analysis.utils.prechecks import Prechecks
 from boonflow import Argument, file_storage, proxy, clips, video, Prediction
 from boonflow.analysis import LabelDetectionAnalysis
-from boonflow.proxy import get_proxy_level_path
+from boonsdk.client import FileInputStream
 from ..custom.base import CustomModelProcessor
 
 
@@ -11,46 +13,51 @@ class TorchModelArchiveClassifier(CustomModelProcessor):
 
     def __init__(self):
         super(TorchModelArchiveClassifier, self).__init__()
-        self.add_arg(Argument("endpoint", "list", required=True))
+        self.add_arg(Argument("endpoint", "str", required=True))
+        self.add_arg(Argument("model", "str", default="model1"))
+        self.endpoint = None
 
     def init(self):
         """Init constructor """
         # get model by model id
         self.load_app_model()
+        self.endpoint = os.path.join(
+            self.arg_value('endpoint'), 'predictions', self.arg_value('model'))
 
     def process(self, frame):
         asset = frame.asset
         if asset.get_attr('media.type') == "video":
-            self.process_video(frame.asset)
+            self.process_video(asset)
         else:
-            self.process_image(frame.asset)
+            self.process_image(frame)
 
-    def process_image(self, asset):
-        proxy_path = get_proxy_level_path(asset, 1)
-        predictions = self.predict(proxy_path)
+    def process_image(self, frame):
+        asset = frame.asset
 
-        analysis = LabelDetectionAnalysis(min_score=0.1)
+        input_image = self.load_proxy_image(frame, 1)
+        predictions = self.predict(input_image)
+
+        analysis = LabelDetectionAnalysis(min_score=self.min_score)
         for label in predictions:
             analysis.add_label_and_score(label[0], label[1])
 
         asset.add_analysis(self.app_model.module_name, analysis)
 
-    def predict(self, path):
+    def predict(self, stream):
         """
         Call the model to make predictions.
 
         Args:
-            path (str): Path to the proxy image.
+            stream (IOBase): An object with a read() method that returns bytes.
 
         Returns:
             list: A list of tuples containing predictions
 
         """
-        full_endpoint = self.arg_value('endpoint') + "/predictions/model1"
+        rsp = requests.post(self.endpoint, data=stream)
+        rsp.raise_for_status()
 
-        with open(path, 'rb') as fp:
-            preds = requests.post(full_endpoint, data=fp).json()
-        return [(k, v) for k, v in preds.items()]
+        return [(k, v) for k, v in rsp.json().items()]
 
     def process_video(self, asset):
         """
@@ -89,10 +96,10 @@ class TorchModelArchiveClassifier(CustomModelProcessor):
         Returns:
             (tuple): asset detection analysis, clip_tracker
         """
-        analysis = LabelDetectionAnalysis(collapse_labels=True, min_score=0.1)
+        analysis = LabelDetectionAnalysis(collapse_labels=True, min_score=self.min_score)
 
         for time_ms, path in extractor:
-            results = [Prediction(r[0], r[1]) for r in self.predict(path)]
+            results = [Prediction(r[0], r[1]) for r in self.predict(FileInputStream(path, 'rb'))]
             clip_tracker.append_predictions(time_ms, results)
             analysis.add_predictions(results)
         return analysis, clip_tracker

@@ -9,7 +9,7 @@ from google.oauth2 import service_account
 
 from boonsdk.client import BoonSdkNotFoundException
 from boonsdk.util import memoize
-from .base import BoonEnv, app_instance
+from .env import BoonEnv, app_instance
 
 logger = logging.getLogger(__name__)
 
