@@ -24,7 +24,7 @@ const ModelMatrixResize = ({ matrix, settings, dispatch }) => {
         matrix={matrix}
         settings={settings}
         isInteractive
-        isOutOfDate={false}
+        isOutOfDate={matrix.unappliedChanges}
       />
 
       <div
@@ -125,6 +125,7 @@ ModelMatrixResize.propTypes = {
     overallAccuracy: PropTypes.number.isRequired,
     labels: PropTypes.arrayOf(PropTypes.string).isRequired,
     matrix: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
+    unappliedChanges: PropTypes.bool.isRequired,
   }).isRequired,
   settings: PropTypes.shape({
     zoom: PropTypes.number.isRequired,

@@ -58,7 +58,6 @@ const ModelMatrixMinimap = ({
   return (
     <div
       css={{
-        filter: `grayscale(${isOutOfDate ? 1 : 0})`,
         opacity: settings.isMinimapOpen ? 1 : 0,
         position: 'relative',
         border: isInteractive
@@ -84,6 +83,7 @@ const ModelMatrixMinimap = ({
             <div
               key={matrix.labels[col]}
               css={{
+                filter: `grayscale(${isOutOfDate ? 1 : 0})`,
                 paddingBottom: '100%',
                 backgroundColor: getColor({ percent }),
                 borderRight:

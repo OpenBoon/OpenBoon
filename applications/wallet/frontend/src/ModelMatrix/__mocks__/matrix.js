@@ -13,6 +13,7 @@ const matrix = {
   overallAccuracy: 0.6,
   testSetOnly: true,
   isMatrixApplicable: true,
+  unappliedChanges: false,
 }
 
 export default matrix

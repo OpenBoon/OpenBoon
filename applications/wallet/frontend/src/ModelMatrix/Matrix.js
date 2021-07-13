@@ -24,14 +24,36 @@ const ModelMatrixMatrix = ({
 
   const {
     data: matrix,
-    data: { name, overallAccuracy, labels, moduleName, datasetId },
+    data: {
+      name,
+      overallAccuracy,
+      labels,
+      moduleName,
+      datasetId,
+      unappliedChanges,
+    },
   } = useSWR(
     `/api/v1/projects/${projectId}/models/${modelId}/confusion_matrix/${queryString}`,
   )
 
   useEffect(() => {
-    setMatrixDetails({ name, overallAccuracy, labels, moduleName, datasetId })
-  }, [setMatrixDetails, name, overallAccuracy, labels, moduleName, datasetId])
+    setMatrixDetails({
+      name,
+      overallAccuracy,
+      labels,
+      moduleName,
+      datasetId,
+      unappliedChanges,
+    })
+  }, [
+    setMatrixDetails,
+    name,
+    overallAccuracy,
+    labels,
+    moduleName,
+    datasetId,
+    unappliedChanges,
+  ])
 
   return (
     <>

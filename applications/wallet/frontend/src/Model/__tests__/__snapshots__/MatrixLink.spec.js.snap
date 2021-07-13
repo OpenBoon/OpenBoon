@@ -139,8 +139,6 @@ exports[`<ModelMatrixLink /> should render properly when a matrix exists 1`] = `
 }
 
 .emotion-2 {
-  -webkit-filter: grayscale(0);
-  filter: grayscale(0);
   opacity: 1;
   position: relative;
   border: 4px solid #808080;
@@ -152,6 +150,8 @@ exports[`<ModelMatrixLink /> should render properly when a matrix exists 1`] = `
 }
 
 .emotion-3 {
+  -webkit-filter: grayscale(0);
+  filter: grayscale(0);
   padding-bottom: 100%;
   background-color: rgb(255,255,255);
   border-right: 1px solid #191919;
@@ -159,6 +159,8 @@ exports[`<ModelMatrixLink /> should render properly when a matrix exists 1`] = `
 }
 
 .emotion-5 {
+  -webkit-filter: grayscale(0);
+  filter: grayscale(0);
   padding-bottom: 100%;
   background-color: rgb(0,39,107);
   border-right: none;
@@ -166,6 +168,8 @@ exports[`<ModelMatrixLink /> should render properly when a matrix exists 1`] = `
 }
 
 .emotion-6 {
+  -webkit-filter: grayscale(0);
+  filter: grayscale(0);
   padding-bottom: 100%;
   background-color: rgb(53,171,255);
   border-right: 1px solid #191919;
@@ -173,6 +177,8 @@ exports[`<ModelMatrixLink /> should render properly when a matrix exists 1`] = `
 }
 
 .emotion-8 {
+  -webkit-filter: grayscale(0);
+  filter: grayscale(0);
   padding-bottom: 100%;
   background-color: rgb(255,255,255);
   border-right: none;
@@ -180,6 +186,8 @@ exports[`<ModelMatrixLink /> should render properly when a matrix exists 1`] = `
 }
 
 .emotion-9 {
+  -webkit-filter: grayscale(0);
+  filter: grayscale(0);
   padding-bottom: 100%;
   background-color: rgb(255,255,255);
   border-right: 1px solid #191919;
@@ -187,6 +195,8 @@ exports[`<ModelMatrixLink /> should render properly when a matrix exists 1`] = `
 }
 
 .emotion-11 {
+  -webkit-filter: grayscale(0);
+  filter: grayscale(0);
   padding-bottom: 100%;
   background-color: rgb(255,255,255);
   border-right: none;
@@ -355,8 +365,6 @@ exports[`<ModelMatrixLink /> should render properly when a matrix is out of date
 }
 
 .emotion-2 {
-  -webkit-filter: grayscale(1);
-  filter: grayscale(1);
   opacity: 1;
   position: relative;
   border: 4px solid #808080;
@@ -368,6 +376,8 @@ exports[`<ModelMatrixLink /> should render properly when a matrix is out of date
 }
 
 .emotion-3 {
+  -webkit-filter: grayscale(1);
+  filter: grayscale(1);
   padding-bottom: 100%;
   background-color: rgb(255,255,255);
   border-right: 1px solid #191919;
@@ -375,6 +385,8 @@ exports[`<ModelMatrixLink /> should render properly when a matrix is out of date
 }
 
 .emotion-5 {
+  -webkit-filter: grayscale(1);
+  filter: grayscale(1);
   padding-bottom: 100%;
   background-color: rgb(0,39,107);
   border-right: none;
@@ -382,6 +394,8 @@ exports[`<ModelMatrixLink /> should render properly when a matrix is out of date
 }
 
 .emotion-6 {
+  -webkit-filter: grayscale(1);
+  filter: grayscale(1);
   padding-bottom: 100%;
   background-color: rgb(53,171,255);
   border-right: 1px solid #191919;
@@ -389,6 +403,8 @@ exports[`<ModelMatrixLink /> should render properly when a matrix is out of date
 }
 
 .emotion-8 {
+  -webkit-filter: grayscale(1);
+  filter: grayscale(1);
   padding-bottom: 100%;
   background-color: rgb(255,255,255);
   border-right: none;
@@ -396,6 +412,8 @@ exports[`<ModelMatrixLink /> should render properly when a matrix is out of date
 }
 
 .emotion-9 {
+  -webkit-filter: grayscale(1);
+  filter: grayscale(1);
   padding-bottom: 100%;
   background-color: rgb(255,255,255);
   border-right: 1px solid #191919;
@@ -403,6 +421,8 @@ exports[`<ModelMatrixLink /> should render properly when a matrix is out of date
 }
 
 .emotion-11 {
+  -webkit-filter: grayscale(1);
+  filter: grayscale(1);
   padding-bottom: 100%;
   background-color: rgb(255,255,255);
   border-right: none;
@@ -661,6 +681,131 @@ exports[`<ModelMatrixLink /> should render properly when a matrix will never exi
     className="emotion-19"
   >
     A confusion matrix is not available for this model type.
+  </div>
+</div>
+`;
+
+exports[`<ModelMatrixLink /> should render properly when the model has been applied but the matrix isn't ready 1`] = `
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-1 {
+  width: 130px;
+  padding-right: 16px;
+}
+
+.emotion-2 {
+  position: relative;
+  border: 4px solid #808080;
+  padding: 1px;
+  border-radius: 2px;
+  margin-bottom: 8px;
+  display: grid;
+  grid-template: repeat(4, 1fr)/repeat(4, 1fr);
+}
+
+.emotion-3 {
+  padding-bottom: 100%;
+  background-color: #3b3b3b;
+}
+
+.emotion-3:not(:nth-of-type(4n)) {
+  border-right: 1px solid #191919;
+}
+
+.emotion-3:not(:nth-of-type(n + 13)) {
+  border-bottom: 1px solid #191919;
+}
+
+.emotion-19 {
+  color: #b3b3b3;
+  font-size: 15px;
+  line-height: 19px;
+  font-family: Roboto Condensed;
+  text-transform: uppercase;
+  padding-bottom: 8px;
+}
+
+.emotion-20 {
+  width: 200px;
+  font-style: italic;
+  color: #808080;
+}
+
+<div
+  className="emotion-0"
+>
+  <div
+    className="emotion-1"
+  >
+    <div
+      className="emotion-2"
+    >
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+    </div>
+  </div>
+  <div>
+    <div
+      className="emotion-19"
+    >
+      Confusion Matrix
+    </div>
+    <div
+      className="emotion-20"
+    >
+      The matrix will be available once training is complete.
+    </div>
   </div>
 </div>
 `;

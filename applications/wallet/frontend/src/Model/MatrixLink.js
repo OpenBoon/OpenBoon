@@ -77,6 +77,11 @@ const ModelMatrixLink = ({ projectId, model }) => {
               !!model.timeLastTrained &&
               !model.timeLastApplied &&
               'To view the matrix you must run the "Test" or "Analyze All" actions.'}
+
+            {!!model.datasetId &&
+              !!model.timeLastTrained &&
+              !!model.timeLastApplied &&
+              'The matrix will be available once training is complete.'}
           </div>
         </div>
       </div>
