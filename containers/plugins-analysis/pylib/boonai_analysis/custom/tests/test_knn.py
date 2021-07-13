@@ -6,7 +6,7 @@ from boonsdk.app import ModelApp
 from boonsdk.entity import Model
 from boonai_analysis.custom import KnnLabelDetectionClassifier
 from boonai_analysis.utils.simengine import SimilarityEngine
-from boonflow import Frame, file_storage
+from boonflow import Frame, file_storage, ImageInputStream
 from boonflow.testing import PluginUnitTestCase, TestAsset, test_path, get_prediction_labels
 
 
@@ -43,6 +43,29 @@ class KnnLabelDetectionClassifierTests(PluginUnitTestCase):
         analysis = frame.asset.get_analysis('foo')
         predictions = get_prediction_labels(analysis)
         assert 'Gandalf' in predictions
+
+    @patch.object(file_storage.models, 'model_exists', return_value=False)
+    @patch.object(ModelApp, 'get_model')
+    @patch.object(file_storage.projects, 'localize_file')
+    def test_process_frame_image(self, localize_patch, get_model_patch, _):
+        localize_patch.return_value = test_path('training/knn_pets.zip')
+        get_model_patch.return_value = Model({
+            'id': '12345',
+            'type': 'TF_CLASSIFIER',
+            'fileId': 'models/foo/knn/12345',
+            'name': 'foo',
+            'moduleName': 'foo'
+        })
+
+        asset = TestAsset()
+        frame = Frame(asset)
+        frame.image = ImageInputStream.from_path(test_path("images/detect/cats.jpg"))
+        processor = self.init_processor(KnnLabelDetectionClassifier(), {'tag': 'latest'})
+        processor.process(frame)
+
+        analysis = frame.asset.get_analysis('foo')
+        predictions = get_prediction_labels(analysis)
+        assert 'cat' in predictions
 
     @patch.object(file_storage.models, 'model_exists', return_value=False)
     @patch("boonai_analysis.custom.knn.save_timeline", return_value={})
