@@ -103,3 +103,41 @@ class TorchModelArchiveClassifier(CustomModelProcessor):
             clip_tracker.append_predictions(time_ms, results)
             analysis.add_predictions(results)
         return analysis, clip_tracker
+
+
+class TorchModelObjectDetection(TorchModelArchiveClassifier):
+
+    def __init__(self):
+        super(TorchModelObjectDetection, self).__init__()
+
+    def process_image(self, frame):
+        input_image = self.load_proxy_image(frame, 1)
+        predictions = self.predict(input_image)
+        analysis = LabelDetectionAnalysis(min_score=self.min_score)
+        for label in predictions:
+            analysis.add_prediction(Prediction(label[0], label[1], bbox=label[2]))
+
+        frame.asset.add_analysis(self.app_model.module_name, analysis)
+
+    def predict(self, stream):
+        """
+        Call the model to make predictions.
+
+        Args:
+            stream (IOBase): An object with a read() method that returns bytes.
+
+        Returns:
+            list: A list of tuples containing predictions
+
+        """
+        rsp = requests.post(self.endpoint, data=stream)
+        rsp.raise_for_status()
+
+        preds = []
+        for pred in rsp.json():
+            label = list(pred.keys())[0]
+            score = pred['score']
+            bbox = pred[label]
+            preds.append((label, score, bbox))
+
+        return preds
