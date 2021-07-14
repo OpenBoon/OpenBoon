@@ -78,7 +78,6 @@ metrics-deploy-development:
 
 deploy-qa:
   extends: .deploy
-  image: google/cloud-sdk
   variables:
     PROJECT: zvi-qa
     SA_JSON: ${QA_SA_JSON}
@@ -92,7 +91,6 @@ deploy-qa:
 
 deploy-prod:
   extends: deploy-qa
-  image: google/cloud-sdk
   variables:
     PROJECT: zvi-prod
     SA_JSON: ${PROD_SA_JSON}
@@ -102,6 +100,14 @@ deploy-prod:
   rules:
     - if: $CI_COMMIT_BRANCH == "master"
       when: manual
+  after_script:
+    - >-
+      curl -X POST \
+      https://hooks.slack.com/services/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 \
+      -H 'Content-Type: application/json' \
+      -H 'Postman-Token: 54229103-b659-4b88-973f-af547266e9d5' \
+      -H 'cache-control: no-cache' \
+      -d "{\"text\": \"Deployed commit <https://gitlab.com/zorroa-zvi/zmlp/-/commits/$CI_COMMIT_SHA|$CI_COMMIT_SHORT_SHA> to Production. Review the deploy job <$CI_JOB_URL|here>.\"}"
 
 # Build and deploy the BoonSDK python docs.
 .deploy-boonsdk-docs:
@@ -116,6 +122,7 @@ deploy-prod:
   script:
     - make html
     - gsutil cp -r ./build/html/* gs://${BUCKET}/
+
   rules:
     - if: $CI_COMMIT_BRANCH == $BRANCH
 

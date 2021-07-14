@@ -63,6 +63,7 @@ python-services-push-latest:
         - "services/mlbbq/**/*"
         - "services/swivel/**/*"
         - "services/tugboat/**/*"
+        - "services/reporter/**/*"
 
 python-services-push-qa:
   extends: python-services-push-latest
