@@ -9,7 +9,7 @@ RUN unzip model.zip
 FROM boonai/boonscript
 
 USER root
-COPY --from=build /tmp/endpoint.py /app/endpoint.py
+COPY --from=build /tmp/script.py /app/script.py
 COPY --from=build /tmp/requirements.txt* /tmp/requirements.txt
 
 RUN /app/install-deps.sh
