@@ -111,7 +111,7 @@ enum class ModelType(
         false,
         DatasetType.Classification
     ),
-    TF_SAVED_MODEL_DISABLED(
+    TF_SAVED_MODEL(
         "Imported Tensorflow Image Classifier",
         "None",
         "boonai_analysis.custom.TensorflowImageClassifier",
@@ -128,7 +128,7 @@ enum class ModelType(
         false,
         DatasetType.Classification
     ),
-    PYTORCH_DISABLED(
+    PYTORCH_CLASSIFIER(
         "Pytorch Transfer Learning Classifier",
         "boonai_train.pytorch.PytorchTransferLearningTrainer",
         "boonai_analysis.custom.PytorchTransferLearningClassifier",
@@ -148,7 +148,7 @@ enum class ModelType(
         DatasetType.Classification
     ),
     TORCH_MAR_CLASSIFIER(
-        "A Torch Model Archive using the image_classifier handler.",
+        "Torch Model Archive Image Classifier",
         "None",
         "boonai_analysis.deployed.mar.TorchModelArchiveClassifier",
         null,
@@ -166,7 +166,25 @@ enum class ModelType(
         "model.mar"
     ),
     TORCH_MAR_DETECTOR(
-        "A Torch Model Archive using the object_detector handler.",
+        "Torch Model Archive Object Detector",
+        "None",
+        "boonai_analysis.custom.TorchModelArchiveDetector",
+        null,
+        "Upload a pre-trained Pytorch Model Archive",
+        ModelObjective.OBJECT_DETECTION,
+        Provider.BOONAI,
+        true,
+        0,
+        0,
+        listOf(),
+        false,
+        true,
+        false,
+        DatasetType.Detection,
+        "model.mar"
+    ),
+    TORCH_MAR_TEXT_CLASSIFIER(
+        "Torch Model Archive Text Classifier",
         "None",
         "boonai_analysis.custom.TorchModelArchiveDetector",
         null,
@@ -179,9 +197,27 @@ enum class ModelType(
         listOf(),
         false,
         true,
-        true,
+        false,
         DatasetType.Detection,
         "model.mar"
+    ),
+    BOONAI_SCRIPT(
+        "BoonAI Python Script",
+        "None",
+        "boonai_analysis.deployed.script.BoonScriptProcessor",
+        null,
+        "Use a Boon AI Script",
+        ModelObjective.LABEL_DETECTION,
+        Provider.BOONAI,
+        true,
+        0,
+        0,
+        listOf(),
+        false,
+        true,
+        true,
+        DatasetType.Classification,
+        "script.zip"
     );
 
     fun asMap(): Map<String, Any> {
