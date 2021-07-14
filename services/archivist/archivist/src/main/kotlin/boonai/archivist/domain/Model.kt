@@ -206,7 +206,7 @@ enum class ModelType(
         "None",
         "boonai_analysis.deployed.script.BoonScriptProcessor",
         null,
-        "Use a Boon AI Script",
+        "Use a Boon AI Script to perform custom logic.",
         ModelObjective.LABEL_DETECTION,
         Provider.BOONAI,
         true,
@@ -217,7 +217,7 @@ enum class ModelType(
         true,
         true,
         DatasetType.Classification,
-        "script.zip"
+        "model.zip"
     );
 
     fun asMap(): Map<String, Any> {

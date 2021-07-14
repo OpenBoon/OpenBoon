@@ -418,9 +418,16 @@ class ModelServiceImpl(
             )
         }
 
+        val opType = if (model.type.classifyProcessor == ModelType.BOONAI_SCRIPT.classifyProcessor) {
+            ModOpType.LAST
+        }
+        else {
+            ModOpType.APPEND
+        }
+
         ops.add(
             ModOp(
-                ModOpType.APPEND,
+                opType,
                 listOf(
                     ProcessorRef(
                         model.type.classifyProcessor,
