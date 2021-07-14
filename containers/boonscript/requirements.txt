@@ -1,0 +1,11 @@
+flask
+gevent
+PyJWT==2.1.0
+boonsdk
+numpy
+scikit-learn
+scipy
+nameparser
+street-address
+dateparser
+pillow==8.2.0

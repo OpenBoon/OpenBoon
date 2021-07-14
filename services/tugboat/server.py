@@ -69,28 +69,33 @@ def build_and_deploy(spec):
         boolean: True on success
     """
     logger.info(f'Building {spec}')
-    model_type = spec['modelType']
-
-    tmlp_path = os.environ.get('TEMPLATE_PATH', '/app/tmpl')
-    if model_type.startswith('TORCH_'):
-        tmpl = f'{tmlp_path}/torch'
-    elif model_type == 'TF_SAVED_MODEL':
-        tmpl = f'{tmlp_path}/tf'
-    else:
-        logger.error(f'The model type {model_type} has no template')
-        return False
 
     # Copy the model and the template into a temp dir.
     # Then submit the temp dir to be built.
     d = tempfile.mkdtemp()
     build_dir = os.path.join(d, 'build')
-    logger.info(f'copying {tmpl} template to dir {build_dir}')
+
     try:
-        shutil.copytree(tmpl, build_dir)
+        copy_template(spec, build_dir)
         submit_build(spec, build_dir)
     finally:
         shutil.rmtree(d)
     return True
+
+
+def copy_template(spec, build_dir):
+    model_type = spec['modelType']
+    tmlp_path = os.environ.get('TEMPLATE_PATH', '/app/tmpl')
+    if model_type.startswith('TORCH_'):
+        tmpl = f'{tmlp_path}/torch'
+    elif model_type == 'BOONAI_SCRIPT':
+        tmpl = f'{tmlp_path}/boonscript'
+    else:
+        logger.error(f'The model type {model_type} has no template')
+        return False
+
+    logger.info(f'copying {tmpl} template to dir {build_dir}')
+    shutil.copytree(tmpl, build_dir)
 
 
 def submit_build(spec, build_path):
