@@ -416,6 +416,9 @@ class RecursivePipelineBuilder(
             newPipeline.addAll(prependMarker, prepend)
         }
         newPipeline.addAll(append)
+
+        // Sort last by name as a way of letting people order.
+        last.sortBy { it.module }
         newPipeline.addAll(last)
         return newPipeline
     }

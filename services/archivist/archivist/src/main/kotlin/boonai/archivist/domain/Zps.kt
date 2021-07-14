@@ -171,7 +171,7 @@ class ProcessorRef(
     val env: Map<String, String>? = null,
 
     @ApiModelProperty("The Pipeline module which added this processor.")
-    var module: String? = "standard",
+    var module: String = "standard",
 
     @ApiModelProperty("The Processor name to use for the checksum")
     var checksumName: String? = null
