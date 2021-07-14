@@ -5,7 +5,6 @@ RUN mkdir /app
 
 COPY ./requirements.txt /app/requirements.txt
 COPY ./server.py /app/server.py
-COPY ./utils.py /app/utils.py
 COPY ./install-deps.sh /app/install-deps.sh
 
 WORKDIR /app
