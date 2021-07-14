@@ -28,6 +28,7 @@ sentry-sdk = "*"
 django-postgres-extra = "*"
 importlib-metadata = "*"
 typing-extensions = "*"
+deprecated = "*"
 
 [requires]
 python_version = "3.7"
