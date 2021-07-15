@@ -1,5 +1,5 @@
 describe('Models', function () {
-  it.skip('can be created and deleted', function () {
+  it('can be created and deleted', function () {
     const modelName = `cypress-frontend-${Date.now()}`
 
     cy.login()
@@ -10,9 +10,9 @@ describe('Models', function () {
 
     cy.visit(`/${this.PROJECT_ID}/models/add`)
 
-    cy.contains('Model Type').get('select').select('KNN_CLASSIFIER')
-
     cy.get('input[name=name]').type(modelName)
+
+    cy.contains('Face Recognition').click()
 
     cy.get('button[type=submit]').contains('Create New Model').click()
 
@@ -23,6 +23,10 @@ describe('Models', function () {
      */
 
     cy.contains(modelName).click()
+
+    cy.contains('Model Details')
+
+    cy.get('button[aria-label="Toggle Actions Menu"]').click()
 
     cy.contains('Delete').click()
 
