@@ -21,7 +21,6 @@ wallet-integration-test-suite:
     - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "development"
       changes:
         - "applications/wallet/cypress/**/*"
-    - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
 
 ## Wallet Frontend CI Tests
 wallet-frontend-test-suite:
@@ -378,7 +377,6 @@ boonai-services-unit-tests:
         - "services/elasticsearch/**/*"
         - "services/mlbbq/**/*"
         - "services/officer/**/*"
-        - "services/reporter/**/*"
         - "services/jvm-common/**/*"
     # MR to QA with any change
     - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
