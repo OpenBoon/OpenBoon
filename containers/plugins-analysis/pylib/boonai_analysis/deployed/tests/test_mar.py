@@ -145,7 +145,7 @@ class TorchModelArchiveIntegrationTests(PluginUnitTestCase):
         assert analysis['predictions'][0]['label'] == 'toucan'
 
 
-class TorchModelPbjectDetectionTests(PluginUnitTestCase):
+class TorchModelObjectDetectionTests(PluginUnitTestCase):
     model_id = "model-id-34568"
     torch_model_name = "maskrcnn"
     base_dir = os.path.dirname(__file__)
@@ -211,7 +211,7 @@ class TorchModelObjectDetectionIntegrationTests(PluginUnitTestCase):
     torch_model_name = "maskrcnn"
 
     @patch.object(ModelApp, "get_model")
-    def test_image_classifier_frame_image(self, model_patch):
+    def test_object_detection_frame_image(self, model_patch):
         model_patch.return_value = Model(
             {
                 "id": self.model_id,
@@ -244,7 +244,7 @@ class TorchModelObjectDetectionIntegrationTests(PluginUnitTestCase):
 
     @patch.object(ModelApp, "get_model")
     @patch("boonflow.base.get_proxy_level_path")
-    def test_image_classifier_asset(self, proxy_patch, model_patch):
+    def test_object_detection_asset(self, proxy_patch, model_patch):
         model_patch.return_value = Model(
             {
                 "id": self.model_id,
@@ -276,3 +276,39 @@ class TorchModelObjectDetectionIntegrationTests(PluginUnitTestCase):
         assert len(analysis['predictions']) == 2
         assert analysis['predictions'][0]['label'] == 'person'
         assert analysis['predictions'][0]['score'] == 0.999
+
+    @patch.object(ModelApp, "get_model")
+    @patch("boonflow.video.save_timeline")
+    @patch("boonflow.proxy.get_video_proxy")
+    def test_object_detection_video(self, proxy_patch, save_video_patch, model_patch):
+        model_patch.return_value = Model(
+            {
+                "id": self.model_id,
+                "type": "TORCH_MAR_CLASSIFIER",
+                "fileId": "models/{}/foo/bar".format(self.model_id),
+                "name": self.name,
+                "moduleName": self.name
+            }
+        )
+        path = ''  # PATH TO A VIDEO FILE
+
+        proxy_patch.return_value = path
+
+        args = {
+            "model_id": self.model_id,
+            "tag": "latest",
+            "endpoint": "http://127.0.0.1:8080",
+            "model": self.torch_model_name
+        }
+
+        frame = Frame(TestAsset(path, attrs={"media.type": "video", "media.length": 73}))
+
+        processor = self.init_processor(
+            TorchModelObjectDetection(), args
+        )
+        processor.process(frame)
+
+        analysis = frame.asset.get_analysis(self.name)
+
+        assert len(analysis['predictions']) > 0
+        assert analysis['count'] > 0

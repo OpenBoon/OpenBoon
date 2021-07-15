@@ -5,7 +5,7 @@ import requests
 from boonai_analysis.utils.prechecks import Prechecks
 from boonflow import Argument, file_storage, proxy, clips, video, Prediction
 from boonflow.analysis import LabelDetectionAnalysis
-from boonsdk.client import FileInputStream
+from boonflow.base import ImageInputStream
 from ..custom.base import CustomModelProcessor
 
 
@@ -32,16 +32,20 @@ class TorchModelArchiveClassifier(CustomModelProcessor):
             self.process_image(frame)
 
     def process_image(self, frame):
-        asset = frame.asset
-
         input_image = self.load_proxy_image(frame, 1)
-        predictions = self.predict(input_image)
-
+        predictions = self.load_predictions(input_image)
         analysis = LabelDetectionAnalysis(min_score=self.min_score)
-        for label in predictions:
-            analysis.add_label_and_score(label[0], label[1])
 
-        asset.add_analysis(self.app_model.module_name, analysis)
+        analysis.add_predictions(predictions)
+        frame.asset.add_analysis(self.app_model.module_name, analysis)
+
+    def load_predictions(self, input_image):
+        raw_predictions = self.predict(input_image)
+        predictions = []
+        for label in raw_predictions:
+            predictions.append(Prediction(label[0], label[1]))
+
+        return predictions
 
     def predict(self, stream):
         """
@@ -99,9 +103,10 @@ class TorchModelArchiveClassifier(CustomModelProcessor):
         analysis = LabelDetectionAnalysis(collapse_labels=True, min_score=self.min_score)
 
         for time_ms, path in extractor:
-            results = [Prediction(r[0], r[1]) for r in self.predict(FileInputStream(path, 'rb'))]
+            results = self.load_predictions(ImageInputStream.from_path(path))
             clip_tracker.append_predictions(time_ms, results)
             analysis.add_predictions(results)
+
         return analysis, clip_tracker
 
 
@@ -110,14 +115,13 @@ class TorchModelObjectDetection(TorchModelArchiveClassifier):
     def __init__(self):
         super(TorchModelObjectDetection, self).__init__()
 
-    def process_image(self, frame):
-        input_image = self.load_proxy_image(frame, 1)
-        predictions = self.predict(input_image)
-        analysis = LabelDetectionAnalysis(min_score=self.min_score)
-        for label in predictions:
-            analysis.add_prediction(Prediction(label[0], label[1], bbox=label[2]))
+    def load_predictions(self, input_image):
+        raw_predictions = self.predict(input_image)
+        predictions = []
+        for label in raw_predictions:
+            predictions.append(Prediction(label[0], label[1], bbox=label[2]))
 
-        frame.asset.add_analysis(self.app_model.module_name, analysis)
+        return predictions
 
     def predict(self, stream):
         """
@@ -135,7 +139,9 @@ class TorchModelObjectDetection(TorchModelArchiveClassifier):
 
         preds = []
         for pred in rsp.json():
-            label = list(pred.keys())[0]
+            keys = list(pred.keys())
+            keys.remove("score")
+            label = keys[0]
             score = pred['score']
             bbox = pred[label]
             preds.append((label, score, bbox))
