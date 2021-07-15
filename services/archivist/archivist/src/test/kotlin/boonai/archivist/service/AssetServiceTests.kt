@@ -668,6 +668,9 @@ class AssetServiceTests : AbstractTest() {
 
     @Test
     fun testBatchIndexAssetsWithTimelines() {
+        if (!properties.getBoolean("archivist.deep-video-analysis.enabled")) {
+            return
+        }
         val batchCreate = BatchCreateAssetsRequest(
             assets = listOf(AssetSpec("gs://cats/large-brown-cat.jpg"))
         )
