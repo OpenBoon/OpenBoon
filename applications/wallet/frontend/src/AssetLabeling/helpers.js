@@ -1,7 +1,5 @@
-import { mutate } from 'swr'
-
 import { useLocalStorage } from '../LocalStorage/helpers'
-import { fetcher, parseResponse } from '../Fetch/helpers'
+import { fetcher, parseResponse, revalidate } from '../Fetch/helpers'
 
 export const SCOPE_OPTIONS = [
   { value: 'TRAIN', label: 'Train' },
@@ -109,9 +107,13 @@ export const onSave = async ({ projectId, assetId, state, dispatch }) => {
       body: JSON.stringify(body),
     })
 
-    mutate(`${BASE}/get_labels/`)
+    await Promise.all([
+      revalidate({ key: `${BASE}/get_labels/` }),
 
-    await mutate(`${BASE}/label_tool_info/?assetId=${assetId}`)
+      revalidate({ key: `/api/v1/projects/${projectId}/assets/${assetId}/` }),
+
+      revalidate({ key: `${BASE}/label_tool_info/?assetId=${assetId}` }),
+    ])
 
     dispatch({ isLoading: false })
   } catch (response) {
@@ -141,9 +143,13 @@ export const onDelete = async ({
       body: JSON.stringify({ removeLabels: [{ assetId, label, bbox }] }),
     })
 
-    mutate(`${BASE}/label_tool_info/?assetId=${assetId}`)
+    await Promise.all([
+      revalidate({ key: `${BASE}/get_labels/` }),
 
-    mutate(`${BASE}/get_labels/`)
+      revalidate({ key: `/api/v1/projects/${projectId}/assets/${assetId}/` }),
+
+      revalidate({ key: `${BASE}/label_tool_info/?assetId=${assetId}` }),
+    ])
 
     dispatch({
       isLoading: false,
@@ -162,6 +168,8 @@ export const onFaceDetect = async ({
   assetId,
   dispatch,
 }) => {
+  const BASE = `/api/v1/projects/${projectId}/datasets/${datasetId}`
+
   dispatch({ isLoading: true, errors: {} })
 
   try {
@@ -170,11 +178,11 @@ export const onFaceDetect = async ({
       { method: 'PATCH' },
     )
 
-    mutate(`/api/v1/projects/${projectId}/assets/${assetId}/`)
+    await Promise.all([
+      revalidate({ key: `/api/v1/projects/${projectId}/assets/${assetId}/` }),
 
-    await mutate(
-      `/api/v1/projects/${projectId}/datasets/${datasetId}/label_tool_info/?assetId=${assetId}`,
-    )
+      revalidate({ key: `${BASE}/label_tool_info/?assetId=${assetId}` }),
+    ])
 
     dispatch({ isLoading: false })
   } catch (response) {

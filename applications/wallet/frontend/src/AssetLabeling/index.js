@@ -12,7 +12,7 @@ const AssetLabeling = () => {
   } = useRouter()
 
   return assetId ? (
-    <SuspenseBoundary key={assetId}>
+    <SuspenseBoundary>
       <AssetLabelingContent projectId={projectId} assetId={assetId} />
     </SuspenseBoundary>
   ) : (
