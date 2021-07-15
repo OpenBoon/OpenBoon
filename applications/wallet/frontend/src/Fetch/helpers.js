@@ -68,7 +68,7 @@ export const getPathname = ({ pathname }) => {
 }
 
 export const revalidate = async ({ key }) => {
-  return mutate(key, async () => fetcher(key))
+  return mutate(key, () => fetcher(key), false)
 }
 
 export const parseResponse = async ({ response }) => {
