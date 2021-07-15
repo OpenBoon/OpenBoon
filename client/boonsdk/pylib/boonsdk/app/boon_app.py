@@ -1,6 +1,7 @@
 import base64
 import logging
 import os
+import json
 
 from . import AssetApp, DataSourceApp, ProjectApp, \
     JobApp, ModelApp, AnalysisModuleApp, VideoClipApp, CustomFieldApp, \
@@ -62,7 +63,7 @@ def app_from_env():
     - BOONAI_SERVER : The URL to the BOONAI API server.
 
     Returns:
-        BoonClient : A configured BoonClient
+        BoonApp: A configured BoonApp
 
     """
     apikey = None
@@ -72,3 +73,17 @@ def app_from_env():
         with open(os.environ['BOONAI_APIKEY_FILE'], 'rb') as fp:
             apikey = base64.b64encode(fp.read())
     return BoonApp(apikey, os.environ.get('BOONAI_SERVER'))
+
+
+def app_from_file(path):
+    """
+    Create a BoonApp configured via the path to an API Key.
+
+    Args:
+        path (str): A file path to an API Key.
+
+    Returns:
+        BoonApp: A configured BoonApp.
+    """
+    with open(str(path), 'r') as fp:
+        return BoonApp(json.load(fp))
