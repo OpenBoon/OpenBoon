@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import PropTypes from 'prop-types'
 import useSWR from 'swr'
 import Link from 'next/link'
@@ -43,6 +44,11 @@ const AssetLabelingContent = ({ projectId, assetId }) => {
   const [, setRightOpeningPanel] = usePanel({ openToThe: 'right' })
 
   const [state, dispatch] = useLabelTool({ projectId })
+
+  useEffect(() => {
+    dispatch({ isLoading: false, errors: {} })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [assetId])
 
   const dataset = datasets.find(({ id }) => id === state.datasetId)
 
