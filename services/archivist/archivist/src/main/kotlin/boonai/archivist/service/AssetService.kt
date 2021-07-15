@@ -534,7 +534,6 @@ class AssetServiceImpl : AssetService {
         val tempAssets = mutableListOf<String>()
         val producedModules = mutableMapOf<String, AssetMetricsEvent>()
 
-
         docs.forEach { (id, doc) ->
             val asset = Asset(id, doc)
 
@@ -542,12 +541,20 @@ class AssetServiceImpl : AssetService {
 
                 val modules = asset.getAttr("tmp.produced_analysis", Json.SET_OF_STRING)
                 if (!modules.isNullOrEmpty()) {
+
+                    val type = asset.getAttr("media.type", String::class.java) ?: "image"
+                    val length = if (type == "video") {
+                        asset.getAttr("media.length", Double::class.java) ?: 1.0
+                    } else {
+                        1.0
+                    }
+
                     producedModules[asset.id] = AssetMetricsEvent(
                         asset.id,
                         asset.getAttr("source.path"),
                         asset.getAttr("media.type"),
                         modules,
-                        asset.getAttr("media.length", Double::class.java)
+                        length
                     )
                 }
 
@@ -590,7 +597,6 @@ class AssetServiceImpl : AssetService {
                     )
                 )
             }
-
 
             logger.event(
                 LogObject.ASSET, LogAction.BATCH_INDEX, mapOf("assetsIndexed" to bulk.numberOfActions())
@@ -668,6 +674,7 @@ class AssetServiceImpl : AssetService {
         val projectId = getProjectId().toString()
         val msg = PubsubMessage.newBuilder()
             .putAttributes("projectId", projectId)
+            .putAttributes("type", "assets-indexed")
             .setData(ByteString.copyFromUtf8(Json.serializeToString(map)))
             .build()
 
