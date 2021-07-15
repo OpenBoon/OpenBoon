@@ -114,6 +114,7 @@ metrics-backend-test-suite:
     - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master"
       changes:
         - "services/metrics/app/**/*"
+        - "services/metrics/Pipfile*"
     # MR to QA with any change
     - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
     # Merged to Development with Backend changes

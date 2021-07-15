@@ -29,6 +29,7 @@ django-postgres-extra = "*"
 importlib-metadata = "*"
 typing-extensions = "*"
 deprecated = "*"
+cached-property = "*"
 
 [requires]
 python_version = "3.7"
