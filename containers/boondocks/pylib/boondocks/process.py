@@ -340,32 +340,27 @@ class ProcessorWrapper:
             if not self.instance:
                 logger.warning("Execute warning, instance for '{}' does not exist."
                                .format(self.ref))
-                return
+                return processed
 
             if not force:
                 if self.is_already_processed(frame.asset):
                     logger.debug("The asset {} is already processed".format(frame.asset.id))
-                    return
+                    return processed
 
                 if self.instance.file_types:
                     if not is_file_type_allowed(frame.asset, self.instance.file_types):
                         # No need to log, this is normal.
-                        return
+                        return processed
 
             self.instance.logger.info("started processor")
 
             retval = self.instance.process(frame)
             # a -1 means the processor was skipped internally.
             processed = retval != -1
-            if processed:
-                self._record_analysis_metric(frame.asset)
 
             total_time = round(time.monotonic() - start_time, 2)
             self.increment_stat("process_count")
             self.increment_stat("total_time", total_time)
-
-            # Remove the produced Analysis attribute.
-            frame.asset.del_attr('tmp.produced_analysis')
 
             # Check the expand queue.  A force check is done at teardown.
             self.reactor.check_expand()
@@ -397,6 +392,8 @@ class ProcessorWrapper:
                 "asset": frame.asset.for_json(),
                 "skip": frame.skip
             })
+
+        return processed
 
     def teardown(self):
         """
@@ -447,6 +444,11 @@ class ProcessorWrapper:
         if not metrics:
             metrics = []
             asset.set_attr("metrics.pipeline", metrics)
+
+        # Append the module to the produced analysis list.
+        # We'll use this for metrics.
+        if processed:
+            asset.extend_list_attr('tmp.produced_analysis', [self.ref.get("module")])
 
         # We're assuming that processors are unique here.
         # Which isn't always or technically the case, but we

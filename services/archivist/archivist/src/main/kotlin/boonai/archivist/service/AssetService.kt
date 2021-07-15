@@ -6,6 +6,7 @@ import boonai.archivist.domain.Asset
 import boonai.archivist.domain.AssetIdBuilder
 import boonai.archivist.domain.AssetIterator
 import boonai.archivist.domain.AssetMetrics
+import boonai.archivist.domain.AssetMetricsEvent
 import boonai.archivist.domain.AssetSpec
 import boonai.archivist.domain.AssetState
 import boonai.archivist.domain.BatchCreateAssetsRequest
@@ -51,6 +52,8 @@ import boonai.common.service.security.getZmlpActor
 import boonai.common.util.Json
 import com.google.common.cache.CacheBuilder
 import com.google.common.cache.CacheLoader
+import com.google.protobuf.ByteString
+import com.google.pubsub.v1.PubsubMessage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -247,6 +250,9 @@ class AssetServiceImpl : AssetService {
 
     @Autowired
     lateinit var datasetService: DatasetService
+
+    @Autowired
+    lateinit var publisherService: PublisherService
 
     override fun getAsset(id: String): Asset {
         val rest = indexRoutingService.getProjectRestClient()
@@ -526,10 +532,24 @@ class AssetServiceImpl : AssetService {
         val failedAssets = mutableListOf<BatchIndexFailure>()
         val postTimelines = mutableMapOf<String, List<String>>()
         val tempAssets = mutableListOf<String>()
+        val producedModules = mutableMapOf<String, AssetMetricsEvent>()
+
 
         docs.forEach { (id, doc) ->
             val asset = Asset(id, doc)
+
             try {
+
+                val modules = asset.getAttr("tmp.produced_analysis", Json.SET_OF_STRING)
+                if (!modules.isNullOrEmpty()) {
+                    producedModules[asset.id] = AssetMetricsEvent(
+                        asset.id,
+                        asset.getAttr("source.path"),
+                        asset.getAttr("media.type"),
+                        modules,
+                        asset.getAttr("media.length", Double::class.java)
+                    )
+                }
 
                 val timelines = asset.getAttr("tmp.timelines", Json.LIST_OF_STRING)
                 timelines?.let {
@@ -570,6 +590,8 @@ class AssetServiceImpl : AssetService {
                     )
                 )
             }
+
+
             logger.event(
                 LogObject.ASSET, LogAction.BATCH_INDEX, mapOf("assetsIndexed" to bulk.numberOfActions())
             )
@@ -598,6 +620,10 @@ class AssetServiceImpl : AssetService {
                     indexedIds.add(it.id)
                 }
             }
+
+            // Emit metrics
+            failedAssets.forEach { producedModules.remove(it.assetId) }
+            emitMetrics(producedModules)
 
             for (assetId in indexedIds) {
                 if (assetId in stateChangedIds) {
@@ -636,6 +662,16 @@ class AssetServiceImpl : AssetService {
         } else {
             BatchIndexResponse(emptyList(), failedAssets, emptyList())
         }
+    }
+
+    fun emitMetrics(map: Map<String, AssetMetricsEvent>) {
+        val projectId = getProjectId().toString()
+        val msg = PubsubMessage.newBuilder()
+            .putAttributes("projectId", projectId)
+            .setData(ByteString.copyFromUtf8(Json.serializeToString(map)))
+            .build()
+
+        publisherService.publish("metrics", msg)
     }
 
     private fun deleteTemporaryAssets(

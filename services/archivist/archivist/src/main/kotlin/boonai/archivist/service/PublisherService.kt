@@ -28,7 +28,7 @@ interface PublisherService {
 @Service
 class PublisherServiceImpl : PublisherService {
 
-    val topics = listOf("model-events", "webhooks")
+    val topics = listOf("model-events", "webhooks", "metrics")
     val publishers: Map<String, Publisher>
     val threads = Executors.newFixedThreadPool(4)
 
