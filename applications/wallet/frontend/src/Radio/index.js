@@ -4,31 +4,44 @@ import { colors, spacing, typography } from '../Styles'
 
 import RadioIcon from './Icon'
 
-const Radio = ({ option: { value, label, legend, initialValue }, onClick }) => {
+const Radio = ({
+  name,
+  option: { value, label, legend, initialValue },
+  onClick,
+}) => {
   return (
     <div>
-      <label css={{ display: 'flex' }}>
-        <RadioIcon value={value} isChecked={initialValue} onClick={onClick} />
-        <div
-          css={{
-            paddingLeft: spacing.base,
-            fontWeight: legend
-              ? typography.weight.bold
-              : typography.weight.regular,
-            color: initialValue
-              ? colors.structure.white
-              : colors.structure.steel,
-          }}
-        >
-          {label}
+      <label
+        css={{ display: 'flex', alignItems: legend ? 'flex-start' : 'center' }}
+      >
+        <RadioIcon
+          name={name}
+          value={value}
+          isChecked={initialValue}
+          onClick={onClick}
+        />
+
+        <div css={{ paddingLeft: spacing.moderate }}>
+          <div
+            css={{
+              fontWeight: legend
+                ? typography.weight.bold
+                : typography.weight.regular,
+              color: colors.structure.white,
+            }}
+          >
+            {label}
+          </div>
+
+          <div css={{ color: colors.structure.zinc }}>{legend}</div>
         </div>
       </label>
-      <div css={{ paddingLeft: spacing.comfy }}>{legend}</div>
     </div>
   )
 }
 
 Radio.propTypes = {
+  name: PropTypes.string.isRequired,
   option: PropTypes.shape({
     value: PropTypes.string.isRequired,
     label: PropTypes.string.isRequired,

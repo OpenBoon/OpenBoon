@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types'
 import { useRouter } from 'next/router'
-import useClipboard from 'react-use-clipboard'
 
 import { typography } from '../Styles'
 
@@ -11,16 +10,13 @@ import Button, { VARIANTS } from '../Button'
 import ButtonActions from '../Button/Actions'
 
 const MetadataPrettyLabelsMenu = ({
-  label: { modelId, label, simhash },
-  moduleName,
+  label: { datasetId, label, simhash },
+  datasetName,
 }) => {
   const {
     pathname,
-    query: { projectId, id, assetId, query },
+    query: { projectId, assetId, query },
   } = useRouter()
-
-  const [, copySimhash] = useClipboard(simhash)
-  const [, copyModelId] = useClipboard(modelId)
 
   return (
     <Menu open="bottom-left" button={ButtonActions}>
@@ -39,11 +35,11 @@ const MetadataPrettyLabelsMenu = ({
                     payload: {
                       pathname,
                       projectId,
-                      assetId: id || assetId,
+                      assetId,
                       filter: {
                         type: 'label',
-                        attribute: `labels.${moduleName}`,
-                        modelId,
+                        attribute: `labels.${datasetName}`,
+                        datasetId,
                         values: { labels: [label] },
                       },
                       query,
@@ -51,29 +47,33 @@ const MetadataPrettyLabelsMenu = ({
                   })
                 }}
               >
-                Add Model/Label Filter
+                Add Dataset/Label Filter
               </Button>
             </li>
+
             <li>
               <Button
                 variant={VARIANTS.MENU_ITEM}
                 onBlur={onBlur}
-                onClick={() => {
+                onClick={async () => {
+                  await navigator.clipboard.writeText(datasetId)
+
                   onClick()
-                  copyModelId()
                 }}
               >
-                Copy Model ID
+                Copy Dataset ID
               </Button>
             </li>
+
             {simhash && (
               <li>
                 <Button
                   variant={VARIANTS.MENU_ITEM}
                   onBlur={onBlur}
-                  onClick={() => {
+                  onClick={async () => {
+                    await navigator.clipboard.writeText(simhash)
+
                     onClick()
-                    copySimhash()
                   }}
                 >
                   Copy Simhash
@@ -91,9 +91,9 @@ MetadataPrettyLabelsMenu.propTypes = {
   label: PropTypes.shape({
     label: PropTypes.string.isRequired,
     simhash: PropTypes.string,
-    modelId: PropTypes.string.isRequired,
+    datasetId: PropTypes.string.isRequired,
   }).isRequired,
-  moduleName: PropTypes.string.isRequired,
+  datasetName: PropTypes.string.isRequired,
 }
 
 export default MetadataPrettyLabelsMenu

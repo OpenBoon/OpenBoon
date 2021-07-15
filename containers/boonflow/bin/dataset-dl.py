@@ -18,7 +18,7 @@ def main():
     logging.basicConfig(level=logging.INFO)
 
     parser = argparse.ArgumentParser(description='Download some files')
-    parser.add_argument('model', help="The Model Id")
+    parser.add_argument('dataset', help="The DataSet Id")
     parser.add_argument('style', help="The style to write the dataset into.")
     parser.add_argument('dst_dir', help="The dir to download to.")
     parser.add_argument('-t', '--threads', type=int, default=8,
@@ -30,7 +30,7 @@ def main():
     app = boonsdk.app_from_env()
 
     with Pool(processes=args.threads) as pool:
-        dl = TrainingSetDownloader(app, args.model, args.style, args.dst_dir,
+        dl = TrainingSetDownloader(app, args.dataset, args.style, args.dst_dir,
                                    validation_split=args.validation_split)
         dl.build(pool=pool)
         pool.close()

@@ -1,18 +1,16 @@
 package boonai.archivist.config
 
-import com.google.common.collect.ImmutableList
-import com.google.common.eventbus.EventBus
 import boonai.archivist.service.EsClientCache
 import boonai.archivist.service.TransactionEventManager
 import boonai.archivist.util.FileUtils
 import boonai.common.service.security.EncryptionService
 import boonai.common.service.security.EncryptionServiceImpl
-import io.sentry.spring.SentryExceptionResolver
-import io.sentry.spring.SentryServletContextInitializer
+import com.google.common.collect.ImmutableList
+import com.google.common.eventbus.EventBus
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.actuate.info.InfoContributor
 import org.springframework.boot.actuate.info.InfoEndpoint
-import org.springframework.boot.web.servlet.ServletContextInitializer
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.EnableAspectJAutoProxy
@@ -21,9 +19,7 @@ import org.springframework.core.task.AsyncListenableTaskExecutor
 import org.springframework.http.converter.HttpMessageConverter
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor
-import org.springframework.web.servlet.HandlerExceptionResolver
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter
-
 import java.io.File
 import java.io.IOException
 import java.util.Properties
@@ -32,8 +28,8 @@ import java.util.Properties
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 class ArchivistConfiguration {
 
-    @Bean
-    fun properties(): ApplicationProperties = SpringApplicationProperties()
+    @Autowired
+    lateinit var properties: ApplicationProperties
 
     @Bean
     fun transactionEventManager(): TransactionEventManager {
@@ -95,12 +91,6 @@ class ArchivistConfiguration {
     fun encryptionService(): EncryptionService {
         return EncryptionServiceImpl()
     }
-
-    @Bean
-    fun sentryExceptionResolver(): HandlerExceptionResolver = SentryExceptionResolver()
-
-    @Bean
-    fun sentryServletContextInitializer(): ServletContextInitializer = SentryServletContextInitializer()
 
     companion object {
 

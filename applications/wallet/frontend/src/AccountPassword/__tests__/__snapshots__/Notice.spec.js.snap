@@ -80,6 +80,11 @@ exports[`<AccountPasswordNotice /> should render an error 1`] = `
   margin-right: 16px;
 }
 
+.emotion-17 button:last-child,
+.emotion-17 a:last-child {
+  margin-right: 0;
+}
+
 .emotion-18 {
   -webkit-flex: 0;
   -ms-flex: 0;

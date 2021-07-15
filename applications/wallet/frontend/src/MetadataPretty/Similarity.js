@@ -10,7 +10,7 @@ import {
   dispatch as filterDispatch,
 } from '../Filters/helpers'
 
-import ButtonCopy, { COPY_SIZE } from '../Button/Copy'
+import ButtonCopy from '../Button/Copy'
 import AssetsThumbnail from '../Assets/Thumbnail'
 import Button, { VARIANTS } from '../Button'
 
@@ -43,16 +43,20 @@ const MetadataPrettySimilarity = ({ name, value: { simhash }, path }) => {
         css={{
           padding: spacing.normal,
           paddingBottom: spacing.base,
-          fontFamily: typography.family.mono,
-          color: colors.structure.white,
+          fontWeight: typography.weight.bold,
+          fontSize: typography.size.regular,
+          lineHeight: typography.height.regular,
+          color: colors.key.two,
         }}
       >
         <Button
           aria-label="Add Filter"
           variant={VARIANTS.NEUTRAL}
           style={{
-            fontSize: typography.size.small,
-            lineHeight: typography.height.small,
+            fontWeight: 'inherit',
+            fontSize: 'inherit',
+            lineHeight: 'inherit',
+            color: 'inherit',
           }}
           onClick={() => {
             filterDispatch({
@@ -75,7 +79,6 @@ const MetadataPrettySimilarity = ({ name, value: { simhash }, path }) => {
         css={{
           padding: `${spacing.base}px ${spacing.normal}px`,
           paddingBottom: 0,
-          minHeight: COPY_SIZE,
           width: '100%',
           fontFamily: typography.family.condensed,
           textTransform: 'uppercase',
@@ -89,6 +92,11 @@ const MetadataPrettySimilarity = ({ name, value: { simhash }, path }) => {
         <div
           css={{
             display: 'flex',
+            alignItems: 'center',
+            padding: spacing.small,
+            paddingLeft: spacing.normal,
+            paddingRight: spacing.moderate,
+            svg: { opacity: 0 },
             ':hover': {
               backgroundColor: `${colors.signal.sky.base}${constants.opacity.hex22Pct}`,
               svg: { opacity: 1 },
@@ -97,7 +105,6 @@ const MetadataPrettySimilarity = ({ name, value: { simhash }, path }) => {
         >
           <div
             css={{
-              padding: `${spacing.moderate}px ${spacing.normal}px`,
               fontFamily: typography.family.mono,
               fontSize: typography.size.small,
               lineHeight: typography.height.small,
@@ -110,15 +117,7 @@ const MetadataPrettySimilarity = ({ name, value: { simhash }, path }) => {
             {simhash}
           </div>
 
-          <div
-            css={{
-              minWidth: COPY_SIZE + spacing.normal,
-              paddingTop: spacing.moderate,
-              paddingRight: spacing.normal,
-            }}
-          >
-            <ButtonCopy value={simhash} />
-          </div>
+          <ButtonCopy title="Simhash" value={simhash} offset={100} />
         </div>
 
         {results.length > 1 && (

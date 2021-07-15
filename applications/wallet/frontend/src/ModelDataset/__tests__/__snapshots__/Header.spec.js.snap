@@ -1,0 +1,126 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ModelDatasetHeader /> should render properly 1`] = `
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+}
+
+.emotion-1 {
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 500;
+}
+
+.emotion-2 {
+  margin-top: -16px;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.emotion-3 button,
+.emotion-3 a {
+  margin-right: 16px;
+}
+
+.emotion-3 button:last-child,
+.emotion-3 a:last-child {
+  margin-right: 0;
+}
+
+.emotion-4 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-4,
+.emotion-4:hover,
+.emotion-4:visited,
+.emotion-4 .noop {
+  background-color: #808080;
+}
+
+.emotion-4:hover,
+.emotion-4 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #b3b3b3;
+}
+
+.emotion-4[aria-disabled=true],
+.emotion-4 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+<div
+  className="emotion-0"
+>
+  <div
+    className="emotion-1"
+  >
+    cats
+  </div>
+  <div
+    className="emotion-2"
+  >
+    <div
+      className="emotion-3"
+    >
+      <button
+        className="emotion-4"
+        onClick={[Function]}
+        type="button"
+      >
+        Unlink Dataset
+      </button>
+      <a
+        className="emotion-4"
+        href="/76917058-b147-4556-987a-0a0f11e46d9b/datasets/4b0b10a8-cec1-155c-b12f-ee2bc8787e06"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+      >
+        Go to Dataset
+      </a>
+    </div>
+  </div>
+</div>
+`;

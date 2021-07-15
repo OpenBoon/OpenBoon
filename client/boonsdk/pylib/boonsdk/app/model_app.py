@@ -1,10 +1,8 @@
 import logging
-import os
-import tempfile
 
-from ..entity import Model, Job, ModelType, ModelTypeInfo, AnalysisModule, PostTrainAction
-from ..training import TrainingSetDownloader
-from ..util import as_collection, as_id, zip_directory, is_valid_uuid
+from ..entity import Model, Job, ModelType, ModelTypeInfo, PostTrainAction, StoredFile
+from ..util import as_collection, as_id, \
+    is_valid_uuid, as_name_collection, as_id_collection, enum_name
 
 logger = logging.getLogger(__name__)
 
@@ -21,20 +19,22 @@ class ModelApp:
     def __init__(self, app):
         self.app = app
 
-    def create_model(self, name, type):
+    def create_model(self, name, type, dataset=None):
         """
         Create and return a new model .
 
         Args:
             name (str): The name of the model.
             type (ModelType): The type of Model, see the ModelType class.
+            dataset (DataSet): An optional DataSet for training or testing the model.
 
         Returns:
             Model: The new model.
         """
         body = {
             "name": name,
-            "type": type.name
+            "type": getattr(type, 'name', str(type)),
+            "datasetId": as_id(dataset)
         }
         return Model(self.app.client.post("/api/v3/models", body))
 
@@ -52,25 +52,27 @@ class ModelApp:
         else:
             return self.find_one_model(name=id)
 
-    def find_one_model(self, id=None, name=None, type=None):
+    def find_one_model(self, id=None, name=None, type=None, dataset=None):
         """
         Find a single Model based on various properties.
 
         Args:
             id (str): The ID or list of Ids.
-            name (str): The model name or list of names.
-            type (str): The model type or list of types.
+            name (str): The Model name or list of names.
+            type (str): The Model type or list of types.
+            dataset(str): Datasets or unique Dataset Ids.
         Returns:
             Model: the matching Model.
         """
         body = {
             'names': as_collection(name),
             'ids': as_collection(id),
-            'types': as_collection(type)
+            'datasetIds': as_id_collection(dataset),
+            'types': as_name_collection(type)
         }
         return Model(self.app.client.post("/api/v3/models/_find_one", body))
 
-    def find_models(self, id=None, name=None, type=None, limit=None, sort=None):
+    def find_models(self, id=None, name=None, type=None, dataset=None, limit=None, sort=None):
         """
         Find a single Model based on various properties.
 
@@ -78,8 +80,9 @@ class ModelApp:
             id (str): The ID or list of Ids.
             name (str): The model name or list of names.
             type (str): The model type or list of types.
+            dataset(str): Datasets or unique Dataset Ids.
             limit (int): Limit results to the given size.
-            sort (list): An arary of properties to sort by. Example: ["name:asc"]
+            sort (list): An array of properties to sort by. Example: ["name:asc"]
 
         Returns:
             generator: A generator which will return matching Models when iterated.
@@ -88,12 +91,13 @@ class ModelApp:
         body = {
             'names': as_collection(name),
             'ids': as_collection(id),
-            'types': as_collection(type),
+            'datasetIds': as_id_collection(dataset),
+            'types': as_name_collection(type),
             'sort': sort
         }
         return self.app.client.iter_paged_results('/api/v3/models/_search', body, limit, Model)
 
-    def train_model(self, model, post_action=PostTrainAction.NONE, **kwargs):
+    def train_model(self, model, post_action=PostTrainAction.NONE, train_args=None):
         """
         Train the given Model by kicking off a model training job.  If a post action is
         specified the training job will expand once training is complete.
@@ -101,17 +105,15 @@ class ModelApp:
         Args:
             model (Model): The Model instance or a unique Model id
             post_action (PostTrainAction): An action to take once the model is trained.
+            train_args (dict): A dictionary of training arg values.
         Returns:
             Job: A model training job.
         """
         model_id = as_id(model)
         body = {}
-
-        if kwargs.get('deploy'):
-            body['postAction'] = PostTrainAction.APPLY.name
-        else:
-            body['postAction'] = str(post_action)
-
+        body['postAction'] = enum_name(PostTrainAction, post_action, True)
+        if train_args:
+            body['trainArgs'] = train_args
         return Job(self.app.client.post('/api/v4/models/{}/_train'.format(model_id), body))
 
     def apply_model(self, model, search=None):
@@ -144,114 +146,27 @@ class ModelApp:
         mid = as_id(model)
         return Job(self.app.client.post(f'/api/v3/models/{mid}/_test', {}))
 
-    def upload_trained_model(self, model, model_path, labels):
+    def upload_pretrained_model(self, model, model_path):
         """
-        Upload a trained model directory to Boon AI.
+        Upload a trained model directory to Boon AI.  The model is not ready to use
+        until it is properlt deployed, which may take a few minutes.
 
         Args:
             model (Model): The model object or it's unique ID.
-            model_path (str): The path to a directory containing the proper files.
-            labels (list): A list of labels, optional if you have a labels.txt file.
+            model_path (str): The path to a ZIP or MAR file containing all files.
 
         Returns:
-            dict: a dict describing the newly published Analysis Module.
+            StoredFile: A Sto
         """
         # Make sure we have the model object so we can check its type
         mid = as_id(model)
         model = self.find_one_model(id=mid)
-        label_path = f'{model_path}/labels.txt'
-        labels_exist = os.path.exists(label_path)
-
-        if not labels and not labels_exist:
-            raise ValueError("You must provide an list of labels or a labels.txt file.")
-
-        if labels:
-            if labels_exist:
-                # delete label file if it exists.
-                # handles exported tf ,odel
-                os.unlink(label_path)
-
-            with open(label_path, 'w') as fp:
-                for label in labels:
-                    fp.write(f'{label}\n')
 
         # check the model types.
-        if model.type not in (ModelType.TF_UPLOADED_CLASSIFIER,
-                              ModelType.PYTORCH_UPLOADED_CLASSIFIER):
-            raise ValueError(f'Invalid model type for upload: {model.type}')
+        if not model.uploadable:
+            raise ValueError(f'The model type {model.type} is not uploadable.')
 
-        model_file = tempfile.mkstemp(prefix="model_", suffix=".zip")[1]
-        zip_file_path = zip_directory(model_path, model_file)
-        mid = as_id(model)
-
-        rsp = AnalysisModule(self.app.client.send_file(
-            f'/api/v3/models/{mid}/_upload', zip_file_path))
-
-        os.unlink(zip_file_path)
-        return rsp
-
-    def get_label_counts(self, model):
-        """
-        Get a dictionary of the labels and how many times they occur.
-
-        Args:
-            model (Model): The Model or its unique Id.
-
-        Returns:
-            dict: a dictionary of label name to occurrence count.
-
-        """
-        return self.app.client.get('/api/v3/models/{}/_label_counts'.format(as_id(model)))
-
-    def rename_label(self, model, old_label, new_label):
-        """
-        Rename a the given label to a new label name.  The new label can already exist.
-
-        Args:
-            model (Model): The Model or its unique Id.
-            old_label (str): The old label name.
-            new_label (str): The new label name.
-
-        Returns:
-            dict: a dictionary containing the number of assets updated.
-
-        """
-        body = {
-            "label": old_label,
-            "newLabel": new_label
-        }
-        return self.app.client.put('/api/v3/models/{}/labels'.format(as_id(model)), body)
-
-    def delete_label(self, model, label):
-        """
-        Removes the label from all Assets.
-
-        Args:
-            model (Model): The Model or its unique Id.
-            label (str): The label name to remove.
-
-        Returns:
-            dict: a dictionary containing the number of assets updated.
-
-        """
-        body = {
-            "label": label
-        }
-        return self.app.client.delete('/api/v3/models/{}/labels'.format(as_id(model)), body)
-
-    def download_labeled_images(self, model, style, dst_dir, validation_split=0.2):
-        """
-        Get a TrainingSetDownloader instance which can be used to download all the
-        labeled images for a Model to local disk.
-
-        Args:
-            model (Model): The Model or its unique ID.
-            style (str): The structure style to build: labels_std, objects_keras, objects_coco
-            dst_dir (str): The destination dir to write the Assets into.
-            validation_split (float): The ratio of training images to validation images.
-                Defaults to 0.2.
-        """
-        return TrainingSetDownloader(self.app, model, style, dst_dir, validation_split)
+        return StoredFile(self.app.client.send_file(f'/api/v3/models/{mid}/_upload', model_path))
 
     def export_trained_model(self, model, dst_file, tag='latest'):
         """
@@ -290,8 +205,13 @@ class ModelApp:
         Returns:
             dict: A dict describing the argument structure.
         """
-        mtype = getattr(model_type, 'type', model_type).name
-        return self.app.client.get(f'/api/v3/models/_types/{mtype}/_training_args')
+        if isinstance(model_type, ModelType):
+            name = model_type.name
+        elif isinstance(model_type, Model):
+            name = model_type.type.name
+        else:
+            name = model_type.upper()
+        return self.app.client.get(f'/api/v3/models/_types/{name}/_training_args')
 
     def get_all_model_type_info(self):
         """

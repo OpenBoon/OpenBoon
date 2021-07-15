@@ -9,25 +9,29 @@ import {
   parseResponse,
 } from '../Fetch/helpers'
 
-export const generateSecretKey = ({ state, dispatch }) => async () => {
-  dispatch({ disableSecretKeyButton: true })
+export const generateSecretKey =
+  ({ state, dispatch }) =>
+  async () => {
+    dispatch({ disableSecretKeyButton: true })
 
-  for (let i = 1; i <= state.secretKey.length; i += 1) {
-    dispatch({ secretKey: state.secretKey.slice(i) })
-    await new Promise((resolve) => setTimeout(resolve, 0))
+    for (let i = 1; i <= state.secretKey.length; i += 1) {
+      dispatch({ secretKey: state.secretKey.slice(i) })
+      await new Promise((resolve) => setTimeout(resolve, 0))
+    }
+
+    const newSecretKey = uuidv4()
+
+    for (let i = 1; i <= newSecretKey.length; i += 1) {
+      dispatch({ secretKey: newSecretKey.slice(-i) })
+      await new Promise((resolve) => setTimeout(resolve, 0))
+    }
+
+    await navigator.clipboard.writeText(newSecretKey)
+
+    dispatch({ secretKey: newSecretKey })
+
+    dispatch({ disableSecretKeyButton: false, isCopied: true })
   }
-
-  const newSecretKey = uuidv4()
-
-  for (let i = 1; i <= newSecretKey.length; i += 1) {
-    dispatch({ secretKey: newSecretKey.slice(-i) })
-    await new Promise((resolve) => setTimeout(resolve, 0))
-  }
-
-  dispatch({ secretKey: newSecretKey })
-
-  dispatch({ disableSecretKeyButton: false })
-}
 
 export const onSubmit = async ({
   dispatch,

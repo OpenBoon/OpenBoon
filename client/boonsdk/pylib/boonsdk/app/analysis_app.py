@@ -1,7 +1,8 @@
 import logging
 
 from ..entity import AnalysisModule
-from ..util import as_collection, as_id
+from ..util import as_collection, as_id, is_valid_uuid
+from ..search import PredictionLabelsAggregation
 
 logger = logging.getLogger(__name__)
 
@@ -28,7 +29,11 @@ class AnalysisModuleApp:
         Returns:
             AnalysisModule: The matching AnalysisModule
         """
-        return AnalysisModule(self.app.client.get('/api/v1/pipeline-mods/{}'.format(as_id(id))))
+        if is_valid_uuid(as_id(id)):
+            return AnalysisModule(self.app.client.get('/api/v1/pipeline-mods/{}'.format(as_id(id))))
+        else:
+            return self.find_one_analysis_module(name=id)
+        return
 
     def find_one_analysis_module(self, id=None, name=None, type=None, category=None, provider=None):
         """
@@ -81,3 +86,29 @@ class AnalysisModuleApp:
         }
         return self.app.client.iter_paged_results(
             '/api/v1/pipeline-mods/_search', body, limit, AnalysisModule)
+
+    def get_prediction_counts(self, module, min_score=0.0, max_score=1.0):
+        """
+        Return a dictionary of predicted label : counts.
+
+        Args:
+            module (AnalysisModule): The AnalysisModule, it's name or unqiue ID.
+            min_score (float): The minimum score for counted predictions.
+            max_score (float): The maximum score for counted predictions.
+
+        Returns:
+            dict: A dict of predicted_label : count.
+
+        """
+        mod = self.get_analysis_module(module)
+        agg = PredictionLabelsAggregation("preds", mod.name,
+                                          min_score=min_score, max_score=max_score)
+        search = {
+            "count": 0,
+            "aggs": agg
+        }
+        result = self.app.assets.search(search)
+        raw = result.aggregation(agg)
+        if not raw:
+            return {}
+        return dict(((item['key'], item['doc_count']) for item in raw['buckets']))

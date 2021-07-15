@@ -1,88 +1,193 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
+import modelTypes from '../../ModelTypes/__mocks__/modelTypes'
 import model from '../__mocks__/model'
-import labels from '../../ModelLabels/__mocks__/modelLabels'
 
 import ModelDetails from '../Details'
 
-import { MIN_WIDTH as PANEL_MIN_WIDTH } from '../../Panel'
-
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 const MODEL_ID = '621bf775-89d9-1244-9596-d6df43f1ede5'
+const DATASET_ID = '4b0b10a8-cec1-155c-b12f-ee2bc8787e06'
 const JOB_ID = '223fd17d-7028-1519-94a8-d2f0132bc0c8'
+
+jest.mock('next/link', () => 'Link')
+jest.mock('../MatrixLink', () => 'ModelMatrixLink')
 
 const noop = () => () => {}
 
-jest.mock('next/link', () => 'Link')
-jest.mock('../../ModelAssets', () => 'ModelAssets')
-jest.mock('../MatrixLink', () => 'ModelMatrixLink')
-
 describe('<ModelDetails />', () => {
-  it('should handle train errors properly', async () => {
+  it('should render properly when trained and applied', async () => {
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/models/[modelId]',
+      query: {
+        projectId: PROJECT_ID,
+        modelId: MODEL_ID,
+      },
+    })
+
+    require('swr').__setMockUseSWRResponse({
+      data: {
+        ...model,
+        timeLastTrained: 1625774562852,
+        timeLastApplied: 1625774664673,
+        modelTypeRestrictions: { missingLabels: 0 },
+      },
+    })
+
+    const component = TestRenderer.create(
+      <ModelDetails
+        projectId={PROJECT_ID}
+        modelId={MODEL_ID}
+        modelTypes={modelTypes.results}
+      />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  it('should render properly with missing labels', async () => {
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/models/[modelId]',
+      query: {
+        projectId: PROJECT_ID,
+        modelId: MODEL_ID,
+      },
+    })
+
+    require('swr').__setMockUseSWRResponse({
+      data: {
+        ...model,
+        datasetId: DATASET_ID,
+        timeLastTrained: 1625774562852,
+        timeLastApplied: 1625774664673,
+        modelTypeRestrictions: {
+          requiredLabels: 5,
+          missingLabels: 5,
+          requiredAssetsPerLabel: 5,
+          missingLabelsOnAssets: 5,
+        },
+        runningJobId: '',
+        unappliedChanges: true,
+      },
+    })
+
+    const component = TestRenderer.create(
+      <ModelDetails
+        projectId={PROJECT_ID}
+        modelId={MODEL_ID}
+        modelTypes={modelTypes.results}
+      />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+
+    await act(async () => {
+      component.root
+        .findByProps({ children: 'Add More Labels' })
+        .props.onClick({ preventDefault: noop, stopPropagation: noop })
+    })
+  })
+
+  it('should render properly with unapplied changes', async () => {
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/models/[modelId]',
+      query: {
+        projectId: PROJECT_ID,
+        modelId: MODEL_ID,
+      },
+    })
+
+    require('swr').__setMockUseSWRResponse({
+      data: {
+        ...model,
+        datasetId: DATASET_ID,
+        timeLastTrained: 1625774562852,
+        timeLastApplied: 1625774664673,
+        modelTypeRestrictions: {
+          requiredLabels: 0,
+          missingLabels: 0,
+          requiredAssetsPerLabel: 0,
+          missingLabelsOnAssets: 0,
+        },
+        runningJobId: '',
+        unappliedChanges: true,
+      },
+    })
+
+    const component = TestRenderer.create(
+      <ModelDetails
+        projectId={PROJECT_ID}
+        modelId={MODEL_ID}
+        modelTypes={modelTypes.results}
+      />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  it('should render properly', async () => {
     const mockMutate = jest.fn()
 
     require('swr').__setMockMutateFn(mockMutate)
 
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/models/[modelId]',
-      query: { projectId: PROJECT_ID, modelId: MODEL_ID },
-    })
-
-    require('swr').__setMockUseSWRResponse({
-      data: {
-        ...model,
-        runningJobId: '',
-        modelTypeRestrictions: {
-          requiredLabels: 2,
-          missingLabels: 0,
-          requiredAssetsPerLabel: 10,
-          missingLabelsOnAssets: 0,
-        },
+      query: {
+        projectId: PROJECT_ID,
+        modelId: MODEL_ID,
       },
     })
 
-    const component = TestRenderer.create(<ModelDetails />)
+    require('swr').__setMockUseSWRResponse({
+      data: { ...model, modelTypeRestrictions: { missingLabels: 0 } },
+    })
+
+    const component = TestRenderer.create(
+      <ModelDetails
+        projectId={PROJECT_ID}
+        modelId={MODEL_ID}
+        modelTypes={modelTypes.results}
+      />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+
+    // Open Menu
+    act(() => {
+      component.root
+        .findByProps({ 'aria-label': 'Toggle Actions Menu' })
+        .props.onClick()
+    })
+
+    // Select Delete
+    act(() => {
+      component.root.findByProps({ children: 'Delete Model' }).props.onClick()
+    })
+
+    // Cancel
+    act(() => {
+      component.root.findByProps({ children: 'Cancel' }).props.onClick()
+    })
 
     // Mock Failure
     fetch.mockResponseOnce(null, { status: 500 })
 
     await act(async () => {
       component.root
-        .findByProps({ children: 'Train' })
+        .findByProps({ children: 'Train Model', isDisabled: false })
+        .props.onClick({ preventDefault: noop, stopPropagation: noop })
+    })
+
+    // Mock Failure
+    fetch.mockResponseOnce(null, { status: 400 })
+
+    await act(async () => {
+      component.root
+        .findByProps({ children: 'Train & Test', isDisabled: false })
         .props.onClick({ preventDefault: noop, stopPropagation: noop })
     })
 
     expect(component.toJSON()).toMatchSnapshot()
-
-    expect(fetch.mock.calls[0][0]).toEqual(
-      `/api/v1/projects/${PROJECT_ID}/models/${MODEL_ID}/train/`,
-    )
-
-    expect(fetch.mock.calls[0][1]).toEqual({
-      headers: {
-        'X-CSRFToken': 'CSRF_TOKEN',
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      method: 'POST',
-      body: '{"deploy":false}',
-    })
-  })
-
-  it('should handle train & apply success properly', async () => {
-    const mockMutate = jest.fn()
-
-    require('swr').__setMockMutateFn(mockMutate)
-
-    require('next/router').__setUseRouter({
-      pathname: '/[projectId]/models/[modelId]',
-      query: { projectId: PROJECT_ID, modelId: MODEL_ID },
-    })
-
-    require('swr').__setMockUseSWRResponse({
-      data: { ...model, runningJobId: '' },
-    })
-
-    const component = TestRenderer.create(<ModelDetails />)
 
     // Mock Success
     fetch.mockResponseOnce(JSON.stringify({ jobId: JOB_ID }), {
@@ -91,7 +196,7 @@ describe('<ModelDetails />', () => {
 
     await act(async () => {
       component.root
-        .findByProps({ children: 'Train & Apply' })
+        .findByProps({ children: 'Train & Analyze All', isDisabled: false })
         .props.onClick({ preventDefault: noop, stopPropagation: noop })
     })
 
@@ -105,286 +210,14 @@ describe('<ModelDetails />', () => {
         'Content-Type': 'application/json;charset=UTF-8',
       },
       method: 'POST',
-      body: '{"deploy":true}',
+      body: '{"apply":false,"test":false}',
     })
 
     expect(mockMutate).toHaveBeenCalledWith({
       ...model,
+      modelTypeRestrictions: { missingLabels: 0 },
       runningJobId: JOB_ID,
       ready: true,
     })
-  })
-
-  it('should render properly with less than required labels for training', () => {
-    require('next/router').__setUseRouter({
-      pathname: '/[projectId]/models/[modelId]',
-      query: { projectId: PROJECT_ID, modelId: MODEL_ID },
-    })
-
-    require('swr').__setMockUseSWRResponse({
-      data: {
-        ...model,
-        runningJobId: '',
-        modelTypeRestrictions: {
-          requiredLabels: 2,
-          missingLabels: 1,
-          requiredAssetsPerLabel: 10,
-          missingLabelsOnAssets: 1,
-        },
-      },
-    })
-
-    const component = TestRenderer.create(<ModelDetails />)
-
-    expect(component.toJSON()).toMatchSnapshot()
-  })
-
-  it('should render properly with less than required labels for training', () => {
-    require('next/router').__setUseRouter({
-      pathname: '/[projectId]/models/[modelId]',
-      query: { projectId: PROJECT_ID, modelId: MODEL_ID },
-    })
-
-    require('swr').__setMockUseSWRResponse({
-      data: {
-        ...model,
-        runningJobId: '',
-        modelTypeRestrictions: {
-          requiredLabels: 2,
-          missingLabels: 2,
-          requiredAssetsPerLabel: 10,
-          missingLabelsOnAssets: 1,
-        },
-      },
-    })
-
-    const component = TestRenderer.create(<ModelDetails />)
-
-    expect(component.toJSON()).toMatchSnapshot()
-  })
-
-  it('should render Labeled Assets properly', () => {
-    const mockRouterPush = jest.fn()
-
-    require('next/router').__setMockPushFunction(mockRouterPush)
-
-    require('next/router').__setUseRouter({
-      pathname: '/[projectId]/models/[modelId]/assets',
-      query: { projectId: PROJECT_ID, modelId: MODEL_ID },
-    })
-
-    require('swr').__setMockUseSWRResponse({
-      data: {
-        ...model,
-        ...labels,
-        runningJobId: '',
-        modelTypeRestrictions: {
-          requiredLabels: 2,
-          missingLabels: 2,
-          requiredAssetsPerLabel: 10,
-          missingLabelsOnAssets: 1,
-        },
-      },
-    })
-
-    const component = TestRenderer.create(<ModelDetails />)
-
-    expect(component.toJSON()).toMatchSnapshot()
-
-    // Select Scope
-    act(() => {
-      component.root
-        .findByProps({ label: 'Scope' })
-        .props.onChange({ value: 'TEST' })
-    })
-
-    // Select Label
-    act(() => {
-      component.root
-        .findByProps({ label: 'Label' })
-        .props.onChange({ value: 'Test Label' })
-    })
-
-    const scopeQuery = btoa(
-      JSON.stringify({
-        scope: 'TEST',
-      }),
-    )
-
-    const labelQuery = btoa(
-      JSON.stringify({
-        label: 'Test Label',
-      }),
-    )
-
-    expect(mockRouterPush.mock.calls[0][1]).toBe(
-      `/${PROJECT_ID}/models/${MODEL_ID}/assets?query=${scopeQuery}`,
-    )
-
-    expect(mockRouterPush.mock.calls[1][1]).toBe(
-      `/${PROJECT_ID}/models/${MODEL_ID}/assets?query=${labelQuery}`,
-    )
-  })
-
-  it('should render Labeled Assets without assets properly', () => {
-    require('next/router').__setUseRouter({
-      pathname: '/[projectId]/models/[modelId]/assets',
-      query: { projectId: PROJECT_ID, modelId: MODEL_ID },
-    })
-
-    require('swr').__setMockUseSWRResponse({
-      data: {
-        ...model,
-        results: [],
-        count: 0,
-        runningJobId: '',
-        modelTypeRestrictions: {
-          requiredLabels: 2,
-          missingLabels: 2,
-          requiredAssetsPerLabel: 10,
-          missingLabelsOnAssets: 1,
-        },
-      },
-    })
-
-    const component = TestRenderer.create(<ModelDetails />)
-
-    expect(component.toJSON()).toMatchSnapshot()
-  })
-
-  it('should handle filter properly', async () => {
-    require('next/router').__setUseRouter({
-      pathname: '/[projectId]/models/[modelId]',
-      query: { projectId: PROJECT_ID, modelId: MODEL_ID },
-    })
-
-    require('swr').__setMockUseSWRResponse({
-      data: { ...model, runningJobId: '' },
-    })
-
-    const component = TestRenderer.create(<ModelDetails />)
-
-    // eslint-disable-next-line no-proto
-    const spy = jest.spyOn(localStorage.__proto__, 'setItem')
-
-    await act(async () => {
-      component.root
-        .findByProps({ 'aria-label': 'Add Filter in Visualizer' })
-        .props.onClick({ preventDefault: noop, stopPropagation: noop })
-    })
-
-    expect(spy).toHaveBeenCalledWith(
-      'rightOpeningPanelSettings',
-      JSON.stringify({
-        size: PANEL_MIN_WIDTH,
-        isOpen: true,
-        openPanel: 'filters',
-      }),
-    )
-  })
-
-  it('should handle Add More Labels properly', async () => {
-    require('next/router').__setUseRouter({
-      pathname: '/[projectId]/models/[modelId]',
-      query: { projectId: PROJECT_ID, modelId: MODEL_ID },
-    })
-
-    require('swr').__setMockUseSWRResponse({
-      data: {
-        ...model,
-        runningJobId: '',
-      },
-    })
-
-    const component = TestRenderer.create(<ModelDetails />)
-
-    // eslint-disable-next-line no-proto
-    const spy = jest.spyOn(localStorage.__proto__, 'setItem')
-
-    await act(async () => {
-      component.root
-        .findByProps({ 'aria-label': 'Add More Labels' })
-        .props.onClick({ preventDefault: noop, stopPropagation: noop })
-    })
-
-    expect(spy).toHaveBeenCalledWith(
-      'leftOpeningPanelSettings',
-      JSON.stringify({
-        size: PANEL_MIN_WIDTH,
-        isOpen: true,
-        openPanel: 'assetLabeling',
-      }),
-    )
-
-    expect(spy).toHaveBeenCalledWith(
-      `AssetLabelingAdd.${PROJECT_ID}`,
-      `{"modelId":"${MODEL_ID}","label":"","scope":""}`,
-    )
-  })
-
-  it('should handle delete properly', async () => {
-    const mockRouterPush = jest.fn()
-
-    require('next/router').__setMockPushFunction(mockRouterPush)
-
-    fetch.mockResponseOnce('{}')
-
-    require('next/router').__setUseRouter({
-      pathname: '/[projectId]/models/[modelId]',
-      query: { projectId: PROJECT_ID, modelId: MODEL_ID },
-    })
-
-    require('swr').__setMockUseSWRResponse({
-      data: { ...model, runningJobId: '' },
-    })
-
-    const component = TestRenderer.create(<ModelDetails />)
-
-    // Open Delete Modal
-    act(() => {
-      component.root
-        .findByProps({ children: 'Delete' })
-        .props.onClick({ preventDefault: noop, stopPropagation: noop })
-    })
-
-    // Cancel Delete Modal
-    act(() => {
-      component.root
-        .findByProps({ children: 'Cancel' })
-        .props.onClick({ preventDefault: noop, stopPropagation: noop })
-    })
-
-    // Open Delete Modal
-    act(() => {
-      component.root
-        .findByProps({ children: 'Delete' })
-        .props.onClick({ preventDefault: noop, stopPropagation: noop })
-    })
-
-    // Confirm
-    await act(async () => {
-      component.root
-        .findByProps({ children: 'Delete Permanently' })
-        .props.onClick()
-    })
-
-    expect(fetch.mock.calls.length).toEqual(3)
-
-    expect(fetch.mock.calls[0][0]).toEqual(
-      `/api/v1/projects/${PROJECT_ID}/models/${MODEL_ID}/`,
-    )
-
-    expect(fetch.mock.calls[0][1]).toEqual({
-      headers: {
-        'X-CSRFToken': 'CSRF_TOKEN',
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      method: 'DELETE',
-    })
-
-    expect(mockRouterPush).toHaveBeenCalledWith(
-      '/[projectId]/models?action=delete-model-success',
-      `/${PROJECT_ID}/models`,
-    )
   })
 })

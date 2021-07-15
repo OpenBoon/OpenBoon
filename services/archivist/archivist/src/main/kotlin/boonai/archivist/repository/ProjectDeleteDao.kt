@@ -6,6 +6,24 @@ import java.util.UUID
 interface ProjectDeleteDao {
 
     fun deleteProjectRelatedObjects(projectId: UUID)
+
+    companion object {
+        val tables = listOf(
+            "index_route",
+            "dataset",
+            "project_quota",
+            "project_quota_time_series",
+            "field",
+            "module",
+            "credentials",
+            "pipeline",
+            "model",
+            "job",
+            "datasource",
+            "webhook",
+            "project"
+        )
+    }
 }
 
 @Repository
@@ -101,21 +119,7 @@ class ProjectDeleteCustomDao : ProjectDeleteDao, AbstractDao() {
         deleteTaskErrorByProject(projectId)
         deleteTaskStatByProject(projectId)
 
-        val tables = listOf(
-            "project_quota",
-            "project_quota_time_series",
-            "processor",
-            "module",
-            "credentials",
-            "pipeline",
-            "automl",
-            "model",
-            "job",
-            "datasource",
-            "project"
-        )
-
-        tables.forEach {
+        ProjectDeleteDao.tables.forEach {
             jdbc.update("DELETE from $it WHERE pk_project=?", projectId)
         }
     }

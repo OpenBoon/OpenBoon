@@ -5,6 +5,7 @@ import org.springframework.core.env.CompositePropertySource
 import org.springframework.core.env.ConfigurableEnvironment
 import org.springframework.core.env.EnumerablePropertySource
 import org.springframework.core.env.PropertySource
+import org.springframework.stereotype.Component
 import java.io.BufferedReader
 import java.io.FileReader
 import java.nio.file.Path
@@ -52,6 +53,7 @@ interface ApplicationProperties {
     fun parseToMap(key: String): Map<String, String>
 }
 
+@Component
 class SpringApplicationProperties : ApplicationProperties {
 
     @Autowired

@@ -6,6 +6,16 @@ import zipfile
 import os
 import json
 import datetime
+from enum import Enum
+
+
+def enum_name(en, value, caps=False):
+    if isinstance(value, Enum):
+        return value.name
+    else:
+        if caps:
+            value = value.upper()
+        return en[value].name
 
 
 def is_valid_uuid(val):
@@ -86,8 +96,39 @@ def as_id_collection(value):
     if value is None:
         return None
     if isinstance(value, (set, list, tuple, dict)):
-        return [getattr(it, "id", it) for it in value]
-    return [getattr(value, "id", value)]
+        return [getattr(it, 'id', it) for it in value]
+    return [getattr(value, 'id', value)]
+
+
+def as_name(value):
+    """
+    Return the name of an Entity or the string value of the object.
+
+    Args:
+        value (Entity): The BoonAI entity.
+
+    Returns:
+        str: The name of the eneity.
+    """
+    return getattr(value, 'name', str(value))
+
+
+def as_name_collection(value):
+    """
+    Iterate values and convert to a list of names using the 'name' property.  Single
+    object saree automatically wrapped in a list.
+
+    Args:
+        value (list):  A list or scalar object.
+
+    Returns:
+        list: A list of strings.
+    """
+    if value is None:
+        return None
+    if isinstance(value, (set, list, tuple)):
+        return [getattr(it, 'name', it) for it in value]
+    return [getattr(value, 'name', value)]
 
 
 def memoize(func):
@@ -223,6 +264,12 @@ def print_json(obj, indent=2):
 
     """
     print(json.dumps(obj, cls=BoonSdkJsonEncoder, indent=indent))
+
+
+def chunked(lst, n):
+    """Yield successive n-sized chunks from lst."""
+    for i in range(0, len(lst), n):
+        yield lst[i:i + n]
 
 
 class BoonSdkJsonEncoder(json.JSONEncoder):

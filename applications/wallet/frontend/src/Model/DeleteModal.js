@@ -31,12 +31,12 @@ const ModelDeleteModal = ({
           method: 'DELETE',
         })
 
-        await revalidate({
-          key: `/api/v1/projects/${projectId}/models/`,
-        })
-
         revalidate({
           key: `/api/v1/projects/${projectId}/models/all/`,
+        })
+
+        await revalidate({
+          key: `/api/v1/projects/${projectId}/models/`,
         })
 
         Router.push(
@@ -54,4 +54,5 @@ ModelDeleteModal.propTypes = {
   isDeleteModalOpen: PropTypes.bool.isRequired,
   setDeleteModalOpen: PropTypes.func.isRequired,
 }
+
 export default ModelDeleteModal

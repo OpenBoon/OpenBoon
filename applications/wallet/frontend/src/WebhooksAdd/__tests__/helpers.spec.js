@@ -19,6 +19,7 @@ describe('<WebhooksAdd /> helpers', () => {
 
       expect(mockDispatch).toHaveBeenCalledWith({
         disableSecretKeyButton: false,
+        isCopied: true,
       })
 
       expect(mockState.secretKey).toHaveLength(36)

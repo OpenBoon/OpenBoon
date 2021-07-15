@@ -219,13 +219,10 @@ Array [
 }
 
 .emotion-7 {
-  font-weight: 700;
-  color: #ffffff;
-  padding-bottom: 4px;
-}
-
-.emotion-8 {
   color: #b3b3b3;
+  font-family: Roboto Condensed;
+  text-transform: uppercase;
+  padding-bottom: 4px;
 }
 
 <div
@@ -270,9 +267,7 @@ Array [
           ID
           :
         </div>
-        <div
-          className="emotion-8"
-        >
+        <div>
           0571517b-5f31-11ea-bb46-6a6895b1a9f6
         </div>
       </div>
@@ -285,9 +280,7 @@ Array [
           State
           :
         </div>
-        <div
-          className="emotion-8"
-        >
+        <div>
           Success
         </div>
       </div>
@@ -300,9 +293,7 @@ Array [
           Host
           :
         </div>
-        <div
-          className="emotion-8"
-        >
+        <div>
           http://analyst-7b7fd7958-9zl69:5000
         </div>
       </div>
@@ -315,9 +306,7 @@ Array [
           Started
           :
         </div>
-        <div
-          className="emotion-8"
-        >
+        <div>
           2020-03-05 22:31:18
         </div>
       </div>
@@ -330,9 +319,7 @@ Array [
           Duration
           :
         </div>
-        <div
-          className="emotion-8"
-        >
+        <div>
           00h : 00m : 03s
         </div>
       </div>
@@ -692,13 +679,10 @@ Array [
 }
 
 .emotion-7 {
-  font-weight: 700;
-  color: #ffffff;
-  padding-bottom: 4px;
-}
-
-.emotion-8 {
   color: #b3b3b3;
+  font-family: Roboto Condensed;
+  text-transform: uppercase;
+  padding-bottom: 4px;
 }
 
 <div
@@ -743,9 +727,7 @@ Array [
           ID
           :
         </div>
-        <div
-          className="emotion-8"
-        >
+        <div>
           0571517b-5f31-11ea-bb46-6a6895b1a9f6
         </div>
       </div>
@@ -758,9 +740,7 @@ Array [
           State
           :
         </div>
-        <div
-          className="emotion-8"
-        >
+        <div>
           Success
         </div>
       </div>
@@ -773,9 +753,7 @@ Array [
           Host
           :
         </div>
-        <div
-          className="emotion-8"
-        >
+        <div>
           http://analyst-7b7fd7958-9zl69:5000
         </div>
       </div>
@@ -788,9 +766,7 @@ Array [
           Started
           :
         </div>
-        <div
-          className="emotion-8"
-        >
+        <div>
           2020-03-05 22:31:18
         </div>
       </div>
@@ -803,9 +779,7 @@ Array [
           Duration
           :
         </div>
-        <div
-          className="emotion-8"
-        >
+        <div>
           00h : 00m : 03s
         </div>
       </div>
@@ -1211,16 +1185,13 @@ Array [
 }
 
 .emotion-10 {
-  font-weight: 700;
-  color: #ffffff;
+  color: #b3b3b3;
+  font-family: Roboto Condensed;
+  text-transform: uppercase;
   padding-bottom: 4px;
 }
 
-.emotion-11 {
-  color: #b3b3b3;
-}
-
-.emotion-21 {
+.emotion-17 {
   font-style: italic;
 }
 
@@ -1285,9 +1256,7 @@ Array [
           ID
           :
         </div>
-        <div
-          className="emotion-11"
-        >
+        <div>
           0571517b-5f31-11ea-bb46-6a6895b1a9f6
         </div>
       </div>
@@ -1300,9 +1269,7 @@ Array [
           State
           :
         </div>
-        <div
-          className="emotion-11"
-        >
+        <div>
           Waiting
         </div>
       </div>
@@ -1315,9 +1282,7 @@ Array [
           Host
           :
         </div>
-        <div
-          className="emotion-11"
-        >
+        <div>
           http://analyst-7b7fd7958-9zl69:5000
         </div>
       </div>
@@ -1330,11 +1295,9 @@ Array [
           Started
           :
         </div>
-        <div
-          className="emotion-11"
-        >
+        <div>
           <div
-            className="emotion-21"
+            className="emotion-17"
           >
             Waiting...
           </div>
@@ -1349,11 +1312,9 @@ Array [
           Duration
           :
         </div>
-        <div
-          className="emotion-11"
-        >
+        <div>
           <div
-            className="emotion-21"
+            className="emotion-17"
           >
             Waiting...
           </div>
@@ -1715,13 +1676,10 @@ Array [
 }
 
 .emotion-7 {
-  font-weight: 700;
-  color: #ffffff;
-  padding-bottom: 4px;
-}
-
-.emotion-8 {
   color: #b3b3b3;
+  font-family: Roboto Condensed;
+  text-transform: uppercase;
+  padding-bottom: 4px;
 }
 
 <div
@@ -1766,9 +1724,7 @@ Array [
           ID
           :
         </div>
-        <div
-          className="emotion-8"
-        >
+        <div>
           0571517b-5f31-11ea-bb46-6a6895b1a9f6
         </div>
       </div>
@@ -1781,9 +1737,7 @@ Array [
           State
           :
         </div>
-        <div
-          className="emotion-8"
-        >
+        <div>
           Success
         </div>
       </div>
@@ -1796,9 +1750,7 @@ Array [
           Host
           :
         </div>
-        <div
-          className="emotion-8"
-        >
+        <div>
           http://analyst-7b7fd7958-9zl69:5000
         </div>
       </div>
@@ -1811,9 +1763,7 @@ Array [
           Started
           :
         </div>
-        <div
-          className="emotion-8"
-        >
+        <div>
           2020-03-05 22:31:18
         </div>
       </div>
@@ -1826,9 +1776,7 @@ Array [
           Duration
           :
         </div>
-        <div
-          className="emotion-8"
-        >
+        <div>
           00h : 00m : 03s
         </div>
       </div>

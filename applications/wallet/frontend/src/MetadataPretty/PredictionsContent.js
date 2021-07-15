@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 
 import { colors, constants, spacing, typography } from '../Styles'
 
-import ButtonCopy, { COPY_SIZE } from '../Button/Copy'
+import ButtonCopy from '../Button/Copy'
 import Pills from '../Pills'
 import Button, { VARIANTS } from '../Button'
 
@@ -12,8 +12,6 @@ import {
   dispatch as filterDispatch,
   decode,
 } from '../Filters/helpers'
-
-export const BBOX_SIZE = 56
 
 const COLUMNS = ['bbox', 'label', 'content', 'score']
 
@@ -60,10 +58,10 @@ const MetadataPrettyPredictionsContent = ({
       >
         <div
           css={{
-            fontFamily: typography.family.mono,
-            fontSize: typography.size.small,
-            lineHeight: typography.height.small,
-            color: colors.structure.white,
+            fontWeight: typography.weight.bold,
+            fontSize: typography.size.regular,
+            lineHeight: typography.height.regular,
+            color: colors.key.two,
             paddingBottom: spacing.normal,
           }}
         >
@@ -72,8 +70,10 @@ const MetadataPrettyPredictionsContent = ({
               aria-label="Add Filter"
               variant={VARIANTS.NEUTRAL}
               style={{
+                fontWeight: 'inherit',
                 fontSize: 'inherit',
                 lineHeight: 'inherit',
+                color: 'inherit',
               }}
               onClick={() => {
                 filterDispatch({
@@ -154,13 +154,13 @@ const MetadataPrettyPredictionsContent = ({
                         <td key={column} css={{ display: 'flex' }}>
                           <img
                             css={{
-                              maxHeight: BBOX_SIZE,
-                              width: BBOX_SIZE,
+                              maxHeight: constants.bbox,
+                              width: constants.bbox,
                               objectFit: 'contain',
                             }}
                             alt={prediction.bbox}
                             title={prediction.bbox}
-                            src={prediction.b64_image}
+                            src={prediction.b64Image}
                           />
                           &nbsp;
                         </td>
@@ -174,8 +174,10 @@ const MetadataPrettyPredictionsContent = ({
                             aria-label="Add Filter"
                             variant={VARIANTS.NEUTRAL}
                             style={{
+                              fontWeight: 'inherit',
                               fontSize: 'inherit',
                               lineHeight: 'inherit',
+                              color: 'inherit',
                               whiteSpace: 'inherit',
                               textAlign: 'inherit',
                             }}
@@ -232,29 +234,31 @@ const MetadataPrettyPredictionsContent = ({
           css={{
             padding: spacing.normal,
             paddingTop: 0,
+            svg: { opacity: 0 },
             ':hover': {
               backgroundColor: `${colors.signal.sky.base}${constants.opacity.hex22Pct}`,
               svg: { opacity: 1 },
             },
           }}
         >
-          <div css={{ display: 'flex' }}>
+          <div css={{ display: 'flex', alignItems: 'center' }}>
             <div
               css={{
-                minHeight: COPY_SIZE,
                 width: '100%',
                 fontFamily: typography.family.condensed,
                 textTransform: 'uppercase',
                 color: colors.structure.steel,
-                borderTop: constants.borders.regular.smoke,
-                paddingTop: spacing.normal,
                 paddingBottom: spacing.base,
               }}
             >
               tags
             </div>
 
-            <ButtonCopy value={JSON.stringify(tags)} />
+            <ButtonCopy
+              title="Tags"
+              value={JSON.stringify(tags)}
+              offset={100}
+            />
           </div>
 
           <div>

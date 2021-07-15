@@ -3,6 +3,10 @@ variable "project" {
   description = "Name of the GCP project."
 }
 
+variable "project-number" {
+  description = "GCP project number."
+}
+
 variable "environment" {
   description = "Name of the deployment environment. Used for things like sentry reporting."
 }

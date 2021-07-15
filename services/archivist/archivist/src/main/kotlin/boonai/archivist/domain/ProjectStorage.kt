@@ -175,6 +175,14 @@ class ProjectFileLocator(
     override fun getFileId(): String {
         return "${entity.pathName()}/$entityId/$category/$encodedName"
     }
+
+    companion object {
+
+        fun buildPath(id: String): String {
+            val pid = getProjectId()
+            return "projects/$pid/$id"
+        }
+    }
 }
 
 /**
@@ -226,3 +234,8 @@ class FileStorage(
         val JSON_LIST_OF: TypeReference<List<FileStorage>> = object : TypeReference<List<FileStorage>>() {}
     }
 }
+
+class ProjectToBoonLibCopyRequest(
+
+    val paths: Map<String, String>
+)

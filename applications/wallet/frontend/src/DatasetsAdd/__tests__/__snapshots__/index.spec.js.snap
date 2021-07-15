@@ -1,0 +1,1232 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<DatasetsAdd /> should render properly 1`] = `
+Array [
+  .emotion-0 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-1 {
+  color: #ffffff;
+  background-color: #d6680b;
+  border-radius: 32px;
+  font-size: 11px;
+  line-height: 15px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.2px;
+  padding: 1px;
+  padding-left: 6px;
+  padding-right: 6px;
+  margin-right: 8px;
+}
+
+<h2
+    className="emotion-0"
+  >
+    <span
+      className="emotion-1"
+    >
+      beta
+    </span>
+    Datasets
+  </h2>,
+  .emotion-0 {
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+
+.emotion-1 {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border-bottom: 1px solid #4a4a4a;
+}
+
+.emotion-2 {
+  padding-right: 16px;
+  margin-bottom: -1px;
+}
+
+.emotion-3 {
+  border: 0 #3A5DFF solid;
+  border-bottom-width: 0;
+  color: #b3b3b3;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-3:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #3A5DFF;
+}
+
+.emotion-5 {
+  border: 0 #3A5DFF solid;
+  border-bottom-width: 2px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-5:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+<nav
+    className="emotion-0"
+  >
+    <ul
+      className="emotion-1"
+    >
+      <li
+        className="emotion-2"
+      >
+        <a
+          className="emotion-3"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/datasets"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          View all
+        </a>
+      </li>
+      <li
+        className="emotion-2"
+      >
+        <a
+          className="emotion-5"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/datasets/add"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          Create New Dataset
+        </a>
+      </li>
+    </ul>
+  </nav>,
+  .emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 470px;
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.emotion-1 {
+  font-size: 21px;
+  line-height: 30px;
+  font-weight: 500;
+  padding-top: 16px;
+}
+
+.emotion-2 {
+  padding-top: 8px;
+}
+
+.emotion-3 {
+  display: block;
+  padding-bottom: 8px;
+  color: #b3b3b3;
+}
+
+.emotion-4 {
+  position: relative;
+}
+
+.emotion-5 {
+  outline-offset: 0;
+  padding: 10px 12px;
+  border-radius: 2px;
+  box-shadow: inset 0 1px 3px 0 transparent;
+  width: 100%;
+  cursor: text;
+  color: #ffffff;
+  background-color: #3b3b3b;
+  border: 1px solid transparent;
+  border-width: 2px;
+}
+
+.emotion-5:focus,
+.emotion-5 .noop {
+  border: 2px solid #3A5DFF;
+  outline: #3A5DFF;
+  color: #000000;
+  background-color: #ffffff;
+}
+
+.emotion-5:hover,
+.emotion-5 .noop {
+  border: 2px solid #ffffff;
+}
+
+.emotion-6 {
+  padding-top: 8px;
+}
+
+.emotion-7 {
+  padding-top: 8px;
+}
+
+.emotion-8 {
+  display: block;
+  padding-bottom: 8px;
+  color: #b3b3b3;
+}
+
+.emotion-9 {
+  position: relative;
+}
+
+.emotion-10 {
+  outline-offset: 0;
+  padding: 10px 12px;
+  border-radius: 2px;
+  box-shadow: inset 0 1px 3px 0 transparent;
+  width: 100%;
+  font-size: 15px;
+  line-height: 19px;
+  color: #ffffff;
+  background-color: #3b3b3b;
+  border: 1px solid transparent;
+  border-width: 2px;
+}
+
+.emotion-10:focus,
+.emotion-10 .noop {
+  border: 2px solid #3A5DFF;
+  background-color: #ffffff;
+  outline: #3A5DFF;
+  color: #000000;
+}
+
+.emotion-13 {
+  margin: 0;
+  padding-top: 8px;
+  color: #b3b3b3;
+}
+
+.emotion-14 {
+  padding-top: 16px;
+}
+
+.emotion-15 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+}
+
+.emotion-16 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  position: relative;
+}
+
+.emotion-17 {
+  padding: 0;
+  -webkit-appearance: none;
+  border-radius: 16px;
+  width: 16px;
+  height: 16px;
+  border: 1px solid #808080;
+}
+
+.emotion-18 {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  opacity: 100;
+  border-radius: 16px;
+  background-color: none;
+}
+
+.emotion-19 {
+  padding-left: 12px;
+}
+
+.emotion-20 {
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.emotion-21 {
+  color: #b3b3b3;
+}
+
+.emotion-38 {
+  height: 16px;
+}
+
+.emotion-39 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.emotion-39 button,
+.emotion-39 a {
+  margin-right: 16px;
+}
+
+.emotion-39 button:last-child,
+.emotion-39 a:last-child {
+  margin-right: 0;
+}
+
+.emotion-40 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: not-allowed;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-40,
+.emotion-40:hover,
+.emotion-40:visited,
+.emotion-40 .noop {
+  background-color: #3A5DFF;
+}
+
+.emotion-40:hover,
+.emotion-40 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #6088FE;
+}
+
+.emotion-40[aria-disabled=true],
+.emotion-40 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+<form
+    action=""
+    className="emotion-0"
+    method="post"
+    onSubmit={[Function]}
+  >
+    <h3
+      className="emotion-1"
+    >
+      Dataset Name & Description
+    </h3>
+    <div
+      className="emotion-2"
+    >
+      <label
+        className="emotion-3"
+        htmlFor="name"
+      >
+        Dataset Name:
+      </label>
+      <div
+        className="emotion-4"
+      >
+        <input
+          autoComplete="off"
+          autoFocus={true}
+          className="emotion-5"
+          disabled={false}
+          id="name"
+          name="name"
+          onChange={[Function]}
+          type="text"
+          value=""
+        />
+      </div>
+      <div
+        className="emotion-6"
+      >
+         
+      </div>
+    </div>
+    <div
+      className="emotion-7"
+    >
+      <label
+        className="emotion-8"
+        htmlFor="description"
+      >
+        Description (optional):
+      </label>
+      <div
+        className="emotion-9"
+      >
+        <textarea
+          className="emotion-10"
+          id="description"
+          name="description"
+          onChange={[Function]}
+          rows="5"
+          value=""
+        />
+      </div>
+      <div
+        className="emotion-7"
+      >
+         
+      </div>
+    </div>
+    <h3
+      className="emotion-1"
+    >
+      Select a Dataset Type
+    </h3>
+    <p
+      className="emotion-13"
+    >
+      The type of Dataset determines what kind of Labels to create and which Models can be associated with it.
+    </p>
+    <div
+      className="emotion-14"
+    >
+      <div>
+        <label
+          className="emotion-15"
+        >
+          <div
+            className="emotion-16"
+          >
+            <input
+              className="emotion-17"
+              defaultChecked={false}
+              name="datasetType"
+              onClick={[Function]}
+              type="radio"
+              value="FaceRecognition"
+            />
+            <div
+              className="emotion-18"
+            />
+          </div>
+          <div
+            className="emotion-19"
+          >
+            <div
+              className="emotion-20"
+            >
+              Face Recognition
+            </div>
+            <div
+              className="emotion-21"
+            >
+              Use when labeling detected faces.
+            </div>
+          </div>
+        </label>
+      </div>
+    </div>
+    <div
+      className="emotion-14"
+    >
+      <div>
+        <label
+          className="emotion-15"
+        >
+          <div
+            className="emotion-16"
+          >
+            <input
+              className="emotion-17"
+              defaultChecked={false}
+              name="datasetType"
+              onClick={[Function]}
+              type="radio"
+              value="Classification"
+            />
+            <div
+              className="emotion-18"
+            />
+          </div>
+          <div
+            className="emotion-19"
+          >
+            <div
+              className="emotion-20"
+            >
+              Classification
+            </div>
+            <div
+              className="emotion-21"
+            >
+              Use when classifying the asset.
+            </div>
+          </div>
+        </label>
+      </div>
+    </div>
+    <div
+      className="emotion-14"
+    >
+      <div>
+        <label
+          className="emotion-15"
+        >
+          <div
+            className="emotion-16"
+          >
+            <input
+              className="emotion-17"
+              defaultChecked={false}
+              name="datasetType"
+              onClick={[Function]}
+              type="radio"
+              value="ObjectDetection"
+            />
+            <div
+              className="emotion-18"
+            />
+          </div>
+          <div
+            className="emotion-19"
+          >
+            <div
+              className="emotion-20"
+            >
+              Object Detection
+            </div>
+            <div
+              className="emotion-21"
+            >
+              Use when training for objects.
+            </div>
+          </div>
+        </label>
+      </div>
+    </div>
+    <div
+      className="emotion-38"
+    />
+    <div
+      className="emotion-39"
+    >
+      <button
+        aria-disabled={true}
+        className="emotion-40"
+        onClick={[Function]}
+        type="submit"
+      >
+        Create New Dataset
+      </button>
+    </div>
+  </form>,
+]
+`;
+
+exports[`<DatasetsAdd /> should render properly 2`] = `
+Array [
+  .emotion-0 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-1 {
+  color: #ffffff;
+  background-color: #d6680b;
+  border-radius: 32px;
+  font-size: 11px;
+  line-height: 15px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.2px;
+  padding: 1px;
+  padding-left: 6px;
+  padding-right: 6px;
+  margin-right: 8px;
+}
+
+<h2
+    className="emotion-0"
+  >
+    <span
+      className="emotion-1"
+    >
+      beta
+    </span>
+    Datasets
+  </h2>,
+  .emotion-0 {
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+
+.emotion-1 {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border-bottom: 1px solid #4a4a4a;
+}
+
+.emotion-2 {
+  padding-right: 16px;
+  margin-bottom: -1px;
+}
+
+.emotion-3 {
+  border: 0 #3A5DFF solid;
+  border-bottom-width: 0;
+  color: #b3b3b3;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-3:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #3A5DFF;
+}
+
+.emotion-5 {
+  border: 0 #3A5DFF solid;
+  border-bottom-width: 2px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-5:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+<nav
+    className="emotion-0"
+  >
+    <ul
+      className="emotion-1"
+    >
+      <li
+        className="emotion-2"
+      >
+        <a
+          className="emotion-3"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/datasets"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          View all
+        </a>
+      </li>
+      <li
+        className="emotion-2"
+      >
+        <a
+          className="emotion-5"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/datasets/add"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          Create New Dataset
+        </a>
+      </li>
+    </ul>
+  </nav>,
+  .emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 470px;
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.emotion-1 {
+  font-size: 21px;
+  line-height: 30px;
+  font-weight: 500;
+  padding-top: 16px;
+}
+
+.emotion-2 {
+  padding-top: 8px;
+}
+
+.emotion-3 {
+  display: block;
+  padding-bottom: 8px;
+  color: #b3b3b3;
+}
+
+.emotion-4 {
+  position: relative;
+}
+
+.emotion-5 {
+  outline-offset: 0;
+  padding: 10px 12px;
+  border-radius: 2px;
+  box-shadow: inset 0 1px 3px 0 transparent;
+  width: 100%;
+  cursor: text;
+  color: #ffffff;
+  background-color: #3b3b3b;
+  border: 1px solid transparent;
+  border-width: 2px;
+}
+
+.emotion-5:focus,
+.emotion-5 .noop {
+  border: 2px solid #3A5DFF;
+  outline: #3A5DFF;
+  color: #000000;
+  background-color: #ffffff;
+}
+
+.emotion-5:hover,
+.emotion-5 .noop {
+  border: 2px solid #ffffff;
+}
+
+.emotion-6 {
+  padding-top: 8px;
+}
+
+.emotion-7 {
+  padding-top: 8px;
+}
+
+.emotion-8 {
+  display: block;
+  padding-bottom: 8px;
+  color: #b3b3b3;
+}
+
+.emotion-9 {
+  position: relative;
+}
+
+.emotion-10 {
+  outline-offset: 0;
+  padding: 10px 12px;
+  border-radius: 2px;
+  box-shadow: inset 0 1px 3px 0 transparent;
+  width: 100%;
+  font-size: 15px;
+  line-height: 19px;
+  color: #ffffff;
+  background-color: #3b3b3b;
+  border: 1px solid transparent;
+  border-width: 2px;
+}
+
+.emotion-10:focus,
+.emotion-10 .noop {
+  border: 2px solid #3A5DFF;
+  background-color: #ffffff;
+  outline: #3A5DFF;
+  color: #000000;
+}
+
+.emotion-13 {
+  margin: 0;
+  padding-top: 8px;
+  color: #b3b3b3;
+}
+
+.emotion-14 {
+  padding-top: 16px;
+}
+
+.emotion-15 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+}
+
+.emotion-16 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  position: relative;
+}
+
+.emotion-17 {
+  padding: 0;
+  -webkit-appearance: none;
+  border-radius: 16px;
+  width: 16px;
+  height: 16px;
+  border: 1px solid #808080;
+}
+
+.emotion-18 {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  opacity: 100;
+  border-radius: 16px;
+  background-color: none;
+}
+
+.emotion-19 {
+  padding-left: 12px;
+}
+
+.emotion-20 {
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.emotion-21 {
+  color: #b3b3b3;
+}
+
+.emotion-33 {
+  padding: 0;
+  -webkit-appearance: none;
+  border-radius: 16px;
+  width: 16px;
+  height: 16px;
+  border: 1px solid #ffffff;
+}
+
+.emotion-34 {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  opacity: 100;
+  border-radius: 16px;
+  background-color: #3A5DFF;
+}
+
+.emotion-38 {
+  height: 16px;
+}
+
+.emotion-39 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.emotion-39 button,
+.emotion-39 a {
+  margin-right: 16px;
+}
+
+.emotion-39 button:last-child,
+.emotion-39 a:last-child {
+  margin-right: 0;
+}
+
+.emotion-40 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-40,
+.emotion-40:hover,
+.emotion-40:visited,
+.emotion-40 .noop {
+  background-color: #3A5DFF;
+}
+
+.emotion-40:hover,
+.emotion-40 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #6088FE;
+}
+
+.emotion-40[aria-disabled=true],
+.emotion-40 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+<form
+    action=""
+    className="emotion-0"
+    method="post"
+    onSubmit={[Function]}
+  >
+    <h3
+      className="emotion-1"
+    >
+      Dataset Name & Description
+    </h3>
+    <div
+      className="emotion-2"
+    >
+      <label
+        className="emotion-3"
+        htmlFor="name"
+      >
+        Dataset Name:
+      </label>
+      <div
+        className="emotion-4"
+      >
+        <input
+          autoComplete="off"
+          autoFocus={true}
+          className="emotion-5"
+          disabled={false}
+          id="name"
+          name="name"
+          onChange={[Function]}
+          type="text"
+          value="My New Dataset"
+        />
+      </div>
+      <div
+        className="emotion-6"
+      >
+         
+      </div>
+    </div>
+    <div
+      className="emotion-7"
+    >
+      <label
+        className="emotion-8"
+        htmlFor="description"
+      >
+        Description (optional):
+      </label>
+      <div
+        className="emotion-9"
+      >
+        <textarea
+          className="emotion-10"
+          id="description"
+          name="description"
+          onChange={[Function]}
+          rows="5"
+          value="Lorem Ipsum"
+        />
+      </div>
+      <div
+        className="emotion-7"
+      >
+         
+      </div>
+    </div>
+    <h3
+      className="emotion-1"
+    >
+      Select a Dataset Type
+    </h3>
+    <p
+      className="emotion-13"
+    >
+      The type of Dataset determines what kind of Labels to create and which Models can be associated with it.
+    </p>
+    <div
+      className="emotion-14"
+    >
+      <div>
+        <label
+          className="emotion-15"
+        >
+          <div
+            className="emotion-16"
+          >
+            <input
+              className="emotion-17"
+              defaultChecked={false}
+              name="datasetType"
+              onClick={[Function]}
+              type="radio"
+              value="FaceRecognition"
+            />
+            <div
+              className="emotion-18"
+            />
+          </div>
+          <div
+            className="emotion-19"
+          >
+            <div
+              className="emotion-20"
+            >
+              Face Recognition
+            </div>
+            <div
+              className="emotion-21"
+            >
+              Use when labeling detected faces.
+            </div>
+          </div>
+        </label>
+      </div>
+    </div>
+    <div
+      className="emotion-14"
+    >
+      <div>
+        <label
+          className="emotion-15"
+        >
+          <div
+            className="emotion-16"
+          >
+            <input
+              className="emotion-17"
+              defaultChecked={false}
+              name="datasetType"
+              onClick={[Function]}
+              type="radio"
+              value="Classification"
+            />
+            <div
+              className="emotion-18"
+            />
+          </div>
+          <div
+            className="emotion-19"
+          >
+            <div
+              className="emotion-20"
+            >
+              Classification
+            </div>
+            <div
+              className="emotion-21"
+            >
+              Use when classifying the asset.
+            </div>
+          </div>
+        </label>
+      </div>
+    </div>
+    <div
+      className="emotion-14"
+    >
+      <div>
+        <label
+          className="emotion-15"
+        >
+          <div
+            className="emotion-16"
+          >
+            <input
+              className="emotion-33"
+              defaultChecked={true}
+              name="datasetType"
+              onClick={[Function]}
+              type="radio"
+              value="ObjectDetection"
+            />
+            <div
+              className="emotion-34"
+            />
+          </div>
+          <div
+            className="emotion-19"
+          >
+            <div
+              className="emotion-20"
+            >
+              Object Detection
+            </div>
+            <div
+              className="emotion-21"
+            >
+              Use when training for objects.
+            </div>
+          </div>
+        </label>
+      </div>
+    </div>
+    <div
+      className="emotion-38"
+    />
+    <div
+      className="emotion-39"
+    >
+      <button
+        className="emotion-40"
+        onClick={[Function]}
+        type="submit"
+      >
+        Create New Dataset
+      </button>
+    </div>
+  </form>,
+]
+`;

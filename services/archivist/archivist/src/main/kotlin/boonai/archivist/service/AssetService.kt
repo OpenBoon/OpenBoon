@@ -32,11 +32,11 @@ import boonai.archivist.domain.ResolvedPipeline
 import boonai.archivist.domain.Task
 import boonai.archivist.domain.TriggerType
 import boonai.archivist.domain.UpdateAssetLabelsRequest
+import boonai.archivist.domain.UpdateAssetLabelsRequestV4
 import boonai.archivist.domain.UpdateAssetRequest
 import boonai.archivist.domain.UpdateAssetsByQueryRequest
 import boonai.archivist.domain.ZpsScript
-import boonai.archivist.repository.ModelDao
-import boonai.archivist.repository.ModelJdbcDao
+import boonai.archivist.repository.DatasetDao
 import boonai.archivist.security.CoroutineAuthentication
 import boonai.archivist.security.getProjectId
 import boonai.archivist.storage.ProjectStorageException
@@ -148,7 +148,8 @@ interface AssetService {
     fun batchIndex(
         docs: Map<String, MutableMap<String, Any>>,
         setAnalyzed: Boolean = false,
-        refresh: Boolean = false
+        refresh: Boolean = false,
+        create: Boolean = false
     ): BatchIndexResponse
 
     /**
@@ -208,6 +209,7 @@ interface AssetService {
      * Update the Assets contained in the [UpdateAssetLabelsRequest] with provided [Model] labels.
      */
     fun updateLabels(req: UpdateAssetLabelsRequest): BulkResponse
+    fun updateLabelsV4(req: UpdateAssetLabelsRequestV4): BulkResponse
 }
 
 @Service
@@ -235,16 +237,16 @@ class AssetServiceImpl : AssetService {
     lateinit var jobLaunchService: JobLaunchService
 
     @Autowired
-    lateinit var modelDao: ModelDao
-
-    @Autowired
-    lateinit var modelJdbcDao: ModelJdbcDao
+    lateinit var datasetDao: DatasetDao
 
     @Autowired
     lateinit var clipService: ClipService
 
     @Autowired
     lateinit var webHookPublisher: WebHookPublisherService
+
+    @Autowired
+    lateinit var datasetService: DatasetService
 
     override fun getAsset(id: String): Asset {
         val rest = indexRoutingService.getProjectRestClient()
@@ -382,7 +384,7 @@ class AssetServiceImpl : AssetService {
             assets.add(asset)
         }
 
-        return bulkIndexAndAnalyzePendingAssets(assets, existingAssetIds, pipeline, req.credentials)
+        return bulkIndexAndAnalyzePendingAssets(assets, existingAssetIds, pipeline, req.credentials, req.jobName)
     }
 
     override fun batchCreate(request: BatchCreateAssetsRequest): BatchCreateAssetsResponse {
@@ -411,7 +413,7 @@ class AssetServiceImpl : AssetService {
             asset
         }
 
-        return bulkIndexAndAnalyzePendingAssets(assets, existingAssetIds, pipeline, request.credentials)
+        return bulkIndexAndAnalyzePendingAssets(assets, existingAssetIds, pipeline, request.credentials, null)
     }
 
     override fun update(assetId: String, req: UpdateAssetRequest): Response {
@@ -500,7 +502,8 @@ class AssetServiceImpl : AssetService {
     override fun batchIndex(
         docs: Map<String, MutableMap<String, Any>>,
         setAnalyzed: Boolean,
-        refresh: Boolean
+        refresh: Boolean,
+        create: Boolean
     ): BatchIndexResponse {
         if (docs.isEmpty()) {
             throw IllegalArgumentException("Nothing to batch index.")
@@ -508,7 +511,7 @@ class AssetServiceImpl : AssetService {
 
         val validAssetIds = getValidAssetIds(docs.keys)
         val notFound = docs.keys.minus(validAssetIds)
-        if (notFound.isNotEmpty()) {
+        if (!create && notFound.isNotEmpty()) {
             throw IllegalArgumentException("The asset IDs '$notFound' were not found")
         }
 
@@ -549,6 +552,7 @@ class AssetServiceImpl : AssetService {
                 } else {
                     bulk.add(
                         rest.newIndexRequest(id)
+                            .create(id in notFound)
                             .source(doc)
                             .opType(DocWriteRequest.OpType.INDEX)
                     )
@@ -712,7 +716,8 @@ class AssetServiceImpl : AssetService {
         createdAssetIds: Collection<String>,
         existingAssetIds: Collection<String>,
         pipeline: ResolvedPipeline,
-        creds: Set<String>?
+        creds: Set<String>?,
+        jobName: String?
     ): Job? {
 
         // Validate the assets need reprocessing
@@ -726,9 +731,16 @@ class AssetServiceImpl : AssetService {
         return if (finalAssetList.isEmpty()) {
             null
         } else {
+            val merge = jobName != null
             val name = "Analyze ${createdAssetIds.size} created assets, $reprocessAssetCount existing files."
+
             jobLaunchService.launchJob(
-                name, finalAssetList, pipeline, creds = creds, settings = mapOf("index" to true)
+                jobName ?: name,
+                finalAssetList,
+                pipeline,
+                merge = merge,
+                creds = creds,
+                settings = mapOf("index" to true)
             )
         }
     }
@@ -838,7 +850,8 @@ class AssetServiceImpl : AssetService {
         newAssets: List<Asset>,
         existingAssetIds: Collection<String>,
         pipeline: ResolvedPipeline?,
-        creds: Set<String>?
+        creds: Set<String>?,
+        jobName: String?,
     ): BatchCreateAssetsResponse {
 
         val rest = indexRoutingService.getProjectRestClient()
@@ -884,7 +897,7 @@ class AssetServiceImpl : AssetService {
 
         // Launch analysis job.
         val jobId = if (pipeline != null) {
-            createAnalysisJob(created, existingAssetIds, pipeline, creds)?.id
+            createAnalysisJob(created, existingAssetIds, pipeline, creds, jobName)?.id
         } else {
             null
         }
@@ -928,9 +941,9 @@ class AssetServiceImpl : AssetService {
             derivePage(asset, spec)
 
             if (spec.label != null) {
-                if (!modelDao.existsByProjectIdAndId(projectId, spec.label.modelId)) {
+                if (!datasetDao.existsByProjectIdAndId(projectId, spec.label.datasetId)) {
                     throw java.lang.IllegalArgumentException(
-                        "The Model Id ${spec.label.modelId} does not exist."
+                        "The Dataset ${spec.label.datasetId} does not exist."
                     )
                 }
                 asset.addLabels(listOf(spec.label))
@@ -1057,20 +1070,19 @@ class AssetServiceImpl : AssetService {
         val allAssetIds = (req.add?.keys ?: setOf()) + (req.remove?.keys ?: setOf())
         val addLabels = mutableSetOf<UUID>()
         req.add?.values?.forEach { labels ->
-            addLabels.addAll(labels.map { it.modelId })
+            addLabels.addAll(labels.map { it.datasetId })
         }
 
         // Validate the models we're adding are legit.
         val projectId = getProjectId()
-        val models = mutableSetOf<UUID>()
+        val datasets = mutableSetOf<UUID>()
         addLabels.forEach {
-            if (!modelDao.existsByProjectIdAndId(projectId, it)) {
-                throw IllegalArgumentException("ModelId $it not found")
+            if (!datasetDao.existsByProjectIdAndId(projectId, it)) {
+                throw IllegalArgumentException("Dataset $it not found")
             } else {
-                models.add(it)
+                datasets.add(it)
             }
         }
-        models.forEach { modelJdbcDao.markAsReady(it, false) }
 
         // Build a search for assets.
         val rest = indexRoutingService.getProjectRestClient()
@@ -1111,6 +1123,91 @@ class AssetServiceImpl : AssetService {
                 }
             }
         }
+        datasets.forEach {
+            datasetService.markModelsUnready(it)
+        }
+        return result
+    }
+
+    override fun updateLabelsV4(req: UpdateAssetLabelsRequestV4): BulkResponse {
+        val bulkSize = 100
+        val maxAssets = 1000L
+        if (req.add?.size ?: 0 > maxAssets) {
+            throw IllegalArgumentException(
+                "Cannot add labels to more than $maxAssets assets at a time."
+            )
+        }
+
+        if (req.remove?.size ?: 0 > maxAssets) {
+            throw IllegalArgumentException(
+                "Cannot remove labels from more than $maxAssets assets at a time."
+            )
+        }
+
+        // Gather up unique Assets and Model
+        val allAssetIds = (req.add?.keys ?: setOf()) + (req.remove?.keys ?: setOf())
+        val allDataSets = mutableSetOf<UUID>()
+        req.add?.values?.forEach { label ->
+            allDataSets.add(label.datasetId)
+        }
+        req.remove?.values?.forEach { label ->
+            allDataSets.add(label.datasetId)
+        }
+
+        // Validate the datasets we're adding are legit.
+        val projectId = getProjectId()
+        allDataSets.forEach {
+            if (!datasetDao.existsByProjectIdAndId(projectId, it)) {
+                throw IllegalArgumentException("Dataset $it not found")
+            }
+        }
+
+        // Build a search for assets.
+        val rest = indexRoutingService.getProjectRestClient()
+        val builder = rest.newSearchBuilder()
+
+        builder.source.query(QueryBuilders.termsQuery("_id", allAssetIds))
+        builder.source.sort(FieldSortBuilder.DOC_FIELD_NAME, SortOrder.ASC)
+        builder.source.size(bulkSize)
+        builder.request.scroll(TimeValue(60000))
+        builder.source.fetchSource("labels", null)
+
+        // Build a bulk update.
+        val rsp = rest.client.search(builder.request, RequestOptions.DEFAULT)
+        val bulk = BulkRequest()
+
+        // Need an IMMEDIATE refresh policy or else we could end
+        // up losing labels with subsequent calls.
+        bulk.refreshPolicy = WriteRequest.RefreshPolicy.IMMEDIATE
+
+        for (asset in AssetIterator(rest.client, rsp, maxAssets)) {
+            val removeLabels = req.remove?.get(asset.id)
+            removeLabels?.let {
+                asset.removeLabel(it)
+            }
+
+            val addLabels = req.add?.get(asset.id)
+            addLabels?.let {
+                asset.addLabel(it)
+            }
+
+            bulk.add(rest.newUpdateRequest(asset.id).doc(asset.document))
+        }
+
+        val result = rest.client.bulk(bulk, RequestOptions.DEFAULT)
+        if (result.hasFailures()) {
+            logger.warn("Some failures occurred during asset labeling operation {}")
+            for (f in result.items) {
+                if (f.isFailed) {
+                    logger.warn("Asset ${f.id} failed to update label ${f.failureMessage}")
+                }
+            }
+        }
+
+        allDataSets.forEach {
+            datasetService.markModelsUnready(it)
+        }
+
         return result
     }
 

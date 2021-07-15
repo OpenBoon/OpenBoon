@@ -15,7 +15,7 @@ logger = logging.getLogger('clarifai')
 
 def not_a_quota_exception(exp):
     """
-    Returns true if the exception is not a Clarifai quota exception.  This ensures the backoff
+    Returns true if the exception is not a Clarifai quota exception. This ensures the backoff
     function doesn't sleep on the wrong exceptions.
 
     Args:
@@ -24,7 +24,9 @@ def not_a_quota_exception(exp):
     Returns:
         bool: True if not a quota exception.
     """
-    return getattr(exp, 'status_code', 999) != 429
+    quota_status_codes = [11003, 11005, 41000, 40032, 40031, 40030, 40019, 39998, 39997]
+    status_code = getattr(exp, 'status_code', 999)
+    return status_code not in quota_status_codes
 
 
 def log_backoff_exception(details):
@@ -37,6 +39,10 @@ def log_backoff_exception(details):
     """
     logger.warning(
         'Waiting on quota {wait:0.1f} seconds afters {tries} tries'.format(**details))
+
+
+class ClarifaiException(Exception):
+    pass
 
 
 class AbstractClarifaiProcessor(AssetProcessor):
@@ -61,7 +67,7 @@ class AbstractClarifaiProcessor(AssetProcessor):
         self.auth_meta = (('authorization', 'Key {}'.format(os.environ.get("CLARIFAI_KEY"))),)
 
     @backoff.on_exception(backoff.expo,
-                          IOError,
+                          ClarifaiException,
                           max_time=3600,
                           giveup=not_a_quota_exception,
                           on_backoff=log_backoff_exception)
@@ -82,12 +88,17 @@ class AbstractClarifaiProcessor(AssetProcessor):
         data = resources_pb2.Data(image=image)
         input = resources_pb2.Input(data=data)
         request = service_pb2.PostModelOutputsRequest(model_id=self.model_id, inputs=[input])
-        outputs_response = self.stub.PostModelOutputs(request, metadata=self.auth_meta)
+        outputs_response = self._post_model_outputs(request)
         if outputs_response.status.code != status_code_pb2.SUCCESS:
-            exception = IOError('Failed to get model predictions from Clarafai. '
-                                'Status: {}'.format(outputs_response.status.code))
+            exception = ClarifaiException('Failed to get model predictions from Clarafai. '
+                                          'Status: {}'.format(outputs_response.status))
             exception.status_code = outputs_response.status.code
+            raise exception
         return outputs_response
+
+    def _post_model_outputs(self, request):
+        """Testing seam to allow mocking responses from Clarifai."""
+        return self.stub.PostModelOutputs(request, metadata=self.auth_meta)
 
     def emit_status(self, msg):
         """

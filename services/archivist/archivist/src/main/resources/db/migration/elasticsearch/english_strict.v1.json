@@ -131,7 +131,7 @@
               }
             }
           },
-          "dataSetId": {
+          "datasetId": {
             "type": "keyword"
           },
           "bbox": {

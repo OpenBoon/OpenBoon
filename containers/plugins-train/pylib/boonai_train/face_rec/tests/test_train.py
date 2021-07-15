@@ -29,7 +29,8 @@ class KnnFaceRecognitionTrainerTests(PluginUnitTestCase):
             'id': model_id,
             'type': "FACE_RECOGNITION_KNN",
             'fileId': 'models/{}/foo/bar'.format(model_id),
-            'name': name
+            'name': name,
+            'datasetId': model_id
         })
         search_patch.return_value = mock_search_result
         upload_patch.return_value = StoredFile({"id": "12345"})
@@ -54,13 +55,13 @@ mock_search_result = [
             },
             "labels": [
                 {
-                    "modelId": model_id,
+                    "datasetId": model_id,
                     "label": "Gandalf",
                     "bbox": [0, 0, 1, 1],
                     "simhash": "AAAAAAAA"
                 },
                 {
-                    "modelId": model_id,
+                    "datasetId": model_id,
                     "label": "Bilbo",
                     "bbox": [0.5, 0.5, 1, 1],
                     "simhash": "CCCCCCCC"
@@ -79,13 +80,13 @@ mock_search_result = [
             },
             "labels": [
                 {
-                    "modelId": model_id,
+                    "datasetId": model_id,
                     "label": "Glion",
                     "bbox": [0, 0, 1, 1],
                     "simhash": "BBBBBBBB"
                 },
                 {
-                    "modelId": model_id,
+                    "datasetId": model_id,
                     "label": "Frodo",
                     "bbox": [0.5, 0.5, 1, 1],
                     "simhash": "DDDDDDDD"

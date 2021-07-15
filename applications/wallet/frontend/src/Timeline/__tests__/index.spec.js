@@ -19,7 +19,6 @@ jest.mock('../Ruler', () => 'TimelineRuler')
 jest.mock('../Aggregate', () => 'TimelineAggregate')
 jest.mock('../SearchHits', () => 'TimelineSearchHits')
 jest.mock('../Timelines', () => 'TimelineTimelines')
-jest.mock('../Resize', () => 'TimelineResize')
 
 describe('<Timeline />', () => {
   it('should render properly', () => {

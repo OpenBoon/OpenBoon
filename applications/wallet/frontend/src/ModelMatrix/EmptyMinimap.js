@@ -10,8 +10,9 @@ const ModelMatrixEmptyMinimap = ({ isMatrixApplicable }) => {
       css={{
         position: 'relative',
         border: isMatrixApplicable
-          ? constants.borders.medium.steel
-          : constants.borders.medium.smoke,
+          ? constants.borders.large.steel
+          : constants.borders.large.smoke,
+        padding: spacing.hairline,
         borderRadius: constants.borderRadius.small,
         marginBottom: spacing.base,
         display: 'grid',

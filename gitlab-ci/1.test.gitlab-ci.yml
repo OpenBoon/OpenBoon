@@ -54,7 +54,7 @@ wallet-backend-test-suite:
   stage: test
   image: mc706/pipenv-3.7
   services:
-    - name: postgres:9.6.21
+    - name: postgres:9.6.22
       alias: postgres
   variables:
     POSTGRES_PASSWORD: a8fnnbe934j
@@ -88,7 +88,7 @@ metrics-backend-test-suite:
   stage: test
   image: mc706/pipenv-3.7
   services:
-      - name: postgres:9.6.21
+      - name: postgres:9.6.22
         alias: postgres
   variables:
     DJANGO_SETTINGS_MODULE: metrics.settings.testing
@@ -114,6 +114,7 @@ metrics-backend-test-suite:
     - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME != "master"
       changes:
         - "services/metrics/app/**/*"
+        - "services/metrics/Pipfile*"
     # MR to QA with any change
     - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
     # Merged to Development with Backend changes
@@ -128,7 +129,7 @@ backend-py-lint:
   allow_failure: false
   script:
     - python -m pip install flake8
-    - flake8 --config .flake8.cfg client/boonczar client/boonsdk client/boonlab containers/boonflow containers/py3-base containers/boondocks containers/plugins-core containers/plugins-analysis containers/plugins-train services/analyst services/mlbbq services/swivel
+    - flake8 --config .flake8.cfg client/boonczar client/boonsdk client/boonlab containers/boonflow containers/py3-base containers/boondocks containers/plugins-core containers/plugins-analysis containers/plugins-train services/analyst services/mlbbq services/swivel services/tugboat deployment/datasets
   rules:
     # Scheduled Pipelines
     - if: '$CI_PIPELINE_SOURCE == "schedule"'
@@ -143,6 +144,8 @@ backend-py-lint:
         - "services/analyst/**/*.py"
         - "services/mlbbq/**/*.py"
         - "services/swivel/*.py"
+        - "deployment/datasets/**/*.py"
+        - "services/tugboat/*.py"
     # MR to QA with any change
     - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
 
@@ -191,6 +194,9 @@ sdk-unit-tests:
     - cd ../../services/swivel
     - pip install -r requirements.txt
     - pytest tests.py
+    - cd ../tugboat
+    - pip install -r requirements.txt
+    - pytest tests.py
   rules:
     # Scheduled Pipelines
     - if: '$CI_PIPELINE_SOURCE == "schedule"'
@@ -204,6 +210,7 @@ sdk-unit-tests:
         - "containers/boonflow/**/*"
         - "containers/boondocks/**/*"
         - "services/swivel/**/*"
+        - "services/tugboat/**/*"
     # MR to QA with any change
     - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
 
@@ -266,6 +273,7 @@ boonai-services-build-artifacts:
         - "services/reporter/**/*"
         - "services/jvm-common/**/*"
         - "services/swivel/**/*"
+        - "services/tugboat/**/*"
     # MR to QA with any change
     - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
 
@@ -297,6 +305,7 @@ elasticsearch-push-to-local-registry:
         - "services/officer/**/*"
         - "services/reporter/**/*"
         - "services/swivel/**/*"
+        - "services/tugboat/**/*"
     # MR to QA with any change
     - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
 

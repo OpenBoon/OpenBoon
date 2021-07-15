@@ -42,6 +42,17 @@ beforeEach(() => {
 /**
  * scrollTo
  */
-if (typeof global.window !== 'undefined') {
-  global.window.scrollTo = () => {}
-}
+beforeEach(() => {
+  if (typeof global.window !== 'undefined') {
+    global.window.scrollTo = () => {}
+  }
+})
+
+/**
+ * clipboard
+ */
+beforeEach(() => {
+  if (typeof global.navigator !== 'undefined') {
+    global.navigator.clipboard = { writeText: () => {} }
+  }
+})

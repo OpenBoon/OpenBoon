@@ -12,7 +12,8 @@ class IndexApp:
     The IndexApp handles managing per-project ES indexes.
 
     """
-    def __init__(self, app):
+    def __init__(self, bz, app):
+        self.bz = bz
         self.app = app
 
     def create_index(self, size, project=None):

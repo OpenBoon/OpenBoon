@@ -3,8 +3,6 @@ import PropTypes from 'prop-types'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 
-import { useScroller } from '../Scroll/helpers'
-
 import { colors, spacing, constants } from '../Styles'
 
 import DoubleChevronSvg from '../Icons/doubleChevron.svg'
@@ -15,24 +13,15 @@ import { cleanup } from '../Filters/helpers'
 import Button, { VARIANTS } from '../Button'
 import CheckboxSwitch from '../Checkbox/Switch'
 import Resizeable from '../Resizeable'
-import Feature from '../Feature'
 
 import { reducer, INITIAL_STATE, ACTIONS } from './reducer'
-import { COLORS, GUIDE_WIDTH } from './helpers'
+import { COLORS } from './helpers'
 
 import TimelineControls from './Controls'
 import TimelineCaptions from './Captions'
-import TimelineModulesResizer from './ModulesResizer'
-import TimelineFilterTracks from './FilterTracks'
-import TimelineRuler from './Ruler'
-import TimelinePlayhead from './Playhead'
-import TimelineAggregate from './Aggregate'
-import TimelineSearchHits from './SearchHits'
-import TimelineTimelines from './Timelines'
-import TimelineScrollbar from './Scrollbar'
+import TimelineContent from './Content'
 import TimelineMetadata from './Metadata'
 import TimelineShortcuts from './Shortcuts'
-import TimelineResize from './Resize'
 
 const TIMELINE_HEIGHT = 200
 const SEPARATOR_WIDTH = 2
@@ -76,15 +65,7 @@ const Timeline = ({ videoRef, length }) => {
   }, [])
 
   const [followPlayhead, setFollowPlayhead] = useState(true)
-  const handleOnWheel = () => setFollowPlayhead(false)
-
-  const rulerRef = useScroller({
-    namespace: 'Timeline',
-    isWheelEmitter: true,
-    isWheelListener: true,
-    isScrollEmitter: true,
-    isScrollListener: true,
-  })
+  const stopFollowPlayhead = () => setFollowPlayhead(false)
 
   return (
     <Resizeable
@@ -219,98 +200,17 @@ const Timeline = ({ videoRef, length }) => {
       )}
     >
       {({ size }) => (
-        <div
-          aria-label="Timeline"
-          css={{
-            display: 'flex',
-            flexDirection: 'column',
-            height: size,
-          }}
-          onWheel={handleOnWheel}
-        >
-          <div
-            css={{
-              flex: 1,
-              display: 'flex',
-              flexDirection: 'column',
-              height: '0%',
-              position: 'relative',
-              marginLeft: settings.width - GUIDE_WIDTH / 2,
-              borderLeft: constants.borders.regular.smoke,
-            }}
-          >
-            <TimelineModulesResizer settings={settings} dispatch={dispatch} />
-
-            <TimelinePlayhead
-              videoRef={videoRef}
-              rulerRef={rulerRef}
-              zoom={settings.zoom}
-              followPlayhead={followPlayhead}
-            />
-
-            <div
-              css={{
-                display: 'flex',
-                height: constants.timeline.rulerRowHeight,
-              }}
-            >
-              <TimelineFilterTracks settings={settings} dispatch={dispatch} />
-
-              <div ref={rulerRef} css={{ flex: 1, overflow: 'hidden' }}>
-                <div css={{ width: `${settings.zoom}%` }}>
-                  <TimelineRuler
-                    videoRef={videoRef}
-                    rulerRef={rulerRef}
-                    length={videoRef.current?.duration || length}
-                    settings={settings}
-                  />
-                </div>
-              </div>
-            </div>
-
-            <TimelineAggregate
-              videoRef={videoRef}
-              length={length}
-              timelineHeight={size}
-              timelines={timelines}
-              settings={settings}
-              dispatch={dispatch}
-            />
-
-            {cleanQuery !== 'W10=' && (
-              <TimelineSearchHits
-                videoRef={videoRef}
-                length={length}
-                timelineHeight={size}
-                timelines={timelines}
-                settings={settings}
-              />
-            )}
-
-            <TimelineTimelines
-              videoRef={videoRef}
-              length={length}
-              timelines={timelines}
-              settings={settings}
-              dispatch={dispatch}
-            />
-
-            <Feature flag="timeline-scrollbar-feature-flag" envs={[]}>
-              <TimelineScrollbar
-                width={settings.width}
-                zoom={settings.zoom}
-                rulerRef={rulerRef}
-              />
-            </Feature>
-
-            <TimelineResize
-              dispatch={dispatch}
-              zoom={settings.zoom}
-              videoRef={videoRef}
-              rulerRef={rulerRef}
-            />
-          </div>
-        </div>
+        <TimelineContent
+          videoRef={videoRef}
+          length={length}
+          settings={settings}
+          dispatch={dispatch}
+          cleanQuery={cleanQuery}
+          timelines={timelines}
+          size={size}
+          followPlayhead={followPlayhead}
+          stopFollowPlayhead={stopFollowPlayhead}
+        />
       )}
     </Resizeable>
   )

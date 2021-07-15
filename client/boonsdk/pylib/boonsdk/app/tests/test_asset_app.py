@@ -8,7 +8,7 @@ from unittest.mock import patch
 import pytest
 
 from boonsdk import Asset, BoonClient, app_from_env, \
-    FileImport, FileUpload, StoredFile, BoonSdkException, Model, TrainingSetFilter
+    FileImport, FileUpload, StoredFile, BoonSdkException, Dataset, TrainingSetFilter
 from .util import get_test_file
 
 
@@ -388,9 +388,47 @@ class AssetAppTests(unittest.TestCase):
             'op': '_batch_update_labels',
             'success': True
         }
-        label1 = Model({"id": "abc123"}).make_label("test1")
-        label2 = Model({"id": "abc123"}).make_label("test2")
-        rsp = self.app.assets.update_labels(["12345"], add_labels=[label1], remove_labels=[label2])
+        label1 = Dataset({"id": "abc123"}).make_label("test1")
+        label2 = Dataset({"id": "abc123"}).make_label("test2")
+        rsp = self.app.assets.update_labels(["12345"],
+                                            add_labels=[label1], remove_labels=[label2])
+        assert put_patch.return_value == rsp
+
+    @patch.object(BoonClient, 'put')
+    def test_batch_update_labels(self, put_patch):
+        put_patch.return_value = {
+            'type': 'asset',
+            'op': '_batch_update_labels',
+            'success': True
+        }
+        label1 = Dataset({"id": "abc123"}).make_label("test1")
+        label2 = Dataset({"id": "abc123"}).make_label("test2")
+        rsp = self.app.assets.batch_update_labels(["12345"],
+                                                  add_label=[label1], remove_label=[label2])
+        assert put_patch.return_value == rsp
+
+    @patch.object(BoonClient, 'put')
+    def test_batch_add_labels(self, put_patch):
+        put_patch.return_value = {
+            'type': 'asset',
+            'op': '_batch_update_labels',
+            'success': True
+        }
+        label1 = Dataset({"id": "abc123"}).make_label("test1")
+        label2 = Dataset({"id": "abc123"}).make_label("test2")
+        rsp = self.app.assets.batch_add_labels({"12345": label1, "abcd": label2})
+        assert put_patch.return_value == rsp
+
+    @patch.object(BoonClient, 'put')
+    def test_batch_remove_labels(self, put_patch):
+        put_patch.return_value = {
+            'type': 'asset',
+            'op': '_batch_update_labels',
+            'success': True
+        }
+        label1 = Dataset({"id": "abc123"}).make_label("test1")
+        label2 = Dataset({"id": "abc123"}).make_label("test2")
+        rsp = self.app.assets.batch_remove_labels({"12345": label1, "abcd": label2})
         assert put_patch.return_value == rsp
 
     @patch.object(BoonClient, 'put')
@@ -432,3 +470,25 @@ class AssetAppTests(unittest.TestCase):
         res = self.app.assets.apply_modules('12345', ['boonai-face-detection'])
         assert '12345' == res.id
         assert "/foo/bar.jpg" == res.uri
+
+    @patch.object(BoonClient, 'send_data')
+    def test_analyze_file(self, post_patch):
+        post_patch.return_value = {
+            'id': 'TRANSIENT',
+            'document': {
+                'analysis': {
+                    'test': {
+                        'predictions': [
+                            {
+                                'label': 'cat',
+                                'score': 0.99
+                            }
+                        ]
+                    }
+                }
+            }
+        }
+
+        with open(get_test_file('images/set01/toucan.jpg'), 'rb') as fp:
+            asset = self.app.assets.analyze_file(fp, ['test'])
+        assert asset.id == 'TRANSIENT'

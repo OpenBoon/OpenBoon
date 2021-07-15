@@ -2,7 +2,7 @@
 
 exports[`<Projects /> should not redirect if there is no project id and the route does not require a project id 1`] = `"Hello World"`;
 
-exports[`<Projects /> should render Account Overview properly 1`] = `"Account Overview"`;
+exports[`<Projects /> should render All Projects properly 1`] = `"All Projects"`;
 
 exports[`<Projects /> should render an access denied screen if the url projectId is not of an authorized project 1`] = `
 .emotion-0 {

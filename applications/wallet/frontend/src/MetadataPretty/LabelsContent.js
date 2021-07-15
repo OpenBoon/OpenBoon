@@ -3,16 +3,12 @@ import useSWR from 'swr'
 
 import { constants, spacing, colors, typography } from '../Styles'
 
-import modelShape from '../Model/shape'
-
 import { capitalizeFirstLetter } from '../Text/helpers'
 
 import MetadataPrettyLabelsMenu from './LabelsMenu'
 
-const BBOX_SIZE = 56
-
-const MetadataPrettyLabelsContent = ({ projectId, assetId, models }) => {
-  const attr = `labels&width=${BBOX_SIZE}`
+const MetadataPrettyLabelsContent = ({ projectId, assetId, datasets }) => {
+  const attr = `labels&width=${constants.bbox}`
 
   const {
     data: { labels },
@@ -21,12 +17,12 @@ const MetadataPrettyLabelsContent = ({ projectId, assetId, models }) => {
   )
 
   return labels.map((label) => {
-    const { name = '', moduleName = '' } =
-      models.find(({ id }) => id === label.modelId) || {}
+    const { name = '' } =
+      datasets.find(({ id }) => id === label.datasetId) || {}
 
     return (
       <tr
-        key={`${label.modelId}${label.label}`}
+        key={`${label.datasetId}${label.label}`}
         css={{
           fontFamily: typography.family.mono,
           fontSize: typography.size.small,
@@ -52,16 +48,16 @@ const MetadataPrettyLabelsContent = ({ projectId, assetId, models }) => {
             borderBottom: constants.borders.regular.smoke,
           }}
         >
-          {label.b64_image ? (
+          {label.b64Image ? (
             <img
               css={{
-                maxHeight: BBOX_SIZE,
-                width: BBOX_SIZE,
+                maxHeight: constants.bbox,
+                width: constants.bbox,
                 objectFit: 'contain',
               }}
               alt={label.bbox}
               title={label.bbox}
-              src={label.b64_image}
+              src={label.b64Image}
             />
           ) : (
             <div
@@ -72,8 +68,8 @@ const MetadataPrettyLabelsContent = ({ projectId, assetId, models }) => {
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'flex-end',
-                minWidth: BBOX_SIZE,
-                minHeight: BBOX_SIZE,
+                minWidth: constants.bbox,
+                minHeight: constants.bbox,
               }}
             >
               N/A
@@ -82,7 +78,7 @@ const MetadataPrettyLabelsContent = ({ projectId, assetId, models }) => {
         </td>
 
         <td
-          title={`Model ID: ${label.modelId}`}
+          title={`Dataset ID: ${label.datasetId}`}
           css={{
             padding: spacing.base,
             paddingLeft: 0,
@@ -123,7 +119,7 @@ const MetadataPrettyLabelsContent = ({ projectId, assetId, models }) => {
             verticalAlign: 'top',
           }}
         >
-          <MetadataPrettyLabelsMenu label={label} moduleName={moduleName} />
+          <MetadataPrettyLabelsMenu label={label} datasetName={name} />
         </td>
 
         <td css={{ borderBottom: 'none !important' }} />
@@ -135,7 +131,9 @@ const MetadataPrettyLabelsContent = ({ projectId, assetId, models }) => {
 MetadataPrettyLabelsContent.propTypes = {
   projectId: PropTypes.string.isRequired,
   assetId: PropTypes.string.isRequired,
-  models: PropTypes.arrayOf(modelShape).isRequired,
+  datasets: PropTypes.arrayOf(
+    PropTypes.shape({ name: PropTypes.string.isRequired }).isRequired,
+  ).isRequired,
 }
 
 export default MetadataPrettyLabelsContent

@@ -39,10 +39,6 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
 
 .emotion-3 {
   color: #808080;
-  -webkit-transform: rotate(-180deg);
-  -moz-transform: rotate(-180deg);
-  -ms-transform: rotate(-180deg);
-  transform: rotate(-180deg);
 }
 
 .emotion-4 {
@@ -509,10 +505,6 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
 
 .emotion-3 {
   color: #808080;
-  -webkit-transform: rotate(-180deg);
-  -moz-transform: rotate(-180deg);
-  -ms-transform: rotate(-180deg);
-  transform: rotate(-180deg);
 }
 
 .emotion-4 {

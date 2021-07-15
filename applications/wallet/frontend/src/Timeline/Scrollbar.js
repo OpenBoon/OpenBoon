@@ -1,16 +1,49 @@
 import PropTypes from 'prop-types'
-import { useRef } from 'react'
+import { useMemo, useRef, useEffect } from 'react'
 
 import { colors, constants, spacing, zIndex } from '../Styles'
+
+import { getScroller } from '../Scroll/helpers'
 
 import TimelineScrollbarThumb from './ScrollbarThumb'
 import TimelineScrollbarHandle from './ScrollbarHandle'
 
-import { SCROLLBAR_CONTAINER_HEIGHT } from './helpers'
+import { SCROLLBAR_CONTAINER_HEIGHT, getIgnore } from './helpers'
 
-const TimelineScrollbar = ({ width, zoom, rulerRef }) => {
+const TimelineScrollbar = ({
+  rulerRef,
+  width,
+  initialZoom,
+  dispatch,
+  stopFollowPlayhead,
+}) => {
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const zoom = useMemo(() => initialZoom, [])
+
   const scrollbarTrackRef = useRef()
   const scrollbarRef = useRef()
+
+  const horizontalScroller = getScroller({ namespace: 'Timeline' })
+
+  const horizontalScrollerDeregister = horizontalScroller.register({
+    eventName: 'scroll',
+    callback: /* istanbul ignore next */ ({ scrollX }) => {
+      const ignore = getIgnore()
+
+      if (ignore || !scrollbarRef.current || !rulerRef.current) return
+
+      const scrollWidth = rulerRef?.current?.scrollWidth
+
+      /* eslint-disable no-param-reassign */
+      scrollbarRef.current.style.left = `${(scrollX / scrollWidth) * 100}%`
+    },
+  })
+
+  useEffect(() => {
+    return () => {
+      horizontalScrollerDeregister()
+    }
+  }, [horizontalScrollerDeregister])
 
   return (
     <>
@@ -54,7 +87,7 @@ const TimelineScrollbar = ({ width, zoom, rulerRef }) => {
             css={{
               display: 'flex',
               position: 'absolute',
-              width: '100%',
+              width: `${(100 / zoom) * 100}%`,
               height: '100%',
               backgroundColor: colors.structure.smoke,
               borderRadius: constants.borderRadius.medium,
@@ -63,17 +96,27 @@ const TimelineScrollbar = ({ width, zoom, rulerRef }) => {
             <TimelineScrollbarHandle
               scrollbarRef={scrollbarRef}
               scrollbarTrackRef={scrollbarTrackRef}
+              horizontalScroller={horizontalScroller}
               isLeft
+              dispatch={dispatch}
+              stopFollowPlayhead={stopFollowPlayhead}
             />
+
             <TimelineScrollbarThumb
-              scrollbarRef={scrollbarRef}
-              zoom={zoom}
               rulerRef={rulerRef}
+              scrollbarRef={scrollbarRef}
+              scrollbarTrackRef={scrollbarTrackRef}
+              horizontalScroller={horizontalScroller}
+              stopFollowPlayhead={stopFollowPlayhead}
             />
+
             <TimelineScrollbarHandle
               scrollbarRef={scrollbarRef}
               scrollbarTrackRef={scrollbarTrackRef}
+              horizontalScroller={horizontalScroller}
               isLeft={false}
+              dispatch={dispatch}
+              stopFollowPlayhead={stopFollowPlayhead}
             />
           </div>
         </div>
@@ -83,14 +126,16 @@ const TimelineScrollbar = ({ width, zoom, rulerRef }) => {
 }
 
 TimelineScrollbar.propTypes = {
-  width: PropTypes.number.isRequired,
-  zoom: PropTypes.number.isRequired,
   rulerRef: PropTypes.shape({
     current: PropTypes.shape({
       offsetWidth: PropTypes.number,
       scrollWidth: PropTypes.number,
     }),
   }).isRequired,
+  width: PropTypes.number.isRequired,
+  initialZoom: PropTypes.number.isRequired,
+  dispatch: PropTypes.func.isRequired,
+  stopFollowPlayhead: PropTypes.func.isRequired,
 }
 
 export default TimelineScrollbar

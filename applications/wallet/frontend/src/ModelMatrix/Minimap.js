@@ -7,7 +7,12 @@ import { getScroller } from '../Scroll/helpers'
 
 import { getColor } from './helpers'
 
-const ModelMatrixMinimap = ({ matrix, settings, isInteractive }) => {
+const ModelMatrixMinimap = ({
+  matrix,
+  settings,
+  isInteractive,
+  isOutOfDate,
+}) => {
   const verticalScroller = getScroller({ namespace: 'ModelMatrixVertical' })
   const horizontalScroller = getScroller({ namespace: 'ModelMatrixHorizontal' })
 
@@ -55,7 +60,10 @@ const ModelMatrixMinimap = ({ matrix, settings, isInteractive }) => {
       css={{
         opacity: settings.isMinimapOpen ? 1 : 0,
         position: 'relative',
-        border: constants.borders.medium.steel,
+        border: isInteractive
+          ? constants.borders.medium.steel
+          : constants.borders.large.steel,
+        padding: isInteractive ? 0 : spacing.hairline,
         borderRadius: constants.borderRadius.small,
         marginBottom: spacing.base,
         display: 'grid',
@@ -75,8 +83,17 @@ const ModelMatrixMinimap = ({ matrix, settings, isInteractive }) => {
             <div
               key={matrix.labels[col]}
               css={{
+                filter: `grayscale(${isOutOfDate ? 1 : 0})`,
                 paddingBottom: '100%',
                 backgroundColor: getColor({ percent }),
+                borderRight:
+                  isInteractive || col + 1 === matrix.matrix[index].length
+                    ? 'none'
+                    : constants.borders.regular.coal,
+                borderBottom:
+                  isInteractive || index + 1 === matrix.labels.length
+                    ? 'none'
+                    : constants.borders.regular.coal,
               }}
             />
           )
@@ -117,6 +134,7 @@ ModelMatrixMinimap.propTypes = {
     isMinimapOpen: PropTypes.bool.isRequired,
   }).isRequired,
   isInteractive: PropTypes.bool.isRequired,
+  isOutOfDate: PropTypes.bool.isRequired,
 }
 
 export default ModelMatrixMinimap

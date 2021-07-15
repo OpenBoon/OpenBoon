@@ -31,12 +31,16 @@ class KnnLabelDetectionClassifier(CustomModelProcessor):
         if asset.get_attr('media.type') == "video":
             self.process_video(frame.asset)
         else:
-            self.process_image(frame.asset)
+            self.process_image(frame)
 
-    def process_image(self, asset):
-        simhash = asset.get_attr('analysis.boonai-image-similarity.simhash')
-        if not simhash:
-            return
+    def process_image(self, frame):
+        asset = frame.asset
+        if frame.image:
+            simhash = self.simengine.calculate_raw_simhash(frame.image)
+        else:
+            simhash = asset.get_attr('analysis.boonai-image-similarity.simhash')
+            if not simhash:
+                return
 
         pred = self.predict(simhash)
         analysis = LabelDetectionAnalysis()

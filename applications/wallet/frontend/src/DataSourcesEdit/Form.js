@@ -4,7 +4,7 @@ import useSWR from 'swr'
 import Link from 'next/link'
 import PropTypes from 'prop-types'
 
-import { constants, spacing, typography } from '../Styles'
+import { colors, constants, spacing, typography } from '../Styles'
 
 import Form from '../Form'
 import SectionTitle from '../SectionTitle'
@@ -63,14 +63,9 @@ const DataSourcesEditForm = ({ initialState }) => {
       <Form style={{ width: 'auto' }}>
         <DataSourcesEditCopy />
 
-        <div
-          css={{
-            width: constants.form.maxWidth,
-            paddingBottom: spacing.comfy,
-          }}
-        >
-          <SectionTitle>STEP 1: Data Source Name</SectionTitle>
+        <SectionTitle>Data Source Name</SectionTitle>
 
+        <div css={{ width: constants.form.maxWidth }}>
           <Input
             id="name"
             variant={INPUT_VARIANTS.SECONDARY}
@@ -85,14 +80,23 @@ const DataSourcesEditForm = ({ initialState }) => {
             hasError={!!errors.name || !name}
             errorMessage={errors.name || (!name ? 'Name cannot be empty' : '')}
           />
+        </div>
 
-          <SectionTitle>{`Storage Address: ${uri}`}</SectionTitle>
+        <SectionTitle>Storage Address</SectionTitle>
+
+        <div
+          css={{
+            fontWeight: typography.weight.medium,
+            color: colors.structure.zinc,
+          }}
+        >
+          {uri}
         </div>
 
         <CheckboxGroup
           legend={
             <>
-              <SectionTitle>STEP 2: Edit File Types</SectionTitle>{' '}
+              <SectionTitle>Edit File Types</SectionTitle>{' '}
               <div
                 css={{
                   paddingTop: spacing.normal,
@@ -149,7 +153,7 @@ const DataSourcesEditForm = ({ initialState }) => {
 
         <div css={{ height: spacing.base }} />
 
-        <SectionTitle>STEP 3: Edit Analysis Modules</SectionTitle>
+        <SectionTitle>Edit Analysis Modules</SectionTitle>
 
         <SectionSubTitle>
           You can change the analysis modules to be applied to the file types

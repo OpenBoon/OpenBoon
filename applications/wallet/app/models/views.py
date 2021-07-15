@@ -1,21 +1,19 @@
 import json
-import os
 
 from boonsdk.client import BoonSdkNotFoundException
-from boonsdk.entity.model import LabelScope
+from boonsdk.entity import PostTrainAction
 from django.http import Http404, HttpResponse
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from models.serializers import (ModelSerializer, ModelTypeSerializer,
-                                AddLabelsSerializer, UpdateLabelsSerializer,
-                                RemoveLabelsSerializer, RenameLabelSerializer,
-                                DestroyLabelSerializer, ModelDetailSerializer,
-                                ConfusionMatrixSerializer)
+                                ModelDetailSerializer,
+                                ConfusionMatrixSerializer, ModelUpdateSerializer)
 from models.utils import ConfusionMatrix
 from projects.viewsets import (BaseProjectViewSet, ZmlpListMixin, ZmlpRetrieveMixin,
-                               ListViewType, ZmlpDestroyMixin, ZmlpCreateMixin)
+                               ListViewType, ZmlpDestroyMixin, ZmlpCreateMixin,
+                               ZmlpUpdateMixin, ZmlpPartialUpdateMixin)
 from wallet.utils import validate_zmlp_data
 
 
@@ -70,9 +68,9 @@ def detail_item_modifier(request, item):
 
     # Get the model type restrictions
     model_type = item['type']
-    model_id = item['id']
+    dataset_id = item.get('datasetId')
     model_type_info = app.models.get_model_type_info(model_type)
-    label_counts = app.models.get_label_counts(model_id)
+    label_counts = app.datasets.get_label_counts(dataset_id) if dataset_id else []
     min_examples = model_type_info.min_examples
     min_concepts = model_type_info.min_concepts
 
@@ -83,6 +81,8 @@ def detail_item_modifier(request, item):
 
 class ModelViewSet(ZmlpCreateMixin,
                    ZmlpListMixin,
+                   ZmlpUpdateMixin,
+                   ZmlpPartialUpdateMixin,
                    ZmlpRetrieveMixin,
                    ZmlpDestroyMixin,
                    BaseProjectViewSet):
@@ -93,9 +93,9 @@ class ModelViewSet(ZmlpCreateMixin,
     retrieve_modifier = staticmethod(detail_item_modifier)
 
     def get_serializer_class(self):
-        if self.action == 'retrieve':
-            return ModelDetailSerializer
-        return self.serializer_class
+        action_map = {'retrieve': ModelDetailSerializer,
+                      'update': ModelUpdateSerializer}
+        return action_map.get(self.action, self.serializer_class)
 
     @action(methods=['get'], detail=False)
     def all(self, request, project_pk):
@@ -126,145 +126,20 @@ class ModelViewSet(ZmlpCreateMixin,
         """
         app = request.app
         model = self._get_model(app, pk)
-        deploy = request.data.get('deploy', False)
+        apply = request.data.get('apply', False)
+        test = request.data.get('test', False)
+        if test and apply:
+            return Response(status=status.HTTP_400_BAD_REQUEST,
+                            data={'detail': ['Cannot specify both test and apply, '
+                                             'please pick one.']})
+        post_train_action = PostTrainAction.NONE
+        if apply:
+            post_train_action = PostTrainAction.APPLY
+        if test:
+            post_train_action = PostTrainAction.TEST
 
-        job = app.models.train_model(model, deploy=deploy)
+        job = app.models.train_model(model, post_action=post_train_action)
         return Response(status=status.HTTP_200_OK, data=job._data)
-
-    @action(methods=['get'], detail=True)
-    def get_labels(self, request, project_pk, pk):
-        """Get the list of used labels and their counts for the given model."""
-        path = f'{self.zmlp_root_api_path}/{pk}/_label_counts'
-        response = request.client.get(path)
-        labels = []
-        for label in response:
-            labels.append({'label': label, 'count': response[label]})
-        data = {'count': len(labels),
-                'results': labels}
-        return Response(status=status.HTTP_200_OK, data=data)
-
-    @action(methods=['post'], detail=True)
-    def add_labels(self, request, project_pk, pk):
-        """Save labels on an asset for the given model.
-
-        Takes each update and applies the given label to the specified asset for the
-        current model.
-
-        Expected Body:
-
-            {
-                "add_labels": [
-                    {"assetId": $assetId,
-                     "label": "Label Name",
-                     "bbox": [0.313, 0.439, 0.394, 0.571],  # Optional
-                     "simhash": "The sim hash",  # Optional
-                     "scope": "TRAIN",  # or TEST, optional, default is TRAIN
-                    },
-                    ...
-                ]
-            }
-
-        """
-        serializer = AddLabelsSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        app = request.app
-        data = serializer.validated_data
-        labels = data['addLabels']
-        model = self._get_model(app, pk)
-
-        label_updates = self._get_assets_and_labels(app, model, labels)
-
-        if label_updates:
-            for asset, label in label_updates:
-                app.assets.update_labels(asset, add_labels=label)
-        else:
-            msg = 'No valid labels sent for creation.'
-            return Response(status=status.HTTP_400_BAD_REQUEST, data={'detail': [msg]})
-
-        return Response(status=status.HTTP_201_CREATED, data={})
-
-    @action(methods=['post'], detail=True)
-    def update_labels(self, request, project_pk, pk):
-        serializer = UpdateLabelsSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        app = request.app
-        data = serializer.validated_data
-        add_labels_raw = data['addLabels']
-        remove_labels_raw = data['removeLabels']
-        model = self._get_model(app, pk)
-
-        add_labels = self._get_assets_and_labels(app, model, add_labels_raw)
-        remove_labels = self._get_assets_and_labels(app, model, remove_labels_raw)
-
-        by_asset = {}
-        for (asset, label) in add_labels:
-            by_asset.setdefault(asset, {}).setdefault('add', []).append(label)
-        for (asset, label) in remove_labels:
-            by_asset.setdefault(asset, {}).setdefault('remove', []).append(label)
-
-        if add_labels and remove_labels:
-            for asset in by_asset:
-                app.assets.update_labels(asset, add_labels=by_asset[asset]['add'],
-                                         remove_labels=by_asset[asset]['remove'])
-        else:
-            msg = 'No valid label updates sent.'
-            return Response(status=status.HTTP_400_BAD_REQUEST, data={'detail': [msg]})
-
-        return Response(status=status.HTTP_200_OK, data={})
-
-    @action(methods=['delete'], detail=True)
-    def delete_labels(self, request, project_pk, pk):
-        serializer = RemoveLabelsSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        app = request.app
-        data = serializer.validated_data
-        labels = data['removeLabels']
-        model = self._get_model(app, pk)
-
-        label_updates = self._get_assets_and_labels(app, model, labels)
-
-        if label_updates:
-            for asset, label in label_updates:
-                app.assets.update_labels(asset, remove_labels=label)
-        else:
-            msg = 'No valid labels sent for creation.'
-            return Response(status=status.HTTP_400_BAD_REQUEST, data={'detail': [msg]})
-
-        return Response(status=status.HTTP_200_OK, data={})
-
-    @action(methods=['delete'], detail=True)
-    def destroy_label(self, request, project_pk, pk):
-        """Completely destroys all instances of a single label.
-
-        Expected Body:
-
-            {
-                "label": "Dog",
-            }
-
-        """
-        path = os.path.join(self.zmlp_root_api_path, pk, 'labels')
-        serializer = DestroyLabelSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        return Response(request.client.delete(path, serializer.validated_data))
-
-    @action(methods=['put'], detail=True)
-    def rename_label(self, request, project_pk, pk):
-        """Allows renaming an existing label. Requires the original label name and a new
-        label name.
-
-        Expected Body:
-
-            {
-                "label": "Dog",
-                "newLabel": "Cat"
-            }
-
-        """
-        path = os.path.join(self.zmlp_root_api_path, pk, 'labels')
-        serializer = RenameLabelSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        return Response(request.client.put(path, serializer.validated_data))
 
     @action(methods=['get'], detail=True)
     def confusion_matrix(self, request, project_pk, pk):
@@ -286,17 +161,22 @@ class ModelViewSet(ZmlpCreateMixin,
                                  test_set_only=test_set_only)
         try:
             response_data = matrix.to_dict()
-        except TypeError:
+        except ValueError:
             response_data = {
                 "name": model.name,
                 "moduleName": model.module_name,
-                "overallAccuracy": 0,
+                "overallAccuracy": 0.0,
                 "labels": [],
                 'minScore': 0.0,
                 'maxScore': 1.0,
                 'testSetOnly': True,
                 "matrix": [],
-                "isMatrixApplicable": False}
+                "isMatrixApplicable": True,
+                "datasetId": None}
+
+        # Set the ready/unapplied changes status
+        response_data['unappliedChanges'] = not model.ready
+
         serializer = ConfusionMatrixSerializer(data=response_data)
         serializer.is_valid(raise_exception=True)
         return Response(serializer.validated_data)
@@ -312,22 +192,6 @@ class ModelViewSet(ZmlpCreateMixin,
                                  test_set_only=test_set_only)
         thumbnail = matrix.create_thumbnail_image()
         return HttpResponse(thumbnail.read(), content_type='image/png')
-
-    def _get_assets_and_labels(self, app, model, data):
-        """Get a list of Label objects from request data."""
-        labels = []
-        for raw in data:
-            asset = app.assets.get_asset(raw['assetId'])
-            if raw['scope'] == 'TRAIN':
-                scope = LabelScope.TRAIN
-            elif raw['scope'] == 'TEST':
-                scope = LabelScope.TEST
-            else:
-                scope = None
-            label = model.make_label(raw['label'], bbox=raw['bbox'],
-                                     simhash=raw['simhash'], scope=scope)
-            labels.append((asset, label))
-        return labels
 
     def _get_model(self, app, model_id):
         """Gets the model for the given ID"""

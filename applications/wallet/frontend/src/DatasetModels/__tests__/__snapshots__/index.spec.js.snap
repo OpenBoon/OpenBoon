@@ -1,0 +1,52 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<DatasetModels /> should render properly 1`] = `
+<DatasetModelsTable
+  datasetId="4b0b10a8-cec1-155c-b12f-ee2bc8787e06"
+  modelTypes={
+    Array [
+      Object {
+        "deployOnTrainingSet": true,
+        "description": "Classify images, documents and video clips using a KNN classifier.  This type of model can work great with just a single labeled example.If no labels are provided, the model automatically generates numbered groups of similar assets. These groups can be renamed and edited in subsequent training passes.",
+        "label": "K-Nearest Neighbors Classifier",
+        "minConcepts": 0,
+        "minExamples": 0,
+        "name": "KNN_CLASSIFIER",
+        "objective": "Label Detection",
+        "provider": "Boon AI",
+      },
+      Object {
+        "deployOnTrainingSet": false,
+        "description": "Classify images or documents using a custom strained CNN deep learning algorithm.  This type of modelgenerates multiple predictions and can be trained to identify very specific features. The label detection classifier requires at least 2 concepts with 10 labeled images each.",
+        "label": "Tensorflow Transfer Learning Classifier",
+        "minConcepts": 2,
+        "minExamples": 10,
+        "name": "TF_CLASSIFIER",
+        "objective": "Label Detection",
+        "provider": "Boon AI",
+      },
+      Object {
+        "deployOnTrainingSet": true,
+        "description": "Label faces detected by the boonai-face-detection module, and classify them with a KNN model.",
+        "label": "Face Recognition",
+        "minConcepts": 1,
+        "minExamples": 1,
+        "name": "FACE_RECOGNITION",
+        "objective": "Face Recognition",
+        "provider": "Boon AI",
+      },
+      Object {
+        "deployOnTrainingSet": true,
+        "description": "Upload a pre-trained Pytorch Model Archive",
+        "label": "A Pytorch Model Archive. image_classifier, image_segmenter, object_detector, or text_classifier.",
+        "minConcepts": 0,
+        "minExamples": 0,
+        "name": "PYTORCH_MODEL_ARCHIVE",
+        "objective": "Label Detection",
+        "provider": "Boon AI",
+      },
+    ]
+  }
+  projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+/>
+`;

@@ -92,8 +92,8 @@ class TestAssetBoxImager:
         predictions = analysis['predictions']
         assert len(predictions) == 2
         for prediction in predictions:
-            assert 'b64_image' in prediction
-            assert prediction['b64_image'] == 'data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAoAAAAICAIAAABPmPnhAAAAI0lEQVQIHXXBAQEAAAABIP6PzgJV5CvyFfmKfEW+Il+Rr8g33SQX8fv7NasAAAAASUVORK5CYII='  # noqa
+            assert 'b64Image' in prediction
+            assert prediction['b64Image'] == 'data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAoAAAAICAIAAABPmPnhAAAAI0lEQVQIHXXBAQEAAAABIP6PzgJV5CvyFfmKfEW+Il+Rr8g33SQX8fv7NasAAAAASUVORK5CYII='  # noqa
 
     def test_get_attr_with_box_images(self, imager, monkeypatch):
         monkeypatch.setattr(AssetBoxImager, '_download_image_from_zmlp',
@@ -102,8 +102,8 @@ class TestAssetBoxImager:
         predictions = analysis['predictions']
         assert len(predictions) == 2
         for prediction in predictions:
-            assert 'b64_image' in prediction
-            assert prediction['b64_image'] == 'data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAoAAAAICAIAAABPmPnhAAAAI0lEQVQIHXXBAQEAAAABIP6PzgJV5CvyFfmKfEW+Il+Rr8g33SQX8fv7NasAAAAASUVORK5CYII='  # noqa
+            assert 'b64Image' in prediction
+            assert prediction['b64Image'] == 'data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAoAAAAICAIAAABPmPnhAAAAI0lEQVQIHXXBAQEAAAABIP6PzgJV5CvyFfmKfEW+Il+Rr8g33SQX8fv7NasAAAAASUVORK5CYII='  # noqa
 
 
 class TestCropImagePoly:

@@ -12,7 +12,7 @@ from .reactor import Reactor
 logger = logging.getLogger(__name__)
 
 
-class BoonDockDaemon(object):
+class BoonDockDaemon:
     """Starts a ZMQ server which allows us to run the processors contained
     in the image on asset metadata.
     """
@@ -27,10 +27,14 @@ class BoonDockDaemon(object):
         self.executor = ProcessorExecutor(self.reactor)
 
     def __setup_zmq_socket(self, port):
-        ctx = zmq.Context()
-        socket = ctx.socket(zmq.PAIR)
-        socket.bind("tcp://*:%s" % port)
-        return socket
+        try:
+            ctx = zmq.Context()
+            socket = ctx.socket(zmq.PAIR)
+            socket.bind("tcp://*:%s" % port)
+            return socket
+        except Exception as e:
+            logger.error("Unable to setup ZMQ socket: ", e)
+            sys.exit(1)
 
     def start(self):
         logger.info("Analyst container server listening on port: %d" % self.port)

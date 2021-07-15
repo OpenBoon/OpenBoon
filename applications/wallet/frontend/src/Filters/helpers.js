@@ -42,7 +42,7 @@ export const getNewLabels = ({
 export const getUpdatedFilter = ({
   type,
   attribute,
-  modelId,
+  datasetId,
   min,
   max,
   scope,
@@ -68,7 +68,7 @@ export const getUpdatedFilter = ({
       return {
         type,
         attribute,
-        modelId,
+        datasetId,
         values,
       }
     }

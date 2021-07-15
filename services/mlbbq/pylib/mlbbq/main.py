@@ -9,6 +9,8 @@ from flask import Flask, jsonify
 from gevent.pywsgi import WSGIServer
 
 app = Flask(__name__)
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
+
 logger = logging.getLogger('mlbbq')
 
 
@@ -37,7 +39,7 @@ def main():
 
 
 def setup_endpoints():
-    modules = ["similarity", "face", "pipeline"]
+    modules = ["similarity", "face", "modules"]
     for mod in modules:
         logger.info(f"setting up endpoints for {mod}")
         imported = importlib.import_module(f"mlbbq.{mod}")

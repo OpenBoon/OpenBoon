@@ -4,7 +4,8 @@ import { fetcher, parseResponse } from '../Fetch/helpers'
 
 export const onTrain = async ({
   model,
-  deploy,
+  apply,
+  test,
   projectId,
   modelId,
   setError,
@@ -15,7 +16,7 @@ export const onTrain = async ({
     const { jobId } = await fetcher(
       `/api/v1/projects/${projectId}/models/${modelId}/train/`,
       {
-        body: JSON.stringify({ deploy }),
+        body: JSON.stringify({ apply, test}),
         method: 'POST',
       },
     )

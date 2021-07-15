@@ -8,12 +8,22 @@ import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 import ModelMatrixMinimap from '../ModelMatrix/Minimap'
 import ModelMatrixEmptyMinimap from '../ModelMatrix/EmptyMinimap'
 
+import CheckmarkSvg from '../Icons/checkmark.svg'
+
 const MINIMAP_WIDTH = 130
 const TEXT_WIDTH = 200
 
-const ModelMatrixLink = ({ projectId, modelId }) => {
+const ModelMatrixLink = ({ projectId, model }) => {
+  const {
+    id,
+    modelTypeRestrictions: { missingLabels, missingLabelsOnAssets },
+    datasetId,
+    timeLastApplied,
+    unappliedChanges,
+  } = model
+
   const { data: matrix } = useSWR(
-    `/api/v1/projects/${projectId}/models/${modelId}/confusion_matrix/`,
+    `/api/v1/projects/${projectId}/models/${id}/confusion_matrix/`,
   )
 
   if (!matrix.isMatrixApplicable) {
@@ -46,8 +56,91 @@ const ModelMatrixLink = ({ projectId, modelId }) => {
             isMatrixApplicable={matrix.isMatrixApplicable}
           />
         </div>
-        <div css={{ width: TEXT_WIDTH, fontStyle: typography.style.italic }}>
-          To view the matrix, you must add test labels and train the model.
+        <div>
+          <div
+            css={{
+              color: colors.structure.zinc,
+              fontSize: typography.size.regular,
+              lineHeight: typography.height.regular,
+              fontFamily: typography.family.condensed,
+              textTransform: 'uppercase',
+              paddingBottom: spacing.base,
+            }}
+          >
+            Confusion Matrix
+          </div>
+
+          <div css={{ width: TEXT_WIDTH }}>
+            To view the matrix:
+            <ul
+              css={{
+                margin: 0,
+                padding: 0,
+                paddingTop: spacing.base,
+                li: {
+                  listStyleType: 'none',
+                  display: 'flex',
+                  alignItems: 'center',
+                  'svg, span': {
+                    paddingRight: spacing.base,
+                  },
+                },
+              }}
+            >
+              <li
+                css={{
+                  color: !datasetId
+                    ? colors.structure.zinc
+                    : colors.structure.white,
+                }}
+              >
+                {!datasetId ? (
+                  <span>—</span>
+                ) : (
+                  <CheckmarkSvg height={14} color={colors.signal.grass.base} />
+                )}
+                add a dataset
+              </li>
+
+              <li
+                css={{
+                  color:
+                    !datasetId || !!missingLabels || !!missingLabelsOnAssets
+                      ? colors.structure.zinc
+                      : colors.structure.white,
+                }}
+              >
+                {!datasetId || !!missingLabels || !!missingLabelsOnAssets ? (
+                  <span>—</span>
+                ) : (
+                  <CheckmarkSvg height={14} color={colors.signal.grass.base} />
+                )}
+                add test labels to dataset
+              </li>
+
+              <li
+                css={{
+                  color:
+                    !datasetId ||
+                    !!missingLabels ||
+                    !!missingLabelsOnAssets ||
+                    !timeLastApplied
+                      ? colors.structure.zinc
+                      : colors.structure.white,
+                }}
+              >
+                {!datasetId ||
+                !!missingLabels ||
+                !!missingLabelsOnAssets ||
+                !timeLastApplied ? (
+                  <span>—</span>
+                ) : (
+                  <CheckmarkSvg height={14} color={colors.signal.grass.base} />
+                )}
+                run &quot;test&quot; or &quot;analyze all&quot;
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     )
@@ -66,23 +159,50 @@ const ModelMatrixLink = ({ projectId, modelId }) => {
             zoom: 1,
           }}
           isInteractive={false}
+          isOutOfDate={unappliedChanges}
         />
       </div>
+
       <div css={{ width: TEXT_WIDTH }}>
         <div
           css={{
-            fontWeight: typography.weight.bold,
+            color: colors.structure.zinc,
+            fontSize: typography.size.regular,
+            lineHeight: typography.height.regular,
+            fontFamily: typography.family.condensed,
+            textTransform: 'uppercase',
             paddingBottom: spacing.normal,
           }}
         >
-          Confusion Matrix <br />
-          Overall Accuracy:{' '}
-          <span css={{ fontWeight: typography.weight.regular }}>
-            {Math.round(matrix.overallAccuracy * 100)}%
-          </span>
+          <div css={{ paddingBottom: spacing.base }}>Confusion Matrix</div>
+
+          {unappliedChanges ? (
+            <div
+              css={{
+                width: TEXT_WIDTH,
+                fontStyle: typography.style.italic,
+                color: colors.structure.steel,
+                textTransform: 'none',
+              }}
+            >
+              The matrix is out of date <br /> and not representative.
+            </div>
+          ) : (
+            <div>
+              Accuracy:{' '}
+              <span
+                css={{
+                  color: colors.structure.white,
+                  fontFamily: typography.family.regular,
+                }}
+              >
+                {Math.round(matrix.overallAccuracy * 100)}%
+              </span>
+            </div>
+          )}
         </div>
 
-        <Link href={`/${projectId}/models/${modelId}/matrix`} passHref>
+        <Link href={`/${projectId}/models/${id}/matrix`} passHref>
           <Button
             variant={BUTTON_VARIANTS.SECONDARY}
             style={{
@@ -90,7 +210,7 @@ const ModelMatrixLink = ({ projectId, modelId }) => {
               padding: spacing.moderate,
             }}
           >
-            View Matrix
+            View Matrix Details
           </Button>
         </Link>
       </div>
@@ -100,7 +220,17 @@ const ModelMatrixLink = ({ projectId, modelId }) => {
 
 ModelMatrixLink.propTypes = {
   projectId: PropTypes.string.isRequired,
-  modelId: PropTypes.string.isRequired,
+  model: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    datasetId: PropTypes.string,
+    modelTypeRestrictions: PropTypes.shape({
+      missingLabels: PropTypes.number.isRequired,
+      missingLabelsOnAssets: PropTypes.number.isRequired,
+    }).isRequired,
+    unappliedChanges: PropTypes.bool.isRequired,
+    timeLastTrained: PropTypes.number,
+    timeLastApplied: PropTypes.number,
+  }).isRequired,
 }
 
 export default ModelMatrixLink

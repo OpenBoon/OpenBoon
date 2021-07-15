@@ -29,7 +29,8 @@ class KnnLabelDetectionTrainerTests(PluginUnitTestCase):
             'id': model_id,
             'type': "KNN_CLASSIFIER",
             'fileId': 'models/{}/foo/bar'.format(model_id),
-            'name': name
+            'name': name,
+            'datasetId': '12345'
         })
         search_patch.return_value = mock_search_result
         upload_patch.return_value = StoredFile({"id": "12345"})
@@ -55,7 +56,7 @@ mock_search_result = [
             "analysis": {"boonai-image-similarity": {"simhash": "AAAAAAAA"}},
             "labels": [
                 {
-                    "modelId": model_id,
+                    "datasetId": '12345',
                     "label": "Gandalf",
                 }
             ]
@@ -73,7 +74,7 @@ mock_search_result = [
             "analysis": {"boonai-image-similarity": {"simhash": "BBBBBBBB"}},
             "labels": [
                 {
-                    "modelId": model_id,
+                    "datasetId": '12345',
                     "label": "Glion",
                 }
             ]
@@ -90,7 +91,7 @@ mock_search_result = [
             },
             "labels": [
                 {
-                    "modelId": model_id,
+                    "datasetId": "12345",
                     "label": "Glion",
                 }
             ]

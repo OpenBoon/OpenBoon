@@ -51,7 +51,7 @@ exports[`<MetadataPrettyLabels /> should render properly for a single asset 1`] 
         <th
           className="emotion-2"
         >
-          model name/label
+          dataset name/label
         </th>
         <th
           className="emotion-2"
@@ -67,87 +67,47 @@ exports[`<MetadataPrettyLabels /> should render properly for a single asset 1`] 
     <tbody>
       <MetadataPrettyLabelsContent
         assetId="vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C"
-        models={
+        datasets={
           Array [
             Object {
-              "actorCreated": "faa6f55d-ae85-42c1-9b93-d80588b2ab57/Admin Console Generated Key - 30a6d0c2-8a65-455b-bd2c-b12b429b20fc - danny@zorroa.com_a0952c03-cc04-461c-a367-9ffae8c4199a",
-              "actorModified": "faa6f55d-ae85-42c1-9b93-d80588b2ab57/Admin Console Generated Key - 30a6d0c2-8a65-455b-bd2c-b12b429b20fc - danny@zorroa.com_a0952c03-cc04-461c-a367-9ffae8c4199a",
-              "deploySearch": Object {
-                "query": Object {
-                  "matchAll": Object {},
-                },
-              },
-              "fileId": "models/621bf774-89d9-1244-9596-d6df43f1ede5/boonai-console_face_recognition-face-recognition/boonai-console_face_recognition-face-recognition.zip",
-              "id": "621bf774-89d9-1244-9596-d6df43f1ede5",
-              "moduleName": "boonai-console_face_recognition-face-recognition",
-              "name": "console_face_recognition",
-              "ready": true,
-              "runningJobId": "",
-              "timeCreated": 1594243378141,
-              "timeModified": 1594243378141,
-              "trainingJobName": "Train console_face_recognition / boonai-console_face_recognition-face-recognition",
-              "type": "ZVI_FACE_RECOGNITION",
-              "url": "https://dev.console.zvi.zorroa.com/api/v1/projects/a0952c03-cc04-461c-a367-9ffae8c4199a/models/621bf774-89d9-1244-9596-d6df43f1ede5/",
+              "description": "A dataset for model training",
+              "id": "111d0534-7736-135f-8a62-d29da837913f",
+              "modelCount": 0,
+              "name": "faces",
+              "projectId": "4b89213b-ce4f-4588-9593-2a20c5a2761f",
+              "timeCreated": 1618511669753,
+              "timeModified": 1618511669753,
+              "type": "FaceRecognition",
             },
             Object {
-              "actorCreated": "faa6f55d-ae85-42c1-9b93-d80588b2ab57/Admin Console Generated Key - 30a6d0c2-8a65-455b-bd2c-b12b429b20fc - zach@zorroa.com_a0952c03-cc04-461c-a367-9ffae8c4199a",
-              "actorModified": "faa6f55d-ae85-42c1-9b93-d80588b2ab57/Admin Console Generated Key - 30a6d0c2-8a65-455b-bd2c-b12b429b20fc - zach@zorroa.com_a0952c03-cc04-461c-a367-9ffae8c4199a",
-              "deploySearch": Object {
-                "query": Object {
-                  "matchAll": Object {},
-                },
-              },
-              "fileId": "models/621bf774-89d9-9596-1244-d6df43f1ede5/boonai-console_cat_recognition-cat-recognition/boonai-console_cat_recognition-cat-recognition.zip",
-              "id": "621bf774-89d9-9596-1244-d6df43f1ede5",
-              "moduleName": "boonai-console_cat_recognition-cat-recognition",
-              "name": "console_cat_recognition",
-              "ready": false,
-              "runningJobId": "",
-              "timeCreated": 1594243378141,
-              "timeModified": 1594243378141,
-              "trainingJobName": "Train console_cat_recognition / boonai-console_cat_recognition-cat-recognition",
-              "type": "ZVI_CAT_RECOGNITION",
-              "url": "https://dev.console.zvi.zorroa.com/api/v1/projects/a0952c03-cc04-461c-a367-9ffae8c4199a/models/621bf774-89d9-9596-1244-d6df43f1ede5/",
+              "description": "A dataset for model training",
+              "id": "4b0b10a8-cec1-155c-b12f-ee2bc8787e06",
+              "modelCount": 1,
+              "name": "cats",
+              "projectId": "4b89213b-ce4f-4588-9593-2a20c5a2761f",
+              "timeCreated": 1617745633084,
+              "timeModified": 1617745633084,
+              "type": "Classification",
             },
             Object {
-              "actorCreated": "6a6af1da-09d8-49a6-b02a-032acc0bd17e/Admin Console Generated Key - 517ecff6-4859-4b07-8cf0-aebea45601c8 - software@zorroa.com_00000000-0000-0000-0000-000000000000",
-              "actorModified": "6a6af1da-09d8-49a6-b02a-032acc0bd17e/Admin Console Generated Key - 517ecff6-4859-4b07-8cf0-aebea45601c8 - software@zorroa.com_00000000-0000-0000-0000-000000000000",
-              "deploySearch": Object {
-                "query": Object {
-                  "matchAll": Object {},
-                },
-              },
-              "fileId": "models/c0e83460-6a25-1238-86fa-0242ac150002/model/model.zip",
-              "id": "c0e83460-6a25-1238-86fa-0242ac150002",
-              "moduleName": "Gundam",
-              "name": "Gundam",
-              "ready": false,
-              "runningJobId": "",
-              "timeCreated": 1595883344116,
-              "timeModified": 1595883344116,
-              "trainingJobName": "Training model: Gundam - [Label Detection]",
-              "type": "ZVI_LABEL_DETECTION",
-              "url": "http://localhost/api/v1/projects/00000000-0000-0000-0000-000000000000/models/c0e83460-6a25-1238-86fa-0242ac150002/",
+              "description": "A dataset for model training",
+              "id": "1c237c5c-8b64-11eb-882c-a6e78dab3824",
+              "modelCount": 2,
+              "name": "pets",
+              "projectId": "4b89213b-ce4f-4588-9593-2a20c5a2761f",
+              "timeCreated": 1616454765001,
+              "timeModified": 1616454765001,
+              "type": "ObjectDetection",
             },
             Object {
-              "actorCreated": "6a6af1da-09d8-49a6-b02a-032acc0bd17e/Admin Console Generated Key - 517ecff6-4859-4b07-8cf0-aebea45601c8 - software@zorroa.com_00000000-0000-0000-0000-000000000000",
-              "actorModified": "6a6af1da-09d8-49a6-b02a-032acc0bd17e/Admin Console Generated Key - 517ecff6-4859-4b07-8cf0-aebea45601c8 - software@zorroa.com_00000000-0000-0000-0000-000000000000",
-              "deploySearch": Object {
-                "query": Object {
-                  "matchAll": Object {},
-                },
-              },
-              "fileId": "models/c0e83462-6a25-1238-86fa-0242ac150002/model/model.zip",
-              "id": "c0e83462-6a25-1238-86fa-0242ac150002",
-              "moduleName": "Location",
-              "name": "Location",
-              "ready": false,
-              "runningJobId": "",
-              "timeCreated": 1595888265010,
-              "timeModified": 1595888265010,
-              "trainingJobName": "Training model: Location - [Label Detection]",
-              "type": "ZVI_LABEL_DETECTION",
-              "url": "http://localhost/api/v1/projects/00000000-0000-0000-0000-000000000000/models/c0e83462-6a25-1238-86fa-0242ac150002/",
+              "description": "A dataset for model training",
+              "id": "4b0b10a9-cec1-155c-b12f-ee2bc8787e06",
+              "modelCount": 0,
+              "name": "mystery",
+              "projectId": "4b89213b-ce4f-4588-9593-2a20c5a2761f",
+              "timeCreated": 1617746190788,
+              "timeModified": 1617746190788,
+              "type": "UnknownType",
             },
           ]
         }
@@ -209,7 +169,7 @@ exports[`<MetadataPrettyLabels /> should render properly on the grid 1`] = `
         <th
           className="emotion-2"
         >
-          model name/label
+          dataset name/label
         </th>
         <th
           className="emotion-2"
@@ -225,87 +185,47 @@ exports[`<MetadataPrettyLabels /> should render properly on the grid 1`] = `
     <tbody>
       <MetadataPrettyLabelsContent
         assetId="vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C"
-        models={
+        datasets={
           Array [
             Object {
-              "actorCreated": "faa6f55d-ae85-42c1-9b93-d80588b2ab57/Admin Console Generated Key - 30a6d0c2-8a65-455b-bd2c-b12b429b20fc - danny@zorroa.com_a0952c03-cc04-461c-a367-9ffae8c4199a",
-              "actorModified": "faa6f55d-ae85-42c1-9b93-d80588b2ab57/Admin Console Generated Key - 30a6d0c2-8a65-455b-bd2c-b12b429b20fc - danny@zorroa.com_a0952c03-cc04-461c-a367-9ffae8c4199a",
-              "deploySearch": Object {
-                "query": Object {
-                  "matchAll": Object {},
-                },
-              },
-              "fileId": "models/621bf774-89d9-1244-9596-d6df43f1ede5/boonai-console_face_recognition-face-recognition/boonai-console_face_recognition-face-recognition.zip",
-              "id": "621bf774-89d9-1244-9596-d6df43f1ede5",
-              "moduleName": "boonai-console_face_recognition-face-recognition",
-              "name": "console_face_recognition",
-              "ready": true,
-              "runningJobId": "",
-              "timeCreated": 1594243378141,
-              "timeModified": 1594243378141,
-              "trainingJobName": "Train console_face_recognition / boonai-console_face_recognition-face-recognition",
-              "type": "ZVI_FACE_RECOGNITION",
-              "url": "https://dev.console.zvi.zorroa.com/api/v1/projects/a0952c03-cc04-461c-a367-9ffae8c4199a/models/621bf774-89d9-1244-9596-d6df43f1ede5/",
+              "description": "A dataset for model training",
+              "id": "111d0534-7736-135f-8a62-d29da837913f",
+              "modelCount": 0,
+              "name": "faces",
+              "projectId": "4b89213b-ce4f-4588-9593-2a20c5a2761f",
+              "timeCreated": 1618511669753,
+              "timeModified": 1618511669753,
+              "type": "FaceRecognition",
             },
             Object {
-              "actorCreated": "faa6f55d-ae85-42c1-9b93-d80588b2ab57/Admin Console Generated Key - 30a6d0c2-8a65-455b-bd2c-b12b429b20fc - zach@zorroa.com_a0952c03-cc04-461c-a367-9ffae8c4199a",
-              "actorModified": "faa6f55d-ae85-42c1-9b93-d80588b2ab57/Admin Console Generated Key - 30a6d0c2-8a65-455b-bd2c-b12b429b20fc - zach@zorroa.com_a0952c03-cc04-461c-a367-9ffae8c4199a",
-              "deploySearch": Object {
-                "query": Object {
-                  "matchAll": Object {},
-                },
-              },
-              "fileId": "models/621bf774-89d9-9596-1244-d6df43f1ede5/boonai-console_cat_recognition-cat-recognition/boonai-console_cat_recognition-cat-recognition.zip",
-              "id": "621bf774-89d9-9596-1244-d6df43f1ede5",
-              "moduleName": "boonai-console_cat_recognition-cat-recognition",
-              "name": "console_cat_recognition",
-              "ready": false,
-              "runningJobId": "",
-              "timeCreated": 1594243378141,
-              "timeModified": 1594243378141,
-              "trainingJobName": "Train console_cat_recognition / boonai-console_cat_recognition-cat-recognition",
-              "type": "ZVI_CAT_RECOGNITION",
-              "url": "https://dev.console.zvi.zorroa.com/api/v1/projects/a0952c03-cc04-461c-a367-9ffae8c4199a/models/621bf774-89d9-9596-1244-d6df43f1ede5/",
+              "description": "A dataset for model training",
+              "id": "4b0b10a8-cec1-155c-b12f-ee2bc8787e06",
+              "modelCount": 1,
+              "name": "cats",
+              "projectId": "4b89213b-ce4f-4588-9593-2a20c5a2761f",
+              "timeCreated": 1617745633084,
+              "timeModified": 1617745633084,
+              "type": "Classification",
             },
             Object {
-              "actorCreated": "6a6af1da-09d8-49a6-b02a-032acc0bd17e/Admin Console Generated Key - 517ecff6-4859-4b07-8cf0-aebea45601c8 - software@zorroa.com_00000000-0000-0000-0000-000000000000",
-              "actorModified": "6a6af1da-09d8-49a6-b02a-032acc0bd17e/Admin Console Generated Key - 517ecff6-4859-4b07-8cf0-aebea45601c8 - software@zorroa.com_00000000-0000-0000-0000-000000000000",
-              "deploySearch": Object {
-                "query": Object {
-                  "matchAll": Object {},
-                },
-              },
-              "fileId": "models/c0e83460-6a25-1238-86fa-0242ac150002/model/model.zip",
-              "id": "c0e83460-6a25-1238-86fa-0242ac150002",
-              "moduleName": "Gundam",
-              "name": "Gundam",
-              "ready": false,
-              "runningJobId": "",
-              "timeCreated": 1595883344116,
-              "timeModified": 1595883344116,
-              "trainingJobName": "Training model: Gundam - [Label Detection]",
-              "type": "ZVI_LABEL_DETECTION",
-              "url": "http://localhost/api/v1/projects/00000000-0000-0000-0000-000000000000/models/c0e83460-6a25-1238-86fa-0242ac150002/",
+              "description": "A dataset for model training",
+              "id": "1c237c5c-8b64-11eb-882c-a6e78dab3824",
+              "modelCount": 2,
+              "name": "pets",
+              "projectId": "4b89213b-ce4f-4588-9593-2a20c5a2761f",
+              "timeCreated": 1616454765001,
+              "timeModified": 1616454765001,
+              "type": "ObjectDetection",
             },
             Object {
-              "actorCreated": "6a6af1da-09d8-49a6-b02a-032acc0bd17e/Admin Console Generated Key - 517ecff6-4859-4b07-8cf0-aebea45601c8 - software@zorroa.com_00000000-0000-0000-0000-000000000000",
-              "actorModified": "6a6af1da-09d8-49a6-b02a-032acc0bd17e/Admin Console Generated Key - 517ecff6-4859-4b07-8cf0-aebea45601c8 - software@zorroa.com_00000000-0000-0000-0000-000000000000",
-              "deploySearch": Object {
-                "query": Object {
-                  "matchAll": Object {},
-                },
-              },
-              "fileId": "models/c0e83462-6a25-1238-86fa-0242ac150002/model/model.zip",
-              "id": "c0e83462-6a25-1238-86fa-0242ac150002",
-              "moduleName": "Location",
-              "name": "Location",
-              "ready": false,
-              "runningJobId": "",
-              "timeCreated": 1595888265010,
-              "timeModified": 1595888265010,
-              "trainingJobName": "Training model: Location - [Label Detection]",
-              "type": "ZVI_LABEL_DETECTION",
-              "url": "http://localhost/api/v1/projects/00000000-0000-0000-0000-000000000000/models/c0e83462-6a25-1238-86fa-0242ac150002/",
+              "description": "A dataset for model training",
+              "id": "4b0b10a9-cec1-155c-b12f-ee2bc8787e06",
+              "modelCount": 0,
+              "name": "mystery",
+              "projectId": "4b89213b-ce4f-4588-9593-2a20c5a2761f",
+              "timeCreated": 1617746190788,
+              "timeModified": 1617746190788,
+              "type": "UnknownType",
             },
           ]
         }

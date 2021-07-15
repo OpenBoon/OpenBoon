@@ -205,7 +205,7 @@ resource "kubernetes_horizontal_pod_autoscaler" "analyst" {
       type = "External"
       external {
         metric {
-          name = "custom.googleapis.com|zmlp|analyst-scale-ratio"
+          name = "custom.googleapis.com|boon|analyst-scale-ratio"
           selector {}
         }
         target {

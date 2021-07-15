@@ -51,6 +51,7 @@ const Jobs = () => {
           />
         )}
         searchLabel="Job Name"
+        options={{ refreshInterval: 5000 }}
       />
     </>
   )

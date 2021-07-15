@@ -40,7 +40,7 @@ class PytorchTransferLearningTrainer(ModelTrainer):
 
     def init(self):
         self.load_app_model()
-        self.labels = self.app.models.get_label_counts(self.app_model)
+        self.labels = self.app.datasets.get_label_counts(self.app_model)
         self.base_dir = tempfile.mkdtemp('pth-xfer-learning')
         self.check_labels()
 

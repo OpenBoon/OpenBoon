@@ -111,13 +111,13 @@ class RestApiExceptionHandler {
 
         if (doExtraLogging.contains(status) || debug) {
             logger.error(
-                "endpoint='{}' project='{}', errorId='{}',",
-                req.servletPath, getZmlpActorOrNull()?.projectId, errorId, e
+                "endpoint='{}' project='{}', errorId='{}', status='{}'",
+                req.servletPath, getZmlpActorOrNull()?.projectId, errorId, status.value(), e
             )
         } else {
             logger.error(
-                "endpoint='{}' project='{}', errorId='{}',",
-                req.servletPath, getZmlpActorOrNull()?.projectId, errorId
+                "endpoint='{}' project='{}', errorId='{}', status='{}'",
+                req.servletPath, getZmlpActorOrNull()?.projectId, status.value(), errorId
             )
         }
 

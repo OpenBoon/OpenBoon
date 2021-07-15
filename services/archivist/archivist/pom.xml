@@ -45,8 +45,8 @@
 
         <dependency>
             <groupId>io.sentry</groupId>
-            <artifactId>sentry-spring</artifactId>
-            <version>1.7.30</version>
+            <artifactId>sentry-spring-boot-starter</artifactId>
+            <version>5.0.1</version>
         </dependency>
 
         <dependency>
@@ -109,13 +109,13 @@
         <dependency>
             <groupId>com.vladmihalcea</groupId>
             <artifactId>hibernate-types-52</artifactId>
-            <version>2.10.4</version>
+            <version>2.11.1</version>
         </dependency>
 
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.2.20</version>
+            <version>42.2.23</version>
         </dependency>
 
         <dependency>
@@ -147,7 +147,7 @@
         <dependency>
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
-            <version>3.5.2</version>
+            <version>3.6.1</version>
         </dependency>
 
         <dependency>
@@ -185,20 +185,21 @@
         <dependency>
             <groupId>com.amazonaws</groupId>
             <artifactId>aws-java-sdk-s3</artifactId>
-            <version>1.11.1018</version>
+            <version>1.12.18</version>
         </dependency>
 
         <dependency>
             <groupId>com.amazonaws</groupId>
             <artifactId>aws-java-sdk-sqs</artifactId>
-            <version>1.11.1018</version>
+            <version>1.12.18</version>
         </dependency>
 
         <dependency>
             <groupId>com.amazonaws</groupId>
             <artifactId>aws-java-sdk-sns</artifactId>
-            <version>1.11.1018</version>
+            <version>1.12.18</version>
         </dependency>
+
         <dependency>
             <groupId>io.minio</groupId>
             <artifactId>minio</artifactId>
@@ -239,7 +240,7 @@
         <dependency>
             <groupId>com.jayway.jsonpath</groupId>
             <artifactId>json-path-assert</artifactId>
-            <version>2.5.0</version>
+            <version>2.6.0</version>
             <scope>test</scope>
             <exclusions>
                 <exclusion>
@@ -255,19 +256,19 @@
 
         <dependency>
             <groupId>com.google.cloud</groupId>
-            <artifactId>google-cloud-pubsub</artifactId>
+            <artifactId>google-cloud-build</artifactId>
+            <version>2.6.0</version>
         </dependency>
 
         <dependency>
             <groupId>com.google.cloud</groupId>
-            <artifactId>google-cloud-automl</artifactId>
-            <version>1.4.2</version>
+            <artifactId>google-cloud-pubsub</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.junit.vintage</groupId>
             <artifactId>junit-vintage-engine</artifactId>
-            <version>5.7.0</version>
+            <version>5.7.2</version>
         </dependency>
     </dependencies>
 

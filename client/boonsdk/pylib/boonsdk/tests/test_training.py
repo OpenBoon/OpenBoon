@@ -4,8 +4,8 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-from boonsdk import BoonClient, BoonApp, Model
-from boonsdk.app import AssetApp, ModelApp
+from boonsdk import BoonClient, BoonApp, Model, Dataset
+from boonsdk.app import AssetApp, DatasetApp
 from boonsdk.training import TrainingSetDownloader
 
 key_dict = {
@@ -21,10 +21,13 @@ class TrainingSetDownloaderTests(unittest.TestCase):
     def setUp(self):
         self.app = BoonApp(key_dict)
 
-    @patch.object(ModelApp, 'get_model')
+    @patch.object(DatasetApp, 'get_dataset')
     @patch.object(BoonClient, 'get')
     def test_setup_labels_std_base_dir(self, get_patch, get_model_patch):
-        get_model_patch.return_value = Model({'id': '12345', 'type': 'ZVI_LABEL_DETECTION'})
+        get_model_patch.return_value = Dataset({
+            'id': '124423',
+            'type': 'Classification'})
+
         get_patch.return_value = {
             'goats': 100,
             'hobbits': 12,
@@ -47,14 +50,16 @@ class TrainingSetDownloaderTests(unittest.TestCase):
         assert 4 == len(labels2)
         assert ['dwarfs', 'goats', 'hobbits', 'wizards'] == sorted(labels2)
 
-    @patch.object(ModelApp, 'get_model')
+    @patch.object(DatasetApp, 'get_dataset')
     @patch.object(AssetApp, 'download_file')
     @patch.object(BoonClient, 'delete')
     @patch.object(BoonClient, 'post')
     @patch.object(BoonClient, 'get')
     def test_build_labels_std_format(
             self, get_patch, post_patch, del_patch, dl_patch, get_ds_patch):
-        get_ds_patch.return_value = Model({'id': '12345', 'type': 'ZVI_LABEL_DETECTION'})
+        get_ds_patch.return_value = Model({'id': '12345',
+                                           'type': 'ZVI_LABEL_DETECTION',
+                                           'datasetId': 'abc221'})
         get_patch.return_value = {
             'goats': 100,
             'hobbits': 12,
@@ -69,14 +74,14 @@ class TrainingSetDownloaderTests(unittest.TestCase):
         dsl = TrainingSetDownloader(self.app, '12345', 'labels-standard', d)
         dsl.build()
 
-    @patch.object(ModelApp, 'get_model')
+    @patch.object(DatasetApp, 'get_dataset')
     @patch.object(AssetApp, 'download_file')
     @patch.object(BoonClient, 'delete')
     @patch.object(BoonClient, 'post')
     @patch.object(BoonClient, 'get')
     def test_download_object_detection(
             self, get_patch, post_patch, del_patch, dl_patch, get_ds_patch):
-        get_ds_patch.return_value = Model({'id': '12345', 'type': 'ZVI_LABEL_DETECTION'})
+        get_ds_patch.return_value = Dataset({'id': '12345', 'type': 'Classification'})
 
         post_patch.side_effect = [mock_search_result_objects, {'hits': {'hits': []}}]
         del_patch.return_value = {}
@@ -99,14 +104,14 @@ class TrainingSetDownloaderTests(unittest.TestCase):
         assert 6 == len(train_annotations['annotations'])
         assert 2 == len(test_annotations['annotations'])
 
-    @patch.object(ModelApp, 'get_model')
+    @patch.object(DatasetApp, 'get_dataset')
     @patch.object(AssetApp, 'download_file')
     @patch.object(BoonClient, 'delete')
     @patch.object(BoonClient, 'post')
     @patch.object(BoonClient, 'get')
     def test_build_objects_keras_format(
             self, get_patch, post_patch, del_patch, dl_patch, get_ds_patch):
-        get_ds_patch.return_value = Model({'id': '12345', 'type': 'ZVI_LABEL_DETECTION'})
+        get_ds_patch.return_value = Dataset({'id': '12345', 'type': 'Classification'})
 
         post_patch.side_effect = [mock_search_result_objects, {'hits': {'hits': []}}]
         del_patch.return_value = {}
@@ -161,22 +166,22 @@ mock_search_result_objects = {
                     ],
                     "labels": [
                         {
-                            "modelId": "12345",
+                            "datasetId": "12345",
                             "label": "wizard",
                             "bbox": [0.5, 0.5, 0.6, 0.6]
                         },
                         {
-                            "modelId": "12345",
+                            "datasetId": "12345",
                             "label": "dwarf",
                             "bbox": [0.0, 0.0, 0.3, 0.3]
                         },
                         {
-                            "modelId": "12345",
+                            "datasetId": "12345",
                             "label": "wizard",
                             "bbox": [0.2, 0.5, 0.2, 0.6]
                         },
                         {
-                            "modelId": "12345",
+                            "datasetId": "12345",
                             "label": "dwarf",
                             "bbox": [0.1, 0.3, 0.3, 0.4]
                         }
@@ -206,22 +211,22 @@ mock_search_result_objects = {
                     ],
                     "labels": [
                         {
-                            "modelId": "12345",
+                            "datasetId": "12345",
                             "label": "wizard",
                             "bbox": [0.5, 0.5, 0.6, 0.6]
                         },
                         {
-                            "modelId": "12345",
+                            "datasetId": "12345",
                             "label": "dwarf",
                             "bbox": [0.0, 0.0, 0.3, 0.3]
                         },
                         {
-                            "modelId": "12345",
+                            "datasetId": "12345",
                             "label": "wizard",
                             "bbox": [0.2, 0.5, 0.2, 0.6]
                         },
                         {
-                            "modelId": "12345",
+                            "datasetId": "12345",
                             "label": "dwarf",
                             "bbox": [0.1, 0.3, 0.3, 0.4]
                         }
@@ -263,7 +268,7 @@ mock_search_result_labels = {
                     ],
                     "labels": [
                         {
-                            "modelId": "12345",
+                            "datasetId": "12345",
                             "label": "wizard"
                         }
                     ]
@@ -292,7 +297,7 @@ mock_search_result_labels = {
                     ],
                     "labels": [
                         {
-                            "modelId": "12345",
+                            "datasetId": "12345",
                             "label": "hobbit"
                         }
                     ]

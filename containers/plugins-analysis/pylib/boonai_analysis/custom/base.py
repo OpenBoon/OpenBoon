@@ -10,9 +10,14 @@ class CustomModelProcessor(AssetProcessor):
 
     def __init__(self):
         super(CustomModelProcessor, self).__init__()
-        self.add_arg(Argument("model_id", "str", required=True, toolTip="The model Id"))
-        self.add_arg(Argument("tag", "str", required=False, toolTip="A optional model tag"))
+        self.add_arg(Argument('model_id', 'str', required=True, toolTip='The model Id'))
+        self.add_arg(Argument('tag', 'str', required=False, toolTip='A optional model tag'))
+        self.add_arg(Argument('min_score', 'float', required=False, default=0.1))
         self.app_model = None
+
+    @property
+    def min_score(self):
+        return self.arg_value('min_score')
 
     def load_app_model(self):
         """

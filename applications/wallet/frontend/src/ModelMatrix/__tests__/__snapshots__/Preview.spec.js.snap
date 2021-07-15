@@ -131,7 +131,7 @@ exports[`ModelMatrixPreview should render properly when there are no predicted a
     className="emotion-1"
   >
     <Link
-      href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLmZsb3dlci10eXBlcyIsIm1vZGVsSWQiOiI2MjFiZjc3NS04OWQ5LTEyNDQtOTU5Ni1kNmRmNDNmMWVkZTUiLCJ2YWx1ZXMiOnsibGFiZWxzIjpbInBpbmsiXSwic2NvcGUiOiJ0ZXN0In19LHsidHlwZSI6ImxhYmVsQ29uZmlkZW5jZSIsImF0dHJpYnV0ZSI6ImFuYWx5c2lzLmZsb3dlci10eXBlcyIsInZhbHVlcyI6eyJsYWJlbHMiOlsicmVkIl0sIm1pbiI6MCwibWF4IjoxfX1d"
+      href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLmZsb3dlci10eXBlcyIsImRhdGFzZXRJZCI6IjRiMGIxMGE4LWNlYzEtMTU1Yy1iMTJmLWVlMmJjODc4N2UwNiIsInZhbHVlcyI6eyJsYWJlbHMiOlsicGluayJdLCJzY29wZSI6InRlc3QifX0seyJ0eXBlIjoibGFiZWxDb25maWRlbmNlIiwiYXR0cmlidXRlIjoiYW5hbHlzaXMuZmxvd2VyLXR5cGVzIiwidmFsdWVzIjp7ImxhYmVscyI6WyJyZWQiXSwibWluIjowLCJtYXgiOjF9fV0="
       passHref={true}
     >
       <button
@@ -336,7 +336,7 @@ exports[`ModelMatrixPreview should render properly with an error 1`] = `
     className="emotion-1"
   >
     <Link
-      href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLmZsb3dlci10eXBlcyIsIm1vZGVsSWQiOiI2MjFiZjc3NS04OWQ5LTEyNDQtOTU5Ni1kNmRmNDNmMWVkZTUiLCJ2YWx1ZXMiOnsibGFiZWxzIjpbInBpbmsiXSwic2NvcGUiOiJ0ZXN0In19LHsidHlwZSI6ImxhYmVsQ29uZmlkZW5jZSIsImF0dHJpYnV0ZSI6ImFuYWx5c2lzLmZsb3dlci10eXBlcyIsInZhbHVlcyI6eyJsYWJlbHMiOlsicmVkIl0sIm1pbiI6MCwibWF4IjoxfX1d"
+      href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLmZsb3dlci10eXBlcyIsImRhdGFzZXRJZCI6IjRiMGIxMGE4LWNlYzEtMTU1Yy1iMTJmLWVlMmJjODc4N2UwNiIsInZhbHVlcyI6eyJsYWJlbHMiOlsicGluayJdLCJzY29wZSI6InRlc3QifX0seyJ0eXBlIjoibGFiZWxDb25maWRlbmNlIiwiYXR0cmlidXRlIjoiYW5hbHlzaXMuZmxvd2VyLXR5cGVzIiwidmFsdWVzIjp7ImxhYmVscyI6WyJyZWQiXSwibWluIjowLCJtYXgiOjF9fV0="
       passHref={true}
     >
       <button
@@ -616,7 +616,7 @@ exports[`ModelMatrixPreview should render properly with selection 1`] = `
     className="emotion-1"
   >
     <Link
-      href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLmZsb3dlci10eXBlcyIsIm1vZGVsSWQiOiI2MjFiZjc3NS04OWQ5LTEyNDQtOTU5Ni1kNmRmNDNmMWVkZTUiLCJ2YWx1ZXMiOnsibGFiZWxzIjpbInBpbmsiXSwic2NvcGUiOiJ0ZXN0In19LHsidHlwZSI6ImxhYmVsQ29uZmlkZW5jZSIsImF0dHJpYnV0ZSI6ImFuYWx5c2lzLmZsb3dlci10eXBlcyIsInZhbHVlcyI6eyJsYWJlbHMiOlsicmVkIl0sIm1pbiI6MCwibWF4IjoxfX1d"
+      href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLmZsb3dlci10eXBlcyIsImRhdGFzZXRJZCI6IjRiMGIxMGE4LWNlYzEtMTU1Yy1iMTJmLWVlMmJjODc4N2UwNiIsInZhbHVlcyI6eyJsYWJlbHMiOlsicGluayJdLCJzY29wZSI6InRlc3QifX0seyJ0eXBlIjoibGFiZWxDb25maWRlbmNlIiwiYXR0cmlidXRlIjoiYW5hbHlzaXMuZmxvd2VyLXR5cGVzIiwidmFsdWVzIjp7ImxhYmVscyI6WyJyZWQiXSwibWluIjowLCJtYXgiOjF9fV0="
       passHref={true}
     >
       <button
@@ -687,7 +687,7 @@ exports[`ModelMatrixPreview should render properly with selection 1`] = `
             Confidence:
              
           </span>
-          0.333
+          0.153
         </div>
       </div>
       <div>
@@ -710,7 +710,7 @@ exports[`ModelMatrixPreview should render properly with selection 1`] = `
             Confidence:
              
           </span>
-          0.333
+          0.153
         </div>
       </div>
       <div>
@@ -733,7 +733,7 @@ exports[`ModelMatrixPreview should render properly with selection 1`] = `
             Confidence:
              
           </span>
-          0.333
+          0.153
         </div>
       </div>
       <div>
@@ -756,7 +756,7 @@ exports[`ModelMatrixPreview should render properly with selection 1`] = `
             Confidence:
              
           </span>
-          0.333
+          0.153
         </div>
       </div>
       <div>
@@ -779,7 +779,7 @@ exports[`ModelMatrixPreview should render properly with selection 1`] = `
             Confidence:
              
           </span>
-          0.333
+          0.153
         </div>
       </div>
     </div>
@@ -957,7 +957,7 @@ exports[`ModelMatrixPreview should render properly without data 1`] = `
     className="emotion-1"
   >
     <Link
-      href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLmZsb3dlci10eXBlcyIsIm1vZGVsSWQiOiI2MjFiZjc3NS04OWQ5LTEyNDQtOTU5Ni1kNmRmNDNmMWVkZTUiLCJ2YWx1ZXMiOnsibGFiZWxzIjpbInBpbmsiXSwic2NvcGUiOiJ0ZXN0In19LHsidHlwZSI6ImxhYmVsQ29uZmlkZW5jZSIsImF0dHJpYnV0ZSI6ImFuYWx5c2lzLmZsb3dlci10eXBlcyIsInZhbHVlcyI6eyJsYWJlbHMiOlsicmVkIl0sIm1pbiI6MCwibWF4IjoxfX1d"
+      href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLmZsb3dlci10eXBlcyIsImRhdGFzZXRJZCI6IjRiMGIxMGE4LWNlYzEtMTU1Yy1iMTJmLWVlMmJjODc4N2UwNiIsInZhbHVlcyI6eyJsYWJlbHMiOlsicGluayJdLCJzY29wZSI6InRlc3QifX0seyJ0eXBlIjoibGFiZWxDb25maWRlbmNlIiwiYXR0cmlidXRlIjoiYW5hbHlzaXMuZmxvd2VyLXR5cGVzIiwidmFsdWVzIjp7ImxhYmVscyI6WyJyZWQiXSwibWluIjowLCJtYXgiOjF9fV0="
       passHref={true}
     >
       <button

@@ -1,0 +1,152 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<WebhooksAddKeyControls /> should render properly 1`] = `
+.emotion-0 {
+  position: absolute;
+  left: 100%;
+  padding-left: 8px;
+  padding-top: 8px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-1 {
+  position: relative;
+}
+
+.emotion-2 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 8px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #808080;
+  background-color: transparent;
+}
+
+.emotion-2:hover,
+.emotion-2.focus-visible:focus,
+.emotion-2 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.emotion-2:hover svg,
+.emotion-2.focus-visible:focus svg,
+.emotion-2 .noop svg {
+  opacity: 1;
+}
+
+.emotion-2[aria-disabled=true],
+.emotion-2 .noop {
+  color: #808080;
+}
+
+.emotion-3 {
+  padding: 4px;
+  color: #808080;
+}
+
+.emotion-4 {
+  position: relative;
+}
+
+.emotion-6 {
+  position: absolute;
+  left: 50%;
+}
+
+.emotion-7 {
+  margin-left: -50%;
+  margin-right: 50%;
+  white-space: nowrap;
+  background-color: #ffffff;
+  color: #191919;
+  padding: 4px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border-radius: 2px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+}
+
+<div
+  className="emotion-0"
+>
+  <div
+    className="emotion-1"
+  >
+    <button
+      aria-label="Copy Secret Key to Clipboard"
+      className="emotion-2"
+      onClick={[Function]}
+      title="Copy Secret Key to Clipboard"
+      type="button"
+    >
+      <svg
+        data-file-name="copy.svg"
+        height={20}
+      />
+    </button>
+  </div>
+  <span
+    className="emotion-3"
+  >
+    |
+  </span>
+  <div
+    className="emotion-4"
+  >
+    <button
+      className="emotion-2"
+      onClick={[Function]}
+      type="button"
+    >
+      Generate Key
+    </button>
+    <div
+      className="emotion-6"
+    >
+      <div
+        className="emotion-7"
+      >
+        <svg
+          color="#009f22"
+          data-file-name="checkmark.svg"
+          height={20}
+        />
+        Secret Key Copied to Clipboard!
+      </div>
+    </div>
+  </div>
+</div>
+`;

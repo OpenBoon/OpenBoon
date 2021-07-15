@@ -2,65 +2,93 @@
 
 exports[`<FiltersCopyQuery /> should copy properly 1`] = `
 .emotion-0 {
-  padding-left: 12px;
-  padding-right: 12px;
-  margin: 0;
-  border: none;
-  border-radius: 2px;
-  background-color: transparent;
-  color: #808080;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 4px;
 }
 
-.emotion-0:hover,
-.emotion-0.focus-visible:focus {
+.emotion-1 {
+  position: relative;
+}
+
+.emotion-2 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 8px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
   cursor: pointer;
-  background-color: #2e2e2e;
+  color: #808080;
+  background-color: transparent;
+}
+
+.emotion-2:hover,
+.emotion-2.focus-visible:focus,
+.emotion-2 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
   color: #ffffff;
 }
 
-<button
-  aria-label="Copy Search Query"
-  className="emotion-0"
-  onClick={[Function]}
-  title="Copy Search Query"
-  type="button"
->
-  <svg
-    data-file-name="copy.svg"
-    height={20}
-  />
-</button>
-`;
+.emotion-2:hover svg,
+.emotion-2.focus-visible:focus svg,
+.emotion-2 .noop svg {
+  opacity: 1;
+}
 
-exports[`<FiltersCopyQuery /> should render properly after copy click 1`] = `
-.emotion-0 {
-  padding-left: 12px;
-  padding-right: 12px;
-  margin: 0;
-  border: none;
-  border-radius: 2px;
-  background-color: transparent;
+.emotion-2[aria-disabled=true],
+.emotion-2 .noop {
   color: #808080;
 }
 
-.emotion-0:hover,
-.emotion-0.focus-visible:focus {
-  cursor: pointer;
-  background-color: #2e2e2e;
-  color: #ffffff;
-}
-
-<button
-  aria-label="Copy Search Query"
+<div
   className="emotion-0"
-  onClick={[Function]}
-  title="Copy Search Query"
-  type="button"
 >
-  <svg
-    color="#3A5DFF"
-    data-file-name="checkmark.svg"
-    height={20}
-  />
-</button>
+  <div
+    className="emotion-1"
+  >
+    <button
+      aria-label="Copy Search Query to Clipboard"
+      className="emotion-2"
+      onClick={[Function]}
+      title="Copy Search Query to Clipboard"
+      type="button"
+    >
+      <svg
+        data-file-name="copy.svg"
+        height={20}
+      />
+    </button>
+  </div>
+</div>
 `;

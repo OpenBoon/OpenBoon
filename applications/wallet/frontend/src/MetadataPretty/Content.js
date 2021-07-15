@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 
 import { colors, constants, spacing, typography } from '../Styles'
 
-import ButtonCopy, { COPY_SIZE } from '../Button/Copy'
+import ButtonCopy from '../Button/Copy'
 import Button, { VARIANTS } from '../Button'
 
 import {
@@ -27,8 +27,10 @@ const MetadataPrettyContent = ({ path, name, value: { content } }) => {
             aria-label="Add Filter"
             variant={VARIANTS.NEUTRAL}
             style={{
+              fontWeight: 'inherit',
               fontSize: 'inherit',
               lineHeight: 'inherit',
+              color: 'inherit',
             }}
             onClick={() => {
               filterDispatch({
@@ -73,8 +75,10 @@ const MetadataPrettyContent = ({ path, name, value: { content } }) => {
           aria-label="Add Filter"
           variant={VARIANTS.NEUTRAL}
           style={{
+            fontWeight: 'inherit',
             fontSize: 'inherit',
             lineHeight: 'inherit',
+            color: 'inherit',
           }}
           onClick={() => {
             filterDispatch({
@@ -101,7 +105,6 @@ const MetadataPrettyContent = ({ path, name, value: { content } }) => {
         css={{
           padding: `${spacing.base}px ${spacing.normal}px`,
           paddingBottom: 0,
-          minHeight: COPY_SIZE,
           width: '100%',
           fontFamily: typography.family.condensed,
           textTransform: 'uppercase',
@@ -116,6 +119,7 @@ const MetadataPrettyContent = ({ path, name, value: { content } }) => {
           css={{
             display: 'flex',
             color: colors.structure.zinc,
+            svg: { opacity: 0 },
             ':hover': {
               backgroundColor: `${colors.signal.sky.base}${constants.opacity.hex22Pct}`,
               color: colors.structure.white,
@@ -133,15 +137,7 @@ const MetadataPrettyContent = ({ path, name, value: { content } }) => {
             {content}
           </div>
 
-          <div
-            css={{
-              minWidth: COPY_SIZE + spacing.normal,
-              paddingTop: spacing.moderate,
-              paddingRight: spacing.normal,
-            }}
-          >
-            <ButtonCopy value={content} />
-          </div>
+          <ButtonCopy title="Content" value={content} offset={100} />
         </div>
       </div>
     </>

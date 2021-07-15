@@ -1,98 +1,185 @@
 import { mutate } from 'swr'
 
-import { fetcher, revalidate, parseResponse } from '../Fetch/helpers'
+import { useLocalStorage } from '../LocalStorage/helpers'
+import { fetcher, parseResponse } from '../Fetch/helpers'
 
 export const SCOPE_OPTIONS = [
   { value: 'TRAIN', label: 'Train' },
   { value: 'TEST', label: 'Test' },
 ]
 
-export const getOptions = async ({ projectId, modelId }) => {
-  if (!modelId) {
-    return []
+const INITIAL_STATE = {
+  datasetId: '',
+  labels: {},
+  isLoading: false,
+  errors: {},
+}
+
+const reducer = (state, action) => ({ ...state, ...action })
+
+export const useLabelTool = ({ projectId }) => {
+  return useLocalStorage({
+    key: `AssetLabelingContent.${projectId}`,
+    initialState: INITIAL_STATE,
+    reducer,
+  })
+}
+
+export const getIsDisabled = ({ assetId, state, labels }) => {
+  // Loading
+  if (state.isLoading) return true
+
+  // Unique unlabeled label with any other label input
+  if (
+    state.labels &&
+    Object.values(state.labels).length === 1 &&
+    labels.length === 1 &&
+    labels[0].label === ''
+  ) {
+    return false
   }
 
-  const { results } = await revalidate({
-    key: `/api/v1/projects/${projectId}/models/${modelId}/get_labels`,
+  // Any unlabeled label with matching label input
+  const unsavedLabel = labels.find(({ bbox, label }) => {
+    const id = bbox ? JSON.stringify(bbox) : assetId
+
+    if (!label && state.labels[id] && state.labels[id].label) {
+      return true
+    }
+
+    return false
   })
 
-  return results
+  return !unsavedLabel
 }
 
-export const getSubmitText = ({ localState, existingLabel }) => {
-  const { success, isLoading } = localState
-
-  if ((success && !isLoading) || existingLabel) {
-    return 'Label Saved'
+export const getLabelState = ({ id, state, labels }) => {
+  // Matching label input
+  if (state.labels && state.labels[id]) {
+    return state.labels[id]
   }
 
-  if (!success && isLoading) {
-    return 'Saving...'
+  // Unique other label input
+  if (
+    state.labels &&
+    Object.values(state.labels).length === 1 &&
+    labels.length === 1
+  ) {
+    return Object.values(state.labels)[0]
   }
 
-  return 'Save Label'
+  // Empty state
+  return {
+    label: '',
+    scope: SCOPE_OPTIONS[0].value,
+  }
 }
 
-const getLabelAction = ({ body }) => {
-  if (body.addLabels && body.removeLabels) {
-    return 'update'
+const getBody = ({ assetId, state }) => {
+  if (state.datasetType === 'Classification') {
+    /**
+     * Important to use `assetId` here instead of the
+     * `Object.keys(state.labels)[0]` so that we can save
+     * the same label across multiple assets:
+     */
+    const { scope, label } = Object.values(state.labels)[0]
+
+    return { addLabels: [{ assetId, label, scope }] }
   }
 
-  if (body.removeLabels) {
-    return 'delete'
+  return {
+    addLabels: Object.entries(state.labels).map(([bbox, { scope, label }]) => {
+      return { assetId, bbox: JSON.parse(bbox), scope, label }
+    }),
   }
-
-  return 'add'
 }
 
-export const onSubmit = async ({
-  dispatch,
-  localDispatch,
-  localState: { modelId, label, scope, reloadKey },
-  labels,
+export const onSave = async ({ projectId, assetId, state, dispatch }) => {
+  const body = getBody({ assetId, state })
+
+  if (body.addLabels.length === 0) return
+
+  const BASE = `/api/v1/projects/${projectId}/datasets/${state.datasetId}`
+
+  dispatch({ isLoading: true, errors: {} })
+
+  try {
+    await fetcher(`${BASE}/add_labels/`, {
+      method: 'POST',
+      body: JSON.stringify(body),
+    })
+
+    mutate(`${BASE}/get_labels/`)
+
+    await mutate(`${BASE}/label_tool_info/?assetId=${assetId}`)
+
+    dispatch({ isLoading: false })
+  } catch (response) {
+    const errors = await parseResponse({ response })
+
+    dispatch({ isLoading: false, errors })
+  }
+}
+
+export const onDelete = async ({
   projectId,
+  datasetId,
   assetId,
+  dispatch,
+  labels,
+  label: { label, bbox, scope },
 }) => {
-  localDispatch({ isLoading: true, errors: {} })
+  const BASE = `/api/v1/projects/${projectId}/datasets/${datasetId}`
 
-  const existingModel = labels.find(
-    ({ modelId: labelModel }) => labelModel === modelId,
-  )
+  const id = bbox ? JSON.stringify(bbox) : assetId
 
-  const body = {}
+  dispatch({ isLoading: true, errors: {} })
 
-  if (existingModel) {
-    body.removeLabels = [{ assetId, label: existingModel.label }]
+  try {
+    await fetcher(`${BASE}/delete_labels/`, {
+      method: 'DELETE',
+      body: JSON.stringify({ removeLabels: [{ assetId, label, bbox }] }),
+    })
+
+    mutate(`${BASE}/label_tool_info/?assetId=${assetId}`)
+
+    mutate(`${BASE}/get_labels/`)
+
+    dispatch({
+      isLoading: false,
+      labels: { ...labels, [id]: { label, bbox, scope } },
+    })
+  } catch (response) {
+    const errors = await parseResponse({ response })
+
+    dispatch({ isLoading: false, errors })
   }
+}
 
-  if (label !== '') {
-    body.addLabels = [{ assetId, label, scope }]
-  }
-
-  const labelAction = getLabelAction({ body })
+export const onFaceDetect = async ({
+  projectId,
+  datasetId,
+  assetId,
+  dispatch,
+}) => {
+  dispatch({ isLoading: true, errors: {} })
 
   try {
     await fetcher(
-      `/api/v1/projects/${projectId}/models/${modelId}/${labelAction}_labels/`,
-      {
-        method: labelAction === 'delete' ? 'DELETE' : 'POST',
-        body: JSON.stringify(body),
-      },
+      `/api/v1/projects/${projectId}/assets/${assetId}/detect_faces/`,
+      { method: 'PATCH' },
     )
 
     mutate(`/api/v1/projects/${projectId}/assets/${assetId}/`)
 
-    localDispatch({
-      reloadKey: reloadKey + 1,
-      success: true,
-      isLoading: false,
-      errors: {},
-    })
+    await mutate(
+      `/api/v1/projects/${projectId}/datasets/${datasetId}/label_tool_info/?assetId=${assetId}`,
+    )
 
-    dispatch({ modelId, label, scope, assetId })
+    dispatch({ isLoading: false })
   } catch (response) {
     const errors = await parseResponse({ response })
 
-    localDispatch({ success: false, isLoading: false, errors })
+    dispatch({ isLoading: false, errors })
   }
 }

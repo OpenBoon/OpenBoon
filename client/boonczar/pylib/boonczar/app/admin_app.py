@@ -2,6 +2,7 @@ from boonsdk.util import as_id
 
 from .index_app import IndexApp
 from .project_app import ProjectApp
+from .boonlib_app import BoonLibApp
 
 __all__ = [
     'BoonCzarApp',
@@ -9,14 +10,15 @@ __all__ = [
 ]
 
 
-class BoonCzarApp(object):
+class BoonCzarApp:
     """
     Exposes the ZMLP administrator API.
     """
     def __init__(self, app):
         self.client = app.client
-        self.indexes = IndexApp(app)
-        self.projects = ProjectApp(app)
+        self.projects = ProjectApp(self, app)
+        self.indexes = IndexApp(self, app)
+        self.boonlibs = BoonLibApp(self, app)
 
     def set_project(self, project):
         """

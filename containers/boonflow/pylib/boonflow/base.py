@@ -1,11 +1,14 @@
 import logging
-import os
+import io
 
-from flask import request
+import cv2
+from PIL import Image
+import numpy as np
 
-from boonsdk import BoonApp, BoonClient, app_from_env
 from boonsdk import BoonSdkException
 
+from .env import app_instance
+from .proxy import get_proxy_level_path
 
 logger = logging.getLogger(__name__)
 
@@ -19,11 +22,10 @@ __all__ = [
     "Argument",
     "FatalProcessorException",
     "ProcessorException",
-    "BoonEnv",
     "FileTypes",
     "ModelTrainer",
     "Singleton",
-    "app_instance"
+    "ImageInputStream"
 ]
 
 
@@ -126,6 +128,7 @@ class Frame:
         """
         self.asset = asset
         self.skip = False
+        self.image = None
 
 
 class ExpandFrame:
@@ -459,6 +462,13 @@ class AssetProcessor(Processor):
         return self.reactor.add_expand_frame(parent_frame, expand_frame,
                                              batch_size, force)
 
+    def load_proxy_image(self, frame, size=1):
+        if frame.image:
+            return frame.image
+        else:
+            proxy_path = get_proxy_level_path(frame.asset, size)
+            return ImageInputStream.from_path(proxy_path)
+
 
 class ModelTrainer(AssetProcessor):
     """
@@ -479,8 +489,11 @@ class ModelTrainer(AssetProcessor):
         self.app_model = None
 
     def load_app_model(self):
-        self.logger.info("Fetching model {}".format(self.arg_value('model_id')))
+        self.logger.info("Fetching model {}".format(self.arg_value("model_id")))
         self.app_model = self.app.models.get_model(self.model_id)
+
+    def get_dataset(self, model):
+        return self.app.datasets.get_dataset(model.dataset_id)
 
     def process(self, frame):
         self.train()
@@ -507,64 +520,6 @@ class ModelTrainer(AssetProcessor):
         return self.arg_value("tag")
 
 
-class BoonEnv:
-    """
-    Static methods for obtaining environment variables available when running
-    within an analysis container.
-    """
-
-    @staticmethod
-    def get_job_id():
-        """
-        Return the Boon AI Job id from the environment.
-
-        Returns:
-            str: The Boon AI task Id.
-        """
-        return os.environ.get("BOONAI_JOB_ID")
-
-    @staticmethod
-    def get_task_id():
-        """
-        Return the Boon AI Task id from the environment.
-
-        Returns:
-            str: The Boon AI task Id.
-        """
-        return os.environ.get("BOONAI_TASK_ID")
-
-    @staticmethod
-    def get_project_id():
-        """
-        Return the Boon AI project id from the environment.
-
-        Returns:
-            str: The Boon AI project Id.
-        """
-        return os.environ.get("BOONAI_PROJECT_ID")
-
-    @staticmethod
-    def get_datasource_id():
-        """
-        Return the Boon AI DataSource id from the environment.  The DataSource ID
-        may or may not exist.
-
-        Returns:
-            str: The Boon AI DataSource Id or None
-        """
-        return os.environ.get("BOONAI_DATASOURCE_ID")
-
-    @staticmethod
-    def get_available_credentials_types():
-        """
-        Get a list of the available credentials types available to this job.
-
-        Returns:
-            list: list of credentials types.
-        """
-        return os.environ.get("BOONAI_CREDENTIALS_TYPES", "").split(",")
-
-
 class Singleton(type):
     """A Metaclass for Singletons, used for where we want to cache a single instance."""
     _instances = {}
@@ -573,40 +528,6 @@ class Singleton(type):
         if cls not in cls._instances:
             cls._instances[cls] = super(Singleton, cls).__call__(*args, **kwargs)
         return cls._instances[cls]
-
-
-class FlaskBoonClient(BoonClient):
-    """
-    A BoonAI client that automatically uses an Authorization header
-    from a Flask request to make additional requests.
-    """
-    def __init__(self, client):
-        super(FlaskBoonClient, self).__init__(None, client.server)
-
-    def sign_request(self):
-        return request.headers.get("Authorization")
-
-    def headers(self, content_type="application/json"):
-        headers = super().headers()
-        headers['X-BoonAI-Experimental-XXX'] = "8E5B551A8F51477489B1CC0FFD65C1C5"
-        return headers
-
-
-def app_instance():
-    """
-    Create an app instance by first attempting to detect a flask request, then
-    falling back on the environment.  The BOONFLOW_IN_FLASK environment variable
-    must be set for the Flask integration to work.
-
-    Returns:
-        BoonApp: The configured BoonApp
-    """
-    if os.environ.get("BOONFLOW_IN_FLASK"):
-        app = BoonApp(apikey=None)
-        app.client = FlaskBoonClient(app.client)
-        return app
-    else:
-        return app_from_env()
 
 
 class ProcessorException(BoonSdkException):
@@ -622,3 +543,57 @@ class FatalProcessorException(ProcessorException):
     the asset due to an unrecoverable error.
     """
     pass
+
+
+class ImageInputStream:
+    """
+    A wrapper around a BytesIO buffer that contains an image.  Methods
+    are provided to obtain a PIL or CV image. Additionally instances
+    of this class be be used as an IOBase replacement in some read only cases
+    wheree only read() and __iter__ are called.
+    """
+    @staticmethod
+    def from_path(path):
+        """
+        Create a ImageInputStream from a file path.
+
+        Args:
+            path (str): The path to the file.
+
+        Returns:
+            ImageInputStream: buffer containing image bytes.
+        """
+        with open(path, 'rb') as fh:
+            return ImageInputStream(io.BytesIO(fh.read()))
+
+    def __init__(self, buffer):
+        self.buffer = buffer
+
+    def read(self):
+        self.buffer.seek(0)
+        return self.buffer.read()
+
+    def close(self):
+        self.buffer.seek(0)
+
+    def cv_img(self):
+        """
+        Return a cv2.Image instance from internal byte buffer.
+
+        Returns:
+            cv2.Mat: A Cv2 image.
+        """
+        return cv2.imdecode(np.frombuffer(self.read(), np.uint8), 1)
+
+    def pil_img(self):
+        """
+        Return an PIL image instance from internal byte buffer.
+
+        Returns:
+            Image: A  PIL image.
+        """
+        return Image.open(self)
+
+    def __iter__(self):
+        self.buffer.seek(0)
+        return self.buffer.__iter__()

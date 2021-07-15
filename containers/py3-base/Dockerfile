@@ -9,6 +9,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked --mount=type=cache,t
     libmagic-dev \
     wget \
     curl \
+    unzip \
      --no-install-recommends
 
 # Auto-updating pip sometimes causes issues.

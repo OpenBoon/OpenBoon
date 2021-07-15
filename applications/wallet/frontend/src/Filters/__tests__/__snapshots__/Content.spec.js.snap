@@ -145,34 +145,87 @@ Array [
 }
 
 .emotion-8 {
-  padding-left: 12px;
-  padding-right: 12px;
-  margin: 0;
-  border: none;
-  border-radius: 2px;
-  background-color: transparent;
-  color: #808080;
-}
-
-.emotion-8:hover,
-.emotion-8.focus-visible:focus {
-  cursor: pointer;
-  background-color: #2e2e2e;
-  color: #ffffff;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 4px;
 }
 
 .emotion-9 {
-  height: 4px;
+  position: relative;
 }
 
 .emotion-10 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 8px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #808080;
+  background-color: transparent;
+}
+
+.emotion-10:hover,
+.emotion-10.focus-visible:focus,
+.emotion-10 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.emotion-10:hover svg,
+.emotion-10.focus-visible:focus svg,
+.emotion-10 .noop svg {
+  opacity: 1;
+}
+
+.emotion-10[aria-disabled=true],
+.emotion-10 .noop {
+  color: #808080;
+}
+
+.emotion-11 {
+  height: 4px;
+}
+
+.emotion-12 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-11 {
+.emotion-13 {
   width: 100%;
   -webkit-flex: 1;
   -ms-flex: 1;
@@ -192,27 +245,27 @@ Array [
   background-color: #191919;
 }
 
-.emotion-11::-webkit-input-placeholder {
+.emotion-13::-webkit-input-placeholder {
   font-style: italic;
 }
 
-.emotion-11::-moz-placeholder {
+.emotion-13::-moz-placeholder {
   font-style: italic;
 }
 
-.emotion-11:-ms-input-placeholder {
+.emotion-13:-ms-input-placeholder {
   font-style: italic;
 }
 
-.emotion-11::placeholder {
+.emotion-13::placeholder {
   font-style: italic;
 }
 
-.emotion-11:hover {
+.emotion-13:hover {
   border: 1px solid #808080;
 }
 
-.emotion-11:focus {
+.emotion-13:focus {
   outline: 1px solid transparent;
   border: 1px solid #3A5DFF;
   color: #191919;
@@ -220,7 +273,7 @@ Array [
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
 }
 
-.emotion-12 {
+.emotion-14 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -242,7 +295,7 @@ Array [
   cursor: not-allowed;
 }
 
-.emotion-13 {
+.emotion-15 {
   color: #3b3b3b;
 }
 
@@ -285,21 +338,29 @@ Array [
       <div
         className="emotion-5"
       />
-      <button
-        aria-label="Copy Search Query"
+      <div
         className="emotion-8"
-        onClick={[Function]}
-        title="Copy Search Query"
-        type="button"
       >
-        <svg
-          data-file-name="copy.svg"
-          height={20}
-        />
-      </button>
+        <div
+          className="emotion-9"
+        >
+          <button
+            aria-label="Copy Search Query to Clipboard"
+            className="emotion-10"
+            onClick={[Function]}
+            title="Copy Search Query to Clipboard"
+            type="button"
+          >
+            <svg
+              data-file-name="copy.svg"
+              height={20}
+            />
+          </button>
+        </div>
+      </div>
     </div>
     <div
-      className="emotion-9"
+      className="emotion-11"
     />
     <form
       action=""
@@ -307,11 +368,11 @@ Array [
       onSubmit={[Function]}
     >
       <div
-        className="emotion-10"
+        className="emotion-12"
       >
         <input
           aria-label="Add Simple Text Filter"
-          className="emotion-11"
+          className="emotion-13"
           onChange={[Function]}
           placeholder="Type here to create a simple text filter"
           type="search"
@@ -320,12 +381,12 @@ Array [
         <button
           aria-disabled={true}
           aria-label="Search"
-          className="emotion-12"
+          className="emotion-14"
           onClick={[Function]}
           type="submit"
         >
           <svg
-            className="emotion-13"
+            className="emotion-15"
             data-file-name="plus.svg"
             height={20}
           />
@@ -375,10 +436,6 @@ Array [
 
 .emotion-4 {
   color: #808080;
-  -webkit-transform: rotate(-180deg);
-  -moz-transform: rotate(-180deg);
-  -ms-transform: rotate(-180deg);
-  transform: rotate(-180deg);
 }
 
 .emotion-5 {
@@ -975,34 +1032,87 @@ Array [
 }
 
 .emotion-8 {
-  padding-left: 12px;
-  padding-right: 12px;
-  margin: 0;
-  border: none;
-  border-radius: 2px;
-  background-color: transparent;
-  color: #808080;
-}
-
-.emotion-8:hover,
-.emotion-8.focus-visible:focus {
-  cursor: pointer;
-  background-color: #2e2e2e;
-  color: #ffffff;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 4px;
 }
 
 .emotion-9 {
-  height: 4px;
+  position: relative;
 }
 
 .emotion-10 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 8px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #808080;
+  background-color: transparent;
+}
+
+.emotion-10:hover,
+.emotion-10.focus-visible:focus,
+.emotion-10 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.emotion-10:hover svg,
+.emotion-10.focus-visible:focus svg,
+.emotion-10 .noop svg {
+  opacity: 1;
+}
+
+.emotion-10[aria-disabled=true],
+.emotion-10 .noop {
+  color: #808080;
+}
+
+.emotion-11 {
+  height: 4px;
+}
+
+.emotion-12 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-11 {
+.emotion-13 {
   width: 100%;
   -webkit-flex: 1;
   -ms-flex: 1;
@@ -1022,27 +1132,27 @@ Array [
   background-color: #191919;
 }
 
-.emotion-11::-webkit-input-placeholder {
+.emotion-13::-webkit-input-placeholder {
   font-style: italic;
 }
 
-.emotion-11::-moz-placeholder {
+.emotion-13::-moz-placeholder {
   font-style: italic;
 }
 
-.emotion-11:-ms-input-placeholder {
+.emotion-13:-ms-input-placeholder {
   font-style: italic;
 }
 
-.emotion-11::placeholder {
+.emotion-13::placeholder {
   font-style: italic;
 }
 
-.emotion-11:hover {
+.emotion-13:hover {
   border: 1px solid #808080;
 }
 
-.emotion-11:focus {
+.emotion-13:focus {
   outline: 1px solid transparent;
   border: 1px solid #3A5DFF;
   color: #191919;
@@ -1050,7 +1160,7 @@ Array [
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
 }
 
-.emotion-12 {
+.emotion-14 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1072,7 +1182,7 @@ Array [
   cursor: not-allowed;
 }
 
-.emotion-13 {
+.emotion-15 {
   color: #3b3b3b;
 }
 
@@ -1115,21 +1225,29 @@ Array [
       <div
         className="emotion-5"
       />
-      <button
-        aria-label="Copy Search Query"
+      <div
         className="emotion-8"
-        onClick={[Function]}
-        title="Copy Search Query"
-        type="button"
       >
-        <svg
-          data-file-name="copy.svg"
-          height={20}
-        />
-      </button>
+        <div
+          className="emotion-9"
+        >
+          <button
+            aria-label="Copy Search Query to Clipboard"
+            className="emotion-10"
+            onClick={[Function]}
+            title="Copy Search Query to Clipboard"
+            type="button"
+          >
+            <svg
+              data-file-name="copy.svg"
+              height={20}
+            />
+          </button>
+        </div>
+      </div>
     </div>
     <div
-      className="emotion-9"
+      className="emotion-11"
     />
     <form
       action=""
@@ -1137,11 +1255,11 @@ Array [
       onSubmit={[Function]}
     >
       <div
-        className="emotion-10"
+        className="emotion-12"
       >
         <input
           aria-label="Add Simple Text Filter"
-          className="emotion-11"
+          className="emotion-13"
           onChange={[Function]}
           placeholder="Type here to create a simple text filter"
           type="search"
@@ -1150,12 +1268,12 @@ Array [
         <button
           aria-disabled={true}
           aria-label="Search"
-          className="emotion-12"
+          className="emotion-14"
           onClick={[Function]}
           type="submit"
         >
           <svg
-            className="emotion-13"
+            className="emotion-15"
             data-file-name="plus.svg"
             height={20}
           />
@@ -1205,10 +1323,6 @@ Array [
 
 .emotion-4 {
   color: #808080;
-  -webkit-transform: rotate(-180deg);
-  -moz-transform: rotate(-180deg);
-  -ms-transform: rotate(-180deg);
-  transform: rotate(-180deg);
 }
 
 .emotion-5 {
@@ -1495,6 +1609,12 @@ Array [
 
 .emotion-24::placeholder {
   font-style: italic;
+}
+
+.emotion-24::-webkit-datetime-edit-month-field,
+.emotion-24::-webkit-datetime-edit-day-field,
+.emotion-24::-webkit-datetime-edit-year-field {
+  color: #ffffff;
 }
 
 .emotion-25 {
@@ -1869,34 +1989,87 @@ Array [
 }
 
 .emotion-8 {
-  padding-left: 12px;
-  padding-right: 12px;
-  margin: 0;
-  border: none;
-  border-radius: 2px;
-  background-color: transparent;
-  color: #808080;
-}
-
-.emotion-8:hover,
-.emotion-8.focus-visible:focus {
-  cursor: pointer;
-  background-color: #2e2e2e;
-  color: #ffffff;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 4px;
 }
 
 .emotion-9 {
-  height: 4px;
+  position: relative;
 }
 
 .emotion-10 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 8px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #808080;
+  background-color: transparent;
+}
+
+.emotion-10:hover,
+.emotion-10.focus-visible:focus,
+.emotion-10 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.emotion-10:hover svg,
+.emotion-10.focus-visible:focus svg,
+.emotion-10 .noop svg {
+  opacity: 1;
+}
+
+.emotion-10[aria-disabled=true],
+.emotion-10 .noop {
+  color: #808080;
+}
+
+.emotion-11 {
+  height: 4px;
+}
+
+.emotion-12 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-11 {
+.emotion-13 {
   width: 100%;
   -webkit-flex: 1;
   -ms-flex: 1;
@@ -1916,27 +2089,27 @@ Array [
   background-color: #191919;
 }
 
-.emotion-11::-webkit-input-placeholder {
+.emotion-13::-webkit-input-placeholder {
   font-style: italic;
 }
 
-.emotion-11::-moz-placeholder {
+.emotion-13::-moz-placeholder {
   font-style: italic;
 }
 
-.emotion-11:-ms-input-placeholder {
+.emotion-13:-ms-input-placeholder {
   font-style: italic;
 }
 
-.emotion-11::placeholder {
+.emotion-13::placeholder {
   font-style: italic;
 }
 
-.emotion-11:hover {
+.emotion-13:hover {
   border: 1px solid #808080;
 }
 
-.emotion-11:focus {
+.emotion-13:focus {
   outline: 1px solid transparent;
   border: 1px solid #3A5DFF;
   color: #191919;
@@ -1944,7 +2117,7 @@ Array [
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
 }
 
-.emotion-12 {
+.emotion-14 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1966,7 +2139,7 @@ Array [
   cursor: not-allowed;
 }
 
-.emotion-13 {
+.emotion-15 {
   color: #3b3b3b;
 }
 
@@ -2009,21 +2182,29 @@ Array [
       <div
         className="emotion-5"
       />
-      <button
-        aria-label="Copy Search Query"
+      <div
         className="emotion-8"
-        onClick={[Function]}
-        title="Copy Search Query"
-        type="button"
       >
-        <svg
-          data-file-name="copy.svg"
-          height={20}
-        />
-      </button>
+        <div
+          className="emotion-9"
+        >
+          <button
+            aria-label="Copy Search Query to Clipboard"
+            className="emotion-10"
+            onClick={[Function]}
+            title="Copy Search Query to Clipboard"
+            type="button"
+          >
+            <svg
+              data-file-name="copy.svg"
+              height={20}
+            />
+          </button>
+        </div>
+      </div>
     </div>
     <div
-      className="emotion-9"
+      className="emotion-11"
     />
     <form
       action=""
@@ -2031,11 +2212,11 @@ Array [
       onSubmit={[Function]}
     >
       <div
-        className="emotion-10"
+        className="emotion-12"
       >
         <input
           aria-label="Add Simple Text Filter"
-          className="emotion-11"
+          className="emotion-13"
           onChange={[Function]}
           placeholder="Type here to create a simple text filter"
           type="search"
@@ -2044,12 +2225,12 @@ Array [
         <button
           aria-disabled={true}
           aria-label="Search"
-          className="emotion-12"
+          className="emotion-14"
           onClick={[Function]}
           type="submit"
         >
           <svg
-            className="emotion-13"
+            className="emotion-15"
             data-file-name="plus.svg"
             height={20}
           />
@@ -2099,10 +2280,6 @@ Array [
 
 .emotion-4 {
   color: #808080;
-  -webkit-transform: rotate(-180deg);
-  -moz-transform: rotate(-180deg);
-  -ms-transform: rotate(-180deg);
-  transform: rotate(-180deg);
 }
 
 .emotion-5 {
@@ -2670,34 +2847,87 @@ Array [
 }
 
 .emotion-8 {
-  padding-left: 12px;
-  padding-right: 12px;
-  margin: 0;
-  border: none;
-  border-radius: 2px;
-  background-color: transparent;
-  color: #808080;
-}
-
-.emotion-8:hover,
-.emotion-8.focus-visible:focus {
-  cursor: pointer;
-  background-color: #2e2e2e;
-  color: #ffffff;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 4px;
 }
 
 .emotion-9 {
-  height: 4px;
+  position: relative;
 }
 
 .emotion-10 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 8px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #808080;
+  background-color: transparent;
+}
+
+.emotion-10:hover,
+.emotion-10.focus-visible:focus,
+.emotion-10 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.emotion-10:hover svg,
+.emotion-10.focus-visible:focus svg,
+.emotion-10 .noop svg {
+  opacity: 1;
+}
+
+.emotion-10[aria-disabled=true],
+.emotion-10 .noop {
+  color: #808080;
+}
+
+.emotion-11 {
+  height: 4px;
+}
+
+.emotion-12 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-11 {
+.emotion-13 {
   width: 100%;
   -webkit-flex: 1;
   -ms-flex: 1;
@@ -2717,27 +2947,27 @@ Array [
   background-color: #191919;
 }
 
-.emotion-11::-webkit-input-placeholder {
+.emotion-13::-webkit-input-placeholder {
   font-style: italic;
 }
 
-.emotion-11::-moz-placeholder {
+.emotion-13::-moz-placeholder {
   font-style: italic;
 }
 
-.emotion-11:-ms-input-placeholder {
+.emotion-13:-ms-input-placeholder {
   font-style: italic;
 }
 
-.emotion-11::placeholder {
+.emotion-13::placeholder {
   font-style: italic;
 }
 
-.emotion-11:hover {
+.emotion-13:hover {
   border: 1px solid #808080;
 }
 
-.emotion-11:focus {
+.emotion-13:focus {
   outline: 1px solid transparent;
   border: 1px solid #3A5DFF;
   color: #191919;
@@ -2745,7 +2975,7 @@ Array [
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
 }
 
-.emotion-12 {
+.emotion-14 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2767,7 +2997,7 @@ Array [
   cursor: not-allowed;
 }
 
-.emotion-13 {
+.emotion-15 {
   color: #3b3b3b;
 }
 
@@ -2810,21 +3040,29 @@ Array [
       <div
         className="emotion-5"
       />
-      <button
-        aria-label="Copy Search Query"
+      <div
         className="emotion-8"
-        onClick={[Function]}
-        title="Copy Search Query"
-        type="button"
       >
-        <svg
-          data-file-name="copy.svg"
-          height={20}
-        />
-      </button>
+        <div
+          className="emotion-9"
+        >
+          <button
+            aria-label="Copy Search Query to Clipboard"
+            className="emotion-10"
+            onClick={[Function]}
+            title="Copy Search Query to Clipboard"
+            type="button"
+          >
+            <svg
+              data-file-name="copy.svg"
+              height={20}
+            />
+          </button>
+        </div>
+      </div>
     </div>
     <div
-      className="emotion-9"
+      className="emotion-11"
     />
     <form
       action=""
@@ -2832,11 +3070,11 @@ Array [
       onSubmit={[Function]}
     >
       <div
-        className="emotion-10"
+        className="emotion-12"
       >
         <input
           aria-label="Add Simple Text Filter"
-          className="emotion-11"
+          className="emotion-13"
           onChange={[Function]}
           placeholder="Type here to create a simple text filter"
           type="search"
@@ -2845,12 +3083,12 @@ Array [
         <button
           aria-disabled={true}
           aria-label="Search"
-          className="emotion-12"
+          className="emotion-14"
           onClick={[Function]}
           type="submit"
         >
           <svg
-            className="emotion-13"
+            className="emotion-15"
             data-file-name="plus.svg"
             height={20}
           />
@@ -2900,10 +3138,6 @@ Array [
 
 .emotion-4 {
   color: #808080;
-  -webkit-transform: rotate(-180deg);
-  -moz-transform: rotate(-180deg);
-  -ms-transform: rotate(-180deg);
-  transform: rotate(-180deg);
 }
 
 .emotion-5 {
@@ -3842,34 +4076,87 @@ Array [
 }
 
 .emotion-8 {
-  padding-left: 12px;
-  padding-right: 12px;
-  margin: 0;
-  border: none;
-  border-radius: 2px;
-  background-color: transparent;
-  color: #808080;
-}
-
-.emotion-8:hover,
-.emotion-8.focus-visible:focus {
-  cursor: pointer;
-  background-color: #2e2e2e;
-  color: #ffffff;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 4px;
 }
 
 .emotion-9 {
-  height: 4px;
+  position: relative;
 }
 
 .emotion-10 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 8px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #808080;
+  background-color: transparent;
+}
+
+.emotion-10:hover,
+.emotion-10.focus-visible:focus,
+.emotion-10 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.emotion-10:hover svg,
+.emotion-10.focus-visible:focus svg,
+.emotion-10 .noop svg {
+  opacity: 1;
+}
+
+.emotion-10[aria-disabled=true],
+.emotion-10 .noop {
+  color: #808080;
+}
+
+.emotion-11 {
+  height: 4px;
+}
+
+.emotion-12 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-11 {
+.emotion-13 {
   width: 100%;
   -webkit-flex: 1;
   -ms-flex: 1;
@@ -3889,27 +4176,27 @@ Array [
   background-color: #191919;
 }
 
-.emotion-11::-webkit-input-placeholder {
+.emotion-13::-webkit-input-placeholder {
   font-style: italic;
 }
 
-.emotion-11::-moz-placeholder {
+.emotion-13::-moz-placeholder {
   font-style: italic;
 }
 
-.emotion-11:-ms-input-placeholder {
+.emotion-13:-ms-input-placeholder {
   font-style: italic;
 }
 
-.emotion-11::placeholder {
+.emotion-13::placeholder {
   font-style: italic;
 }
 
-.emotion-11:hover {
+.emotion-13:hover {
   border: 1px solid #808080;
 }
 
-.emotion-11:focus {
+.emotion-13:focus {
   outline: 1px solid transparent;
   border: 1px solid #3A5DFF;
   color: #191919;
@@ -3917,7 +4204,7 @@ Array [
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
 }
 
-.emotion-12 {
+.emotion-14 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -3939,7 +4226,7 @@ Array [
   cursor: not-allowed;
 }
 
-.emotion-13 {
+.emotion-15 {
   color: #3b3b3b;
 }
 
@@ -3982,21 +4269,29 @@ Array [
       <div
         className="emotion-5"
       />
-      <button
-        aria-label="Copy Search Query"
+      <div
         className="emotion-8"
-        onClick={[Function]}
-        title="Copy Search Query"
-        type="button"
       >
-        <svg
-          data-file-name="copy.svg"
-          height={20}
-        />
-      </button>
+        <div
+          className="emotion-9"
+        >
+          <button
+            aria-label="Copy Search Query to Clipboard"
+            className="emotion-10"
+            onClick={[Function]}
+            title="Copy Search Query to Clipboard"
+            type="button"
+          >
+            <svg
+              data-file-name="copy.svg"
+              height={20}
+            />
+          </button>
+        </div>
+      </div>
     </div>
     <div
-      className="emotion-9"
+      className="emotion-11"
     />
     <form
       action=""
@@ -4004,11 +4299,11 @@ Array [
       onSubmit={[Function]}
     >
       <div
-        className="emotion-10"
+        className="emotion-12"
       >
         <input
           aria-label="Add Simple Text Filter"
-          className="emotion-11"
+          className="emotion-13"
           onChange={[Function]}
           placeholder="Type here to create a simple text filter"
           type="search"
@@ -4017,12 +4312,12 @@ Array [
         <button
           aria-disabled={true}
           aria-label="Search"
-          className="emotion-12"
+          className="emotion-14"
           onClick={[Function]}
           type="submit"
         >
           <svg
-            className="emotion-13"
+            className="emotion-15"
             data-file-name="plus.svg"
             height={20}
           />
@@ -4072,10 +4367,6 @@ Array [
 
 .emotion-4 {
   color: #808080;
-  -webkit-transform: rotate(-180deg);
-  -moz-transform: rotate(-180deg);
-  -ms-transform: rotate(-180deg);
-  transform: rotate(-180deg);
 }
 
 .emotion-5 {
@@ -8957,34 +9248,87 @@ Array [
 }
 
 .emotion-8 {
-  padding-left: 12px;
-  padding-right: 12px;
-  margin: 0;
-  border: none;
-  border-radius: 2px;
-  background-color: transparent;
-  color: #808080;
-}
-
-.emotion-8:hover,
-.emotion-8.focus-visible:focus {
-  cursor: pointer;
-  background-color: #2e2e2e;
-  color: #ffffff;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 4px;
 }
 
 .emotion-9 {
-  height: 4px;
+  position: relative;
 }
 
 .emotion-10 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 8px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #808080;
+  background-color: transparent;
+}
+
+.emotion-10:hover,
+.emotion-10.focus-visible:focus,
+.emotion-10 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.emotion-10:hover svg,
+.emotion-10.focus-visible:focus svg,
+.emotion-10 .noop svg {
+  opacity: 1;
+}
+
+.emotion-10[aria-disabled=true],
+.emotion-10 .noop {
+  color: #808080;
+}
+
+.emotion-11 {
+  height: 4px;
+}
+
+.emotion-12 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-11 {
+.emotion-13 {
   width: 100%;
   -webkit-flex: 1;
   -ms-flex: 1;
@@ -9004,27 +9348,27 @@ Array [
   background-color: #191919;
 }
 
-.emotion-11::-webkit-input-placeholder {
+.emotion-13::-webkit-input-placeholder {
   font-style: italic;
 }
 
-.emotion-11::-moz-placeholder {
+.emotion-13::-moz-placeholder {
   font-style: italic;
 }
 
-.emotion-11:-ms-input-placeholder {
+.emotion-13:-ms-input-placeholder {
   font-style: italic;
 }
 
-.emotion-11::placeholder {
+.emotion-13::placeholder {
   font-style: italic;
 }
 
-.emotion-11:hover {
+.emotion-13:hover {
   border: 1px solid #808080;
 }
 
-.emotion-11:focus {
+.emotion-13:focus {
   outline: 1px solid transparent;
   border: 1px solid #3A5DFF;
   color: #191919;
@@ -9032,7 +9376,7 @@ Array [
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
 }
 
-.emotion-12 {
+.emotion-14 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -9054,7 +9398,7 @@ Array [
   cursor: not-allowed;
 }
 
-.emotion-13 {
+.emotion-15 {
   color: #3b3b3b;
 }
 
@@ -9097,21 +9441,29 @@ Array [
       <div
         className="emotion-5"
       />
-      <button
-        aria-label="Copy Search Query"
+      <div
         className="emotion-8"
-        onClick={[Function]}
-        title="Copy Search Query"
-        type="button"
       >
-        <svg
-          data-file-name="copy.svg"
-          height={20}
-        />
-      </button>
+        <div
+          className="emotion-9"
+        >
+          <button
+            aria-label="Copy Search Query to Clipboard"
+            className="emotion-10"
+            onClick={[Function]}
+            title="Copy Search Query to Clipboard"
+            type="button"
+          >
+            <svg
+              data-file-name="copy.svg"
+              height={20}
+            />
+          </button>
+        </div>
+      </div>
     </div>
     <div
-      className="emotion-9"
+      className="emotion-11"
     />
     <form
       action=""
@@ -9119,11 +9471,11 @@ Array [
       onSubmit={[Function]}
     >
       <div
-        className="emotion-10"
+        className="emotion-12"
       >
         <input
           aria-label="Add Simple Text Filter"
-          className="emotion-11"
+          className="emotion-13"
           onChange={[Function]}
           placeholder="Type here to create a simple text filter"
           type="search"
@@ -9132,12 +9484,12 @@ Array [
         <button
           aria-disabled={true}
           aria-label="Search"
-          className="emotion-12"
+          className="emotion-14"
           onClick={[Function]}
           type="submit"
         >
           <svg
-            className="emotion-13"
+            className="emotion-15"
             data-file-name="plus.svg"
             height={20}
           />
@@ -9187,10 +9539,6 @@ Array [
 
 .emotion-4 {
   color: #808080;
-  -webkit-transform: rotate(-180deg);
-  -moz-transform: rotate(-180deg);
-  -ms-transform: rotate(-180deg);
-  transform: rotate(-180deg);
 }
 
 .emotion-5 {
@@ -9693,7 +10041,7 @@ Array [
             filter={
               Object {
                 "attribute": "labels.console",
-                "modelId": "621bf774-89d9-1244-9596-d6df43f1ede5",
+                "datasetId": "4b0b10a8-cec1-155c-b12f-ee2bc8787e06",
                 "type": "label",
                 "values": Object {},
               }
@@ -9703,7 +10051,7 @@ Array [
               Array [
                 Object {
                   "attribute": "labels.console",
-                  "modelId": "621bf774-89d9-1244-9596-d6df43f1ede5",
+                  "datasetId": "4b0b10a8-cec1-155c-b12f-ee2bc8787e06",
                   "type": "label",
                   "values": Object {},
                 },
@@ -10140,34 +10488,87 @@ Array [
 }
 
 .emotion-8 {
-  padding-left: 12px;
-  padding-right: 12px;
-  margin: 0;
-  border: none;
-  border-radius: 2px;
-  background-color: transparent;
-  color: #808080;
-}
-
-.emotion-8:hover,
-.emotion-8.focus-visible:focus {
-  cursor: pointer;
-  background-color: #2e2e2e;
-  color: #ffffff;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 4px;
 }
 
 .emotion-9 {
-  height: 4px;
+  position: relative;
 }
 
 .emotion-10 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 8px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #808080;
+  background-color: transparent;
+}
+
+.emotion-10:hover,
+.emotion-10.focus-visible:focus,
+.emotion-10 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.emotion-10:hover svg,
+.emotion-10.focus-visible:focus svg,
+.emotion-10 .noop svg {
+  opacity: 1;
+}
+
+.emotion-10[aria-disabled=true],
+.emotion-10 .noop {
+  color: #808080;
+}
+
+.emotion-11 {
+  height: 4px;
+}
+
+.emotion-12 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-11 {
+.emotion-13 {
   width: 100%;
   -webkit-flex: 1;
   -ms-flex: 1;
@@ -10187,27 +10588,27 @@ Array [
   background-color: #191919;
 }
 
-.emotion-11::-webkit-input-placeholder {
+.emotion-13::-webkit-input-placeholder {
   font-style: italic;
 }
 
-.emotion-11::-moz-placeholder {
+.emotion-13::-moz-placeholder {
   font-style: italic;
 }
 
-.emotion-11:-ms-input-placeholder {
+.emotion-13:-ms-input-placeholder {
   font-style: italic;
 }
 
-.emotion-11::placeholder {
+.emotion-13::placeholder {
   font-style: italic;
 }
 
-.emotion-11:hover {
+.emotion-13:hover {
   border: 1px solid #808080;
 }
 
-.emotion-11:focus {
+.emotion-13:focus {
   outline: 1px solid transparent;
   border: 1px solid #3A5DFF;
   color: #191919;
@@ -10215,7 +10616,7 @@ Array [
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
 }
 
-.emotion-12 {
+.emotion-14 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -10237,7 +10638,7 @@ Array [
   cursor: not-allowed;
 }
 
-.emotion-13 {
+.emotion-15 {
   color: #3b3b3b;
 }
 
@@ -10280,21 +10681,29 @@ Array [
       <div
         className="emotion-5"
       />
-      <button
-        aria-label="Copy Search Query"
+      <div
         className="emotion-8"
-        onClick={[Function]}
-        title="Copy Search Query"
-        type="button"
       >
-        <svg
-          data-file-name="copy.svg"
-          height={20}
-        />
-      </button>
+        <div
+          className="emotion-9"
+        >
+          <button
+            aria-label="Copy Search Query to Clipboard"
+            className="emotion-10"
+            onClick={[Function]}
+            title="Copy Search Query to Clipboard"
+            type="button"
+          >
+            <svg
+              data-file-name="copy.svg"
+              height={20}
+            />
+          </button>
+        </div>
+      </div>
     </div>
     <div
-      className="emotion-9"
+      className="emotion-11"
     />
     <form
       action=""
@@ -10302,11 +10711,11 @@ Array [
       onSubmit={[Function]}
     >
       <div
-        className="emotion-10"
+        className="emotion-12"
       >
         <input
           aria-label="Add Simple Text Filter"
-          className="emotion-11"
+          className="emotion-13"
           onChange={[Function]}
           placeholder="Type here to create a simple text filter"
           type="search"
@@ -10315,12 +10724,12 @@ Array [
         <button
           aria-disabled={true}
           aria-label="Search"
-          className="emotion-12"
+          className="emotion-14"
           onClick={[Function]}
           type="submit"
         >
           <svg
-            className="emotion-13"
+            className="emotion-15"
             data-file-name="plus.svg"
             height={20}
           />
@@ -10370,10 +10779,6 @@ Array [
 
 .emotion-4 {
   color: #808080;
-  -webkit-transform: rotate(-180deg);
-  -moz-transform: rotate(-180deg);
-  -ms-transform: rotate(-180deg);
-  transform: rotate(-180deg);
 }
 
 .emotion-5 {
@@ -10992,34 +11397,87 @@ Array [
 }
 
 .emotion-8 {
-  padding-left: 12px;
-  padding-right: 12px;
-  margin: 0;
-  border: none;
-  border-radius: 2px;
-  background-color: transparent;
-  color: #808080;
-}
-
-.emotion-8:hover,
-.emotion-8.focus-visible:focus {
-  cursor: pointer;
-  background-color: #2e2e2e;
-  color: #ffffff;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 4px;
 }
 
 .emotion-9 {
-  height: 4px;
+  position: relative;
 }
 
 .emotion-10 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 8px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #808080;
+  background-color: transparent;
+}
+
+.emotion-10:hover,
+.emotion-10.focus-visible:focus,
+.emotion-10 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.emotion-10:hover svg,
+.emotion-10.focus-visible:focus svg,
+.emotion-10 .noop svg {
+  opacity: 1;
+}
+
+.emotion-10[aria-disabled=true],
+.emotion-10 .noop {
+  color: #808080;
+}
+
+.emotion-11 {
+  height: 4px;
+}
+
+.emotion-12 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-11 {
+.emotion-13 {
   width: 100%;
   -webkit-flex: 1;
   -ms-flex: 1;
@@ -11039,27 +11497,27 @@ Array [
   background-color: #191919;
 }
 
-.emotion-11::-webkit-input-placeholder {
+.emotion-13::-webkit-input-placeholder {
   font-style: italic;
 }
 
-.emotion-11::-moz-placeholder {
+.emotion-13::-moz-placeholder {
   font-style: italic;
 }
 
-.emotion-11:-ms-input-placeholder {
+.emotion-13:-ms-input-placeholder {
   font-style: italic;
 }
 
-.emotion-11::placeholder {
+.emotion-13::placeholder {
   font-style: italic;
 }
 
-.emotion-11:hover {
+.emotion-13:hover {
   border: 1px solid #808080;
 }
 
-.emotion-11:focus {
+.emotion-13:focus {
   outline: 1px solid transparent;
   border: 1px solid #3A5DFF;
   color: #191919;
@@ -11067,7 +11525,7 @@ Array [
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
 }
 
-.emotion-12 {
+.emotion-14 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -11089,7 +11547,7 @@ Array [
   cursor: not-allowed;
 }
 
-.emotion-13 {
+.emotion-15 {
   color: #3b3b3b;
 }
 
@@ -11132,21 +11590,29 @@ Array [
       <div
         className="emotion-5"
       />
-      <button
-        aria-label="Copy Search Query"
+      <div
         className="emotion-8"
-        onClick={[Function]}
-        title="Copy Search Query"
-        type="button"
       >
-        <svg
-          data-file-name="copy.svg"
-          height={20}
-        />
-      </button>
+        <div
+          className="emotion-9"
+        >
+          <button
+            aria-label="Copy Search Query to Clipboard"
+            className="emotion-10"
+            onClick={[Function]}
+            title="Copy Search Query to Clipboard"
+            type="button"
+          >
+            <svg
+              data-file-name="copy.svg"
+              height={20}
+            />
+          </button>
+        </div>
+      </div>
     </div>
     <div
-      className="emotion-9"
+      className="emotion-11"
     />
     <form
       action=""
@@ -11154,11 +11620,11 @@ Array [
       onSubmit={[Function]}
     >
       <div
-        className="emotion-10"
+        className="emotion-12"
       >
         <input
           aria-label="Add Simple Text Filter"
-          className="emotion-11"
+          className="emotion-13"
           onChange={[Function]}
           placeholder="Type here to create a simple text filter"
           type="search"
@@ -11167,12 +11633,12 @@ Array [
         <button
           aria-disabled={true}
           aria-label="Search"
-          className="emotion-12"
+          className="emotion-14"
           onClick={[Function]}
           type="submit"
         >
           <svg
-            className="emotion-13"
+            className="emotion-15"
             data-file-name="plus.svg"
             height={20}
           />
@@ -11222,10 +11688,6 @@ Array [
 
 .emotion-4 {
   color: #808080;
-  -webkit-transform: rotate(-180deg);
-  -moz-transform: rotate(-180deg);
-  -ms-transform: rotate(-180deg);
-  transform: rotate(-180deg);
 }
 
 .emotion-5 {
@@ -11781,34 +12243,87 @@ Array [
 }
 
 .emotion-8 {
-  padding-left: 12px;
-  padding-right: 12px;
-  margin: 0;
-  border: none;
-  border-radius: 2px;
-  background-color: transparent;
-  color: #808080;
-}
-
-.emotion-8:hover,
-.emotion-8.focus-visible:focus {
-  cursor: pointer;
-  background-color: #2e2e2e;
-  color: #ffffff;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 4px;
 }
 
 .emotion-9 {
-  height: 4px;
+  position: relative;
 }
 
 .emotion-10 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 8px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #808080;
+  background-color: transparent;
+}
+
+.emotion-10:hover,
+.emotion-10.focus-visible:focus,
+.emotion-10 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.emotion-10:hover svg,
+.emotion-10.focus-visible:focus svg,
+.emotion-10 .noop svg {
+  opacity: 1;
+}
+
+.emotion-10[aria-disabled=true],
+.emotion-10 .noop {
+  color: #808080;
+}
+
+.emotion-11 {
+  height: 4px;
+}
+
+.emotion-12 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-11 {
+.emotion-13 {
   width: 100%;
   -webkit-flex: 1;
   -ms-flex: 1;
@@ -11828,27 +12343,27 @@ Array [
   background-color: #191919;
 }
 
-.emotion-11::-webkit-input-placeholder {
+.emotion-13::-webkit-input-placeholder {
   font-style: italic;
 }
 
-.emotion-11::-moz-placeholder {
+.emotion-13::-moz-placeholder {
   font-style: italic;
 }
 
-.emotion-11:-ms-input-placeholder {
+.emotion-13:-ms-input-placeholder {
   font-style: italic;
 }
 
-.emotion-11::placeholder {
+.emotion-13::placeholder {
   font-style: italic;
 }
 
-.emotion-11:hover {
+.emotion-13:hover {
   border: 1px solid #808080;
 }
 
-.emotion-11:focus {
+.emotion-13:focus {
   outline: 1px solid transparent;
   border: 1px solid #3A5DFF;
   color: #191919;
@@ -11856,7 +12371,7 @@ Array [
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
 }
 
-.emotion-12 {
+.emotion-14 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -11878,7 +12393,7 @@ Array [
   cursor: not-allowed;
 }
 
-.emotion-13 {
+.emotion-15 {
   color: #3b3b3b;
 }
 
@@ -11921,21 +12436,29 @@ Array [
       <div
         className="emotion-5"
       />
-      <button
-        aria-label="Copy Search Query"
+      <div
         className="emotion-8"
-        onClick={[Function]}
-        title="Copy Search Query"
-        type="button"
       >
-        <svg
-          data-file-name="copy.svg"
-          height={20}
-        />
-      </button>
+        <div
+          className="emotion-9"
+        >
+          <button
+            aria-label="Copy Search Query to Clipboard"
+            className="emotion-10"
+            onClick={[Function]}
+            title="Copy Search Query to Clipboard"
+            type="button"
+          >
+            <svg
+              data-file-name="copy.svg"
+              height={20}
+            />
+          </button>
+        </div>
+      </div>
     </div>
     <div
-      className="emotion-9"
+      className="emotion-11"
     />
     <form
       action=""
@@ -11943,11 +12466,11 @@ Array [
       onSubmit={[Function]}
     >
       <div
-        className="emotion-10"
+        className="emotion-12"
       >
         <input
           aria-label="Add Simple Text Filter"
-          className="emotion-11"
+          className="emotion-13"
           onChange={[Function]}
           placeholder="Type here to create a simple text filter"
           type="search"
@@ -11956,12 +12479,12 @@ Array [
         <button
           aria-disabled={true}
           aria-label="Search"
-          className="emotion-12"
+          className="emotion-14"
           onClick={[Function]}
           type="submit"
         >
           <svg
-            className="emotion-13"
+            className="emotion-15"
             data-file-name="plus.svg"
             height={20}
           />
@@ -12011,10 +12534,6 @@ Array [
 
 .emotion-4 {
   color: #808080;
-  -webkit-transform: rotate(-180deg);
-  -moz-transform: rotate(-180deg);
-  -ms-transform: rotate(-180deg);
-  transform: rotate(-180deg);
 }
 
 .emotion-5 {
@@ -12479,34 +12998,87 @@ Array [
 }
 
 .emotion-8 {
-  padding-left: 12px;
-  padding-right: 12px;
-  margin: 0;
-  border: none;
-  border-radius: 2px;
-  background-color: transparent;
-  color: #808080;
-}
-
-.emotion-8:hover,
-.emotion-8.focus-visible:focus {
-  cursor: pointer;
-  background-color: #2e2e2e;
-  color: #ffffff;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 4px;
 }
 
 .emotion-9 {
-  height: 4px;
+  position: relative;
 }
 
 .emotion-10 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 8px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #808080;
+  background-color: transparent;
+}
+
+.emotion-10:hover,
+.emotion-10.focus-visible:focus,
+.emotion-10 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.emotion-10:hover svg,
+.emotion-10.focus-visible:focus svg,
+.emotion-10 .noop svg {
+  opacity: 1;
+}
+
+.emotion-10[aria-disabled=true],
+.emotion-10 .noop {
+  color: #808080;
+}
+
+.emotion-11 {
+  height: 4px;
+}
+
+.emotion-12 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-11 {
+.emotion-13 {
   width: 100%;
   -webkit-flex: 1;
   -ms-flex: 1;
@@ -12526,27 +13098,27 @@ Array [
   background-color: #191919;
 }
 
-.emotion-11::-webkit-input-placeholder {
+.emotion-13::-webkit-input-placeholder {
   font-style: italic;
 }
 
-.emotion-11::-moz-placeholder {
+.emotion-13::-moz-placeholder {
   font-style: italic;
 }
 
-.emotion-11:-ms-input-placeholder {
+.emotion-13:-ms-input-placeholder {
   font-style: italic;
 }
 
-.emotion-11::placeholder {
+.emotion-13::placeholder {
   font-style: italic;
 }
 
-.emotion-11:hover {
+.emotion-13:hover {
   border: 1px solid #808080;
 }
 
-.emotion-11:focus {
+.emotion-13:focus {
   outline: 1px solid transparent;
   border: 1px solid #3A5DFF;
   color: #191919;
@@ -12554,7 +13126,7 @@ Array [
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
 }
 
-.emotion-12 {
+.emotion-14 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -12576,7 +13148,7 @@ Array [
   cursor: not-allowed;
 }
 
-.emotion-13 {
+.emotion-15 {
   color: #3b3b3b;
 }
 
@@ -12619,21 +13191,29 @@ Array [
       <div
         className="emotion-5"
       />
-      <button
-        aria-label="Copy Search Query"
+      <div
         className="emotion-8"
-        onClick={[Function]}
-        title="Copy Search Query"
-        type="button"
       >
-        <svg
-          data-file-name="copy.svg"
-          height={20}
-        />
-      </button>
+        <div
+          className="emotion-9"
+        >
+          <button
+            aria-label="Copy Search Query to Clipboard"
+            className="emotion-10"
+            onClick={[Function]}
+            title="Copy Search Query to Clipboard"
+            type="button"
+          >
+            <svg
+              data-file-name="copy.svg"
+              height={20}
+            />
+          </button>
+        </div>
+      </div>
     </div>
     <div
-      className="emotion-9"
+      className="emotion-11"
     />
     <form
       action=""
@@ -12641,11 +13221,11 @@ Array [
       onSubmit={[Function]}
     >
       <div
-        className="emotion-10"
+        className="emotion-12"
       >
         <input
           aria-label="Add Simple Text Filter"
-          className="emotion-11"
+          className="emotion-13"
           onChange={[Function]}
           placeholder="Type here to create a simple text filter"
           type="search"
@@ -12654,12 +13234,12 @@ Array [
         <button
           aria-disabled={true}
           aria-label="Search"
-          className="emotion-12"
+          className="emotion-14"
           onClick={[Function]}
           type="submit"
         >
           <svg
-            className="emotion-13"
+            className="emotion-15"
             data-file-name="plus.svg"
             height={20}
           />

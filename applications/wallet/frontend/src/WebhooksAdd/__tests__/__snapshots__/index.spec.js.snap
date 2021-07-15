@@ -333,9 +333,21 @@ Array [
   left: 100%;
   padding-left: 8px;
   padding-top: 8px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 
 .emotion-25 {
+  position: relative;
+}
+
+.emotion-26 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -355,36 +367,51 @@ Array [
   -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 4px;
+  padding: 8px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
-  font-weight: 400;
+  font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
+  color: #808080;
   background-color: transparent;
 }
 
-.emotion-25,
-.emotion-25:hover,
-.emotion-25:visited,
-.emotion-25 .noop {
-  color: #6088FE;
+.emotion-26:hover,
+.emotion-26.focus-visible:focus,
+.emotion-26 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
 }
 
-.emotion-25:hover,
-.emotion-25 .noop {
-  -webkit-text-decoration: underline;
-  text-decoration: underline;
+.emotion-26:hover svg,
+.emotion-26.focus-visible:focus svg,
+.emotion-26 .noop svg {
+  opacity: 1;
+}
+
+.emotion-26[aria-disabled=true],
+.emotion-26 .noop {
+  color: #808080;
+}
+
+.emotion-27 {
+  padding: 4px;
+  color: #808080;
 }
 
 .emotion-28 {
+  position: relative;
+}
+
+.emotion-32 {
   padding-top: 16px;
   padding-bottom: 32px;
 }
 
-.emotion-29 {
+.emotion-33 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -393,13 +420,13 @@ Array [
   padding-top: 16px;
 }
 
-.emotion-30 {
+.emotion-34 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
 }
 
-.emotion-31 {
+.emotion-35 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -413,7 +440,7 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-32 {
+.emotion-36 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -421,7 +448,7 @@ Array [
   position: relative;
 }
 
-.emotion-33 {
+.emotion-37 {
   padding: 0;
   width: 20px;
   height: 20px;
@@ -432,7 +459,7 @@ Array [
   cursor: pointer;
 }
 
-.emotion-34 {
+.emotion-38 {
   position: absolute;
   top: 0;
   left: 0;
@@ -453,13 +480,14 @@ Array [
   cursor: pointer;
 }
 
-.emotion-35 path {
+.emotion-39 path {
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
-  opacity: 100;
+  opacity: 1;
+  fill: #ffffff;
 }
 
-.emotion-36 {
+.emotion-40 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -470,23 +498,23 @@ Array [
   padding-left: 12px;
 }
 
-.emotion-37 {
+.emotion-41 {
   color: #ffffff;
   font-size: 15px;
   line-height: 19px;
   font-weight: 700;
 }
 
-.emotion-38 {
+.emotion-42 {
   padding-left: 0;
   color: #b3b3b3;
 }
 
-.emotion-39 {
+.emotion-43 {
   padding-left: 16px;
 }
 
-.emotion-40 {
+.emotion-44 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -517,27 +545,27 @@ Array [
   background-color: transparent;
 }
 
-.emotion-40,
-.emotion-40:hover,
-.emotion-40:visited,
-.emotion-40 .noop {
+.emotion-44,
+.emotion-44:hover,
+.emotion-44:visited,
+.emotion-44 .noop {
   background-color: #808080;
 }
 
-.emotion-40:hover,
-.emotion-40 .noop {
+.emotion-44:hover,
+.emotion-44 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-40[aria-disabled=true],
-.emotion-40 .noop {
+.emotion-44[aria-disabled=true],
+.emotion-44 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-45 {
+.emotion-49 {
   padding: 0;
   width: 20px;
   height: 20px;
@@ -548,21 +576,22 @@ Array [
   cursor: pointer;
 }
 
-.emotion-47 path {
+.emotion-51 path {
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
   opacity: 0;
+  fill: #ffffff;
 }
 
-.emotion-55 {
+.emotion-59 {
   padding-top: 16px;
 }
 
-.emotion-55 span {
+.emotion-59 span {
   font-weight: 400;
 }
 
-.emotion-56 {
+.emotion-60 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -576,7 +605,7 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-63 {
+.emotion-67 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -585,12 +614,17 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-63 button,
-.emotion-63 a {
+.emotion-67 button,
+.emotion-67 a {
   margin-right: 16px;
 }
 
-.emotion-64 {
+.emotion-67 button:last-child,
+.emotion-67 a:last-child {
+  margin-right: 0;
+}
+
+.emotion-68 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -621,22 +655,22 @@ Array [
   background-color: transparent;
 }
 
-.emotion-64,
-.emotion-64:hover,
-.emotion-64:visited,
-.emotion-64 .noop {
+.emotion-68,
+.emotion-68:hover,
+.emotion-68:visited,
+.emotion-68 .noop {
   background-color: #3A5DFF;
 }
 
-.emotion-64:hover,
-.emotion-64 .noop {
+.emotion-68:hover,
+.emotion-68 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #6088FE;
 }
 
-.emotion-64[aria-disabled=true],
-.emotion-64 .noop {
+.emotion-68[aria-disabled=true],
+.emotion-68 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -780,13 +814,38 @@ Array [
       <div
         className="emotion-24"
       >
-        <button
+        <div
           className="emotion-25"
-          onClick={[Function]}
-          type="button"
         >
-          Generate Key
-        </button>
+          <button
+            aria-label="Copy Secret Key to Clipboard"
+            className="emotion-26"
+            onClick={[Function]}
+            title="Copy Secret Key to Clipboard"
+            type="button"
+          >
+            <svg
+              data-file-name="copy.svg"
+              height={20}
+            />
+          </button>
+        </div>
+        <span
+          className="emotion-27"
+        >
+          |
+        </span>
+        <div
+          className="emotion-28"
+        >
+          <button
+            className="emotion-26"
+            onClick={[Function]}
+            type="button"
+          >
+            Generate Key
+          </button>
+        </div>
       </div>
     </div>
     <h3
@@ -800,47 +859,47 @@ Array [
       You can specify one or more events that trigger the webhook. Note that you do not have to activate a trigger event to test it. You can change these settings at any time.
     </p>
     <div
-      className="emotion-28"
+      className="emotion-32"
     >
       <div
-        className="emotion-29"
+        className="emotion-33"
       >
         <div
-          className="emotion-30"
+          className="emotion-34"
         >
           <label
-            className="emotion-31"
+            className="emotion-35"
           >
             <div
-              className="emotion-32"
+              className="emotion-36"
             >
               <input
-                className="emotion-33"
+                className="emotion-37"
                 defaultChecked={true}
                 onClick={[Function]}
                 type="checkbox"
                 value="ASSET_ANALYZED"
               />
               <div
-                className="emotion-34"
+                className="emotion-38"
               >
                 <svg
-                  className="emotion-35"
+                  className="emotion-39"
                   data-file-name="checkmark.svg"
                   height={20}
                 />
               </div>
             </div>
             <div
-              className="emotion-36"
+              className="emotion-40"
             >
               <span
-                className="emotion-37"
+                className="emotion-41"
               >
                 Asset Analyzed
               </span>
               <span
-                className="emotion-38"
+                className="emotion-42"
               >
                 Asset is added to the Boon AI with initial analysis.
               </span>
@@ -848,10 +907,10 @@ Array [
           </label>
         </div>
         <div
-          className="emotion-39"
+          className="emotion-43"
         >
           <button
-            className="emotion-40"
+            className="emotion-44"
             onClick={[Function]}
             type="button"
           >
@@ -860,44 +919,44 @@ Array [
         </div>
       </div>
       <div
-        className="emotion-29"
+        className="emotion-33"
       >
         <div
-          className="emotion-30"
+          className="emotion-34"
         >
           <label
-            className="emotion-31"
+            className="emotion-35"
           >
             <div
-              className="emotion-32"
+              className="emotion-36"
             >
               <input
-                className="emotion-45"
+                className="emotion-49"
                 defaultChecked={false}
                 onClick={[Function]}
                 type="checkbox"
                 value="ASSET_MODIFIED"
               />
               <div
-                className="emotion-34"
+                className="emotion-38"
               >
                 <svg
-                  className="emotion-47"
+                  className="emotion-51"
                   data-file-name="checkmark.svg"
                   height={20}
                 />
               </div>
             </div>
             <div
-              className="emotion-36"
+              className="emotion-40"
             >
               <span
-                className="emotion-37"
+                className="emotion-41"
               >
                 Asset Modified
               </span>
               <span
-                className="emotion-38"
+                className="emotion-42"
               >
                 Asset is modified through additional analysis or manual editing.
               </span>
@@ -905,10 +964,10 @@ Array [
           </label>
         </div>
         <div
-          className="emotion-39"
+          className="emotion-43"
         >
           <button
-            className="emotion-40"
+            className="emotion-44"
             onClick={[Function]}
             type="button"
           >
@@ -928,36 +987,36 @@ Array [
       Select this checkbox to activate the trigger events that you selected in the preceding section. You can change this setting at any time.
     </p>
     <div
-      className="emotion-55"
+      className="emotion-59"
     >
       <label
-        className="emotion-56"
+        className="emotion-60"
       >
         <div
-          className="emotion-32"
+          className="emotion-36"
         >
           <input
-            className="emotion-45"
+            className="emotion-49"
             defaultChecked={false}
             onClick={[Function]}
             type="checkbox"
             value="active"
           />
           <div
-            className="emotion-34"
+            className="emotion-38"
           >
             <svg
-              className="emotion-47"
+              className="emotion-51"
               data-file-name="checkmark.svg"
               height={20}
             />
           </div>
         </div>
         <div
-          className="emotion-36"
+          className="emotion-40"
         >
           <span
-            className="emotion-37"
+            className="emotion-41"
           >
             Activate Webhook
           </span>
@@ -965,10 +1024,10 @@ Array [
       </label>
     </div>
     <div
-      className="emotion-63"
+      className="emotion-67"
     >
       <button
-        className="emotion-64"
+        className="emotion-68"
         onClick={[Function]}
         type="submit"
       >
@@ -1310,9 +1369,21 @@ Array [
   left: 100%;
   padding-left: 8px;
   padding-top: 8px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 
 .emotion-25 {
+  position: relative;
+}
+
+.emotion-26 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1332,36 +1403,51 @@ Array [
   -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 4px;
+  padding: 8px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
-  font-weight: 400;
+  font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
+  color: #808080;
   background-color: transparent;
 }
 
-.emotion-25,
-.emotion-25:hover,
-.emotion-25:visited,
-.emotion-25 .noop {
-  color: #6088FE;
+.emotion-26:hover,
+.emotion-26.focus-visible:focus,
+.emotion-26 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
 }
 
-.emotion-25:hover,
-.emotion-25 .noop {
-  -webkit-text-decoration: underline;
-  text-decoration: underline;
+.emotion-26:hover svg,
+.emotion-26.focus-visible:focus svg,
+.emotion-26 .noop svg {
+  opacity: 1;
+}
+
+.emotion-26[aria-disabled=true],
+.emotion-26 .noop {
+  color: #808080;
+}
+
+.emotion-27 {
+  padding: 4px;
+  color: #808080;
 }
 
 .emotion-28 {
+  position: relative;
+}
+
+.emotion-32 {
   padding-top: 16px;
   padding-bottom: 32px;
 }
 
-.emotion-29 {
+.emotion-33 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1370,13 +1456,13 @@ Array [
   padding-top: 16px;
 }
 
-.emotion-30 {
+.emotion-34 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
 }
 
-.emotion-31 {
+.emotion-35 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1390,7 +1476,7 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-32 {
+.emotion-36 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1398,7 +1484,7 @@ Array [
   position: relative;
 }
 
-.emotion-33 {
+.emotion-37 {
   padding: 0;
   width: 20px;
   height: 20px;
@@ -1409,7 +1495,7 @@ Array [
   cursor: pointer;
 }
 
-.emotion-34 {
+.emotion-38 {
   position: absolute;
   top: 0;
   left: 0;
@@ -1430,13 +1516,14 @@ Array [
   cursor: pointer;
 }
 
-.emotion-35 path {
+.emotion-39 path {
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
-  opacity: 100;
+  opacity: 1;
+  fill: #ffffff;
 }
 
-.emotion-36 {
+.emotion-40 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1447,23 +1534,23 @@ Array [
   padding-left: 12px;
 }
 
-.emotion-37 {
+.emotion-41 {
   color: #ffffff;
   font-size: 15px;
   line-height: 19px;
   font-weight: 700;
 }
 
-.emotion-38 {
+.emotion-42 {
   padding-left: 0;
   color: #b3b3b3;
 }
 
-.emotion-39 {
+.emotion-43 {
   padding-left: 16px;
 }
 
-.emotion-40 {
+.emotion-44 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1494,27 +1581,27 @@ Array [
   background-color: transparent;
 }
 
-.emotion-40,
-.emotion-40:hover,
-.emotion-40:visited,
-.emotion-40 .noop {
+.emotion-44,
+.emotion-44:hover,
+.emotion-44:visited,
+.emotion-44 .noop {
   background-color: #808080;
 }
 
-.emotion-40:hover,
-.emotion-40 .noop {
+.emotion-44:hover,
+.emotion-44 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-40[aria-disabled=true],
-.emotion-40 .noop {
+.emotion-44[aria-disabled=true],
+.emotion-44 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-45 {
+.emotion-49 {
   padding: 0;
   width: 20px;
   height: 20px;
@@ -1525,21 +1612,22 @@ Array [
   cursor: pointer;
 }
 
-.emotion-47 path {
+.emotion-51 path {
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
   opacity: 0;
+  fill: #ffffff;
 }
 
-.emotion-55 {
+.emotion-59 {
   padding-top: 16px;
 }
 
-.emotion-55 span {
+.emotion-59 span {
   font-weight: 400;
 }
 
-.emotion-56 {
+.emotion-60 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1553,7 +1641,7 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-63 {
+.emotion-67 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1562,12 +1650,17 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-63 button,
-.emotion-63 a {
+.emotion-67 button,
+.emotion-67 a {
   margin-right: 16px;
 }
 
-.emotion-64 {
+.emotion-67 button:last-child,
+.emotion-67 a:last-child {
+  margin-right: 0;
+}
+
+.emotion-68 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1598,22 +1691,22 @@ Array [
   background-color: transparent;
 }
 
-.emotion-64,
-.emotion-64:hover,
-.emotion-64:visited,
-.emotion-64 .noop {
+.emotion-68,
+.emotion-68:hover,
+.emotion-68:visited,
+.emotion-68 .noop {
   background-color: #3A5DFF;
 }
 
-.emotion-64:hover,
-.emotion-64 .noop {
+.emotion-68:hover,
+.emotion-68 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #6088FE;
 }
 
-.emotion-64[aria-disabled=true],
-.emotion-64 .noop {
+.emotion-68[aria-disabled=true],
+.emotion-68 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -1759,13 +1852,38 @@ Array [
       <div
         className="emotion-24"
       >
-        <button
+        <div
           className="emotion-25"
-          onClick={[Function]}
-          type="button"
         >
-          Generate Key
-        </button>
+          <button
+            aria-label="Copy Secret Key to Clipboard"
+            className="emotion-26"
+            onClick={[Function]}
+            title="Copy Secret Key to Clipboard"
+            type="button"
+          >
+            <svg
+              data-file-name="copy.svg"
+              height={20}
+            />
+          </button>
+        </div>
+        <span
+          className="emotion-27"
+        >
+          |
+        </span>
+        <div
+          className="emotion-28"
+        >
+          <button
+            className="emotion-26"
+            onClick={[Function]}
+            type="button"
+          >
+            Generate Key
+          </button>
+        </div>
       </div>
     </div>
     <h3
@@ -1779,47 +1897,47 @@ Array [
       You can specify one or more events that trigger the webhook. Note that you do not have to activate a trigger event to test it. You can change these settings at any time.
     </p>
     <div
-      className="emotion-28"
+      className="emotion-32"
     >
       <div
-        className="emotion-29"
+        className="emotion-33"
       >
         <div
-          className="emotion-30"
+          className="emotion-34"
         >
           <label
-            className="emotion-31"
+            className="emotion-35"
           >
             <div
-              className="emotion-32"
+              className="emotion-36"
             >
               <input
-                className="emotion-33"
+                className="emotion-37"
                 defaultChecked={true}
                 onClick={[Function]}
                 type="checkbox"
                 value="ASSET_ANALYZED"
               />
               <div
-                className="emotion-34"
+                className="emotion-38"
               >
                 <svg
-                  className="emotion-35"
+                  className="emotion-39"
                   data-file-name="checkmark.svg"
                   height={20}
                 />
               </div>
             </div>
             <div
-              className="emotion-36"
+              className="emotion-40"
             >
               <span
-                className="emotion-37"
+                className="emotion-41"
               >
                 Asset Analyzed
               </span>
               <span
-                className="emotion-38"
+                className="emotion-42"
               >
                 Asset is added to the Boon AI with initial analysis.
               </span>
@@ -1827,10 +1945,10 @@ Array [
           </label>
         </div>
         <div
-          className="emotion-39"
+          className="emotion-43"
         >
           <button
-            className="emotion-40"
+            className="emotion-44"
             onClick={[Function]}
             type="button"
           >
@@ -1839,44 +1957,44 @@ Array [
         </div>
       </div>
       <div
-        className="emotion-29"
+        className="emotion-33"
       >
         <div
-          className="emotion-30"
+          className="emotion-34"
         >
           <label
-            className="emotion-31"
+            className="emotion-35"
           >
             <div
-              className="emotion-32"
+              className="emotion-36"
             >
               <input
-                className="emotion-45"
+                className="emotion-49"
                 defaultChecked={false}
                 onClick={[Function]}
                 type="checkbox"
                 value="ASSET_MODIFIED"
               />
               <div
-                className="emotion-34"
+                className="emotion-38"
               >
                 <svg
-                  className="emotion-47"
+                  className="emotion-51"
                   data-file-name="checkmark.svg"
                   height={20}
                 />
               </div>
             </div>
             <div
-              className="emotion-36"
+              className="emotion-40"
             >
               <span
-                className="emotion-37"
+                className="emotion-41"
               >
                 Asset Modified
               </span>
               <span
-                className="emotion-38"
+                className="emotion-42"
               >
                 Asset is modified through additional analysis or manual editing.
               </span>
@@ -1884,10 +2002,10 @@ Array [
           </label>
         </div>
         <div
-          className="emotion-39"
+          className="emotion-43"
         >
           <button
-            className="emotion-40"
+            className="emotion-44"
             onClick={[Function]}
             type="button"
           >
@@ -1907,36 +2025,36 @@ Array [
       Select this checkbox to activate the trigger events that you selected in the preceding section. You can change this setting at any time.
     </p>
     <div
-      className="emotion-55"
+      className="emotion-59"
     >
       <label
-        className="emotion-56"
+        className="emotion-60"
       >
         <div
-          className="emotion-32"
+          className="emotion-36"
         >
           <input
-            className="emotion-45"
+            className="emotion-49"
             defaultChecked={false}
             onClick={[Function]}
             type="checkbox"
             value="active"
           />
           <div
-            className="emotion-34"
+            className="emotion-38"
           >
             <svg
-              className="emotion-47"
+              className="emotion-51"
               data-file-name="checkmark.svg"
               height={20}
             />
           </div>
         </div>
         <div
-          className="emotion-36"
+          className="emotion-40"
         >
           <span
-            className="emotion-37"
+            className="emotion-41"
           >
             Activate Webhook
           </span>
@@ -1944,10 +2062,10 @@ Array [
       </label>
     </div>
     <div
-      className="emotion-63"
+      className="emotion-67"
     >
       <button
-        className="emotion-64"
+        className="emotion-68"
         onClick={[Function]}
         type="submit"
       >
@@ -2277,9 +2395,21 @@ Array [
   left: 100%;
   padding-left: 8px;
   padding-top: 8px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 
 .emotion-23 {
+  position: relative;
+}
+
+.emotion-24 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -2299,36 +2429,51 @@ Array [
   -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 4px;
+  padding: 8px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
-  font-weight: 400;
+  font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
+  color: #808080;
   background-color: transparent;
 }
 
-.emotion-23,
-.emotion-23:hover,
-.emotion-23:visited,
-.emotion-23 .noop {
-  color: #6088FE;
+.emotion-24:hover,
+.emotion-24.focus-visible:focus,
+.emotion-24 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
 }
 
-.emotion-23:hover,
-.emotion-23 .noop {
-  -webkit-text-decoration: underline;
-  text-decoration: underline;
+.emotion-24:hover svg,
+.emotion-24.focus-visible:focus svg,
+.emotion-24 .noop svg {
+  opacity: 1;
+}
+
+.emotion-24[aria-disabled=true],
+.emotion-24 .noop {
+  color: #808080;
+}
+
+.emotion-25 {
+  padding: 4px;
+  color: #808080;
 }
 
 .emotion-26 {
+  position: relative;
+}
+
+.emotion-30 {
   padding-top: 16px;
   padding-bottom: 32px;
 }
 
-.emotion-27 {
+.emotion-31 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2337,13 +2482,13 @@ Array [
   padding-top: 16px;
 }
 
-.emotion-28 {
+.emotion-32 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
 }
 
-.emotion-29 {
+.emotion-33 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2357,7 +2502,7 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-30 {
+.emotion-34 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2365,7 +2510,7 @@ Array [
   position: relative;
 }
 
-.emotion-31 {
+.emotion-35 {
   padding: 0;
   width: 20px;
   height: 20px;
@@ -2376,7 +2521,7 @@ Array [
   cursor: pointer;
 }
 
-.emotion-32 {
+.emotion-36 {
   position: absolute;
   top: 0;
   left: 0;
@@ -2397,13 +2542,14 @@ Array [
   cursor: pointer;
 }
 
-.emotion-33 path {
+.emotion-37 path {
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
-  opacity: 100;
+  opacity: 1;
+  fill: #ffffff;
 }
 
-.emotion-34 {
+.emotion-38 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2414,23 +2560,23 @@ Array [
   padding-left: 12px;
 }
 
-.emotion-35 {
+.emotion-39 {
   color: #ffffff;
   font-size: 15px;
   line-height: 19px;
   font-weight: 700;
 }
 
-.emotion-36 {
+.emotion-40 {
   padding-left: 0;
   color: #b3b3b3;
 }
 
-.emotion-37 {
+.emotion-41 {
   padding-left: 16px;
 }
 
-.emotion-38 {
+.emotion-42 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -2461,27 +2607,27 @@ Array [
   background-color: transparent;
 }
 
-.emotion-38,
-.emotion-38:hover,
-.emotion-38:visited,
-.emotion-38 .noop {
+.emotion-42,
+.emotion-42:hover,
+.emotion-42:visited,
+.emotion-42 .noop {
   background-color: #808080;
 }
 
-.emotion-38:hover,
-.emotion-38 .noop {
+.emotion-42:hover,
+.emotion-42 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-38[aria-disabled=true],
-.emotion-38 .noop {
+.emotion-42[aria-disabled=true],
+.emotion-42 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-43 {
+.emotion-47 {
   padding: 0;
   width: 20px;
   height: 20px;
@@ -2492,21 +2638,22 @@ Array [
   cursor: pointer;
 }
 
-.emotion-45 path {
+.emotion-49 path {
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
   opacity: 0;
+  fill: #ffffff;
 }
 
-.emotion-53 {
+.emotion-57 {
   padding-top: 16px;
 }
 
-.emotion-53 span {
+.emotion-57 span {
   font-weight: 400;
 }
 
-.emotion-54 {
+.emotion-58 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2520,7 +2667,7 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-61 {
+.emotion-65 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2529,12 +2676,17 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-61 button,
-.emotion-61 a {
+.emotion-65 button,
+.emotion-65 a {
   margin-right: 16px;
 }
 
-.emotion-62 {
+.emotion-65 button:last-child,
+.emotion-65 a:last-child {
+  margin-right: 0;
+}
+
+.emotion-66 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -2565,22 +2717,22 @@ Array [
   background-color: transparent;
 }
 
-.emotion-62,
-.emotion-62:hover,
-.emotion-62:visited,
-.emotion-62 .noop {
+.emotion-66,
+.emotion-66:hover,
+.emotion-66:visited,
+.emotion-66 .noop {
   background-color: #3A5DFF;
 }
 
-.emotion-62:hover,
-.emotion-62 .noop {
+.emotion-66:hover,
+.emotion-66 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #6088FE;
 }
 
-.emotion-62[aria-disabled=true],
-.emotion-62 .noop {
+.emotion-66[aria-disabled=true],
+.emotion-66 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -2710,13 +2862,38 @@ Array [
       <div
         className="emotion-22"
       >
-        <button
+        <div
           className="emotion-23"
-          onClick={[Function]}
-          type="button"
         >
-          Generate Key
-        </button>
+          <button
+            aria-label="Copy Secret Key to Clipboard"
+            className="emotion-24"
+            onClick={[Function]}
+            title="Copy Secret Key to Clipboard"
+            type="button"
+          >
+            <svg
+              data-file-name="copy.svg"
+              height={20}
+            />
+          </button>
+        </div>
+        <span
+          className="emotion-25"
+        >
+          |
+        </span>
+        <div
+          className="emotion-26"
+        >
+          <button
+            className="emotion-24"
+            onClick={[Function]}
+            type="button"
+          >
+            Generate Key
+          </button>
+        </div>
       </div>
     </div>
     <h3
@@ -2730,47 +2907,47 @@ Array [
       You can specify one or more events that trigger the webhook. Note that you do not have to activate a trigger event to test it. You can change these settings at any time.
     </p>
     <div
-      className="emotion-26"
+      className="emotion-30"
     >
       <div
-        className="emotion-27"
+        className="emotion-31"
       >
         <div
-          className="emotion-28"
+          className="emotion-32"
         >
           <label
-            className="emotion-29"
+            className="emotion-33"
           >
             <div
-              className="emotion-30"
+              className="emotion-34"
             >
               <input
-                className="emotion-31"
+                className="emotion-35"
                 defaultChecked={true}
                 onClick={[Function]}
                 type="checkbox"
                 value="ASSET_ANALYZED"
               />
               <div
-                className="emotion-32"
+                className="emotion-36"
               >
                 <svg
-                  className="emotion-33"
+                  className="emotion-37"
                   data-file-name="checkmark.svg"
                   height={20}
                 />
               </div>
             </div>
             <div
-              className="emotion-34"
+              className="emotion-38"
             >
               <span
-                className="emotion-35"
+                className="emotion-39"
               >
                 Asset Analyzed
               </span>
               <span
-                className="emotion-36"
+                className="emotion-40"
               >
                 Asset is added to the Boon AI with initial analysis.
               </span>
@@ -2778,10 +2955,10 @@ Array [
           </label>
         </div>
         <div
-          className="emotion-37"
+          className="emotion-41"
         >
           <button
-            className="emotion-38"
+            className="emotion-42"
             onClick={[Function]}
             type="button"
           >
@@ -2790,44 +2967,44 @@ Array [
         </div>
       </div>
       <div
-        className="emotion-27"
+        className="emotion-31"
       >
         <div
-          className="emotion-28"
+          className="emotion-32"
         >
           <label
-            className="emotion-29"
+            className="emotion-33"
           >
             <div
-              className="emotion-30"
+              className="emotion-34"
             >
               <input
-                className="emotion-43"
+                className="emotion-47"
                 defaultChecked={false}
                 onClick={[Function]}
                 type="checkbox"
                 value="ASSET_MODIFIED"
               />
               <div
-                className="emotion-32"
+                className="emotion-36"
               >
                 <svg
-                  className="emotion-45"
+                  className="emotion-49"
                   data-file-name="checkmark.svg"
                   height={20}
                 />
               </div>
             </div>
             <div
-              className="emotion-34"
+              className="emotion-38"
             >
               <span
-                className="emotion-35"
+                className="emotion-39"
               >
                 Asset Modified
               </span>
               <span
-                className="emotion-36"
+                className="emotion-40"
               >
                 Asset is modified through additional analysis or manual editing.
               </span>
@@ -2835,10 +3012,10 @@ Array [
           </label>
         </div>
         <div
-          className="emotion-37"
+          className="emotion-41"
         >
           <button
-            className="emotion-38"
+            className="emotion-42"
             onClick={[Function]}
             type="button"
           >
@@ -2858,36 +3035,36 @@ Array [
       Select this checkbox to activate the trigger events that you selected in the preceding section. You can change this setting at any time.
     </p>
     <div
-      className="emotion-53"
+      className="emotion-57"
     >
       <label
-        className="emotion-54"
+        className="emotion-58"
       >
         <div
-          className="emotion-30"
+          className="emotion-34"
         >
           <input
-            className="emotion-43"
+            className="emotion-47"
             defaultChecked={false}
             onClick={[Function]}
             type="checkbox"
             value="active"
           />
           <div
-            className="emotion-32"
+            className="emotion-36"
           >
             <svg
-              className="emotion-45"
+              className="emotion-49"
               data-file-name="checkmark.svg"
               height={20}
             />
           </div>
         </div>
         <div
-          className="emotion-34"
+          className="emotion-38"
         >
           <span
-            className="emotion-35"
+            className="emotion-39"
           >
             Activate Webhook
           </span>
@@ -2895,10 +3072,10 @@ Array [
       </label>
     </div>
     <div
-      className="emotion-61"
+      className="emotion-65"
     >
       <button
-        className="emotion-62"
+        className="emotion-66"
         onClick={[Function]}
         type="submit"
       >

@@ -1,6 +1,7 @@
 import os
 import requests
 from collections import namedtuple
+from deprecation import deprecated
 
 from ..entity import Asset, StoredFile, FileUpload, FileTypes, Job, VideoClip
 from ..search import AssetSearchResult, AssetSearchScroller, SimilarityQuery, SearchScroller
@@ -8,7 +9,8 @@ from ..util import as_collection, as_id_collection, as_id
 from ..filters import apply_search_filters
 
 
-class AssetApp(object):
+class AssetApp:
+    """Methods for managing Assets"""
 
     def __init__(self, app):
         self.app = app
@@ -21,48 +23,33 @@ class AssetApp(object):
             files (list of FileImport): The list of files to import as Assets.
             modules (list): A list of Pipeline Modules to apply to the data.
 
-        Notes:
-            Example return value:
-                {
-                  "bulkResponse" : {
-                    "took" : 15,
-                    "errors" : false,
-                    "items" : [ {
-                      "create" : {
-                        "_index" : "yvqg1901zmu5bw9q",
-                        "_type" : "_doc",
-                        "_id" : "dd0KZtqyec48n1q1fniqVMV5yllhRRGx",
-                        "_version" : 1,
-                        "result" : "created",
-                        "forced_refresh" : true,
-                        "_shards" : {
-                          "total" : 1,
-                          "successful" : 1,
-                          "failed" : 0
-                        },
-                        "_seq_no" : 0,
-                        "_primary_term" : 1,
-                        "status" : 201
-                      }
-                    } ]
-                  },
-                  "failed" : [ ],
-                  "created" : [ "dd0KZtqyec48n1q1fniqVMV5yllhRRGx" ],
-                  "jobId" : "ba310246-1f87-1ece-b67c-be3f79a80d11"
-                }
-
         Returns:
-            dict: A dictionary containing an ES bulk response, failed files,
-            and created asset ids.
-
+            dict: A dictionary containing failed files and created asset ids.
         """
         body = {
-            "assets": files,
-            "modules": modules
+            'assets': files,
+            'modules': modules
         }
-        return self.app.client.post("/api/v3/assets/_batch_create", body)
+        return self.app.client.post('/api/v3/assets/_batch_create', body)
 
-    def batch_upload_files(self, files, modules=None):
+    def analyze_file(self, iostream, modules):
+        """
+        Analyze an Image file stream with the given modules.  Only Boon AI models
+        and custom models currently supported.
+
+        Args:
+            iostream (IOBase): A file handle or blob of bytes representing an image.
+            modules (list): A list of modules to apply.
+        Returns:
+            list: A list of dicts representing predictions.
+        """
+        if not modules:
+            raise ValueError('At least 1 module is required')
+        qstr = ','.join(modules)
+        return Asset(self.app.client.send_data(
+            f'/ml/v1/modules/apply-to-file?modules={qstr}', iostream))
+
+    def batch_upload_files(self, files, modules=None, job_name=None):
         """
         Batch upload a list of files and return a structure which contains
         an ES bulk response object, a list of failed file paths, a list of created
@@ -72,51 +59,21 @@ class AssetApp(object):
             files (list of FileUpload):
             modules (list): A list of Pipeline Modules to apply to the data.
 
-        Notes:
-            Example return value:
-                {
-                  "bulkResponse" : {
-                    "took" : 15,
-                    "errors" : false,
-                    "items" : [ {
-                      "create" : {
-                        "_index" : "yvqg1901zmu5bw9q",
-                        "_type" : "_doc",
-                        "_id" : "dd0KZtqyec48n1q1fniqVMV5yllhRRGx",
-                        "_version" : 1,
-                        "result" : "created",
-                        "forced_refresh" : true,
-                        "_shards" : {
-                          "total" : 1,
-                          "successful" : 1,
-                          "failed" : 0
-                        },
-                        "_seq_no" : 0,
-                        "_primary_term" : 1,
-                        "status" : 201
-                      }
-                    } ]
-                  },
-                  "failed" : [ ],
-                  "created" : [ "dd0KZtqyec48n1q1fniqVMV5yllhRRGx" ],
-                  "jobId" : "ba310246-1f87-1ece-b67c-be3f79a80d11"
-                }
-
         Returns:
-            dict: A dictionary containing an ES bulk response, failed files,
-            and created asset ids.
+            dict: A dictionary containing failed files and created asset ids.
         """
         files = as_collection(files)
         file_paths = [f.uri for f in files]
         body = {
-            "assets": files,
-            "modules": modules
+            'assets': files,
+            'modules': modules,
+            'jobName': job_name
         }
-        return self.app.client.upload_files("/api/v3/assets/_batch_upload",
+        return self.app.client.upload_files('/api/v3/assets/_batch_upload',
                                             file_paths, body)
 
     def batch_upload_directory(self, path, file_types=None,
-                               batch_size=50, modules=None, callback=None):
+                               batch_size=50, max_batches=None, modules=None, callback=None):
         """
         Recursively upload all files in the given directory path.
 
@@ -124,23 +81,12 @@ class AssetApp(object):
         arguments, files and response.  This callback is called for
         each batch of files submitted.
 
-        Examples:
-
-            def batch_callback(files, response):
-                print("--processed files--")
-                for path in files:
-                    print(path)
-                print("--boonsdk response--")
-                pprint.pprint(rsp)
-
-            app.assets.batch_upload_directory("/home", file_types=['images'],
-                callback=batch_callback)
-
         Args:
             path (str): A file path to a directory.
             file_types (list): a list of file extensions and/or
                 categories(documents, images, videos)
             batch_size (int) The number of files to upload per batch.
+            max_batches (int) The max number of batches to upload.
             modules (list): An array of modules to apply to the files.
             callback (func): A function to call for every batch
 
@@ -148,10 +94,13 @@ class AssetApp(object):
             dict: A dictionary containing batch operation counters.
         """
         batch = []
+        batch_count = 0
+        max_batches_reached = False
+
         totals = {
-            "file_count": 0,
-            "file_size": 0,
-            "batch_count": 0,
+            'file_count': 0,
+            'file_size': 0,
+            'batch_count': 0,
         }
 
         def process_batch():
@@ -168,7 +117,7 @@ class AssetApp(object):
         file_types = FileTypes.resolve(file_types)
         for root, dirs, files in os.walk(path):
             for fname in files:
-                if fname.startswith("."):
+                if fname.startswith('.'):
                     continue
                 _, ext = os.path.splitext(fname)
                 if not ext:
@@ -178,8 +127,12 @@ class AssetApp(object):
                 batch.append(os.path.abspath(os.path.join(root, fname)))
                 if len(batch) >= batch_size:
                     process_batch()
+                    batch_count += 1
+                    if max_batches and batch_count >= max_batches:
+                        max_batches_reached = True
+                        break
 
-        if batch:
+        if batch and not max_batches_reached:
             process_batch()
 
         return totals
@@ -196,7 +149,7 @@ class AssetApp(object):
 
         """
         asset_id = as_id(asset)
-        return self.app.client.delete("/api/v3/assets/{}".format(asset_id))['success']
+        return self.app.client.delete('/api/v3/assets/{}'.format(asset_id))['success']
 
     def batch_delete_assets(self, assets):
         """
@@ -209,9 +162,9 @@ class AssetApp(object):
             dict: A dictionary containing deleted and errored asset Ids.
         """
         body = {
-            "assetIds": as_id_collection(assets)
+            'assetIds': as_id_collection(assets)
         }
-        return self.app.client.delete("/api/v3/assets/_batch_delete", body)
+        return self.app.client.delete('/api/v3/assets/_batch_delete', body)
 
     def search(self, search=None, fetch_source=True, filters=None):
         """
@@ -265,11 +218,11 @@ class AssetApp(object):
             dict: Contains a Job and the number of assets to be processed.
         """
         body = {
-            "search": search,
-            "modules": modules
+            'search': search,
+            'modules': modules
         }
-        rsp = self.app.client.post("/api/v3/assets/_search/reprocess", body)
-        return ReprocessSearchResponse(rsp["assetCount"], Job(rsp["job"]))
+        rsp = self.app.client.post('/api/v3/assets/_search/reprocess', body)
+        return ReprocessSearchResponse(rsp['assetCount'], Job(rsp['job']))
 
     def scroll_search_clips(self, asset, search=None, timeout="1m"):
         """
@@ -300,19 +253,19 @@ class AssetApp(object):
         Returns:
             Job: The job responsible for processing the assets.
         """
-        asset_ids = [getattr(asset, "id", asset) for asset in as_collection(assets)]
+        asset_ids = [getattr(asset, 'id', asset) for asset in as_collection(assets)]
         body = {
-            "search": {
-                "query": {
-                    "terms": {
-                        "_id": asset_ids
+            'search': {
+                'query': {
+                    'terms': {
+                        '_id': asset_ids
                     }
                 }
             },
-            "modules": as_collection(modules)
+            'modules': as_collection(modules)
         }
 
-        return self.app.client.post("/api/v3/assets/_search/reprocess", body)
+        return self.app.client.post('/api/v3/assets/_search/reprocess', body)
 
     def get_asset(self, id):
         """
@@ -324,8 +277,72 @@ class AssetApp(object):
         Returns:
             Asset: The Asset
         """
-        return Asset(self.app.client.get("/api/v3/assets/{}".format(id)))
+        return Asset(self.app.client.get('/api/v3/assets/{}'.format(id)))
 
+    def batch_add_labels(self, labels):
+        """
+        Add up to 1000 labels in a single request using a structure
+        of dict[assetId -> Label].  This function allows you to add labels to
+        an arbitrary set of assets.
+
+        Args:
+            labels (dict): A dictionary of AssetId to Label
+
+        Returns:
+            dict: A status dictionary
+        """
+        if not isinstance(labels, dict):
+            raise ValueError('The labels argument must be a dictionary')
+        ids = as_id_collection(list(labels.keys()))
+        body = {
+            'add': dict([(asset_id, labels[asset_id]) for asset_id in ids])
+        }
+        return self.app.client.put('/api/v4/assets/_batch_update_labels', body)
+
+    def batch_remove_labels(self, labels):
+        """
+        Remove up to 1000 labels in a single request using a structure
+        of dict[assetId -> Label]. This function allows you to remove labels
+        to an arbitrary set of assets.
+
+        Args:
+            labels (dict): A dictionary of AssetId to Label
+
+        Returns:
+            dict: A status dictionary
+
+        """
+        if not isinstance(labels, dict):
+            raise ValueError('The labels argument must be a dictionary')
+        ids = as_id_collection(list(labels.keys()))
+        body = {
+            'remove': dict([(a, labels[a]) for a in ids])
+        }
+        return self.app.client.put('/api/v4/assets/_batch_update_labels', body)
+
+    def batch_update_labels(self, assets, add_label=None, remove_label=None):
+        """
+        Add and/or remove a label from an a label from a collection of Assets.
+
+        Args:
+            assets (mixed): An Asset, asset ID, or a list of either type.
+            add_label (Label): A Label or list of Label to add.
+            remove_label (Label): A Label or list of Label to remove.
+        Returns:
+            dict: An request status dict
+
+        """
+        ids = as_id_collection(assets)
+        body = {}
+        if add_label:
+            body['add'] = dict([(a, add_label) for a in ids])
+        if remove_label:
+            body['remove'] = dict([(a, remove_label) for a in ids])
+        if not body:
+            raise ValueError('Must pass at least and add_labels or remove_labels argument')
+        return self.app.client.put('/api/v4/assets/_batch_update_labels', body)
+
+    @deprecated(deprecated_in="1.4", removed_in="1.5", details="Use batch_update_labels() instead")
     def update_labels(self, assets, add_labels=None, remove_labels=None):
         """
         Update the Labels on the given array of assets.
@@ -345,8 +362,8 @@ class AssetApp(object):
         if remove_labels:
             body['remove'] = dict([(a, as_collection(remove_labels)) for a in ids])
         if not body:
-            raise ValueError("Must pass at least and add_labels or remove_labels argument")
-        return self.app.client.put("/api/v3/assets/_batch_update_labels", body)
+            raise ValueError('Must pass at least and add_labels or remove_labels argument')
+        return self.app.client.put('/api/v3/assets/_batch_update_labels', body)
 
     def set_field_values(self, asset, values):
         """
@@ -360,20 +377,20 @@ class AssetApp(object):
             dict: A status dictionary with failures or success
         """
         body = {
-            "update": {
+            'update': {
                 as_id(asset): values
             }
         }
-        return self.app.client.put("/api/v3/assets/_batch_update_custom_fields", body)
+        return self.app.client.put('/api/v3/assets/_batch_update_custom_fields', body)
 
     def batch_update_custom_fields(self, update):
         """
         Set the values of custom metadata fields.
 
         Examples:
-            {
-                "asset-id1": {"shoe": "nike"},
-                "asset-id2": {"country": "New Zealand"}
+            { \
+                "asset-id1": {"shoe": "nike"}, \
+                "asset-id2": {"country": "New Zealand"} \
             }
 
         Args:
@@ -424,7 +441,7 @@ class AssetApp(object):
         elif isinstance(stored_file, StoredFile):
             path = stored_file.id
         else:
-            raise ValueError("stored_file must be a string or StoredFile instance")
+            raise ValueError('stored_file must be a string or StoredFile instance')
 
         url = self.app.client.get_url('/api/v3/files/_stream/{}'.format(path))
         response = requests.get(url, verify=self.app.client.verify,
@@ -444,7 +461,7 @@ class AssetApp(object):
             list of str: A list of similarity hashes.
 
         """
-        return self.app.client.upload_files("/ml/v1/sim-hash",
+        return self.app.client.upload_files('/ml/v1/sim-hash',
                                             as_collection(images), body=None)
 
     def get_sim_query(self, images, min_score=0.75):
@@ -482,7 +499,7 @@ class AssetApp(object):
             'modules': as_collection(modules),
             'index': index
         }
-        return Asset(self.app.client.post('/ml/v1/pipelines/apply-modules-to-asset', body))
+        return Asset(self.app.client.post('/ml/v1/modules/apply-to-asset', body))
 
 
 """

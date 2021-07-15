@@ -22,11 +22,9 @@ const TimelineCaptions = ({ videoRef, initialTrackIndex }) => {
     /* istanbul ignore next */
     if (!textTracks) return () => {}
 
-    if (lastEnabledTrackIndex === -1) {
-      lastEnabledTrackIndex = Object.values(textTracks).findIndex(
-        ({ kind }) => kind === 'captions',
-      )
-    }
+    lastEnabledTrackIndex = Object.values(textTracks).findIndex(
+      ({ kind }) => kind === 'captions',
+    )
 
     /* istanbul ignore next */
     const onChange = () => {

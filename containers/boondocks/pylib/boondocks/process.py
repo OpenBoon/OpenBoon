@@ -319,11 +319,12 @@ class ProcessorWrapper:
             # the pipeline checksums don't work.
             self.reactor.write_event("preprocess", {})
 
-    def process(self, frame):
+    def process(self, frame, force=False):
         """
         Run the Processor instance on the given Frame.
         Args:
-            frame (Frame):
+            frame (Frame): The Frame to process.
+            force (bool): Force processing even if the file was processed or has no type.
 
         """
         start_time = time.monotonic()
@@ -341,14 +342,15 @@ class ProcessorWrapper:
                                .format(self.ref))
                 return
 
-            if self.is_already_processed(frame.asset):
-                logger.debug("The asset {} is already processed".format(frame.asset.id))
-                return
-
-            if self.instance.file_types:
-                if not is_file_type_allowed(frame.asset, self.instance.file_types):
-                    # No need to log, this is normal.
+            if not force:
+                if self.is_already_processed(frame.asset):
+                    logger.debug("The asset {} is already processed".format(frame.asset.id))
                     return
+
+                if self.instance.file_types:
+                    if not is_file_type_allowed(frame.asset, self.instance.file_types):
+                        # No need to log, this is normal.
+                        return
 
             self.instance.logger.info("started processor")
 
@@ -382,7 +384,7 @@ class ProcessorWrapper:
                 frame.skip = True
                 self.increment_stat("unrecoverable_error_count")
             else:
-                error = "warning"
+                error = "error"
                 self.increment_stat("error_count")
             self.reactor.error(frame, self.ref, e,
                                self.instance.fatal_errors, "execute", sys.exc_info()[2])
@@ -522,21 +524,21 @@ class ProcessorWrapper:
         if len(source_path) > 255:
             # Include starting ellipses as an indicator, favor end of path
             source_path = '...' + source_path[len(source_path)-252:]
-        image_count, video_minutes = self._get_count_and_minutes(asset)
+        image_count, video_seconds = self._get_count_and_seconds(asset)
 
         # Some processors, like gcp-video-intelligence, apply multiple modules at once
-        # and track them in a temporary namespace on the asset. Record analsys for every
+        # and track them in a temporary namespace on the asset. Record analysis for every
         # module added.
         modules = asset.get_attr('tmp.produced_analysis') or [self.ref['module']]
 
         for service in modules:
             body = {
-                'project': BoonEnv.get_project_id(),
+                'project': BoonEnv.get_project_id() or asset.get_attr("system.projectId"),
                 'service': service,
                 'asset_id': asset.id,
                 'asset_path': source_path,
                 'image_count': image_count,
-                'video_minutes': video_minutes,
+                'video_seconds': video_seconds,
             }
             sentry_sdk.set_context('billing_metric', body)
             try:
@@ -558,18 +560,18 @@ class ProcessorWrapper:
                 sentry_sdk.capture_exception(e)
                 logger.debug(msg)
 
-    def _get_count_and_minutes(self, asset):
-        """Helper to return total images and number of video minutes for an asset.
+    def _get_count_and_seconds(self, asset):
+        """Helper to return total images and number of video seconds for an asset.
 
         Determines if the asset is a picture or video, and returns the image count or
-        the total number of video minutes for the asset.
+        the total number of video seconds for the asset.
 
         Args:
-            asset (:obj:`Asset`): The asset to find it's count or video minutes.
+            asset (:obj:`Asset`): The asset to find it's count or video seconds.
 
         Returns:
             (:obj:`tuple`): A two tuple of the number of images, and the number of video
-                minutes.
+                seconds.
         """
         media_type = asset.get_attr('media.type')
         if media_type == 'video':

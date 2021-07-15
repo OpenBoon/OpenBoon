@@ -131,12 +131,12 @@ Array [
     </td>
     <td
       className="emotion-1"
-      title="Model ID: c0e83460-6a25-1238-86fa-0242ac150002"
+      title="Dataset ID: 4b0b10a8-cec1-155c-b12f-ee2bc8787e06"
     >
       <span
         className="emotion-4"
       >
-        Gundam
+        cats
       </span>
       <br />
       Exia
@@ -301,12 +301,12 @@ Array [
     </td>
     <td
       className="emotion-1"
-      title="Model ID: 621bf774-89d9-1244-9596-d6df43f1ede5"
+      title="Dataset ID: 111d0534-7736-135f-8a62-d29da837913f"
     >
       <span
         className="emotion-4"
       >
-        console_face_recognition
+        faces
       </span>
       <br />
       Mark Ruffalo
@@ -343,7 +343,7 @@ Array [
 ]
 `;
 
-exports[`<MetadataPrettyLabelsContent /> should render properly with missing model 1`] = `
+exports[`<MetadataPrettyLabelsContent /> should render properly with missing dataset 1`] = `
 Array [
   .emotion-0 {
   font-family: Roboto Mono;
@@ -474,7 +474,7 @@ Array [
     </td>
     <td
       className="emotion-1"
-      title="Model ID: c0e83460-6a25-1238-86fa-0242ac150002"
+      title="Dataset ID: 4b0b10a8-cec1-155c-b12f-ee2bc8787e06"
     >
       <span
         className="emotion-4"
@@ -644,7 +644,7 @@ Array [
     </td>
     <td
       className="emotion-1"
-      title="Model ID: 621bf774-89d9-1244-9596-d6df43f1ede5"
+      title="Dataset ID: 111d0534-7736-135f-8a62-d29da837913f"
     >
       <span
         className="emotion-4"

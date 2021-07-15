@@ -21,6 +21,20 @@ logger = logging.getLogger(__name__)
 
 DEFAULT_SERVER = 'https://api.boonai.app'
 
+__all__ = [
+    'BoonClient',
+    'to_json',
+    'BoonSdkConnectionException',
+    'BoonSdkException',
+    'BoonSdkRequestException',
+    'BoonSdkWriteException',
+    'BoonSdkSecurityException',
+    'BoonSdkInvalidRequestException',
+    'BoonSdkDuplicateException',
+    'BoonSdkNotFoundException',
+    'BoonClientException'
+]
+
 
 class BoonClient:
     """
@@ -107,6 +121,24 @@ class BoonClient:
                 self.get_url(path), headers=self.headers(content_type=""),
                 data=f), True)
 
+    def send_data(self, path, data, size=None):
+        """
+        Send a BytesIO or StringIO to the given URI.  Optionally provide
+        the size which is passed on via the content-length header, otheriwse
+        the size will be auto-detected.
+
+        Args:
+            path (path): The URI fragment for the request.
+            data (io.BytesIO): The bytes to send.s
+
+        Returns:
+            dict: A dictionary which can be used to fetch the file.
+        """
+        headers = self.headers(content_type="")
+        headers['Content-Length'] = str(size or sys.getsizeof(data))
+        return self.__handle_rsp(requests.post(
+            self.get_url(path), headers=headers, data=data), True)
+
     def upload_file(self, path, file, body={}, json_rsp=True):
         """
         Upload a single file and a request to the given endpoint path.
@@ -121,7 +153,7 @@ class BoonClient:
             dict: The response body of the request.
         """
         try:
-            post_files = [("file", (os.path.basename(file), open(file, 'rb')))]
+            post_files = [("file", (os.path.basename(file), FileInputStream(file, 'rb')))]
             if body is not None:
                 post_files.append(
                     ["body", (None, to_json(body), 'application/json')])
@@ -154,7 +186,7 @@ class BoonClient:
                         ("files", (os.path.basename(f.name), f)))
                 else:
                     post_files.append(
-                        ("files", (os.path.basename(f), open(f, 'rb'))))
+                        ("files", (os.path.basename(f), FileInputStream(f, 'rb'))))
 
             if body is not None:
                 post_files.append(
@@ -515,6 +547,20 @@ class BoonSdkRequestException(BoonClientException):
 
     def __str__(self):
         return "<BoonSdkRequestException msg=%s>" % self.__data["message"]
+
+
+class FileInputStream:
+    """
+    A partially implemented File object which just supports reading the
+    entire file and then closing the file handle.
+    """
+    def __init__(self, filename, mode='rb'):
+        self.filename = filename
+        self.mode = mode
+
+    def read(self):
+        with open(self.filename, self.mode) as f:
+            return f.read()
 
 
 class BoonSdkConnectionException(BoonClientException):

@@ -4,7 +4,6 @@ import boonai.archivist.domain.ArgSchema
 import boonai.archivist.domain.Asset
 import boonai.archivist.domain.Category
 import boonai.archivist.domain.FileType
-import boonai.archivist.domain.GenericBatchUpdateResponse
 import boonai.archivist.domain.Job
 import boonai.archivist.domain.ModOp
 import boonai.archivist.domain.ModOpType
@@ -13,10 +12,12 @@ import boonai.archivist.domain.ModelApplyRequest
 import boonai.archivist.domain.ModelApplyResponse
 import boonai.archivist.domain.ModelCopyRequest
 import boonai.archivist.domain.ModelFilter
+import boonai.archivist.domain.ModelPatchRequestV2
 import boonai.archivist.domain.ModelPublishRequest
 import boonai.archivist.domain.ModelSpec
 import boonai.archivist.domain.ModelTrainingRequest
 import boonai.archivist.domain.ModelType
+import boonai.archivist.domain.ModelUpdateRequest
 import boonai.archivist.domain.PipelineMod
 import boonai.archivist.domain.PipelineModSpec
 import boonai.archivist.domain.PipelineModUpdate
@@ -35,41 +36,20 @@ import boonai.archivist.security.getProjectId
 import boonai.archivist.security.getZmlpActor
 import boonai.archivist.storage.ProjectStorageService
 import boonai.archivist.util.FileUtils
-import boonai.archivist.util.randomString
 import boonai.common.service.logging.LogAction
 import boonai.common.service.logging.LogObject
 import boonai.common.service.logging.event
-import boonai.common.util.Json
+import com.google.pubsub.v1.PubsubMessage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import org.apache.lucene.search.join.ScoreMode
-import org.elasticsearch.action.ActionListener
-import org.elasticsearch.client.RequestOptions
-import org.elasticsearch.index.query.QueryBuilders
-import org.elasticsearch.index.reindex.BulkByScrollResponse
-import org.elasticsearch.script.Script
-import org.elasticsearch.script.ScriptType
-import org.elasticsearch.search.aggregations.AggregationBuilders
-import org.elasticsearch.search.aggregations.BucketOrder
-import org.elasticsearch.search.aggregations.bucket.filter.Filter
-import org.elasticsearch.search.aggregations.bucket.nested.Nested
-import org.elasticsearch.search.aggregations.bucket.terms.Terms
 import org.slf4j.LoggerFactory
+import org.springframework.core.env.Environment
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
 import java.io.ByteArrayInputStream
-import java.io.FileInputStream
-import java.io.InputStream
-import java.nio.file.Files
-import java.nio.file.Path
-import java.nio.file.StandardCopyOption
 import java.util.UUID
-import java.util.zip.ZipEntry
-import java.util.zip.ZipFile
-import kotlin.streams.toList
 
 interface ModelService {
     fun createModel(spec: ModelSpec): Model
@@ -81,24 +61,15 @@ interface ModelService {
     fun applyModel(model: Model, req: ModelApplyRequest): ModelApplyResponse
     fun testModel(model: Model, req: ModelApplyRequest): ModelApplyResponse
     fun deleteModel(model: Model)
-    fun getLabelCounts(model: Model): Map<String, Long>
-    fun wrapSearchToExcludeTrainingSet(model: Model, search: Map<String, Any>): Map<String, Any>
     fun setTrainingArgs(model: Model, args: Map<String, Any>)
     fun patchTrainingArgs(model: Model, patch: Map<String, Any>)
     fun getTrainingArgSchema(type: ModelType): ArgSchema
-
-    /**
-     *
-     * Update a give label to a new label name.  If the new label name is null or
-     * empty then remove the label.
-     */
-    fun updateLabel(model: Model, label: String, newLabel: String?): GenericBatchUpdateResponse
-    fun publishModelFileUpload(model: Model, inputStream: InputStream): PipelineMod
-    fun validateTensorflowModel(path: Path)
-    fun validatePyTorchModel(path: Path)
     fun generateModuleName(spec: ModelSpec): String
     fun getModelVersions(model: Model): Set<String>
     fun copyModelTag(model: Model, req: ModelCopyRequest)
+    fun updateModel(id: UUID, update: ModelUpdateRequest): Model
+    fun patchModel(id: UUID, update: ModelPatchRequestV2): Model
+    fun postToModelEventTopic(msg: PubsubMessage)
 }
 
 @Service
@@ -112,13 +83,18 @@ class ModelServiceImpl(
     val indexRoutingService: IndexRoutingService,
     val assetSearchService: AssetSearchService,
     val fileStorageService: ProjectStorageService,
-    val argValidationService: ArgValidationService
+    val argValidationService: ArgValidationService,
+    val datasetService: DatasetService,
+    val environment: Environment,
+    val publisherService: PublisherService
 ) : ModelService {
+
+    val topic = "model-events"
 
     override fun generateModuleName(spec: ModelSpec): String {
         return spec.moduleName ?: "${spec.name}"
             .replace(Regex("[\\s\\n\\r\\t]+", RegexOption.MULTILINE), "-")
-            .toLowerCase()
+            .lowercase()
     }
 
     override fun createModel(spec: ModelSpec): Model {
@@ -126,6 +102,12 @@ class ModelServiceImpl(
         val id = UUIDGen.uuid1.generate()
         val actor = getZmlpActor()
         val moduleName = generateModuleName(spec)
+
+        if (!spec.type.enabled) {
+            throw IllegalArgumentException(
+                "This model type is not currently enabled."
+            )
+        }
 
         if (moduleName.trim().isEmpty() || !moduleName.matches(modelNameRegex)) {
             throw IllegalArgumentException(
@@ -135,17 +117,23 @@ class ModelServiceImpl(
         }
 
         val locator = ProjectFileLocator(
-            ProjectStorageEntity.MODELS, id.toString(), "__TAG__", "model.zip"
+            ProjectStorageEntity.MODELS, id.toString(), "__TAG__", spec.type.fileName
         )
 
-        argValidationService.validateArgsUnknownOnly("models/${spec.type.name}", spec.trainingArgs)
+        spec.datasetId?.let {
+            validateDatasetType(it, spec.type)
+        }
+
+        argValidationService.validateArgsUnknownOnly("training/${spec.type.name}", spec.trainingArgs)
 
         val model = Model(
             id,
             getProjectId(),
+            spec.datasetId,
             spec.type,
             spec.name,
             moduleName,
+            null,
             locator.getFileId(),
             "Training model: ${spec.name} - [${spec.type.objective}]",
             false,
@@ -154,7 +142,8 @@ class ModelServiceImpl(
             time,
             time,
             actor.toString(),
-            actor.toString()
+            actor.toString(),
+            null, null, null, null, null, null
         )
 
         logger.event(
@@ -166,6 +155,38 @@ class ModelServiceImpl(
         )
 
         return modelDao.saveAndFlush(model)
+    }
+
+    override fun updateModel(id: UUID, update: ModelUpdateRequest): Model {
+        val model = getModel(id)
+        update.datasetId?.let {
+            validateDatasetType(it, model.type)
+        }
+
+        model.name = update.name
+        model.datasetId = update.datasetId
+        model.timeModified = System.currentTimeMillis()
+        model.actorModified = getZmlpActor().toString()
+        return model
+    }
+
+    override fun patchModel(id: UUID, update: ModelPatchRequestV2): Model {
+        val model = getModel(id)
+
+        if (update.isFieldSet("datasetId")) {
+            update.datasetId?.let {
+                validateDatasetType(it, model.type)
+            }
+            model.datasetId = update.datasetId
+        }
+
+        if (update.isFieldSet("name")) {
+            update.name?.let { model.name }
+        }
+
+        model.timeModified = System.currentTimeMillis()
+        model.actorModified = getZmlpActor().toString()
+        return model
     }
 
     @Transactional(readOnly = true)
@@ -186,24 +207,35 @@ class ModelServiceImpl(
 
     override fun trainModel(model: Model, request: ModelTrainingRequest): Job {
 
+        if (!model.type.trainable) {
+            throw IllegalStateException("This model type cannot be trained")
+        }
+
+        if (model.datasetId == null) {
+            throw IllegalStateException("The model must have an assigned Dataset to be trained.")
+        }
+
         val trainArgs = argValidationService.buildArgs(
-            getTrainingArgSchema(model.type), model.trainingArgs
+            getTrainingArgSchema(model.type), model.trainingArgs + (request.trainArgs ?: emptyMap())
         ).plus(
             mapOf<String, Any?>(
                 "model_id" to model.id.toString(),
                 "post_action" to (request.postAction.name),
-                "tag" to "latest"
+                "tag" to "latest",
+                "training_bucket" to "gs://${environment.getProperty("GCLOUD_PROJECT")}-training"
             )
         )
 
         logger.info("Training model ID ${model.id} $trainArgs")
         logger.info("Launching train job ${model.type.trainProcessor} ${request.postAction}")
 
+        model.actorLastTrained = getZmlpActor().toString()
+        model.timeLastTrained = System.currentTimeMillis()
+
         val processor = ProcessorRef(
             model.type.trainProcessor, "boonai/plugins-train", trainArgs
         )
 
-        modelJdbcDao.markAsReady(model.id, false)
         return jobLaunchService.launchTrainingJob(
             model.trainingJobName, processor, mapOf()
         )
@@ -215,8 +247,8 @@ class ModelServiceImpl(
 
         val analyzeTrainingSet = req.analyzeTrainingSet ?: model.type.deployOnTrainingSet
 
-        if (!analyzeTrainingSet) {
-            search = wrapSearchToExcludeTrainingSet(model, search)
+        if (!analyzeTrainingSet && model.datasetId != null) {
+            search = datasetService.wrapSearchToExcludeTrainingSet(model, search)
         }
 
         val count = assetSearchService.count(search)
@@ -236,6 +268,9 @@ class ModelServiceImpl(
 
         val jobId = getZmlpActor().getAttr("jobId")
 
+        model.actorLastApplied = getZmlpActor().toString()
+        model.timeLastApplied = System.currentTimeMillis()
+
         return if (jobId == null) {
             val rsp = jobLaunchService.launchJob(repro)
             ModelApplyResponse(count, rsp.job)
@@ -252,7 +287,7 @@ class ModelServiceImpl(
 
     override fun testModel(model: Model, req: ModelApplyRequest): ModelApplyResponse {
         val name = "Testing model: ${model.name}"
-        var search = testLabelSearch(model)
+        var search = datasetService.buildTestLabelSearch(model)
 
         val count = assetSearchService.count(search)
         if (count == 0L) {
@@ -261,15 +296,18 @@ class ModelServiceImpl(
 
         // Use global settings to override the model tag.
         val repro = ReprocessAssetSearchRequest(
-            testLabelSearch(model),
+            datasetService.buildTestLabelSearch(model),
             listOf(model.getModuleName()),
             name = name,
             replace = true,
             includeStandard = false,
-            settings = mapOf("${model.id}:tag" to req.tag)
+            settings = mapOf("${model.id}:tag" to req.tag, "maxPredictions" to 1)
         )
 
         val jobId = getZmlpActor().getAttr("jobId")
+
+        model.actorLastTested = getZmlpActor().toString()
+        model.timeLastTested = System.currentTimeMillis()
 
         return if (jobId == null) {
             val rsp = jobLaunchService.launchJob(repro)
@@ -287,7 +325,8 @@ class ModelServiceImpl(
 
     override fun publishModel(model: Model, req: ModelPublishRequest): PipelineMod {
         val mod = pipelineModService.findByName(model.moduleName, false)
-        val ops = buildModuleOps(model, req)
+        val version = versionUp(model)
+        val ops = buildModuleOps(model, req, version)
 
         if (mod != null) {
             // Set version number to change checksum
@@ -302,7 +341,7 @@ class ModelServiceImpl(
         } else {
             val modspec = PipelineModSpec(
                 model.moduleName,
-                "Make predictions with your custom trained '${model.name}' model.",
+                model.type.description,
                 model.type.provider,
                 Category.TRAINED,
                 model.type.objective,
@@ -310,7 +349,7 @@ class ModelServiceImpl(
                 ops
             )
 
-            modelJdbcDao.markAsReady(model.id, true)
+            model.ready = true
             return pipelineModService.create(modspec)
         }
     }
@@ -327,7 +366,7 @@ class ModelServiceImpl(
     }
 
     override fun setTrainingArgs(model: Model, args: Map<String, Any>) {
-        argValidationService.validateArgs("models/${model.type.name}", args)
+        argValidationService.validateArgs("training/${model.type.name}", args)
         model.trainingArgs = args
     }
 
@@ -340,7 +379,7 @@ class ModelServiceImpl(
     }
 
     override fun getTrainingArgSchema(type: ModelType): ArgSchema {
-        return argValidationService.getArgSchema("models/${type.name}")
+        return argValidationService.getArgSchema("training/${type.name}")
     }
 
     override fun deleteModel(model: Model) {
@@ -359,42 +398,9 @@ class ModelServiceImpl(
                 logger.error("Failed to delete files associated with model: ${model.id}")
             }
         }
-
-        val rest = indexRoutingService.getProjectRestClient()
-        val innerQuery = QueryBuilders.boolQuery()
-        innerQuery.filter().add(QueryBuilders.termQuery("labels.modelId", model.id.toString()))
-
-        val query = QueryBuilders.nestedQuery("labels", innerQuery, ScoreMode.None)
-        val req = rest.newUpdateByQueryRequest()
-        req.setQuery(query)
-        req.isRefresh = false
-        req.batchSize = 400
-        req.isAbortOnVersionConflict = false
-        req.script = Script(
-            ScriptType.INLINE,
-            "painless",
-            DELETE_MODEL_SCRIPT,
-            mapOf(
-                "modelId" to model.id.toString()
-            )
-        )
-
-        rest.client.updateByQueryAsync(
-            req, RequestOptions.DEFAULT,
-            object : ActionListener<BulkByScrollResponse> {
-
-                override fun onFailure(e: java.lang.Exception?) {
-                    logger.error("Failed to remove labels for model: ${model.id}", e)
-                }
-
-                override fun onResponse(response: BulkByScrollResponse?) {
-                    logger.info("Removed ${response?.updated} labels from model: ${model.id}")
-                }
-            }
-        )
     }
 
-    fun buildModuleOps(model: Model, req: ModelPublishRequest): List<ModOp> {
+    fun buildModuleOps(model: Model, req: ModelPublishRequest, version: String): List<ModOp> {
         val ops = mutableListOf<ModOp>()
 
         for (depend in model.type.dependencies) {
@@ -412,16 +418,22 @@ class ModelServiceImpl(
             )
         }
 
+        val opType = if (model.type.classifyProcessor == ModelType.BOONAI_SCRIPT.classifyProcessor) {
+            ModOpType.LAST
+        } else {
+            ModOpType.APPEND
+        }
+
         ops.add(
             ModOp(
-                ModOpType.APPEND,
+                opType,
                 listOf(
                     ProcessorRef(
                         model.type.classifyProcessor,
                         StandardContainers.ANALYSIS,
                         mutableMapOf(
                             "model_id" to model.id.toString(),
-                            "version" to System.currentTimeMillis()
+                            "version" to version
                         ).plus(req.args),
                         module = model.name
                     )
@@ -432,189 +444,6 @@ class ModelServiceImpl(
         return ops
     }
 
-    override fun wrapSearchToExcludeTrainingSet(model: Model, search: Map<String, Any>): Map<String, Any> {
-        val emptySearch = mapOf("match_all" to mapOf<String, Any>())
-        val query = Json.serializeToString(search.getOrDefault("query", emptySearch))
-
-        val wrapper =
-            """
-            {
-            	"bool": {
-            		"must": $query,
-                    "must_not": {
-                        "nested" : {
-                            "path": "labels",
-                            "query" : {
-                                "bool": {
-                                    "filter": [
-                                        {"term": { "labels.modelId": "${model.id}" }},
-                                        {"term": { "labels.scope": "TRAIN"}}
-                                    ]
-                                }
-                            }
-                        }
-                    }
-            	}
-            }
-        """.trimIndent()
-        val result = search.toMutableMap()
-        result["query"] = Json.Mapper.readValue(wrapper, Json.GENERIC_MAP)
-        return result
-    }
-
-    @Transactional(propagation = Propagation.SUPPORTS)
-    override fun getLabelCounts(model: Model): Map<String, Long> {
-        val rest = indexRoutingService.getProjectRestClient()
-        val modelIdFilter = QueryBuilders.termQuery("labels.modelId", model.id.toString())
-        val query = QueryBuilders.nestedQuery(
-            "labels",
-            modelIdFilter, ScoreMode.None
-        )
-        val agg = AggregationBuilders.nested("nested_labels", "labels")
-            .subAggregation(
-                AggregationBuilders.filter("filtered", modelIdFilter)
-                    .subAggregation(
-                        AggregationBuilders.terms("labels")
-                            .field("labels.label")
-                            .size(1000)
-                            .order(BucketOrder.key(true))
-                    )
-            )
-
-        val req = rest.newSearchBuilder()
-        req.source.query(query)
-        req.source.aggregation(agg)
-        req.source.size(0)
-        req.source.fetchSource(false)
-
-        val rsp = rest.client.search(req.request, RequestOptions.DEFAULT)
-        val buckets = rsp.aggregations.get<Nested>("nested_labels")
-            .aggregations.get<Filter>("filtered")
-            .aggregations.get<Terms>("labels")
-
-        // Use a LinkedHashMap to maintain sort on the labels.
-        val result = LinkedHashMap<String, Long>()
-        buckets.buckets.forEach {
-            result[it.keyAsString] = it.docCount
-        }
-        return result
-    }
-
-    @Transactional(propagation = Propagation.SUPPORTS)
-    override fun updateLabel(model: Model, label: String, newLabel: String?): GenericBatchUpdateResponse {
-        val rest = indexRoutingService.getProjectRestClient()
-
-        val innerQuery = QueryBuilders.boolQuery()
-        innerQuery.filter().add(QueryBuilders.termQuery("labels.modelId", model.id.toString()))
-        innerQuery.filter().add(QueryBuilders.termQuery("labels.label", label))
-
-        val query = QueryBuilders.nestedQuery(
-            "labels", innerQuery, ScoreMode.None
-        )
-
-        val req = rest.newUpdateByQueryRequest()
-        req.setQuery(query)
-        req.isRefresh = true
-        req.batchSize = 400
-        req.isAbortOnVersionConflict = true
-
-        req.script = if (newLabel.isNullOrEmpty()) {
-            Script(
-                ScriptType.INLINE,
-                "painless",
-                DELETE_LABEL_SCRIPT,
-                mapOf(
-                    "label" to label,
-                    "modelId" to model.id.toString()
-                )
-            )
-        } else {
-            Script(
-                ScriptType.INLINE,
-                "painless",
-                RENAME_LABEL_SCRIPT,
-                mapOf(
-                    "oldLabel" to label,
-                    "newLabel" to newLabel,
-                    "modelId" to model.id.toString()
-                )
-            )
-        }
-
-        val response: BulkByScrollResponse = rest.client.updateByQuery(req, RequestOptions.DEFAULT)
-        return GenericBatchUpdateResponse(response.updated)
-    }
-
-    override fun publishModelFileUpload(model: Model, inputStream: InputStream): PipelineMod {
-        if (!model.type.uploadable) {
-            throw IllegalArgumentException("The model type ${model.type} does not support uploads")
-        }
-
-        val tmpFile = Files.createTempFile(randomString(32), "model.zip")
-        Files.copy(inputStream, tmpFile, StandardCopyOption.REPLACE_EXISTING)
-
-        try {
-
-            // Now store the model zip
-            val modelFile = ProjectStorageSpec(
-                model.getModelStorageLocator("latest"), mapOf(),
-                FileInputStream(tmpFile.toFile()), Files.size(tmpFile)
-            )
-            fileStorageService.store(modelFile)
-
-            // Now store the version identifier
-            val version = "${(System.currentTimeMillis() / 1000).toInt()}-${UUID.randomUUID()}\n"
-            val versionBytes = version.toByteArray()
-            val versionFile = ProjectStorageSpec(
-                model.getModelVersionStorageLocator("latest"), mapOf(),
-                ByteArrayInputStream(versionBytes), versionBytes.size.toLong()
-            )
-            fileStorageService.store(versionFile)
-
-            // Now we can publish the model.
-            return publishModel(
-                model,
-                ModelPublishRequest(mapOf("version" to System.currentTimeMillis()))
-            )
-        } finally {
-            Files.delete(tmpFile)
-        }
-    }
-
-    fun validateModel(path: Path, allowedFiles: List<Any>) {
-
-        val zipFile = ZipFile(path.toFile())
-        val files = zipFile.stream()
-            .map(ZipEntry::getName)
-            .map { it }.toList()
-
-        if (!files.contains("labels.txt")) {
-            throw IllegalArgumentException("The model zip must contain a labels.txt file")
-        }
-
-        files.forEach { fileName ->
-            var matched = false
-
-            for (pattern in allowedFiles) {
-                if (pattern is Regex) {
-                    if (pattern.matches(fileName)) {
-                        matched = true
-                        break
-                    }
-                } else if (pattern is String) {
-                    if (pattern.toString() == fileName) {
-                        matched = true
-                        break
-                    }
-                }
-            }
-
-            if (!matched) {
-                throw IllegalArgumentException("'$fileName' is not an expected Tensorflow model file.")
-            }
-        }
-    }
-
     override fun getModelVersions(model: Model): Set<String> {
         val files = fileStorageService.listFiles(
             ProjectDirLocator(ProjectStorageEntity.MODELS, model.id.toString()).getPath()
@@ -622,49 +451,26 @@ class ModelServiceImpl(
         return files.map { it.split("/")[4] }.toSet()
     }
 
-    override fun validateTensorflowModel(path: Path) {
-        val validTensorflowFiles = listOf(
-            "labels.txt",
-            "saved_model.pb",
-            "tfhub_module.pb",
-            "assets/",
-            "variables/",
-            Regex("^variables/variables.data-[\\d]+-of-[\\d]+$"),
-            "variables/variables.index"
-        )
-        validateModel(path, validTensorflowFiles)
+    override fun postToModelEventTopic(msg: PubsubMessage) {
+        publisherService.publish(topic, msg)
     }
 
-    override fun validatePyTorchModel(path: Path) {
-        val validTorchFiles = listOf(
-            "model.pth",
-            "labels.txt"
+    fun versionUp(model: Model): String {
+        val version = "${System.currentTimeMillis()}"
+        val versionBytes = version.plus("\n").toByteArray()
+        val versionFile = ProjectStorageSpec(
+            model.getModelVersionStorageLocator("latest"), mapOf(),
+            ByteArrayInputStream(versionBytes), versionBytes.size.toLong()
         )
-        validateModel(path, validTorchFiles)
+        fileStorageService.store(versionFile)
+        return version
     }
 
-    fun testLabelSearch(model: Model): Map<String, Any> {
-        val wrapper =
-            """
-            {
-            	"bool": {
-                    "filter": {
-                        "nested" : {
-                            "path": "labels",
-                            "query" : {
-                                "bool": {
-                                    "filter": [
-                                        {"term": { "labels.modelId": "${model.id}" }},
-                                        {"term": { "labels.scope": "TEST"}}
-                                    ]
-                                }
-                            }
-                        }
-                    }
-            	}
-            }
-        """.trimIndent()
-        return mapOf("query" to Json.Mapper.readValue(wrapper, Json.GENERIC_MAP))
+    fun validateDatasetType(dsId: UUID, mtype: ModelType) {
+        val ds = datasetService.getDataset(dsId)
+        if (ds.type != mtype.datasetType) {
+            throw IllegalArgumentException("Invalid Dataset type for this model type")
+        }
     }
 
     companion object {
@@ -672,54 +478,5 @@ class ModelServiceImpl(
         private val logger = LoggerFactory.getLogger(ModelServiceImpl::class.java)
 
         private val modelNameRegex = Regex("^[a-z0-9_\\-\\s]{2,}$", RegexOption.IGNORE_CASE)
-
-        /**
-         * A painless script which renames a label.
-         */
-        private val RENAME_LABEL_SCRIPT =
-            """
-            for (int i = 0; i < ctx._source['labels'].length; ++i) {
-               if (ctx._source['labels'][i]['label'] == params.oldLabel &&
-                   ctx._source['labels'][i]['modelId'] == params.modelId) {
-                       ctx._source['labels'][i]['label'] = params.newLabel;
-                       break;
-               }
-            }
-            """.trimIndent()
-
-        /**
-         * A painless script which renames a label.
-         */
-        private val DELETE_LABEL_SCRIPT =
-            """
-            int index = -1;
-            for (int i = 0; i < ctx._source['labels'].length; ++i) {
-               if (ctx._source['labels'][i]['label'] == params.label &&
-                   ctx._source['labels'][i]['modelId'] == params.modelId) {
-                   index = i;
-                   break;
-               }
-            }
-            if (index > -1) {
-               ctx._source['labels'].remove(index)
-            }
-            """.trimIndent()
-
-        /**
-         * A painless script which renames a label.
-         */
-        private val DELETE_MODEL_SCRIPT =
-            """
-            int index = -1;
-            for (int i = 0; i < ctx._source['labels'].length; ++i) {
-               if (ctx._source['labels'][i]['modelId'] == params.modelId) {
-                   index = i;
-                   break;
-               }
-            }
-            if (index > -1) {
-               ctx._source['labels'].remove(index)
-            }
-            """.trimIndent()
     }
 }

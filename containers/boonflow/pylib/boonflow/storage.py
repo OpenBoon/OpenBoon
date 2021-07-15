@@ -17,7 +17,7 @@ import requests
 
 from boonsdk import Asset, StoredFile, AnalysisModule, \
     BoonSdkException, util
-from .base import BoonEnv, app_instance
+from .env import BoonEnv, app_instance
 from .cloud import get_cached_google_storage_client, \
     get_cached_aws_client, get_cached_azure_storage_client
 
@@ -184,7 +184,7 @@ class ModelStorage:
         return AnalysisModule(self.app.client.post(f'/api/v3/models/{mid}/_publish'))
 
 
-class AssetStorage(object):
+class AssetStorage:
     """
     AssetStorage provides ability to store and retrieve files related to the asset.  The
     files are stored in cloud storage.  This is mostly a convenience class around
@@ -207,6 +207,17 @@ class AssetStorage(object):
 
         """
         return self.proj_store.get_native_uri(stored_file)
+
+    def get_file_native_uri(self, entity_type, entity_id, category, name):
+        """
+       Provide the location of a file in cloud
+       :param entity_type: Entity type like MODELS, ASSETS..
+       :param entity_id: id of the entity
+       :param category: file category stored in cloud
+       :param name: file name
+       :return: Dictionary containing uri, mediaType
+       """
+        return self.proj_store.get_file_native_uri(entity_type, entity_id, category, name)
 
     def store_file(self, src_path, asset, category, rename=None, attrs=None):
         """
@@ -256,7 +267,7 @@ class AssetStorage(object):
         return result
 
 
-class ProjectStorage(object):
+class ProjectStorage:
     """
     Provides access to Project cloud storage.
     """
@@ -427,7 +438,7 @@ class ProjectStorage(object):
         Return the file's native url (like gs://).
 
         Args:
-            stored_file (StoredFile): A filed stored in the Zorroa backend.
+            stored_file (StoredFile): A filed stored in the BoonAI backend.
         Returns:
             str: The native uri.
 
@@ -435,8 +446,47 @@ class ProjectStorage(object):
         return self.app.client.get('/api/v3/files/_locate/{}'
                                    .format(stored_file.id))['uri']
 
+    def get_signed_native_uri(self, stored_file, minutes=None):
+        """
+        Return the file's native url (like gs://).
 
-class FileCache(object):
+        Args:
+            stored_file (StoredFile): A filed stored in the BoonAI backend.
+            minutes (int): Optionally set the number of minutes the file should be signed for,
+                otherwise it defaults to whatever the server side default is.
+        Returns:
+            str: The native uri.
+        """
+        if minutes:
+            qstring = f'?minutes={minutes}'
+        else:
+            qstring = ''
+        return self.app.client.get('/api/v3/files/_sign/{}{}'
+                                   .format(stored_file.id, qstring))['uri']
+
+    def get_file_native_uri(self, entity_type, entity_id, category, name):
+        """
+        Provide the location of a file in cloud
+        :param entity_type: Entity type like MODELS, ASSETS..
+        :param entity_id: id of the entity
+        :param category: file category stored in cloud
+        :param name: file name
+        :return: Dictionary containing uri, mediaType
+        """
+        url = f"/api/v3/files/_locate/{entity_type}/{entity_id}/{category}/{name}"
+        return self.app.client.get(url)
+
+    def get_directory_location(self, entity_type, entity_id):
+        """
+        Return a entity folder in cloud
+        :param entity_type: Entity type like MODELS, ASSETS
+        :param entity_id: entity id
+        :return: location URL
+        """
+        return self.app.client.get(f"/api/v3/files/_locate/{entity_type}/{entity_id}")
+
+
+class FileCache:
     """
     The LocalFileCache provides a temporary place for storing source and
     support files such as thumbnails for processing.
