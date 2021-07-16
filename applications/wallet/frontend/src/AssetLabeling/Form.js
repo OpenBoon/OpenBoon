@@ -38,7 +38,7 @@ const AssetLabelingForm = ({
 
     if (isDisabled) return
 
-    onSave({ projectId, assetId, state, dispatch })
+    onSave({ projectId, assetId, state, labels, dispatch })
   }
 
   const handleOnDelete = ({ label }) => {
@@ -176,10 +176,10 @@ const AssetLabelingForm = ({
 
             const labelDispatch = (value) => {
               dispatch({
+                lastLabel: value.label,
+                lastScope: value.scope,
                 labels: {
-                  ...(state.datasetType === 'Classification'
-                    ? {}
-                    : state.labels),
+                  ...state.labels,
                   [id]: value,
                 },
               })

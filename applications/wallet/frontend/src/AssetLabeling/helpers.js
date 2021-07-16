@@ -8,6 +8,8 @@ export const SCOPE_OPTIONS = [
 
 const INITIAL_STATE = {
   datasetId: '',
+  lastLabel: '',
+  lastScope: 'TRAIN',
   labels: {},
   isLoading: false,
   errors: {},
@@ -28,12 +30,7 @@ export const getIsDisabled = ({ assetId, state, labels }) => {
   if (state.isLoading) return true
 
   // Unique unlabeled label with any other label input
-  if (
-    state.labels &&
-    Object.values(state.labels).length === 1 &&
-    labels.length === 1 &&
-    labels[0].label === ''
-  ) {
+  if (labels.length === 1 && labels[0].label === '' && state.lastLabel !== '') {
     return false
   }
 
@@ -58,12 +55,8 @@ export const getLabelState = ({ id, state, labels }) => {
   }
 
   // Unique other label input
-  if (
-    state.labels &&
-    Object.values(state.labels).length === 1 &&
-    labels.length === 1
-  ) {
-    return Object.values(state.labels)[0]
+  if (labels.length === 1) {
+    return { label: state.lastLabel, scope: state.lastScope }
   }
 
   // Empty state
@@ -73,13 +66,25 @@ export const getLabelState = ({ id, state, labels }) => {
   }
 }
 
-const getBody = ({ assetId, state }) => {
+const getBody = ({ assetId, state, labels }) => {
+  if (
+    labels.length === 1 &&
+    Object.keys(state.labels).length === 0 &&
+    state.lastLabel !== ''
+  ) {
+    return {
+      addLabels: [
+        {
+          assetId,
+          bbox: labels[0].bbox,
+          label: state.lastLabel,
+          scope: state.lastScope,
+        },
+      ],
+    }
+  }
+
   if (state.datasetType === 'Classification') {
-    /**
-     * Important to use `assetId` here instead of the
-     * `Object.keys(state.labels)[0]` so that we can save
-     * the same label across multiple assets:
-     */
     const { scope, label } = Object.values(state.labels)[0]
 
     return { addLabels: [{ assetId, label, scope }] }
@@ -92,8 +97,14 @@ const getBody = ({ assetId, state }) => {
   }
 }
 
-export const onSave = async ({ projectId, assetId, state, dispatch }) => {
-  const body = getBody({ assetId, state })
+export const onSave = async ({
+  projectId,
+  assetId,
+  state,
+  labels,
+  dispatch,
+}) => {
+  const body = getBody({ assetId, state, labels })
 
   if (body.addLabels.length === 0) return
 
@@ -115,7 +126,7 @@ export const onSave = async ({ projectId, assetId, state, dispatch }) => {
       revalidate({ key: `${BASE}/label_tool_info/?assetId=${assetId}` }),
     ])
 
-    dispatch({ isLoading: false })
+    dispatch({ isLoading: false, labels: {} })
   } catch (response) {
     const errors = await parseResponse({ response })
 
