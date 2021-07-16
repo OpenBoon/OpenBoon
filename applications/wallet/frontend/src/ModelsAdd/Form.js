@@ -108,24 +108,26 @@ const ModelsAddForm = () => {
 
       <SectionTitle>Select Model Type</SectionTitle>
 
-      {modelTypes.map(({ name, label, description }) => {
-        if (name === PRE_TRAINED_MODEL_TYPE) return null
+      <div css={{ marginRight: -130, paddingBottom: spacing.normal }}>
+        {modelTypes.map(({ name, label, description }) => {
+          if (name === PRE_TRAINED_MODEL_TYPE) return null
 
-        return (
-          <div key={name} css={{ paddingTop: spacing.normal }}>
-            <Radio
-              name="modelType"
-              option={{
-                value: name,
-                label,
-                legend: description,
-                initialValue: state.type === name,
-              }}
-              onClick={({ value }) => dispatch({ type: value })}
-            />
-          </div>
-        )
-      })}
+          return (
+            <div key={name} css={{ paddingTop: spacing.normal }}>
+              <Radio
+                name="modelType"
+                option={{
+                  value: name,
+                  label,
+                  legend: description,
+                  initialValue: state.type === name,
+                }}
+                onClick={({ value }) => dispatch({ type: value })}
+              />
+            </div>
+          )
+        })}
+      </div>
 
       <ButtonGroup>
         <Button

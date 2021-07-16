@@ -65,6 +65,7 @@ exports[`<ModelMatrixControls should not crash when min equals max 1`] = `
   -webkit-justify-content: center;
   justify-content: center;
   position: relative;
+  padding-top: 1px;
 }
 
 .emotion-6 {
@@ -375,6 +376,7 @@ exports[`<ModelMatrixControls should render properly 1`] = `
   -webkit-justify-content: center;
   justify-content: center;
   position: relative;
+  padding-top: 1px;
 }
 
 .emotion-6 {

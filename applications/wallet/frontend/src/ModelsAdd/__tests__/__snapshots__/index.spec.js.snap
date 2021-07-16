@@ -252,10 +252,15 @@ Array [
 }
 
 .emotion-13 {
-  padding-top: 16px;
+  margin-right: -130px;
+  padding-bottom: 16px;
 }
 
 .emotion-14 {
+  padding-top: 16px;
+}
+
+.emotion-15 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -266,7 +271,7 @@ Array [
   align-items: flex-start;
 }
 
-.emotion-15 {
+.emotion-16 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -280,9 +285,10 @@ Array [
   -webkit-justify-content: center;
   justify-content: center;
   position: relative;
+  padding-top: 1px;
 }
 
-.emotion-16 {
+.emotion-17 {
   padding: 0;
   -webkit-appearance: none;
   border-radius: 16px;
@@ -291,7 +297,7 @@ Array [
   border: 1px solid #808080;
 }
 
-.emotion-17 {
+.emotion-18 {
   position: absolute;
   width: 8px;
   height: 8px;
@@ -300,20 +306,20 @@ Array [
   background-color: none;
 }
 
-.emotion-18 {
+.emotion-19 {
   padding-left: 12px;
 }
 
-.emotion-19 {
+.emotion-20 {
   font-weight: 700;
   color: #ffffff;
 }
 
-.emotion-20 {
+.emotion-21 {
   color: #b3b3b3;
 }
 
-.emotion-37 {
+.emotion-38 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -322,17 +328,17 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-37 button,
-.emotion-37 a {
+.emotion-38 button,
+.emotion-38 a {
   margin-right: 16px;
 }
 
-.emotion-37 button:last-child,
-.emotion-37 a:last-child {
+.emotion-38 button:last-child,
+.emotion-38 a:last-child {
   margin-right: 0;
 }
 
-.emotion-38 {
+.emotion-39 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -363,22 +369,22 @@ Array [
   background-color: transparent;
 }
 
-.emotion-38,
-.emotion-38:hover,
-.emotion-38:visited,
-.emotion-38 .noop {
+.emotion-39,
+.emotion-39:hover,
+.emotion-39:visited,
+.emotion-39 .noop {
   background-color: #3A5DFF;
 }
 
-.emotion-38:hover,
-.emotion-38 .noop {
+.emotion-39:hover,
+.emotion-39 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #6088FE;
 }
 
-.emotion-38[aria-disabled=true],
-.emotion-38 .noop {
+.emotion-39[aria-disabled=true],
+.emotion-39 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -459,126 +465,130 @@ Array [
     <div
       className="emotion-13"
     >
-      <div>
-        <label
-          className="emotion-14"
-        >
-          <div
+      <div
+        className="emotion-14"
+      >
+        <div>
+          <label
             className="emotion-15"
           >
-            <input
-              className="emotion-16"
-              defaultChecked={false}
-              name="modelType"
-              onClick={[Function]}
-              type="radio"
-              value="KNN_CLASSIFIER"
-            />
             <div
-              className="emotion-17"
-            />
-          </div>
-          <div
-            className="emotion-18"
-          >
+              className="emotion-16"
+            >
+              <input
+                className="emotion-17"
+                defaultChecked={false}
+                name="modelType"
+                onClick={[Function]}
+                type="radio"
+                value="KNN_CLASSIFIER"
+              />
+              <div
+                className="emotion-18"
+              />
+            </div>
             <div
               className="emotion-19"
             >
-              K-Nearest Neighbors Classifier
+              <div
+                className="emotion-20"
+              >
+                K-Nearest Neighbors Classifier
+              </div>
+              <div
+                className="emotion-21"
+              >
+                Classify images, documents and video clips using a KNN classifier.  This type of model can work great with just a single labeled example.If no labels are provided, the model automatically generates numbered groups of similar assets. These groups can be renamed and edited in subsequent training passes.
+              </div>
             </div>
-            <div
-              className="emotion-20"
-            >
-              Classify images, documents and video clips using a KNN classifier.  This type of model can work great with just a single labeled example.If no labels are provided, the model automatically generates numbered groups of similar assets. These groups can be renamed and edited in subsequent training passes.
-            </div>
-          </div>
-        </label>
+          </label>
+        </div>
       </div>
-    </div>
-    <div
-      className="emotion-13"
-    >
-      <div>
-        <label
-          className="emotion-14"
-        >
-          <div
+      <div
+        className="emotion-14"
+      >
+        <div>
+          <label
             className="emotion-15"
           >
-            <input
-              className="emotion-16"
-              defaultChecked={false}
-              name="modelType"
-              onClick={[Function]}
-              type="radio"
-              value="TF_CLASSIFIER"
-            />
             <div
-              className="emotion-17"
-            />
-          </div>
-          <div
-            className="emotion-18"
-          >
+              className="emotion-16"
+            >
+              <input
+                className="emotion-17"
+                defaultChecked={false}
+                name="modelType"
+                onClick={[Function]}
+                type="radio"
+                value="TF_CLASSIFIER"
+              />
+              <div
+                className="emotion-18"
+              />
+            </div>
             <div
               className="emotion-19"
             >
-              Tensorflow Transfer Learning Classifier
+              <div
+                className="emotion-20"
+              >
+                Tensorflow Transfer Learning Classifier
+              </div>
+              <div
+                className="emotion-21"
+              >
+                Classify images or documents using a custom strained CNN deep learning algorithm.  This type of modelgenerates multiple predictions and can be trained to identify very specific features. The label detection classifier requires at least 2 concepts with 10 labeled images each.
+              </div>
             </div>
-            <div
-              className="emotion-20"
-            >
-              Classify images or documents using a custom strained CNN deep learning algorithm.  This type of modelgenerates multiple predictions and can be trained to identify very specific features. The label detection classifier requires at least 2 concepts with 10 labeled images each.
-            </div>
-          </div>
-        </label>
+          </label>
+        </div>
       </div>
-    </div>
-    <div
-      className="emotion-13"
-    >
-      <div>
-        <label
-          className="emotion-14"
-        >
-          <div
+      <div
+        className="emotion-14"
+      >
+        <div>
+          <label
             className="emotion-15"
           >
-            <input
-              className="emotion-16"
-              defaultChecked={false}
-              name="modelType"
-              onClick={[Function]}
-              type="radio"
-              value="FACE_RECOGNITION"
-            />
             <div
-              className="emotion-17"
-            />
-          </div>
-          <div
-            className="emotion-18"
-          >
+              className="emotion-16"
+            >
+              <input
+                className="emotion-17"
+                defaultChecked={false}
+                name="modelType"
+                onClick={[Function]}
+                type="radio"
+                value="FACE_RECOGNITION"
+              />
+              <div
+                className="emotion-18"
+              />
+            </div>
             <div
               className="emotion-19"
             >
-              Face Recognition
+              <div
+                className="emotion-20"
+              >
+                Face Recognition
+              </div>
+              <div
+                className="emotion-21"
+              >
+                Label faces detected by the boonai-face-detection module, and classify them with a KNN model.
+              </div>
             </div>
-            <div
-              className="emotion-20"
-            >
-              Label faces detected by the boonai-face-detection module, and classify them with a KNN model.
-            </div>
-          </div>
-        </label>
+          </label>
+        </div>
       </div>
     </div>
     <div
-      className="emotion-37"
+      className="emotion-38"
     >
       <button
         aria-disabled={true}
-        className="emotion-38"
+        className="emotion-39"
         onClick={[Function]}
         type="submit"
       >
@@ -841,10 +851,15 @@ Array [
 }
 
 .emotion-13 {
-  padding-top: 16px;
+  margin-right: -130px;
+  padding-bottom: 16px;
 }
 
 .emotion-14 {
+  padding-top: 16px;
+}
+
+.emotion-15 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -855,7 +870,7 @@ Array [
   align-items: flex-start;
 }
 
-.emotion-15 {
+.emotion-16 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -869,9 +884,10 @@ Array [
   -webkit-justify-content: center;
   justify-content: center;
   position: relative;
+  padding-top: 1px;
 }
 
-.emotion-16 {
+.emotion-17 {
   padding: 0;
   -webkit-appearance: none;
   border-radius: 16px;
@@ -880,7 +896,7 @@ Array [
   border: 1px solid #ffffff;
 }
 
-.emotion-17 {
+.emotion-18 {
   position: absolute;
   width: 8px;
   height: 8px;
@@ -889,20 +905,20 @@ Array [
   background-color: #3A5DFF;
 }
 
-.emotion-18 {
+.emotion-19 {
   padding-left: 12px;
 }
 
-.emotion-19 {
+.emotion-20 {
   font-weight: 700;
   color: #ffffff;
 }
 
-.emotion-20 {
+.emotion-21 {
   color: #b3b3b3;
 }
 
-.emotion-24 {
+.emotion-25 {
   padding: 0;
   -webkit-appearance: none;
   border-radius: 16px;
@@ -911,7 +927,7 @@ Array [
   border: 1px solid #808080;
 }
 
-.emotion-25 {
+.emotion-26 {
   position: absolute;
   width: 8px;
   height: 8px;
@@ -920,7 +936,7 @@ Array [
   background-color: none;
 }
 
-.emotion-37 {
+.emotion-38 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -929,17 +945,17 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-37 button,
-.emotion-37 a {
+.emotion-38 button,
+.emotion-38 a {
   margin-right: 16px;
 }
 
-.emotion-37 button:last-child,
-.emotion-37 a:last-child {
+.emotion-38 button:last-child,
+.emotion-38 a:last-child {
   margin-right: 0;
 }
 
-.emotion-38 {
+.emotion-39 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -970,22 +986,22 @@ Array [
   background-color: transparent;
 }
 
-.emotion-38,
-.emotion-38:hover,
-.emotion-38:visited,
-.emotion-38 .noop {
+.emotion-39,
+.emotion-39:hover,
+.emotion-39:visited,
+.emotion-39 .noop {
   background-color: #3A5DFF;
 }
 
-.emotion-38:hover,
-.emotion-38 .noop {
+.emotion-39:hover,
+.emotion-39 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #6088FE;
 }
 
-.emotion-38[aria-disabled=true],
-.emotion-38 .noop {
+.emotion-39[aria-disabled=true],
+.emotion-39 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -1066,125 +1082,129 @@ Array [
     <div
       className="emotion-13"
     >
-      <div>
-        <label
-          className="emotion-14"
-        >
-          <div
+      <div
+        className="emotion-14"
+      >
+        <div>
+          <label
             className="emotion-15"
           >
-            <input
+            <div
               className="emotion-16"
-              defaultChecked={true}
-              name="modelType"
-              onClick={[Function]}
-              type="radio"
-              value="KNN_CLASSIFIER"
-            />
-            <div
-              className="emotion-17"
-            />
-          </div>
-          <div
-            className="emotion-18"
-          >
+            >
+              <input
+                className="emotion-17"
+                defaultChecked={true}
+                name="modelType"
+                onClick={[Function]}
+                type="radio"
+                value="KNN_CLASSIFIER"
+              />
+              <div
+                className="emotion-18"
+              />
+            </div>
             <div
               className="emotion-19"
             >
-              K-Nearest Neighbors Classifier
+              <div
+                className="emotion-20"
+              >
+                K-Nearest Neighbors Classifier
+              </div>
+              <div
+                className="emotion-21"
+              >
+                Classify images, documents and video clips using a KNN classifier.  This type of model can work great with just a single labeled example.If no labels are provided, the model automatically generates numbered groups of similar assets. These groups can be renamed and edited in subsequent training passes.
+              </div>
             </div>
-            <div
-              className="emotion-20"
-            >
-              Classify images, documents and video clips using a KNN classifier.  This type of model can work great with just a single labeled example.If no labels are provided, the model automatically generates numbered groups of similar assets. These groups can be renamed and edited in subsequent training passes.
-            </div>
-          </div>
-        </label>
+          </label>
+        </div>
       </div>
-    </div>
-    <div
-      className="emotion-13"
-    >
-      <div>
-        <label
-          className="emotion-14"
-        >
-          <div
+      <div
+        className="emotion-14"
+      >
+        <div>
+          <label
             className="emotion-15"
           >
-            <input
-              className="emotion-24"
-              defaultChecked={false}
-              name="modelType"
-              onClick={[Function]}
-              type="radio"
-              value="TF_CLASSIFIER"
-            />
             <div
-              className="emotion-25"
-            />
-          </div>
-          <div
-            className="emotion-18"
-          >
+              className="emotion-16"
+            >
+              <input
+                className="emotion-25"
+                defaultChecked={false}
+                name="modelType"
+                onClick={[Function]}
+                type="radio"
+                value="TF_CLASSIFIER"
+              />
+              <div
+                className="emotion-26"
+              />
+            </div>
             <div
               className="emotion-19"
             >
-              Tensorflow Transfer Learning Classifier
+              <div
+                className="emotion-20"
+              >
+                Tensorflow Transfer Learning Classifier
+              </div>
+              <div
+                className="emotion-21"
+              >
+                Classify images or documents using a custom strained CNN deep learning algorithm.  This type of modelgenerates multiple predictions and can be trained to identify very specific features. The label detection classifier requires at least 2 concepts with 10 labeled images each.
+              </div>
             </div>
-            <div
-              className="emotion-20"
-            >
-              Classify images or documents using a custom strained CNN deep learning algorithm.  This type of modelgenerates multiple predictions and can be trained to identify very specific features. The label detection classifier requires at least 2 concepts with 10 labeled images each.
-            </div>
-          </div>
-        </label>
+          </label>
+        </div>
       </div>
-    </div>
-    <div
-      className="emotion-13"
-    >
-      <div>
-        <label
-          className="emotion-14"
-        >
-          <div
+      <div
+        className="emotion-14"
+      >
+        <div>
+          <label
             className="emotion-15"
           >
-            <input
-              className="emotion-24"
-              defaultChecked={false}
-              name="modelType"
-              onClick={[Function]}
-              type="radio"
-              value="FACE_RECOGNITION"
-            />
             <div
-              className="emotion-25"
-            />
-          </div>
-          <div
-            className="emotion-18"
-          >
+              className="emotion-16"
+            >
+              <input
+                className="emotion-25"
+                defaultChecked={false}
+                name="modelType"
+                onClick={[Function]}
+                type="radio"
+                value="FACE_RECOGNITION"
+              />
+              <div
+                className="emotion-26"
+              />
+            </div>
             <div
               className="emotion-19"
             >
-              Face Recognition
+              <div
+                className="emotion-20"
+              >
+                Face Recognition
+              </div>
+              <div
+                className="emotion-21"
+              >
+                Label faces detected by the boonai-face-detection module, and classify them with a KNN model.
+              </div>
             </div>
-            <div
-              className="emotion-20"
-            >
-              Label faces detected by the boonai-face-detection module, and classify them with a KNN model.
-            </div>
-          </div>
-        </label>
+          </label>
+        </div>
       </div>
     </div>
     <div
-      className="emotion-37"
+      className="emotion-38"
     >
       <button
-        className="emotion-38"
+        className="emotion-39"
         onClick={[Function]}
         type="submit"
       >

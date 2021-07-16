@@ -286,6 +286,7 @@ Array [
   -webkit-justify-content: center;
   justify-content: center;
   position: relative;
+  padding-top: 1px;
 }
 
 .emotion-17 {
@@ -893,6 +894,7 @@ Array [
   -webkit-justify-content: center;
   justify-content: center;
   position: relative;
+  padding-top: 1px;
 }
 
 .emotion-17 {

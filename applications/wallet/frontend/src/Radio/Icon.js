@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 
-import { colors, constants } from '../Styles'
+import { colors, constants, spacing } from '../Styles'
 
 const RADIO_BUTTON_SIZE = 16
 const RADIO_BUTTION_FILL_SIZE = 8
@@ -13,6 +13,7 @@ const RadioIcon = ({ name, value, isChecked, onClick }) => {
         alignItems: 'center',
         justifyContent: 'center',
         position: 'relative',
+        paddingTop: spacing.hairline,
       }}
     >
       <input

@@ -26,6 +26,7 @@ exports[`<Radio /> should render properly checked 1`] = `
   -webkit-justify-content: center;
   justify-content: center;
   position: relative;
+  padding-top: 1px;
 }
 
 .emotion-2 {
@@ -122,6 +123,7 @@ exports[`<Radio /> should render properly unchecked 1`] = `
   -webkit-justify-content: center;
   justify-content: center;
   position: relative;
+  padding-top: 1px;
 }
 
 .emotion-2 {
