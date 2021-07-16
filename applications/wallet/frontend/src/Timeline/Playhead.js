@@ -105,7 +105,9 @@ const TimelinePlayhead = ({ videoRef, rulerRef, zoom, followPlayhead }) => {
 
     const newCurrentTime = (newPosition / maxPosition) * video.duration
 
-    video.currentTime = newCurrentTime
+    if (Number.isFinite(newCurrentTime)) {
+      video.currentTime = newCurrentTime
+    }
   }
 
   /* istanbul ignore next */

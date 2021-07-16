@@ -28,6 +28,7 @@ object Json {
     val MUTABLE_MAP: TypeReference<MutableMap<String, Any>> = object : TypeReference<MutableMap<String, Any>>() {}
     val LIST_OF_GENERIC_MAP: TypeReference<List<Map<String, Any>>> = object : TypeReference<List<Map<String, Any>>>() {}
     val LIST_OF_STRING: TypeReference<List<String>> = object : TypeReference<List<String>>() {}
+    val SET_OF_STRING: TypeReference<Set<String>> = object : TypeReference<Set<String>>() {}
 
     val Mapper = jacksonObjectMapper()
 

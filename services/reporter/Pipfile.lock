@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "918fe961ce9d5f481baeddbe434e03d29135e3f7d05bf998047cfd5d3ffa4821"
+            "sha256": "1e7e7f7430f2aa0696ada01e4d81d04fb94a112e45264ec3cf7814790361238f"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -103,11 +103,11 @@
         },
         "charset-normalizer": {
             "hashes": [
-                "sha256:ad0da505736fc7e716a8da15bf19a985db21ac6415c26b34d2fafd3beb3d927e",
-                "sha256:b68b38179052975093d71c1b5361bf64afd80484697c1f27056e50593e695ceb"
+                "sha256:3c502a35807c9df35697b0f44b1d65008f83071ff29c69677c7c22573bc5a45a",
+                "sha256:951567c2f7433a70ab63f1be67e5ee05d3925d9423306ecb71a3b272757bcc95"
             ],
             "markers": "python_version >= '3'",
-            "version": "==2.0.1"
+            "version": "==2.0.2"
         },
         "cryptography": {
             "hashes": [
@@ -148,19 +148,19 @@
         },
         "google-auth": {
             "hashes": [
-                "sha256:9266252e11393943410354cf14a77bcca24dd2ccd9c4e1aef23034fe0fbae630",
-                "sha256:c7c215c74348ef24faef2f7b62f6d8e6b38824fe08b1e7b7b09a02d397eda7b3"
+                "sha256:9bd25d835c01ca3dd9045ea0b50f036e3fe3868ee2c5a9773a661925bbdf46ca",
+                "sha256:a756a33978fac611e4f00b69715b80e35467c30cc6262132d29d33a0e398ac55"
             ],
             "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4, 3.5'",
-            "version": "==1.32.1"
+            "version": "==1.33.0"
         },
         "google-cloud-monitoring": {
             "hashes": [
-                "sha256:44892c09a33c65e68f1f951a5f9319902c871c2c0b84f156b92a836b5929534b",
-                "sha256:7ec96f97679319f1af8c6f7d8bcc39a6a9cac031c8dc11e0f50fd2e16874597f"
+                "sha256:30632fa7aad044a3b4e2b662e6ba99f29f60064c1cfc88bbf4d175c1a12ced66",
+                "sha256:81e387363b49298ff420893ab6e899d8045d74106f8510f417e482bf35e5350e"
             ],
             "index": "pypi",
-            "version": "==2.4.0"
+            "version": "==1.1.0"
         },
         "googleapis-common-protos": {
             "hashes": [
@@ -272,14 +272,6 @@
             ],
             "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'",
             "version": "==0.13.1"
-        },
-        "proto-plus": {
-            "hashes": [
-                "sha256:ce6695ce804383ad6f392c4bb1874c323896290a1f656560de36416ba832d91e",
-                "sha256:df7c71c08dc06403bdb0fba58cf9bf5f217198f6488c26b768f81e03a738c059"
-            ],
-            "markers": "python_version >= '3.6'",
-            "version": "==1.19.0"
         },
         "protobuf": {
             "hashes": [

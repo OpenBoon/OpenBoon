@@ -38,8 +38,10 @@ const TimelineRuler = ({
               const newCurrentTime =
                 (newPosition / width) * videoRef.current.duration
 
-              // eslint-disable-next-line no-param-reassign
-              videoRef.current.currentTime = newCurrentTime
+              if (Number.isFinite(newCurrentTime)) {
+                // eslint-disable-next-line no-param-reassign
+                videoRef.current.currentTime = newCurrentTime
+              }
             }}
             css={{
               display: 'flex',

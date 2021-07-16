@@ -36,3 +36,14 @@ class AssetMetrics(
      */
     val pipeline: List<ProcessorMetric>?
 )
+
+/**
+ * Sent to metrics service
+ */
+class AssetMetricsEvent(
+    val asset_id: String,
+    val asset_path: String?,
+    val asset_type: String?,
+    val services: Set<String>?,
+    val length: Double?
+)
