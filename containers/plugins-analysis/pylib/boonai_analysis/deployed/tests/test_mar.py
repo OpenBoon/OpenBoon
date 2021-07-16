@@ -10,7 +10,7 @@ from boonflow.base import Frame, ImageInputStream
 from boonflow.storage import file_storage
 from boonflow.testing import PluginUnitTestCase, TestAsset, test_path
 
-from boonai_analysis.deployed.mar import TorchModelArchiveClassifier, TorchModelObjectDetection
+from boonai_analysis.deployed.mar import TorchModelArchiveClassifier, TorchModelArchiveDetector
 
 
 class TorchModelArchiveTests(PluginUnitTestCase):
@@ -145,7 +145,7 @@ class TorchModelArchiveIntegrationTests(PluginUnitTestCase):
         assert analysis['predictions'][0]['label'] == 'toucan'
 
 
-class TorchModelObjectDetectionTests(PluginUnitTestCase):
+class TorchModelArchiveDetectorTests(PluginUnitTestCase):
     model_id = "model-id-34568"
     torch_model_name = "maskrcnn"
     base_dir = os.path.dirname(__file__)
@@ -159,7 +159,7 @@ class TorchModelObjectDetectionTests(PluginUnitTestCase):
     @patch.object(ModelApp, "get_model")
     @patch.object(file_storage.projects, "localize_file")
     @patch("boonflow.base.get_proxy_level_path")
-    @patch.object(TorchModelObjectDetection, "predict")
+    @patch.object(TorchModelArchiveDetector, "predict")
     def test_image_classifier(self, predict_patch, proxy_patch, file_patch, model_patch):
         name = "custom-object-detection"
         model_patch.return_value = Model(
@@ -187,7 +187,7 @@ class TorchModelObjectDetectionTests(PluginUnitTestCase):
         frame = Frame(TestAsset(path))
 
         processor = self.init_processor(
-            TorchModelObjectDetection(), args
+            TorchModelArchiveDetector(), args
         )
         processor.process(frame)
         analysis = frame.asset.get_analysis(name)
@@ -196,7 +196,7 @@ class TorchModelObjectDetectionTests(PluginUnitTestCase):
 
 
 @pytest.mark.skip(reason='dont run automatically')
-class TorchModelObjectDetectionIntegrationTests(PluginUnitTestCase):
+class TorchModelArchiveDetectorIntegrationTests(PluginUnitTestCase):
     """
     Should have a Pythorch server deployed locally with maskrcnn model
     https://github.com/pytorch/serve/tree/master/examples/object_detector/maskrcnn
@@ -234,7 +234,7 @@ class TorchModelObjectDetectionIntegrationTests(PluginUnitTestCase):
         frame.image = ImageInputStream.from_path(path)
 
         processor = self.init_processor(
-            TorchModelObjectDetection(), args
+            TorchModelArchiveDetector(), args
         )
         processor.process(frame)
         analysis = frame.asset.get_analysis(self.name)
@@ -267,7 +267,7 @@ class TorchModelObjectDetectionIntegrationTests(PluginUnitTestCase):
         frame = Frame(TestAsset(path))
 
         processor = self.init_processor(
-            TorchModelObjectDetection(), args
+            TorchModelArchiveDetector(), args
         )
         processor.process(frame)
 
@@ -304,7 +304,7 @@ class TorchModelObjectDetectionIntegrationTests(PluginUnitTestCase):
         frame = Frame(TestAsset(path, attrs={"media.type": "video", "media.length": 73}))
 
         processor = self.init_processor(
-            TorchModelObjectDetection(), args
+            TorchModelArchiveDetector(), args
         )
         processor.process(frame)
 

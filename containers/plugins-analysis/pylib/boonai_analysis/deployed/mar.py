@@ -110,10 +110,10 @@ class TorchModelArchiveClassifier(CustomModelProcessor):
         return analysis, clip_tracker
 
 
-class TorchModelObjectDetection(TorchModelArchiveClassifier):
+class TorchModelArchiveDetector(TorchModelArchiveClassifier):
 
     def __init__(self):
-        super(TorchModelObjectDetection, self).__init__()
+        super(TorchModelArchiveDetector, self).__init__()
 
     def load_predictions(self, input_image):
         raw_predictions = self.predict(input_image)
