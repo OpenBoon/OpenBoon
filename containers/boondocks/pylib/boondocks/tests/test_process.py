@@ -1,8 +1,5 @@
 import unittest
-import requests
 from unittest.mock import patch
-
-from requests import Response
 
 from boondocks.logs import setup_logging
 from boondocks.process import ProcessorExecutor, AssetConsumer, is_file_type_allowed
@@ -189,7 +186,7 @@ class ProcessorExecutorTests(unittest.TestCase):
 
         metrics = frame.asset["metrics"]["pipeline"][0]
         assert "boonflow.testing.TestProcessor" == metrics['processor']
-        assert "standard" is metrics["module"]
+        assert "standard" == metrics["module"]
         assert 10 == metrics["executionTime"]
         assert None is not metrics["executionDate"]
         assert "standard" in frame.asset.get_attr("tmp.produced_analysis")
