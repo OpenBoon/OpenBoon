@@ -116,6 +116,15 @@ class TorchModelArchiveDetector(TorchModelArchiveClassifier):
         super(TorchModelArchiveDetector, self).__init__()
 
     def load_predictions(self, input_image):
+        """
+            Run prediction methods and returns a list of Prediction objects
+        Args:
+            input_image: An object with a read() method that returns bytes.
+
+        Returns:
+            list[Prediction]: A list of Prediction objects
+
+        """
         raw_predictions = self.predict(input_image)
         predictions = []
         for label in raw_predictions:
