@@ -75,7 +75,7 @@ def app_from_env():
     return BoonApp(apikey, os.environ.get('BOONAI_SERVER'))
 
 
-def app_from_file(path):
+def app_from_keyfile(path):
     """
     Create a BoonApp configured via the path to an API Key.
 

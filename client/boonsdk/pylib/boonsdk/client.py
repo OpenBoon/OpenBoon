@@ -1,12 +1,14 @@
 import base64
 import binascii
 import datetime
+import io
 import json
 import logging
 import os
 import random
 import sys
 import time
+import re
 from io import IOBase, BytesIO
 from urllib.parse import urljoin
 
@@ -23,6 +25,7 @@ DEFAULT_SERVER = 'https://api.boonai.app'
 
 __all__ = [
     'BoonClient',
+    'FileInputStream',
     'to_json',
     'BoonSdkConnectionException',
     'BoonSdkException',
@@ -134,10 +137,12 @@ class BoonClient:
         Returns:
             dict: A dictionary which can be used to fetch the file.
         """
+        reader = InputReader(data)
         headers = self.headers(content_type="")
         headers['Content-Length'] = str(size or sys.getsizeof(data))
+
         return self.__handle_rsp(requests.post(
-            self.get_url(path), headers=headers, data=data), True)
+            self.get_url(path), headers=headers, data=reader.read()), True)
 
     def upload_file(self, path, file, body={}, json_rsp=True):
         """
@@ -546,7 +551,7 @@ class BoonSdkRequestException(BoonClientException):
         return self.__data["status"]
 
     def __str__(self):
-        return "<BoonSdkRequestException msg=%s>" % self.__data["message"]
+        return "<BoonSdkRequestException msg=%s>" % self.__data.get("message", "Unknown message")
 
 
 class FileInputStream:
@@ -561,6 +566,25 @@ class FileInputStream:
     def read(self):
         with open(self.filename, self.mode) as f:
             return f.read()
+
+
+class InputReader:
+    """
+    Reads input from a file path, url, or file handle.
+    """
+    def __init__(self, obj):
+        self.obj= obj
+
+    def read(self):
+        if isinstance(self.obj, str):
+            if re.match('http[s]?://', self.obj):
+                with requests.get(self.obj, stream=True) as rsp:
+                    return io.BytesIO(rsp.content)
+            else:
+                return FileInputStream(self.obj).read()
+        else:
+            return self.obj.read()
+
 
 
 class BoonSdkConnectionException(BoonClientException):
