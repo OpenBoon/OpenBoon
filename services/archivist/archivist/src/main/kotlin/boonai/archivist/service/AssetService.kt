@@ -532,7 +532,7 @@ class AssetServiceImpl : AssetService {
         val failedAssets = mutableListOf<BatchIndexFailure>()
         val postTimelines = mutableMapOf<String, List<String>>()
         val tempAssets = mutableListOf<String>()
-        val producedModules = mutableMapOf<String, AssetMetricsEvent>()
+        val assetMetrics = mutableMapOf<String, AssetMetricsEvent>()
 
         docs.forEach { (id, doc) ->
             val asset = Asset(id, doc)
@@ -549,7 +549,7 @@ class AssetServiceImpl : AssetService {
                         1.0
                     }
 
-                    producedModules[asset.id] = AssetMetricsEvent(
+                    assetMetrics[asset.id] = AssetMetricsEvent(
                         asset.id,
                         asset.getAttr("source.path"),
                         asset.getAttr("media.type"),
@@ -628,8 +628,8 @@ class AssetServiceImpl : AssetService {
             }
 
             // Emit metrics
-            failedAssets.forEach { producedModules.remove(it.assetId) }
-            emitMetrics(producedModules)
+            failedAssets.forEach { assetMetrics.remove(it.assetId) }
+            emitMetrics(assetMetrics.values)
 
             for (assetId in indexedIds) {
                 if (assetId in stateChangedIds) {
@@ -670,12 +670,12 @@ class AssetServiceImpl : AssetService {
         }
     }
 
-    fun emitMetrics(map: Map<String, AssetMetricsEvent>) {
+    fun emitMetrics(metrics: Collection<AssetMetricsEvent>) {
         val projectId = getProjectId().toString()
         val msg = PubsubMessage.newBuilder()
-            .putAttributes("projectId", projectId)
+            .putAttributes("project_id", projectId)
             .putAttributes("type", "assets-indexed")
-            .setData(ByteString.copyFromUtf8(Json.serializeToString(map)))
+            .setData(ByteString.copyFromUtf8(Json.serializeToString(metrics)))
             .build()
 
         publisherService.publish("metrics", msg)
