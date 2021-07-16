@@ -45,5 +45,5 @@ class AssetMetricsEvent(
     val asset_path: String?,
     val asset_type: String?,
     val services: Set<String>?,
-    val video_seconds: Double?
+    val length: Double?
 )
