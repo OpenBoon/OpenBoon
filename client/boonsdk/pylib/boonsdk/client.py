@@ -573,7 +573,7 @@ class InputReader:
     Reads input from a file path, url, or file handle.
     """
     def __init__(self, obj):
-        self.obj= obj
+        self.obj = obj
 
     def read(self):
         if isinstance(self.obj, str):
@@ -584,7 +584,6 @@ class InputReader:
                 return FileInputStream(self.obj).read()
         else:
             return self.obj.read()
-
 
 
 class BoonSdkConnectionException(BoonClientException):
