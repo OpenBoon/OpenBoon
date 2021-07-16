@@ -16,8 +16,14 @@ app = flask.Flask(__name__)
 
 @app.route('/', methods=['POST'])
 def endpoint():
-    asset = Asset(json.loads(flask.request.data))
-    return flask.jsonify(script.process(asset))
+    try:
+        asset = Asset(json.loads(flask.request.data))
+        result = script.process(asset)
+        if result:
+            return flask.jsonify(result)
+    except Exception as e:
+        return str(e), 400
+    return flask.jsonify({})
 
 
 if __name__ == '__main__':
