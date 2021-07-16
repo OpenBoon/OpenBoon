@@ -579,7 +579,7 @@ class InputReader:
         if isinstance(self.obj, str):
             if re.match('http[s]?://', self.obj):
                 with requests.get(self.obj, stream=True) as rsp:
-                    return io.BytesIO(rsp.content)
+                    return io.BytesIO(rsp.content).read()
             else:
                 return FileInputStream(self.obj).read()
         else:
