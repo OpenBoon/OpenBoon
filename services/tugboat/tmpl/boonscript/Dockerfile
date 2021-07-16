@@ -7,12 +7,11 @@ RUN curl -s -o model.zip $MODEL_URL
 RUN unzip model.zip
 
 FROM boonai/boonscript
+WORKDIR /app
 
 USER root
 COPY --from=build /tmp/script.py /app/script.py
-COPY --from=build /tmp/requirements.txt* /tmp/requirements.txt
 
-RUN /app/install-deps.sh
-RUN rm -rf /tmp/requirements.txt
+#RUN /app/install-deps.sh
 
 USER boonai
