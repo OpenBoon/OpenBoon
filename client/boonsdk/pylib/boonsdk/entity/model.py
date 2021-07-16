@@ -41,6 +41,12 @@ class ModelType(Enum):
     TORCH_MAR_DETECTOR = 7
     """Provide your own Torch Model Archive using an object detector handler"""
 
+    TORCH_MAR_TEXT_CLASSIFIER = 8
+    """Provide your own Torch Model Archive using an text classifier handler"""
+
+    BOONAI_SCRIPT = 9
+    """Provide your own Python script to do inference or set custom fields."""
+
 
 class PostTrainAction(Enum):
     """
