@@ -46,7 +46,7 @@ const AssetLabelingContent = ({ projectId, assetId }) => {
   const [state, dispatch] = useLabelTool({ projectId })
 
   useEffect(() => {
-    dispatch({ isLoading: false, errors: {} })
+    dispatch({ labels: {}, isLoading: false, errors: {} })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [assetId])
 
@@ -102,7 +102,12 @@ const AssetLabelingContent = ({ projectId, assetId }) => {
             }))}
             defaultValue={state.datasetId}
             onChange={({ value }) => {
-              dispatch({ datasetId: value, labels: {} })
+              dispatch({
+                datasetId: value,
+                lastLabel: '',
+                lastScope: 'TRAIN',
+                labels: {},
+              })
             }}
             isRequired={false}
             variant={SELECT_VARIANTS.COLUMN}

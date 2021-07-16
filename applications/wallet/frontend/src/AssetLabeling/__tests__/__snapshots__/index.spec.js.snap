@@ -501,6 +501,8 @@ Array [
         "errors": Object {},
         "isLoading": false,
         "labels": Object {},
+        "lastLabel": "",
+        "lastScope": "TRAIN",
       }
     }
   />,
