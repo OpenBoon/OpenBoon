@@ -4,6 +4,7 @@ import io
 
 import flask
 
+import boonsdk
 import boondocks.process as boonproc
 from boondocks.reactor import Reactor
 from boonflow import Frame, ImageInputStream
@@ -89,10 +90,10 @@ def setup_endpoints(app):
                 body = {'assets': {asset['id']: asset['document']}}
                 app.client.put('/api/v3/assets/_batch_index', body)
 
-            return flask.jsonify(asset), exec.code()
+            return flask.Response(boonsdk.to_json(asset), mimetype='application/json', status=exec.code())
 
         except Exception as e:
-            logger.error('Failed to execute pipeline', e)
+            logger.exception('Failed to execute pipeline: {}'.format(e))
             flask.abort(500, description='Unexpected server side exception')
 
     @app.route('/ml/v1/modules/apply-to-file', methods=['POST'])
@@ -122,8 +123,8 @@ def setup_endpoints(app):
             if not results:
                 flask.abort(400, description='File not processed')
 
-            return flask.jsonify(results[0]), exec.code()
+            return flask.Response(boonsdk.to_json(results[0]), mimetype='application/json', status=exec.code())
 
         except Exception as e:
-            logger.error('Failed to execute pipeline', e)
+            logger.exception('Failed to execute pipeline: {}'.format(e))
             flask.abort(500, description='Unexpected server side exception')
