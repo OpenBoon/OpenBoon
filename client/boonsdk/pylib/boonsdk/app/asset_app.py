@@ -1,12 +1,13 @@
 import os
-import requests
 from collections import namedtuple
+
+import requests
 from deprecation import deprecated
 
 from ..entity import Asset, StoredFile, FileUpload, FileTypes, Job, VideoClip
+from ..filters import apply_search_filters
 from ..search import AssetSearchResult, AssetSearchScroller, SimilarityQuery, SearchScroller
 from ..util import as_collection, as_id_collection, as_id
-from ..filters import apply_search_filters
 
 
 class AssetApp:
@@ -27,7 +28,7 @@ class AssetApp:
             dict: A dictionary containing failed files and created asset ids.
         """
         body = {
-            'assets': files,
+            'assets': as_collection(files),
             'modules': modules
         }
         return self.app.client.post('/api/v3/assets/_batch_create', body)
@@ -45,6 +46,7 @@ class AssetApp:
         """
         if not modules:
             raise ValueError('At least 1 module is required')
+
         qstr = ','.join(modules)
         return Asset(self.app.client.send_data(
             f'/ml/v1/modules/apply-to-file?modules={qstr}', iostream))

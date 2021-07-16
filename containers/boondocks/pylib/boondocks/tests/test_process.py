@@ -1,8 +1,5 @@
 import unittest
-import requests
 from unittest.mock import patch
-
-from requests import Response
 
 from boondocks.logs import setup_logging
 from boondocks.process import ProcessorExecutor, AssetConsumer, is_file_type_allowed
@@ -180,7 +177,8 @@ class ProcessorExecutorTests(unittest.TestCase):
         ref = {
             "className": "boonflow.testing.TestProcessor",
             "args": {},
-            "image": TEST_IMAGE
+            "image": TEST_IMAGE,
+            "module": "standard"
         }
         frame = Frame(TestAsset())
         wrapper = self.pe.get_processor_wrapper(ref, {})
@@ -188,9 +186,10 @@ class ProcessorExecutorTests(unittest.TestCase):
 
         metrics = frame.asset["metrics"]["pipeline"][0]
         assert "boonflow.testing.TestProcessor" == metrics['processor']
-        assert None is metrics["module"]
+        assert "standard" == metrics["module"]
         assert 10 == metrics["executionTime"]
         assert None is not metrics["executionDate"]
+        assert "standard" in frame.asset.get_attr("tmp.produced_analysis")
 
     def test_apply_metrics_process_false(self):
         ref = {
@@ -309,67 +308,6 @@ class ProcessorExecutorTests(unittest.TestCase):
         wrapper.apply_metrics(frame.asset, True, 10, "warning")
         # errors are always not processed.
         assert not wrapper.is_already_processed(frame.asset)
-
-    @patch('requests.post')
-    def test_record_analysis_metric_success(self, metric_post_mock):
-        ref = {
-            "className": "boonflow.testing.TestProcessor",
-            "args": {},
-            "image": TEST_IMAGE,
-            "module": "Test Module"
-        }
-        frame = Frame(TestAsset(path='fake.jpg'))
-        wrapper = self.pe.get_processor_wrapper(ref, {})
-        wrapper.process(frame)
-        metric_post_mock.asset_called_once()
-
-    @patch('requests.post')
-    def test_record_analysis_metric_duplicate(self, metric_post_mock):
-        response = Response()
-        response._content = ('{"non_field_errors": ["The fields service, '
-                             'asset_id, project must make a unique set."]}')
-        response.status_code == 400
-        metric_post_mock.return_value = response
-        ref = {
-            "className": "boonflow.testing.TestProcessor",
-            "args": {},
-            "image": TEST_IMAGE,
-            "module": "Test Module"
-        }
-        frame = Frame(TestAsset(path='fake.jpg'))
-        wrapper = self.pe.get_processor_wrapper(ref, {})
-        wrapper.process(frame)
-        metric_post_mock.asset_called_once()
-
-    @patch('requests.post')
-    def test_record_analysis_metric_multiple_modules(self, post_mock):
-        ref = {
-            "className": "boonflow.testing.TestProcessor",
-            "args": {},
-            "image": TEST_IMAGE,
-            "module": "do not look at me"
-        }
-        frame = Frame(TestAsset(path='fake.jpg',
-                                attrs={'tmp.produced_analysis': ['module_1', 'module_2']}))
-        wrapper = self.pe.get_processor_wrapper(ref, {})
-        wrapper.process(frame)
-        post_mock.call_count == 2
-        modules_called = [c[1]['json']['service'] for c in post_mock.call_args_list]
-        assert ['module_1', 'module_2'] == modules_called
-
-    @patch('requests.post')
-    def test_record_analysis_metric_connection_error(self, metric_post_mock):
-        metric_post_mock.side_effect = requests.exceptions.ConnectionError()
-        ref = {
-            "className": "boonflow.testing.TestProcessor",
-            "args": {},
-            "image": TEST_IMAGE,
-            "module": "Test Module"
-        }
-        frame = Frame(TestAsset(path='fake.jpg'))
-        wrapper = self.pe.get_processor_wrapper(ref, {})
-        wrapper.process(frame)
-        metric_post_mock.asset_called_once()
 
 
 class TestAssetConsumer(unittest.TestCase):

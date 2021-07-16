@@ -6,6 +6,10 @@ resource "google_pubsub_topic" "model-events" {
   name = "model-events"
 }
 
+resource "google_pubsub_topic" "metrics" {
+  name = "metrics"
+}
+
 resource "google_pubsub_subscription" "archivist-cloud-builds" {
   name  = "archivist-cloud-builds"
   topic = google_pubsub_topic.cloud-builds.name
