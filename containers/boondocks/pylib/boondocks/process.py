@@ -447,7 +447,7 @@ class ProcessorWrapper:
 
         # Append the module to the produced analysis list.
         # We'll use this for metrics.
-        if processed:
+        if processed and self.ref.get("module"):
             asset.extend_list_attr('tmp.produced_analysis', [self.ref.get("module")])
 
         # We're assuming that processors are unique here.

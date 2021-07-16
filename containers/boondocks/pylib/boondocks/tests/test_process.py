@@ -180,7 +180,8 @@ class ProcessorExecutorTests(unittest.TestCase):
         ref = {
             "className": "boonflow.testing.TestProcessor",
             "args": {},
-            "image": TEST_IMAGE
+            "image": TEST_IMAGE,
+            "module": "standard"
         }
         frame = Frame(TestAsset())
         wrapper = self.pe.get_processor_wrapper(ref, {})
@@ -188,9 +189,10 @@ class ProcessorExecutorTests(unittest.TestCase):
 
         metrics = frame.asset["metrics"]["pipeline"][0]
         assert "boonflow.testing.TestProcessor" == metrics['processor']
-        assert None is metrics["module"]
+        assert "standard" is metrics["module"]
         assert 10 == metrics["executionTime"]
         assert None is not metrics["executionDate"]
+        assert "standard" in frame.asset.get_attr("tmp.produced_analysis")
 
     def test_apply_metrics_process_false(self):
         ref = {
