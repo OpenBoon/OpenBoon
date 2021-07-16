@@ -157,6 +157,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   -webkit-justify-content: center;
   justify-content: center;
   position: relative;
+  padding-top: 1px;
 }
 
 .emotion-14 {
@@ -2101,6 +2102,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   -webkit-justify-content: center;
   justify-content: center;
   position: relative;
+  padding-top: 1px;
 }
 
 .emotion-14 {
