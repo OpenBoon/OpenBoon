@@ -90,7 +90,8 @@ def setup_endpoints(app):
                 body = {'assets': {asset['id']: asset['document']}}
                 app.client.put('/api/v3/assets/_batch_index', body)
 
-            return flask.Response(boonsdk.to_json(asset), mimetype='application/json', status=exec.code())
+            return flask.Response(boonsdk.to_json(asset),
+                                  mimetype='application/json', status=exec.code())
 
         except Exception as e:
             logger.exception('Failed to execute pipeline: {}'.format(e))
@@ -123,7 +124,8 @@ def setup_endpoints(app):
             if not results:
                 flask.abort(400, description='File not processed')
 
-            return flask.Response(boonsdk.to_json(results[0]), mimetype='application/json', status=exec.code())
+            return flask.Response(boonsdk.to_json(results[0]),
+                                  mimetype='application/json', status=exec.code())
 
         except Exception as e:
             logger.exception('Failed to execute pipeline: {}'.format(e))

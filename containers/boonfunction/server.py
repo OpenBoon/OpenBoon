@@ -5,6 +5,7 @@ import json
 import flask
 from gevent.pywsgi import WSGIServer
 from boonsdk import Asset
+from boonsdk.util import to_json
 
 import script
 
@@ -20,8 +21,9 @@ def endpoint():
         asset = Asset(json.loads(flask.request.data))
         result = script.process(asset)
         if result:
-            return flask.jsonify(result)
+            return flask.Response(to_json(result), mimetype='application/json')
     except Exception as e:
+        logger.exception('Failed to process request: {}'.format(e))
         return str(e), 400
     return flask.jsonify({})
 

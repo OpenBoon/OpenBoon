@@ -6,11 +6,11 @@ RUN curl -s -o model.zip $MODEL_URL
 
 RUN unzip model.zip
 
-FROM boonai/boonscript
+FROM boonai/boonfunction
 WORKDIR /app
 
 USER root
-COPY --from=build /tmp/script.py /app/script.py
+COPY --from=build /tmp/function.py /app/function.py
 
 #RUN /app/install-deps.sh
 
