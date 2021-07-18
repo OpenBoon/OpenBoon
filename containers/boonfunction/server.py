@@ -7,7 +7,7 @@ from gevent.pywsgi import WSGIServer
 from boonsdk import Asset
 from boonsdk.util import to_json
 
-import script
+import function
 
 logger = logging.getLogger('boonai')
 logging.basicConfig(level=logging.INFO)
@@ -19,7 +19,7 @@ app = flask.Flask(__name__)
 def endpoint():
     try:
         asset = Asset(json.loads(flask.request.data))
-        result = script.process(asset)
+        result = function.process(asset)
         if result:
             return flask.Response(to_json(result), mimetype='application/json')
     except Exception as e:
