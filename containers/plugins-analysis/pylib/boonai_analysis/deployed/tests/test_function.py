@@ -2,14 +2,14 @@ import os
 import shutil
 from unittest.mock import patch
 
-from boonai_analysis.deployed.script import BoonScriptProcessor
+from boonai_analysis.deployed.function import BoonFunctionProcessor
 from boonflow.base import Frame
 from boonflow.testing import PluginUnitTestCase, TestAsset, get_prediction_labels
 from boonsdk.app import ModelApp
 from boonsdk.entity import Model
 
 
-class TorchModelArchiveTests(PluginUnitTestCase):
+class BoonFunctionTests(PluginUnitTestCase):
     model_id = "model-id-34568"
     base_dir = os.path.dirname(__file__)
 
@@ -20,12 +20,12 @@ class TorchModelArchiveTests(PluginUnitTestCase):
             print("Didn't clear out model cache, this is ok.")
 
     @patch.object(ModelApp, "get_model")
-    @patch.object(BoonScriptProcessor, "predict")
-    def test_boon_script_label_analysis(self, predict_patch, model_patch):
+    @patch.object(BoonFunctionProcessor, "predict")
+    def test_boon_func_label_analysis(self, predict_patch, model_patch):
         model_patch.return_value = Model(
             {
                 'id': self.model_id,
-                'type': 'BOONAI_SCRIPT',
+                'type': 'BOONAI_FUNCTION',
                 'fileId': 'models/{}/foo/bar'.format(self.model_id),
                 'name': 'foo',
                 'moduleName': 'foo'
@@ -62,7 +62,7 @@ class TorchModelArchiveTests(PluginUnitTestCase):
 
         frame = Frame(TestAsset())
         processor = self.init_processor(
-            BoonScriptProcessor(), args
+            BoonFunctionProcessor(), args
         )
         processor.process(frame)
 

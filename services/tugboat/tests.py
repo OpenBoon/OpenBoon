@@ -36,9 +36,9 @@ class ServerTests(unittest.TestCase):
 
     def test_copy_template_boon_script(self):
         spec = {
-            'modelType': 'BOONAI_SCRIPT',
+            'modelType': 'BOON_FUNCTION',
             'modelId': 'd96733a8-de94-40c3-baef-92de50eb8398',
-            'modelFile': 'https://storage.googleapis.com/zorroa-public/models/boonscript.zip',
+            'modelFile': 'https://storage.googleapis.com/zorroa-public/models/boonfunction.zip',
             'image': 'gcr.io/zvi-dev/models/d96733a8-de94-40c3-baef-92de50eb8398'
         }
         d = tempfile.mkdtemp() + "/build"

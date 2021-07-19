@@ -2,16 +2,17 @@ import re
 
 import requests
 
+from boonsdk.util import to_json
 from boonflow import Argument, FileTypes
 from boonflow.analysis import LabelDetectionAnalysis, ContentDetectionAnalysis
 from ..custom.base import CustomModelProcessor
 
 
-class BoonScriptProcessor(CustomModelProcessor):
+class BoonFunctionProcessor(CustomModelProcessor):
     file_types = FileTypes.images | FileTypes.documents
 
     def __init__(self):
-        super(BoonScriptProcessor, self).__init__()
+        super(BoonFunctionProcessor, self).__init__()
         self.add_arg(Argument("endpoint", "str", required=True))
         self.add_arg(Argument("model", "str", default="model1"))
         self.endpoint = None
@@ -26,7 +27,10 @@ class BoonScriptProcessor(CustomModelProcessor):
         self.process_asset(frame)
 
     def predict(self, asset):
-        rsp = requests.post(self.endpoint, data=asset.for_json())
+        headers = {
+            'Content-Type': 'application/json'
+        }
+        rsp = requests.post(self.endpoint, data=to_json(asset), headers=headers)
         rsp.raise_for_status()
         return rsp.json()
 
