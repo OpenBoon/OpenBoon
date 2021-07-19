@@ -127,7 +127,7 @@
     "import-all.macro": "3.1.0",
     "jest": "27.0.5",
     "jest-fetch-mock": "3.0.3",
-    "lint-staged": "11.0.0",
+    "lint-staged": "11.0.1",
     "morgan": "1.10.0",
     "node-notifier": "10.0.0",
     "prettier": "2.3.2",
