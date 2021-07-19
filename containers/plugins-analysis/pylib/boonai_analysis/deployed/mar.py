@@ -9,10 +9,10 @@ from boonflow.base import ImageInputStream
 from ..custom.base import CustomModelProcessor
 
 
-class TorchModelArchiveClassifier(CustomModelProcessor):
+class TorchModelBase(CustomModelProcessor):
 
     def __init__(self):
-        super(TorchModelArchiveClassifier, self).__init__()
+        super(TorchModelBase, self).__init__()
         self.add_arg(Argument("endpoint", "str", required=True))
         self.add_arg(Argument("model", "str", default="model1"))
         self.endpoint = None
@@ -28,8 +28,18 @@ class TorchModelArchiveClassifier(CustomModelProcessor):
         asset = frame.asset
         if asset.get_attr('media.type') == "video":
             self.process_video(asset)
+        elif asset.get_attr('media.type') == "text":
+            self.process_text(frame)
         else:
             self.process_image(frame)
+
+    def process_text(self, frame):
+        input_image = self.load_proxy_image(frame, 1)
+        predictions = self.load_predictions(input_image)
+        analysis = LabelDetectionAnalysis(min_score=self.min_score)
+
+        analysis.add_predictions(predictions)
+        frame.asset.add_analysis(self.app_model.module_name, analysis)
 
     def process_image(self, frame):
         input_image = self.load_proxy_image(frame, 1)
@@ -40,28 +50,10 @@ class TorchModelArchiveClassifier(CustomModelProcessor):
         frame.asset.add_analysis(self.app_model.module_name, analysis)
 
     def load_predictions(self, input_image):
-        raw_predictions = self.predict(input_image)
-        predictions = []
-        for label in raw_predictions:
-            predictions.append(Prediction(label[0], label[1]))
-
-        return predictions
+        pass
 
     def predict(self, stream):
-        """
-        Call the model to make predictions.
-
-        Args:
-            stream (IOBase): An object with a read() method that returns bytes.
-
-        Returns:
-            list: A list of tuples containing predictions
-
-        """
-        rsp = requests.post(self.endpoint, data=stream)
-        rsp.raise_for_status()
-
-        return [(k, v) for k, v in rsp.json().items()]
+        pass
 
     def process_video(self, asset):
         """
@@ -110,7 +102,45 @@ class TorchModelArchiveClassifier(CustomModelProcessor):
         return analysis, clip_tracker
 
 
-class TorchModelArchiveDetector(TorchModelArchiveClassifier):
+class TorchModelArchiveClassifier(TorchModelBase):
+    def __init__(self):
+        super(TorchModelArchiveClassifier, self).__init__()
+
+    def load_predictions(self, input_file):
+        """
+            Run prediction methods and returns a list of Prediction objects
+        Args:
+            input_file: An object with a read() method that returns bytes.
+
+        Returns:
+            list[Prediction]: A list of Prediction objects
+
+        """
+        raw_predictions = self.predict(input_file)
+        predictions = []
+        for label in raw_predictions:
+            predictions.append(Prediction(label[0], label[1]))
+
+        return predictions
+
+    def predict(self, stream):
+        """
+        Call the model to make predictions.
+
+        Args:
+            stream (IOBase): An object with a read() method that returns bytes.
+
+        Returns:
+            list: A list of tuples containing predictions
+
+        """
+        rsp = requests.post(self.endpoint, data=stream)
+        rsp.raise_for_status()
+
+        return [(k, v) for k, v in rsp.json().items()]
+
+
+class TorchModelArchiveDetector(TorchModelBase):
 
     def __init__(self):
         super(TorchModelArchiveDetector, self).__init__()
@@ -156,3 +186,42 @@ class TorchModelArchiveDetector(TorchModelArchiveClassifier):
             preds.append((label, score, bbox))
 
         return preds
+
+
+class TorchModelTextClassifier(TorchModelBase):
+
+    def __init__(self):
+        super(TorchModelTextClassifier, self).__init__()
+
+    def load_predictions(self, input_file):
+        """
+            Run prediction methods and returns a list of Prediction objects
+        Args:
+            input_file: An object with a read() method that returns bytes.
+
+        Returns:
+            list[Prediction]: A list of Prediction objects
+
+        """
+        raw_predictions = self.predict(input_file)
+        predictions = []
+        for label in raw_predictions:
+            predictions.append(Prediction(label[0], label[1]))
+
+        return predictions
+
+    def predict(self, stream):
+        """
+        Call the model to make predictions.
+
+        Args:
+            stream (IOBase): An object with a read() method that returns bytes.
+
+        Returns:
+            list: A list of tuples containing predictions
+
+        """
+        rsp = requests.post(self.endpoint, data=stream)
+        rsp.raise_for_status()
+
+        return [(k, v) for k, v in rsp.json().items()]

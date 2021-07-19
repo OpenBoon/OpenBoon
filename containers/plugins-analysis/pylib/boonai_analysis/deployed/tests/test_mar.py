@@ -10,7 +10,8 @@ from boonflow.base import Frame, ImageInputStream
 from boonflow.storage import file_storage
 from boonflow.testing import PluginUnitTestCase, TestAsset, test_path
 
-from boonai_analysis.deployed.mar import TorchModelArchiveClassifier, TorchModelArchiveDetector
+from boonai_analysis.deployed.mar import TorchModelArchiveClassifier, TorchModelArchiveDetector, \
+    TorchModelTextClassifier
 
 
 class TorchModelArchiveTests(PluginUnitTestCase):
@@ -312,3 +313,97 @@ class TorchModelArchiveDetectorIntegrationTests(PluginUnitTestCase):
 
         assert len(analysis['predictions']) > 0
         assert analysis['count'] > 0
+
+
+class TorchModelArchiveTextClassificationTests(PluginUnitTestCase):
+    model_id = "model-id-34568"
+    name = "custom-label"
+    torch_model_name = "my_tc"
+
+    @patch.object(ModelApp, "get_model")
+    @patch.object(file_storage.projects, "localize_file")
+    @patch("boonflow.base.get_proxy_level_path")
+    @patch.object(TorchModelTextClassifier, "predict")
+    def test_text_classifier(self, predict_patch, proxy_patch, file_patch, model_patch):
+        model_patch.return_value = Model(
+            {
+                "id": self.model_id,
+                "type": "TORCH_MAR_CLASSIFIER",
+                "fileId": "models/{}/foo/bar".format(self.model_id),
+                "name": self.name,
+                "moduleName": self.name
+            }
+        )
+        predict_patch.return_value = [
+            ("Business", 0.999)
+        ]
+        args = {
+            "model_id": self.model_id,
+            "tag": "latest",
+            "endpoint": "http://127.0.0.1:8080",
+            "model": self.torch_model_name
+        }
+
+        path = test_path("models/test/sample_text.txt")
+        proxy_patch.return_value = path
+
+        frame = Frame(TestAsset(path, attrs={"media.type": "text"}))
+
+        processor = self.init_processor(
+            TorchModelTextClassifier(), args
+        )
+        processor.process(frame)
+
+        analysis = frame.asset.get_analysis(self.name)
+        assert len(analysis['predictions']) == 1
+        assert analysis['count'] == 1
+        assert analysis['predictions'][0]['label'] == 'Business'
+        assert analysis['predictions'][0]['score'] == 0.999
+
+
+@pytest.mark.skip(reason='dont run automatically')
+class TorchModelArchiveTextClassificationIntegrationTests(PluginUnitTestCase):
+    """
+    Should have a Pythorch server deployed locally with text_classification model
+    https://github.com/pytorch/serve/tree/master/examples/text_classification
+    """
+
+    model_id = "model-id-34568"
+    name = "custom-label"
+    torch_model_name = "my_tc"
+
+    @patch.object(ModelApp, "get_model")
+    @patch("boonflow.base.get_proxy_level_path")
+    def test_text_classifier_asset(self, proxy_patch, model_patch):
+        model_patch.return_value = Model(
+            {
+                "id": self.model_id,
+                "type": "TORCH_MAR_CLASSIFIER",
+                "fileId": "models/{}/foo/bar".format(self.model_id),
+                "name": self.name,
+                "moduleName": self.name
+            }
+        )
+        path = test_path("models/test/sample_text.txt")
+        proxy_patch.return_value = path
+
+        args = {
+            "model_id": self.model_id,
+            "tag": "latest",
+            "endpoint": "http://127.0.0.1:8080",
+            "model": self.torch_model_name
+        }
+
+        frame = Frame(TestAsset(path, attrs={"media.type": "text"}))
+
+        processor = self.init_processor(
+            TorchModelTextClassifier(), args
+        )
+        processor.process(frame)
+
+        analysis = frame.asset.get_analysis(self.name)
+
+        assert len(analysis['predictions']) == 1
+        assert analysis['count'] == 1
+        assert analysis['predictions'][0]['label'] == 'Business'
+        assert analysis['predictions'][0]['score'] == 0.927
