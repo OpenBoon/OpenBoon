@@ -28,10 +28,10 @@ describe('<AssetLabeling /> helpers', () => {
       expect(
         getLabelState({
           id: ASSET_ID,
-          state: { labels: { ASSET_ID: { label: 'cat', scope: 'TRAIN' } } },
+          state: { labels: {}, lastLabel: 'cat', lastScope: 'TEST' },
           labels: [{ label: '' }],
         }),
-      ).toEqual({ label: 'cat', scope: 'TRAIN' })
+      ).toEqual({ label: 'cat', scope: 'TEST' })
     })
   })
 
@@ -39,16 +39,51 @@ describe('<AssetLabeling /> helpers', () => {
     it('should abort when there are no changes', async () => {
       const mockDispatch = jest.fn()
 
-      const response = await onSave({
+      await onSave({
         projectId: PROJECT_ID,
         assetId: ASSET_ID,
         state: { labels: {} },
+        labels: [],
         dispatch: mockDispatch,
       })
 
-      expect(response).toBe(undefined)
+      expect(mockDispatch).not.toHaveBeenCalled()
 
       expect(fetch.mock.calls.length).toEqual(0)
+    })
+
+    it('should use the previous last label if there is one', async () => {
+      const mockDispatch = jest.fn()
+
+      await onSave({
+        projectId: PROJECT_ID,
+        assetId: ASSET_ID,
+        state: {
+          datasetId: DATASET_ID,
+          labels: {},
+          lastLabel: 'cat',
+          lastScope: 'TEST',
+        },
+        labels: [{ label: '' }],
+        dispatch: mockDispatch,
+      })
+
+      expect(mockDispatch).toHaveBeenCalled()
+
+      expect(fetch.mock.calls.length).toEqual(4)
+
+      expect(fetch.mock.calls[0][0]).toEqual(
+        `/api/v1/projects/${PROJECT_ID}/datasets/${DATASET_ID}/add_labels/`,
+      )
+
+      expect(fetch.mock.calls[0][1]).toEqual({
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json;charset=UTF-8',
+          'X-CSRFToken': 'CSRF_TOKEN',
+        },
+        body: `{"addLabels":[{"assetId":"${ASSET_ID}","label":"cat","scope":"TEST"}]}`,
+      })
     })
 
     it('should handle errors', async () => {
@@ -65,6 +100,7 @@ describe('<AssetLabeling /> helpers', () => {
           datasetType: 'Classification',
           labels: { ASSET_ID: { label: 'cat', scope: 'TRAIN' } },
         },
+        labels: [],
         dispatch: mockDispatch,
       })
 

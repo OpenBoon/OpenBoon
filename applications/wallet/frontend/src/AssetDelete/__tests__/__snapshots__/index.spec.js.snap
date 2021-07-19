@@ -42,6 +42,7 @@ exports[`<AssetDelete /> should render properly when an asset is selected 1`] = 
   -webkit-justify-content: center;
   justify-content: center;
   position: relative;
+  padding-top: 1px;
 }
 
 .emotion-3 {

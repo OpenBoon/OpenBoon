@@ -142,6 +142,8 @@ describe('AssetLabelingForm', () => {
           scope: 'TEST',
         },
       },
+      lastLabel: 'cat',
+      lastScope: 'TEST',
     })
 
     // Save
@@ -202,6 +204,8 @@ describe('AssetLabelingForm', () => {
           scope: 'TEST',
         },
       },
+      lastLabel: 'cat',
+      lastScope: 'TEST',
     })
 
     // Save
