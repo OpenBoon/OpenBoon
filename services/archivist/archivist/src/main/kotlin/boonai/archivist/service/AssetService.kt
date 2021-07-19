@@ -47,7 +47,6 @@ import boonai.common.service.logging.LogAction
 import boonai.common.service.logging.LogObject
 import boonai.common.service.logging.event
 import boonai.common.service.logging.warnEvent
-import boonai.common.service.security.getZmlpActor
 import boonai.common.util.Json
 import com.google.common.cache.CacheBuilder
 import com.google.common.cache.CacheLoader
@@ -665,18 +664,20 @@ class AssetServiceImpl : AssetService {
                 incrementProjectIngestCounters(stateChangedIds.intersect(indexedIds), docs)
             }
 
-            logger.info("Post processing ${postTimelines.size} assets for deep video search.")
-            if (postTimelines.isNotEmpty() and properties.getBoolean("archivist.deep-video-analysis.enabled")) {
-                val jobId = getZmlpActor().getAttr("jobId")
-                if (jobId == null) {
-                    logger.warn("There was post timelines to process but not jobId was found.")
-                } else {
-                    logger.info("Launching deep video analysis on ${postTimelines.size} assets.")
-                    jobLaunchService.addMultipleTimelineAnalysisTask(
-                        UUID.fromString(jobId), postTimelines
-                    )
-                }
-            }
+            /**
+             logger.info("Post processing ${postTimelines.size} assets for deep video search.")
+             if (postTimelines.isNotEmpty() and properties.getBoolean("archivist.deep-video-analysis.enabled")) {
+             val jobId = getZmlpActor().getAttr("jobId")
+             if (jobId == null) {
+             logger.warn("There was post timelines to process but not jobId was found.")
+             } else {
+             logger.info("Launching deep video analysis on ${postTimelines.size} assets.")
+             jobLaunchService.addMultipleTimelineAnalysisTask(
+             UUID.fromString(jobId), postTimelines
+             )
+             }
+             }
+             **/
 
             // Delete associated files with the transient assets.
             deleteAssociatedFiles(tempAssets)
