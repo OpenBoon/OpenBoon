@@ -30,7 +30,6 @@ import boonai.archivist.domain.ProjectStorageCategory
 import boonai.archivist.domain.ProjectStorageEntity
 import boonai.archivist.domain.ProjectStorageSpec
 import boonai.archivist.domain.ResolvedPipeline
-import boonai.archivist.domain.Task
 import boonai.archivist.domain.TriggerType
 import boonai.archivist.domain.UpdateAssetLabelsRequest
 import boonai.archivist.domain.UpdateAssetLabelsRequestV4
@@ -206,7 +205,7 @@ interface AssetService {
         parentTask: InternalTask,
         createdAssetIds: Collection<String>,
         existingAssetIds: Collection<String>
-    ): Task?
+    ): List<UUID>
 
     /**
      * Update the Assets contained in the [UpdateAssetLabelsRequest] with provided [Model] labels.
@@ -261,6 +260,24 @@ class AssetServiceImpl : AssetService {
             throw EmptyResultDataAccessException("The asset '$id' does not exist.", 1)
         }
         return Asset(rsp.id, rsp.sourceAsMap)
+    }
+
+    fun getVideoAssetIds(ids: Collection<String>): Set<String> {
+        val rest = indexRoutingService.getProjectRestClient()
+        val req = rest.newSearchRequest()
+        val query = QueryBuilders.boolQuery()
+            .filter(QueryBuilders.termsQuery("_id", ids))
+            .filter(QueryBuilders.prefixQuery("source.mimetype", "video/"))
+        req.source().size(ids.size)
+        req.source().query(query)
+        req.source().fetchSource(false)
+
+        val result = mutableSetOf<String>()
+        val r = rest.client.search(req, RequestOptions.DEFAULT)
+        r.hits.forEach {
+            result.add(it.id)
+        }
+        return result
     }
 
     override fun getValidAssetIds(ids: Collection<String>): Set<String> {
@@ -792,39 +809,65 @@ class AssetServiceImpl : AssetService {
         parentTask: InternalTask,
         createdAssetIds: Collection<String>,
         existingAssetIds: Collection<String>
-    ): Task? {
+    ): List<UUID> {
 
         val parentScript = jobService.getZpsScript(parentTask.taskId)
         val procCount = parentScript?.execute?.size ?: 0
 
-        // Check what assets need reprocessing at all.
         val assetIds = getAll(existingAssetIds).filter {
             assetNeedsReprocessing(it, parentScript.execute ?: listOf())
         }.map { it.id }.plus(createdAssetIds)
 
         return if (assetIds.isEmpty()) {
-            null
+            return emptyList()
         } else {
 
-            val name = "Expand with ${assetIds.size} assets, $procCount processors."
-            val parentScript = jobService.getZpsScript(parentTask.taskId)
-            val newScript = ZpsScript(name, null, null, parentScript.execute, assetIds = assetIds)
+            val result = mutableListOf<UUID>()
+            val videos = getVideoAssetIds(assetIds)
+            for (videoAsset in videos) {
+                val name = "Processing 1 video assets with $procCount processors."
+                val parentScript = jobService.getZpsScript(parentTask.taskId)
+                val newScript = ZpsScript(name, null, null, parentScript.execute, assetIds = listOf(videoAsset))
+                newScript.globalArgs = parentScript.globalArgs
+                newScript.settings = parentScript.settings
+                val newTask = jobService.createTask(parentTask, newScript)
+                result.add(newTask.id)
 
-            newScript.globalArgs = parentScript.globalArgs
-            newScript.settings = parentScript.settings
-
-            val newTask = jobService.createTask(parentTask, newScript)
-
-            logger.event(
-                LogObject.JOB, LogAction.EXPAND,
-                mapOf(
-                    "assetCount" to assetIds.size,
-                    "parentTaskId" to parentTask.taskId,
-                    "taskId" to newTask.id,
-                    "jobId" to newTask.jobId
+                logger.event(
+                    LogObject.JOB, LogAction.EXPAND,
+                    mapOf(
+                        "assetCount" to assetIds.size,
+                        "parentTaskId" to parentTask.taskId,
+                        "taskId" to newTask.id,
+                        "jobId" to newTask.jobId
+                    )
                 )
-            )
-            return newTask
+            }
+
+            val otherTypes = assetIds.minus(videos)
+            if (otherTypes.isNotEmpty()) {
+
+                val name = "Processing ${otherTypes.size} assets with $procCount processors."
+                val parentScript = jobService.getZpsScript(parentTask.taskId)
+                val newScript = ZpsScript(name, null, null, parentScript.execute, assetIds = otherTypes)
+
+                newScript.globalArgs = parentScript.globalArgs
+                newScript.settings = parentScript.settings
+                val newTask = jobService.createTask(parentTask, newScript)
+                result.add(newTask.id)
+
+                logger.event(
+                    LogObject.JOB, LogAction.EXPAND,
+                    mapOf(
+                        "assetCount" to assetIds.size,
+                        "parentTaskId" to parentTask.taskId,
+                        "taskId" to newTask.id,
+                        "jobId" to newTask.jobId
+                    )
+                )
+            }
+
+            return result
         }
     }
 
