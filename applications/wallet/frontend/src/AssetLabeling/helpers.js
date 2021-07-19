@@ -91,9 +91,11 @@ const getBody = ({ assetId, state, labels }) => {
   }
 
   return {
-    addLabels: Object.entries(state.labels).map(([bbox, { scope, label }]) => {
-      return { assetId, bbox: JSON.parse(bbox), scope, label }
-    }),
+    addLabels: Object.entries(state.labels).map(
+      ([bbox, { scope, label, simhash }]) => {
+        return { assetId, bbox: JSON.parse(bbox), scope, label, simhash }
+      },
+    ),
   }
 }
 
