@@ -665,6 +665,7 @@ class AssetServiceImpl : AssetService {
                 incrementProjectIngestCounters(stateChangedIds.intersect(indexedIds), docs)
             }
 
+            /**
             logger.info("Post processing ${postTimelines.size} assets for deep video search.")
             if (postTimelines.isNotEmpty() and properties.getBoolean("archivist.deep-video-analysis.enabled")) {
                 val jobId = getZmlpActor().getAttr("jobId")
@@ -677,6 +678,7 @@ class AssetServiceImpl : AssetService {
                     )
                 }
             }
+            **/
 
             // Delete associated files with the transient assets.
             deleteAssociatedFiles(tempAssets)
