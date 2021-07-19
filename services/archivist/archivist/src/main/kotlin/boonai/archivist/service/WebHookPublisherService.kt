@@ -40,11 +40,11 @@ class WebHookPublisherServiceImpl constructor(
     @Autowired
     lateinit var projectDao: ProjectDao
 
-    val topic = "webhooks"
+    val topic = "swivel"
 
     private val webhookCache = CacheBuilder.newBuilder()
-        .maximumSize(60)
-        .initialCapacity(10)
+        .maximumSize(512)
+        .initialCapacity(128)
         .concurrencyLevel(4)
         .expireAfterWrite(5, TimeUnit.SECONDS)
         .build(object : CacheLoader<UUID, List<WebHook>>() {
