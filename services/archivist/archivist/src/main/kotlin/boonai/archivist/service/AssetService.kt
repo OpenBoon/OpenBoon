@@ -678,7 +678,7 @@ class AssetServiceImpl : AssetService {
                 }
             }
 
-            // Delete assocated files with the transient assets.
+            // Delete associated files with the transient assets.
             deleteAssociatedFiles(tempAssets)
 
             BatchIndexResponse(indexedIds, failedAssets, tempAssets)
