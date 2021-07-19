@@ -822,8 +822,38 @@ class AssetServiceTests : AbstractTest() {
 
         // Create an expand
         val task1 = dispatcherService.getWaitingTasks(getProjectId(), 1)
-        val newTask = assetService.createAnalysisTask(task1[0], rsp.created, listOf("abc123"))
-        assertEquals("Expand with 1 assets, 0 processors.", newTask?.name)
+        val tasks = assetService.createAnalysisTask(task1[0], rsp.created, listOf("abc123"))
+        assertEquals(1, tasks.size)
+    }
+
+    @Test
+    fun testCreateVideoAnalysisTask() {
+        val spec = JobSpec(
+            "test_job",
+            emptyZpsScripts("foo"),
+            args = mutableMapOf("foo" to 1),
+            env = mutableMapOf("foo" to "bar")
+        )
+
+        // setup a job
+        jobService.create(spec)
+        val zps = emptyZpsScript("bar")
+        zps.execute = mutableListOf(ProcessorRef("foo", "bar"))
+
+        // Add an asset to make a test for
+        val req = BatchCreateAssetsRequest(
+            assets = listOf(
+                AssetSpec("gs://cats/large-brown-cat.mp4"),
+                AssetSpec("gs://cats/large-white-cat.mp4")
+            )
+        )
+        val rsp = assetService.batchCreate(req)
+
+        // Create an expand
+        val task1 = dispatcherService.getWaitingTasks(getProjectId(), 1)
+        val tasks = assetService.createAnalysisTask(task1[0], rsp.created, emptyList())
+
+        assertEquals(2, tasks.size)
     }
 
     @Test

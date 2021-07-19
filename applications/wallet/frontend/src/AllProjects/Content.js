@@ -37,7 +37,7 @@ const AllProjectsContent = () => {
     initialState: 'name',
   })
 
-  if (projects.length === 0) {
+  if (!projects || projects.length === 0) {
     return <NoProject />
   }
 

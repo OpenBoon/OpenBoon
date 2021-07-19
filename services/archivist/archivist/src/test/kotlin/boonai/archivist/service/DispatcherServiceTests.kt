@@ -505,17 +505,17 @@ class DispatcherServiceTests : AbstractTest() {
         zps.execute = mutableListOf(ProcessorRef("foo", "bar"))
 
         val task1 = dispatcherService.getWaitingTasks(getProjectId(), 1)
-        val task2 = dispatcherService.expand(
+        val tasks = dispatcherService.expand(
             task1[0],
             TaskExpandEvent(listOf(AssetSpec("http://foo/123.jpg")))
         )
-        assertNotNull(task2)
-        task2?.id.let {
-            val zps2 = taskDao.getScript(it)
-            assertNotNull(zps2.execute)
-            // Validate task2 inherited from task
-            assertEquals(1, zps.execute!!.size)
-        }
+        assertTrue(tasks.isNotEmpty())
+        val task2 = jobService.getTask(tasks[0])
+
+        val zps2 = taskDao.getScript(task2.id)
+        assertNotNull(zps2.execute)
+        // Validate task2 inherited from task
+        assertEquals(1, zps.execute!!.size)
     }
 
     @Test

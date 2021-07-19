@@ -35,7 +35,7 @@ enum class ModelType(
     val trainable: Boolean,
     val uploadable: Boolean,
     val enabled: Boolean,
-    val datasetType: DatasetType,
+    val datasetType: DatasetType?,
     val fileName: String = "model.zip",
 ) {
     KNN_CLASSIFIER(
@@ -198,11 +198,11 @@ enum class ModelType(
         false,
         true,
         false,
-        DatasetType.Detection,
+        null,
         "model.mar"
     ),
     BOON_FUNCTION(
-        "BoonAI Python Script",
+        "Boon Function",
         "None",
         "boonai_analysis.deployed.script.BoonScriptProcessor",
         null,
@@ -220,7 +220,7 @@ enum class ModelType(
         "model.zip"
     );
 
-    fun asMap(): Map<String, Any> {
+    fun asMap(): Map<String, Any?> {
         return mapOf(
             "name" to name,
             "description" to description,
@@ -231,7 +231,7 @@ enum class ModelType(
             "minExamples" to minExamples,
             "dependencies" to dependencies,
             "label" to label,
-            "datasetType" to datasetType.name,
+            "datasetType" to datasetType?.name,
             "uploadable" to uploadable
         )
     }

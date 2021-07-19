@@ -20,7 +20,6 @@ import boonai.archivist.domain.JobStateChangeEvent
 import boonai.archivist.domain.PendingTasksStats
 import boonai.archivist.domain.ProjectDirLocator
 import boonai.archivist.domain.ProjectStorageEntity
-import boonai.archivist.domain.Task
 import boonai.archivist.domain.TaskErrorEvent
 import boonai.archivist.domain.TaskEvent
 import boonai.archivist.domain.TaskEventType
@@ -93,7 +92,7 @@ interface DispatcherService {
      */
     fun handleIndexEvent(task: InternalTask, event: BatchIndexAssetsEvent): BatchIndexResponse
 
-    fun expand(parentTask: InternalTask, event: TaskExpandEvent): Task?
+    fun expand(parentTask: InternalTask, event: TaskExpandEvent): List<UUID>
     fun retryTask(task: InternalTask, reason: String): Boolean
     fun skipTask(task: InternalTask): Boolean
     fun queueTask(task: DispatchTask, endpoint: String): Boolean
@@ -440,7 +439,7 @@ class DispatcherServiceImpl @Autowired constructor(
         return stopped
     }
 
-    override fun expand(parentTask: InternalTask, event: TaskExpandEvent): Task? {
+    override fun expand(parentTask: InternalTask, event: TaskExpandEvent): List<UUID> {
 
         val result = assetService.batchCreate(
             BatchCreateAssetsRequest(event.assets, analyze = false, task = parentTask)
