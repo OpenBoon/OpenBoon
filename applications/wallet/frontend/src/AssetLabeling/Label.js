@@ -16,7 +16,7 @@ const AssetLabelingLabel = ({
   datasetId,
   state,
   dispatch,
-  label: { label, scope, bbox, b64Image },
+  label: { label, scope, bbox, b64Image, simhash },
   onDelete,
 }) => {
   const {
@@ -119,7 +119,7 @@ const AssetLabelingLabel = ({
           options={options}
           value={state.label}
           onChange={({ value }) => {
-            dispatch({ label: value, scope: state.scope })
+            dispatch({ label: value, scope: state.scope, simhash })
           }}
           hasError={state.error !== undefined}
           errorMessage={state.error}
@@ -155,6 +155,7 @@ AssetLabelingLabel.propTypes = {
     scope: PropTypes.string.isRequired,
     bbox: PropTypes.arrayOf(PropTypes.number),
     b64Image: PropTypes.string.isRequired,
+    simhash: PropTypes.string,
   }).isRequired,
   onDelete: PropTypes.func.isRequired,
 }

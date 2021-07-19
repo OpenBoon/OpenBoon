@@ -88,8 +88,8 @@ def copy_template(spec, build_dir):
     tmlp_path = os.environ.get('TEMPLATE_PATH', '/app/tmpl')
     if model_type.startswith('TORCH_'):
         tmpl = f'{tmlp_path}/torch'
-    elif model_type == 'BOONAI_SCRIPT':
-        tmpl = f'{tmlp_path}/boonscript'
+    elif model_type == 'BOON_FUNCTION':
+        tmpl = f'{tmlp_path}/boonfunction'
     else:
         logger.error(f'The model type {model_type} has no template')
         return False

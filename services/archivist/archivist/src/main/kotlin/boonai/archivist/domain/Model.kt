@@ -201,7 +201,7 @@ enum class ModelType(
         DatasetType.Detection,
         "model.mar"
     ),
-    BOONAI_SCRIPT(
+    BOON_FUNCTION(
         "BoonAI Python Script",
         "None",
         "boonai_analysis.deployed.script.BoonScriptProcessor",

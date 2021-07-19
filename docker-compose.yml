@@ -281,6 +281,14 @@ services:
       context: client/boonlab
     command: echo
 
+  boonfunction:
+    image: boonai/boonfunction:latest
+    depends_on:
+      - boonsdk
+    build:
+      context: containers/boonfunction
+    command: echo
+
   boonflow:
     image: boonai/boonflow:latest
     depends_on:

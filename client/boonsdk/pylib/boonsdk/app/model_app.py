@@ -149,7 +149,7 @@ class ModelApp:
     def upload_pretrained_model(self, model, model_path):
         """
         Upload a trained model directory to Boon AI.  The model is not ready to use
-        until it is properlt deployed, which may take a few minutes.
+        until it is properly deployed, which may take a few minutes.
 
         Args:
             model (Model): The model object or it's unique ID.
