@@ -168,7 +168,7 @@ enum class ModelType(
     TORCH_MAR_DETECTOR(
         "Torch Model Archive Object Detector",
         "None",
-        "boonai_analysis.custom.TorchModelArchiveDetector",
+        "boonai_analysis.deployed.mar.TorchModelArchiveDetector",
         null,
         "Upload a pre-trained Pytorch Model Archive",
         ModelObjective.OBJECT_DETECTION,
@@ -186,7 +186,7 @@ enum class ModelType(
     TORCH_MAR_TEXT_CLASSIFIER(
         "Torch Model Archive Text Classifier",
         "None",
-        "boonai_analysis.custom.TorchModelArchiveDetector",
+        "boonai_analysis.deployed.mar.TorchModelTextClassifier",
         null,
         "Upload a pre-trained Pytorch Model Archive",
         ModelObjective.LABEL_DETECTION,
