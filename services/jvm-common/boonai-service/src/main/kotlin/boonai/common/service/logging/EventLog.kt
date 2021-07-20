@@ -40,7 +40,8 @@ enum class LogAction {
     SIGN_FOR_READ,
     ENABLE,
     DISABLE,
-    RESOLVE
+    RESOLVE,
+    DEPLOY
 }
 
 /**
