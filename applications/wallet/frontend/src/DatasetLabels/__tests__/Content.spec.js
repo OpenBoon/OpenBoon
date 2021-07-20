@@ -126,7 +126,7 @@ describe('<DatasetLabelsContent />', () => {
       <DatasetLabelsContent
         projectId={PROJECT_ID}
         datasetId={DATASET_ID}
-        query=""
+        query={btoa(JSON.stringify({ scope: 'TEST', label: 'cat' }))}
         page={1}
         datasetName="cats"
       />,
@@ -152,7 +152,7 @@ describe('<DatasetLabelsContent />', () => {
 
     expect(spy).toHaveBeenLastCalledWith(
       `AssetLabelingContent.${PROJECT_ID}`,
-      `{"datasetId":"${DATASET_ID}","lastLabel":"","lastScope":"TRAIN","labels":{},"isLoading":false,"errors":{}}`,
+      `{"datasetId":"${DATASET_ID}","lastLabel":"cat","lastScope":"TEST","labels":{},"isLoading":false,"errors":{}}`,
     )
   })
 })
