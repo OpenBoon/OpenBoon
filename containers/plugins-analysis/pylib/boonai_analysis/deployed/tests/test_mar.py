@@ -166,7 +166,7 @@ class TorchModelArchiveDetectorTests(PluginUnitTestCase):
         model_patch.return_value = Model(
             {
                 "id": self.model_id,
-                "type": "TORCH_MAR_CLASSIFIER",
+                "type": "TORCH_MAR_DETECTOR",
                 "fileId": "models/{}/foo/bar".format(self.model_id),
                 "name": name,
                 "moduleName": name
@@ -216,7 +216,7 @@ class TorchModelArchiveDetectorIntegrationTests(PluginUnitTestCase):
         model_patch.return_value = Model(
             {
                 "id": self.model_id,
-                "type": "TORCH_MAR_CLASSIFIER",
+                "type": "TORCH_MAR_DETECTOR",
                 "fileId": "models/{}/foo/bar".format(self.model_id),
                 "name": self.name,
                 "moduleName": self.name
@@ -249,7 +249,7 @@ class TorchModelArchiveDetectorIntegrationTests(PluginUnitTestCase):
         model_patch.return_value = Model(
             {
                 "id": self.model_id,
-                "type": "TORCH_MAR_CLASSIFIER",
+                "type": "TORCH_MAR_DETECTOR",
                 "fileId": "models/{}/foo/bar".format(self.model_id),
                 "name": self.name,
                 "moduleName": self.name
@@ -285,7 +285,7 @@ class TorchModelArchiveDetectorIntegrationTests(PluginUnitTestCase):
         model_patch.return_value = Model(
             {
                 "id": self.model_id,
-                "type": "TORCH_MAR_CLASSIFIER",
+                "type": "TORCH_MAR_DETECTOR",
                 "fileId": "models/{}/foo/bar".format(self.model_id),
                 "name": self.name,
                 "moduleName": self.name
@@ -327,7 +327,7 @@ class TorchModelArchiveTextClassificationTests(PluginUnitTestCase):
         model_patch.return_value = Model(
             {
                 "id": self.model_id,
-                "type": "TORCH_MAR_CLASSIFIER",
+                "type": "TORCH_MAR_TEXT_CLASSIFIER",
                 "fileId": "models/{}/foo/bar".format(self.model_id),
                 "name": self.name,
                 "moduleName": self.name
@@ -365,7 +365,7 @@ class TorchModelArchiveTextClassificationTests(PluginUnitTestCase):
         model_patch.return_value = Model(
             {
                 "id": self.model_id,
-                "type": "TORCH_MAR_CLASSIFIER",
+                "type": "TORCH_MAR_TEXT_CLASSIFIER",
                 "fileId": "models/{}/foo/bar".format(self.model_id),
                 "name": self.name,
                 "moduleName": self.name
