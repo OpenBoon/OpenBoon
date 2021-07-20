@@ -44,7 +44,7 @@ class ModelType(Enum):
     TORCH_MAR_TEXT_CLASSIFIER = 8
     """Provide your own Torch Model Archive using an text classifier handler"""
 
-    BOONAI_FUNCTION = 9
+    BOON_FUNCTION = 9
     """Provide your own Python function to do inference or set custom fields."""
 
 
