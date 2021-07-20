@@ -322,9 +322,8 @@ class TorchModelArchiveTextClassificationTests(PluginUnitTestCase):
 
     @patch.object(ModelApp, "get_model")
     @patch.object(file_storage.projects, "localize_file")
-    @patch("boonflow.base.get_proxy_level_path")
     @patch.object(TorchModelTextClassifier, "predict")
-    def test_text_classifier(self, predict_patch, proxy_patch, file_patch, model_patch):
+    def test_text_classifier_from_media_content(self, predict_patch, file_patch, model_patch):
         model_patch.return_value = Model(
             {
                 "id": self.model_id,
@@ -344,10 +343,48 @@ class TorchModelArchiveTextClassificationTests(PluginUnitTestCase):
             "model": self.torch_model_name
         }
 
-        path = test_path("models/test/sample_text.txt")
-        proxy_patch.return_value = path
+        text = 'Bloomberg has decided to publish a new report on global economic situation.'
 
-        frame = Frame(TestAsset(path, attrs={"media.type": "text"}))
+        frame = Frame(TestAsset(attrs={"media.content": text}))
+
+        processor = self.init_processor(
+            TorchModelTextClassifier(), args
+        )
+        processor.process(frame)
+
+        analysis = frame.asset.get_analysis(self.name)
+        assert len(analysis['predictions']) == 1
+        assert analysis['count'] == 1
+        assert analysis['predictions'][0]['label'] == 'Business'
+        assert analysis['predictions'][0]['score'] == 0.999
+
+    @patch.object(ModelApp, "get_model")
+    @patch.object(file_storage.projects, "localize_file")
+    @patch.object(TorchModelTextClassifier, "predict")
+    def test_text_classifier_from_custom_field(self, predict_patch, file_patch, model_patch):
+        model_patch.return_value = Model(
+            {
+                "id": self.model_id,
+                "type": "TORCH_MAR_CLASSIFIER",
+                "fileId": "models/{}/foo/bar".format(self.model_id),
+                "name": self.name,
+                "moduleName": self.name
+            }
+        )
+        predict_patch.return_value = [
+            ("Business", 0.999)
+        ]
+        args = {
+            "model_id": self.model_id,
+            "tag": "latest",
+            "endpoint": "http://127.0.0.1:8080",
+            "model": self.torch_model_name,
+            "text_content_field": "text.content"  # custom Field
+        }
+
+        text = 'Bloomberg has decided to publish a new report on global economic situation.'
+
+        frame = Frame(TestAsset(attrs={"text.content": text}))
 
         processor = self.init_processor(
             TorchModelTextClassifier(), args
@@ -384,17 +421,18 @@ class TorchModelArchiveTextClassificationIntegrationTests(PluginUnitTestCase):
                 "moduleName": self.name
             }
         )
-        path = test_path("models/test/sample_text.txt")
-        proxy_patch.return_value = path
+
+        text = 'Bloomberg has decided to publish a new report on global economic situation.'
 
         args = {
             "model_id": self.model_id,
             "tag": "latest",
             "endpoint": "http://127.0.0.1:8080",
-            "model": self.torch_model_name
+            "model": self.torch_model_name,
+            'text_content_field': 'text.content'
         }
 
-        frame = Frame(TestAsset(path, attrs={"media.type": "text"}))
+        frame = Frame(TestAsset(attrs={"media.content": text, 'text.content': text}))
 
         processor = self.init_processor(
             TorchModelTextClassifier(), args

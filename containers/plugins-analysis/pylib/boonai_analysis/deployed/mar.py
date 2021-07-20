@@ -28,18 +28,26 @@ class TorchModelBase(CustomModelProcessor):
         asset = frame.asset
         if asset.get_attr('media.type') == "video":
             self.process_video(asset)
-        elif asset.get_attr('media.type') == "text":
+        elif self.arg_value('text_content_field') or asset.get_attr('media.content'):
             self.process_text(frame)
         else:
             self.process_image(frame)
 
     def process_text(self, frame):
-        input_image = self.load_proxy_image(frame, 1)
-        predictions = self.load_predictions(input_image)
-        analysis = LabelDetectionAnalysis(min_score=self.min_score)
+        asset = frame.asset
+        arg_name = 'text_content_field'
 
-        analysis.add_predictions(predictions)
-        frame.asset.add_analysis(self.app_model.module_name, analysis)
+        if self.arg_value(arg_name) and asset.attr_exists(self.arg_value(arg_name)):
+            text = asset.get_attr(self.arg_value(arg_name))
+        else:
+            text = asset.get_attr('media.content')
+
+        if text:
+            predictions = self.load_predictions(text)
+            analysis = LabelDetectionAnalysis(min_score=self.min_score)
+
+            analysis.add_predictions(predictions)
+            frame.asset.add_analysis(self.app_model.module_name, analysis)
 
     def process_image(self, frame):
         input_image = self.load_proxy_image(frame, 1)
@@ -193,17 +201,18 @@ class TorchModelTextClassifier(TorchModelBase):
     def __init__(self):
         super(TorchModelTextClassifier, self).__init__()
 
-    def load_predictions(self, input_file):
+    def load_predictions(self, text):
         """
             Run prediction methods and returns a list of Prediction objects
         Args:
-            input_file: An object with a read() method that returns bytes.
+            text: A String that will have the content predicted.
 
         Returns:
             list[Prediction]: A list of Prediction objects
 
         """
-        raw_predictions = self.predict(input_file)
+        stream = bytearray(text.encode())
+        raw_predictions = self.predict(stream)
         predictions = []
         for label in raw_predictions:
             predictions.append(Prediction(label[0], label[1]))
