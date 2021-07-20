@@ -25,7 +25,7 @@ class BoonFunctionTests(PluginUnitTestCase):
         model_patch.return_value = Model(
             {
                 'id': self.model_id,
-                'type': 'BOONAI_FUNCTION',
+                'type': 'BOON_FUNCTION',
                 'fileId': 'models/{}/foo/bar'.format(self.model_id),
                 'name': 'foo',
                 'moduleName': 'foo'
