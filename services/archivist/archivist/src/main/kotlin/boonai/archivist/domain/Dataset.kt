@@ -118,8 +118,8 @@ class Dataset(
     }
 
     @JsonIgnore
-    fun makeLabel(label: String, bbox: List<BigDecimal>? = null): Label {
-        return Label(id, label, bbox = bbox)
+    fun makeLabel(label: String, bbox: List<BigDecimal>? = null, simhash: String? = null): Label {
+        return Label(id, label, bbox = bbox, simhash = simhash)
     }
 
     override fun equals(other: Any?): Boolean {

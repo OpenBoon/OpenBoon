@@ -170,7 +170,7 @@ class AssetController @Autowired constructor(
         return assetService.batchDelete(req.assetIds)
     }
 
-    @ApiOperation("Delete assets by query.")
+    @ApiOperation("Update labels")
     @PreAuthorize("hasAuthority('AssetsImport')")
     @PutMapping(value = ["/api/v3/assets/_batch_update_labels"])
     @ResponseBody
@@ -182,7 +182,7 @@ class AssetController @Autowired constructor(
         )
     }
 
-    @ApiOperation("Delete assets by query.")
+    @ApiOperation("Update labels")
     @PreAuthorize("hasAuthority('AssetsImport')")
     @PutMapping(value = ["/api/v4/assets/_batch_update_labels"])
     @ResponseBody

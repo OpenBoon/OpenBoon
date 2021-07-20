@@ -147,7 +147,7 @@ class AssetControllerTests : MockMvcTest() {
         val created = assetService.batchCreate(BatchCreateAssetsRequest(listOf(spec)))
 
         val req = UpdateAssetLabelsRequestV4(
-            add = mapOf(created.created[0] to ds.makeLabel("cat"))
+            add = mapOf(created.created[0] to ds.makeLabel("cat", simhash = "ABCD1234"))
         )
 
         mvc.perform(
@@ -160,6 +160,10 @@ class AssetControllerTests : MockMvcTest() {
             .andExpect(MockMvcResultMatchers.jsonPath("$.updated", CoreMatchers.equalTo(1)))
             .andExpect(MockMvcResultMatchers.jsonPath("$.errors", CoreMatchers.equalTo(0)))
             .andReturn()
+
+        authenticate()
+        val asset = getSample(1)[0]
+        assertEquals("ABCD1234", asset.getAttr("labels", Label.LIST_OF)?.get(0)?.simhash)
     }
 
     @Test
