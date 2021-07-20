@@ -35,7 +35,13 @@ const DatasetLabelsSelection = ({
         type: 'label',
         attribute: `labels.${datasetName}`,
         datasetId,
-        values: {},
+        values:
+          label === '#All#'
+            ? {}
+            : {
+                scope: scope.toLowerCase(),
+                labels: [label],
+              },
       },
     ],
   })
@@ -158,7 +164,12 @@ const DatasetLabelsSelection = ({
                   payload: { openPanel: 'assetLabeling' },
                 })
 
-                setDataSet({ datasetId, labels: {} })
+                setDataSet({
+                  datasetId,
+                  lastLabel: label,
+                  lastScope: scope,
+                  labels: {},
+                })
               }}
               style={{
                 display: 'flex',
