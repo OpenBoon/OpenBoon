@@ -76,9 +76,10 @@ const getBody = ({ assetId, state, labels }) => {
       addLabels: [
         {
           assetId,
-          bbox: labels[0].bbox,
           label: state.lastLabel,
           scope: state.lastScope,
+          bbox: labels[0].bbox,
+          simhash: labels[0].simhash,
         },
       ],
     }
@@ -142,7 +143,7 @@ export const onDelete = async ({
   assetId,
   dispatch,
   labels,
-  label: { label, bbox, scope },
+  label: { label, scope, bbox, simhash },
 }) => {
   const BASE = `/api/v1/projects/${projectId}/datasets/${datasetId}`
 
@@ -153,7 +154,9 @@ export const onDelete = async ({
   try {
     await fetcher(`${BASE}/delete_labels/`, {
       method: 'DELETE',
-      body: JSON.stringify({ removeLabels: [{ assetId, label, bbox }] }),
+      body: JSON.stringify({
+        removeLabels: [{ assetId, label, scope, bbox, simhash }],
+      }),
     })
 
     await Promise.all([
@@ -166,7 +169,7 @@ export const onDelete = async ({
 
     dispatch({
       isLoading: false,
-      labels: { ...labels, [id]: { label, bbox, scope } },
+      labels: { ...labels, [id]: { label, scope, bbox, simhash } },
     })
   } catch (response) {
     const errors = await parseResponse({ response })
