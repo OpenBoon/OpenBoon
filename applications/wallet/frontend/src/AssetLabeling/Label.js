@@ -77,7 +77,7 @@ const AssetLabelingLabel = ({
               aria-label="Remove Label"
               variant={BUTTON_VARIANTS.ICON}
               onClick={() => {
-                onDelete({ label: { label, bbox, scope } })
+                onDelete({ label: { label, scope, bbox, simhash } })
               }}
               style={{ marginTop: -spacing.small }}
             >
@@ -133,7 +133,7 @@ const AssetLabelingLabel = ({
             initialValue: state.scope === option.value,
           }))}
           onClick={({ value }) => {
-            dispatch({ label: state.label, scope: value })
+            dispatch({ label: state.label, scope: value, simhash })
           }}
         />
       </div>

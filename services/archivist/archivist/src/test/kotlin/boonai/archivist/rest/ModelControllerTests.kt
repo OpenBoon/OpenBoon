@@ -496,4 +496,32 @@ class ModelControllerTests : MockMvcTest() {
             .andExpect(MockMvcResultMatchers.jsonPath("$.success", CoreMatchers.equalTo(true)))
             .andReturn()
     }
+
+    @Test
+    fun getSignedUploadUrl() {
+        val model = modelService.createModel(ModelSpec("foo", ModelType.TORCH_MAR_CLASSIFIER))
+
+        mvc.perform(
+            MockMvcRequestBuilders.get("/api/v3/models/${model.id}/_get_upload_url")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.uri", CoreMatchers.anything()))
+            .andReturn()
+    }
+
+    @Test
+    fun deployModel() {
+        val model = modelService.createModel(ModelSpec("foo", ModelType.TORCH_MAR_CLASSIFIER))
+
+        mvc.perform(
+            MockMvcRequestBuilders.post("/api/v3/models/${model.id}/_deploy")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.success", CoreMatchers.equalTo(true)))
+            .andReturn()
+    }
 }
