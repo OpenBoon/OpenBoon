@@ -319,7 +319,7 @@ Array [
   color: #b3b3b3;
 }
 
-.emotion-38 {
+.emotion-46 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -328,17 +328,17 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-38 button,
-.emotion-38 a {
+.emotion-46 button,
+.emotion-46 a {
   margin-right: 16px;
 }
 
-.emotion-38 button:last-child,
-.emotion-38 a:last-child {
+.emotion-46 button:last-child,
+.emotion-46 a:last-child {
   margin-right: 0;
 }
 
-.emotion-39 {
+.emotion-47 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -369,22 +369,22 @@ Array [
   background-color: transparent;
 }
 
-.emotion-39,
-.emotion-39:hover,
-.emotion-39:visited,
-.emotion-39 .noop {
+.emotion-47,
+.emotion-47:hover,
+.emotion-47:visited,
+.emotion-47 .noop {
   background-color: #3A5DFF;
 }
 
-.emotion-39:hover,
-.emotion-39 .noop {
+.emotion-47:hover,
+.emotion-47 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #6088FE;
 }
 
-.emotion-39[aria-disabled=true],
-.emotion-39 .noop {
+.emotion-47[aria-disabled=true],
+.emotion-47 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -582,13 +582,52 @@ Array [
           </label>
         </div>
       </div>
+      <div
+        className="emotion-14"
+      >
+        <div>
+          <label
+            className="emotion-15"
+          >
+            <div
+              className="emotion-16"
+            >
+              <input
+                className="emotion-17"
+                defaultChecked={false}
+                name="modelType"
+                onClick={[Function]}
+                type="radio"
+                value="PYTORCH_MODEL_ARCHIVE"
+              />
+              <div
+                className="emotion-18"
+              />
+            </div>
+            <div
+              className="emotion-19"
+            >
+              <div
+                className="emotion-20"
+              >
+                A Pytorch Model Archive. image_classifier, image_segmenter, object_detector, or text_classifier.
+              </div>
+              <div
+                className="emotion-21"
+              >
+                Upload a pre-trained Pytorch Model Archive
+              </div>
+            </div>
+          </label>
+        </div>
+      </div>
     </div>
     <div
-      className="emotion-38"
+      className="emotion-46"
     >
       <button
         aria-disabled={true}
-        className="emotion-39"
+        className="emotion-47"
         onClick={[Function]}
         type="submit"
       >
@@ -936,7 +975,7 @@ Array [
   background-color: none;
 }
 
-.emotion-38 {
+.emotion-46 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -945,17 +984,17 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-38 button,
-.emotion-38 a {
+.emotion-46 button,
+.emotion-46 a {
   margin-right: 16px;
 }
 
-.emotion-38 button:last-child,
-.emotion-38 a:last-child {
+.emotion-46 button:last-child,
+.emotion-46 a:last-child {
   margin-right: 0;
 }
 
-.emotion-39 {
+.emotion-47 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -986,22 +1025,22 @@ Array [
   background-color: transparent;
 }
 
-.emotion-39,
-.emotion-39:hover,
-.emotion-39:visited,
-.emotion-39 .noop {
+.emotion-47,
+.emotion-47:hover,
+.emotion-47:visited,
+.emotion-47 .noop {
   background-color: #3A5DFF;
 }
 
-.emotion-39:hover,
-.emotion-39 .noop {
+.emotion-47:hover,
+.emotion-47 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #6088FE;
 }
 
-.emotion-39[aria-disabled=true],
-.emotion-39 .noop {
+.emotion-47[aria-disabled=true],
+.emotion-47 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -1199,12 +1238,51 @@ Array [
           </label>
         </div>
       </div>
+      <div
+        className="emotion-14"
+      >
+        <div>
+          <label
+            className="emotion-15"
+          >
+            <div
+              className="emotion-16"
+            >
+              <input
+                className="emotion-25"
+                defaultChecked={false}
+                name="modelType"
+                onClick={[Function]}
+                type="radio"
+                value="PYTORCH_MODEL_ARCHIVE"
+              />
+              <div
+                className="emotion-26"
+              />
+            </div>
+            <div
+              className="emotion-19"
+            >
+              <div
+                className="emotion-20"
+              >
+                A Pytorch Model Archive. image_classifier, image_segmenter, object_detector, or text_classifier.
+              </div>
+              <div
+                className="emotion-21"
+              >
+                Upload a pre-trained Pytorch Model Archive
+              </div>
+            </div>
+          </label>
+        </div>
+      </div>
     </div>
     <div
-      className="emotion-38"
+      className="emotion-46"
     >
       <button
-        className="emotion-39"
+        className="emotion-47"
         onClick={[Function]}
         type="submit"
       >
