@@ -64,7 +64,7 @@ const Dataset = () => {
               isSelected: edit ? false : undefined,
             },
             {
-              title: 'Labels',
+              title: 'Labeled Assets',
               href: '/[projectId]/datasets/[datasetId]/labels',
               isSelected: edit ? false : undefined,
             },
