@@ -13,6 +13,11 @@ logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 
+class FakeResponse:
+    def raise_for_status(self):
+        pass
+
+
 class ModelAppTests(unittest.TestCase):
 
     def setUp(self):
@@ -61,18 +66,25 @@ class ModelAppTests(unittest.TestCase):
                       self.app.models.upload_pretrained_model, '12345', "/foo/model.mar")
 
     @patch.object(ModelApp, 'find_one_model')
-    @patch.object(BoonClient, 'send_file')
-    def test_upload_pretrained_model(self, upload_patch, model_patch):
-        upload_patch.return_value = {"id": "models/123/proxy/model.mar"}
+    @patch.object(BoonClient, 'get')
+    @patch('requests.put')
+    @patch.object(BoonClient, 'post')
+    def test_upload_pretrained_model(self, post_patch, put_patch, get_patch, model_patch):
         model_patch.return_value = Model({
             'id': '12345',
             'type': 'TORCH_MAR_CLASSIFIER',
             'name': 'foo',
             'uploadable': True
         })
+        get_patch.return_value = {
+            "uri": "http://foo/bar",
+            "mediaType": "application/zip"
+        }
+        post_patch.return_value = {"success": True}
 
-        sfile = self.app.models.upload_pretrained_model('12345', "/foo/model.mar")
-        assert "models/123/proxy/model.mar" == sfile.id
+        put_patch.return_value = FakeResponse()
+        res = self.app.models.upload_pretrained_model('12345', __file__)
+        assert res['success'] is True
 
     @patch.object(BoonClient, 'post')
     def test_find_one_model(self, post_patch):

@@ -1,5 +1,5 @@
 # syntax = docker/dockerfile:experimental
-FROM boonai/boonsdk:latest
+FROM boonai/boonflow:latest
 
 RUN mkdir /app
 

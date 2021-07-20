@@ -145,7 +145,6 @@ def generate_build_file(spec, build_path):
                          '--region', 'us-central1',
                          '--platform', 'managed',
                          '--ingress', 'internal',
-                         '--clear-vpc-connector',
                          '--allow-unauthenticated',
                          '--memory=2Gi',
                          '--max-instances', '4',
