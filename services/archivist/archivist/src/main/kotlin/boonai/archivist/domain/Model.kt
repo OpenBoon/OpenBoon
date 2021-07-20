@@ -204,7 +204,7 @@ enum class ModelType(
     BOON_FUNCTION(
         "Boon Function",
         "None",
-        "boonai_analysis.deployed.script.BoonScriptProcessor",
+        "boonai_analysis.deployed.function.BoonScriptProcessor",
         null,
         "Use a Boon AI Script to perform custom logic.",
         ModelObjective.LABEL_DETECTION,
