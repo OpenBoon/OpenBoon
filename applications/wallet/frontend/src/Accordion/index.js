@@ -41,8 +41,7 @@ const STYLES = {
       borderBottom: constants.borders.regular.smoke,
     },
     title: {
-      fontFamily: typography.family.mono,
-      fontSize: typography.size.small,
+      fontWeight: typography.weight.bold,
       lineHeight: typography.height.small,
       paddingRight: spacing.small,
     },
