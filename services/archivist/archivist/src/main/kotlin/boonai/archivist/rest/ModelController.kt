@@ -181,6 +181,17 @@ class ModelController(
         return modelDeployService.deployUploadedModel(modelService.getModel(id), req.inputStream)
     }
 
+    @GetMapping(value = ["/api/v3/models/{id}/_get_upload_url"])
+    fun getSignedUploadUrl(@ApiParam("ModelId") @PathVariable id: UUID): Map<String, Any> {
+        return modelDeployService.getSignedModelUploadUrl(modelService.getModel(id))
+    }
+
+    @PostMapping(value = ["/api/v3/models/{id}/_deploy"])
+    fun deployModel(@ApiParam("ModelId") @PathVariable id: UUID): Any {
+        modelDeployService.kickoffModelBuild(modelService.getModel(id))
+        return HttpUtils.status("Model", "deploy", true)
+    }
+
     @PutMapping(value = ["/api/v3/models/{id}"])
     fun update(@PathVariable id: UUID, @RequestBody spec: ModelUpdateRequest): Any {
         modelService.updateModel(id, spec)

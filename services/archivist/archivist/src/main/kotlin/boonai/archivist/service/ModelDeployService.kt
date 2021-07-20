@@ -39,6 +39,8 @@ interface ModelDeployService {
      * to cloud storage.
      */
     fun deployUploadedModel(model: Model, inputStream: InputStream): FileStorage
+    fun getSignedModelUploadUrl(model: Model): Map<String, Any>
+    fun kickoffModelBuild(model: Model)
 }
 
 @Service
@@ -53,6 +55,22 @@ class ModelDeployServiceImpl(
     @PostConstruct
     fun setup() {
         eventBus.register(this)
+    }
+
+    override fun getSignedModelUploadUrl(model: Model): Map<String, Any> {
+        if (!model.type.uploadable) {
+            throw IllegalArgumentException("This type of model cannot be uploaded")
+        }
+        return fileStorageService.getSignedUrl(
+            model.getModelStorageLocator("latest"), true, 10L, TimeUnit.MINUTES
+        )
+    }
+
+    override fun kickoffModelBuild(model: Model) {
+        if (!model.type.uploadable) {
+            throw IllegalArgumentException("This type of model cannot be uploaded")
+        }
+        modelService.postToModelEventTopic(buildDeployPubsubMessage(model))
     }
 
     override fun deployUploadedModel(model: Model, inputStream: InputStream): FileStorage {
