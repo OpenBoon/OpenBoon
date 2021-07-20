@@ -158,7 +158,7 @@ describe('<AssetLabeling /> helpers', () => {
           'Content-Type': 'application/json;charset=UTF-8',
           'X-CSRFToken': 'CSRF_TOKEN',
         },
-        body: `{"removeLabels":[{"assetId":"${ASSET_ID}","label":"cat","bbox":[0.53,0.113,0.639,0.29]}]}`,
+        body: `{"removeLabels":[{"assetId":"${ASSET_ID}","label":"cat","scope":"TEST","bbox":[0.53,0.113,0.639,0.29]}]}`,
       })
 
       expect(mockDispatch).toHaveBeenCalledWith({
