@@ -1,0 +1,219 @@
+VFX_ANIMATED_FACES_RESULT_DATA = {
+   "algorithm":"VfxAnimatedFaces",
+   "type":"Cartoons",
+   "media_type":"",
+   "calls":0,
+   "model_version":"2020-07-17 10:35:38",
+   "task_id":3298818,
+   "task_time":13,
+   "detections":[
+      {
+         "segment_type":"Image",
+         "image_name":"https://storage.googleapis.com/zvi-dev-archivist-data/projects/a3370a22-440e-43c3-85ad-fba64c7d5160/assets/nz5Uy5lF-c5WtlKwrEaM1bOsAgjxMJCz/web-proxy/web-proxy.jpg?GoogleAccessId=zmlp-archivist@zvi-dev.iam.gserviceaccount.com&Expires=1626206826&Signature=SkZXUPTdvJO1nGsaDvOcLwqcizWnCxhXKIeDaLDoQ%2FYdt1VMiWqvvazK%2By9yVrR362IAIPX5MhYyAzDJxJuwdBwSNic4x33B9zWvNjadtYuW0dzgFYwMXhwBmPMFx1Sz22opKlhwW97KeKvhaIbZGlS1CyeN5UtlxT3gK%2Bw2UtJ%2BJZfp2wmL19muXwFYh%2BQ9DpXikGm4%2Bnif0DcZ7hmswhFwRuxV2xzO%2FHchNMJT0N%2BdyNrHLU0d374qKo1JFW4fWO8DMGz8J4td66rpDamOh7YtfOcWPS%2BR7gP82gf32DOuuH5lGzimy3hfINf%2FkwJcnZklFKDJaoQKXPPGxbtb1w%3D%3D",
+         "coord":[
+            80.4000015258789,
+            114.4000015258789,
+            103.20000457763672,
+            96.20000457763672
+         ],
+         "instances":[
+            {
+               "id":72,
+               "uri":"http://data.disney.com/resources/zc3145408-57e9-4aba-b920-0b43f5b03789",
+               "label":"Pepper Potts (Iron Man)",
+               "prob":0.7645178206121038,
+               "uncertainty":1.4028348809610132
+            }
+         ]
+      },
+      {
+         "segment_type":"Image",
+         "image_name":"https://storage.googleapis.com/zvi-dev-archivist-data/projects/a3370a22-440e-43c3-85ad-fba64c7d5160/assets/nz5Uy5lF-c5WtlKwrEaM1bOsAgjxMJCz/web-proxy/web-proxy.jpg?GoogleAccessId=zmlp-archivist@zvi-dev.iam.gserviceaccount.com&Expires=1626206826&Signature=SkZXUPTdvJO1nGsaDvOcLwqcizWnCxhXKIeDaLDoQ%2FYdt1VMiWqvvazK%2By9yVrR362IAIPX5MhYyAzDJxJuwdBwSNic4x33B9zWvNjadtYuW0dzgFYwMXhwBmPMFx1Sz22opKlhwW97KeKvhaIbZGlS1CyeN5UtlxT3gK%2Bw2UtJ%2BJZfp2wmL19muXwFYh%2BQ9DpXikGm4%2Bnif0DcZ7hmswhFwRuxV2xzO%2FHchNMJT0N%2BdyNrHLU0d374qKo1JFW4fWO8DMGz8J4td66rpDamOh7YtfOcWPS%2BR7gP82gf32DOuuH5lGzimy3hfINf%2FkwJcnZklFKDJaoQKXPPGxbtb1w%3D%3D",
+         "coord":[
+            80.4000015258789,
+            114.4000015258789,
+            103.20000457763672,
+            96.20000457763672
+         ],
+         "instances":[
+            {
+               "id":72,
+               "uri":" http://data.disney.com/resources/z4a834422-6f1e-48f4-9285-1aeab0ebd057",
+               "label":" Paltrow, Gwyneth",
+               "prob":0.7645178206121038,
+               "uncertainty":1.4028348809610132
+            }
+         ]
+      },
+      {
+         "segment_type":"Image",
+         "image_name":"https://storage.googleapis.com/zvi-dev-archivist-data/projects/a3370a22-440e-43c3-85ad-fba64c7d5160/assets/nz5Uy5lF-c5WtlKwrEaM1bOsAgjxMJCz/web-proxy/web-proxy.jpg?GoogleAccessId=zmlp-archivist@zvi-dev.iam.gserviceaccount.com&Expires=1626206826&Signature=SkZXUPTdvJO1nGsaDvOcLwqcizWnCxhXKIeDaLDoQ%2FYdt1VMiWqvvazK%2By9yVrR362IAIPX5MhYyAzDJxJuwdBwSNic4x33B9zWvNjadtYuW0dzgFYwMXhwBmPMFx1Sz22opKlhwW97KeKvhaIbZGlS1CyeN5UtlxT3gK%2Bw2UtJ%2BJZfp2wmL19muXwFYh%2BQ9DpXikGm4%2Bnif0DcZ7hmswhFwRuxV2xzO%2FHchNMJT0N%2BdyNrHLU0d374qKo1JFW4fWO8DMGz8J4td66rpDamOh7YtfOcWPS%2BR7gP82gf32DOuuH5lGzimy3hfINf%2FkwJcnZklFKDJaoQKXPPGxbtb1w%3D%3D",
+         "coord":[
+            847.5999755859375,
+            112.80000305175781,
+            108.800048828125,
+            114.39999389648438
+         ],
+         "instances":[
+            {
+               "id":40,
+               "uri":"http://data.disney.com/resources/z72098abf-e539-4311-b8cc-73596a8fcf9e",
+               "label":"Shuri",
+               "prob":0.8792773423925385,
+               "uncertainty":0.5623362597586189
+            }
+         ]
+      },
+      {
+         "segment_type":"Image",
+         "image_name":"https://storage.googleapis.com/zvi-dev-archivist-data/projects/a3370a22-440e-43c3-85ad-fba64c7d5160/assets/nz5Uy5lF-c5WtlKwrEaM1bOsAgjxMJCz/web-proxy/web-proxy.jpg?GoogleAccessId=zmlp-archivist@zvi-dev.iam.gserviceaccount.com&Expires=1626206826&Signature=SkZXUPTdvJO1nGsaDvOcLwqcizWnCxhXKIeDaLDoQ%2FYdt1VMiWqvvazK%2By9yVrR362IAIPX5MhYyAzDJxJuwdBwSNic4x33B9zWvNjadtYuW0dzgFYwMXhwBmPMFx1Sz22opKlhwW97KeKvhaIbZGlS1CyeN5UtlxT3gK%2Bw2UtJ%2BJZfp2wmL19muXwFYh%2BQ9DpXikGm4%2Bnif0DcZ7hmswhFwRuxV2xzO%2FHchNMJT0N%2BdyNrHLU0d374qKo1JFW4fWO8DMGz8J4td66rpDamOh7YtfOcWPS%2BR7gP82gf32DOuuH5lGzimy3hfINf%2FkwJcnZklFKDJaoQKXPPGxbtb1w%3D%3D",
+         "coord":[
+            847.5999755859375,
+            112.80000305175781,
+            108.800048828125,
+            114.39999389648438
+         ],
+         "instances":[
+            {
+               "id":40,
+               "uri":" http://data.disney.com/resources/zc26397e2-c775-4651-b109-8b0be4540143",
+               "label":" Wright, Leticia",
+               "prob":0.8792773423925385,
+               "uncertainty":0.5623362597586189
+            }
+         ]
+      },
+      {
+         "segment_type":"Image",
+         "image_name":"https://storage.googleapis.com/zvi-dev-archivist-data/projects/a3370a22-440e-43c3-85ad-fba64c7d5160/assets/nz5Uy5lF-c5WtlKwrEaM1bOsAgjxMJCz/web-proxy/web-proxy.jpg?GoogleAccessId=zmlp-archivist@zvi-dev.iam.gserviceaccount.com&Expires=1626206826&Signature=SkZXUPTdvJO1nGsaDvOcLwqcizWnCxhXKIeDaLDoQ%2FYdt1VMiWqvvazK%2By9yVrR362IAIPX5MhYyAzDJxJuwdBwSNic4x33B9zWvNjadtYuW0dzgFYwMXhwBmPMFx1Sz22opKlhwW97KeKvhaIbZGlS1CyeN5UtlxT3gK%2Bw2UtJ%2BJZfp2wmL19muXwFYh%2BQ9DpXikGm4%2Bnif0DcZ7hmswhFwRuxV2xzO%2FHchNMJT0N%2BdyNrHLU0d374qKo1JFW4fWO8DMGz8J4td66rpDamOh7YtfOcWPS%2BR7gP82gf32DOuuH5lGzimy3hfINf%2FkwJcnZklFKDJaoQKXPPGxbtb1w%3D%3D",
+         "coord":[
+            346.6000061035156,
+            152.60000610351562,
+            80.79998779296875,
+            80.79998779296875
+         ],
+         "instances":[
+            {
+               "id":-1,
+               "uri":"http://test.org/fake_uri/irrelevant",
+               "label":"Unknown",
+               "prob":-1,
+               "uncertainty":0
+            }
+         ]
+      },
+      {
+         "segment_type":"Image",
+         "image_name":"https://storage.googleapis.com/zvi-dev-archivist-data/projects/a3370a22-440e-43c3-85ad-fba64c7d5160/assets/nz5Uy5lF-c5WtlKwrEaM1bOsAgjxMJCz/web-proxy/web-proxy.jpg?GoogleAccessId=zmlp-archivist@zvi-dev.iam.gserviceaccount.com&Expires=1626206826&Signature=SkZXUPTdvJO1nGsaDvOcLwqcizWnCxhXKIeDaLDoQ%2FYdt1VMiWqvvazK%2By9yVrR362IAIPX5MhYyAzDJxJuwdBwSNic4x33B9zWvNjadtYuW0dzgFYwMXhwBmPMFx1Sz22opKlhwW97KeKvhaIbZGlS1CyeN5UtlxT3gK%2Bw2UtJ%2BJZfp2wmL19muXwFYh%2BQ9DpXikGm4%2Bnif0DcZ7hmswhFwRuxV2xzO%2FHchNMJT0N%2BdyNrHLU0d374qKo1JFW4fWO8DMGz8J4td66rpDamOh7YtfOcWPS%2BR7gP82gf32DOuuH5lGzimy3hfINf%2FkwJcnZklFKDJaoQKXPPGxbtb1w%3D%3D",
+         "coord":[
+            543.5999755859375,
+            151.8000030517578,
+            66.800048828125,
+            72.39999389648438
+         ],
+         "instances":[
+            {
+               "id":23,
+               "uri":"http://data.disney.com/resources/z40dced08-8f1c-4511-85fc-0cee9fa91664",
+               "label":"Mantis",
+               "prob":0.5985265535949081,
+               "uncertainty":2.0518858007002883
+            }
+         ]
+      },
+      {
+         "segment_type":"Image",
+         "image_name":"https://storage.googleapis.com/zvi-dev-archivist-data/projects/a3370a22-440e-43c3-85ad-fba64c7d5160/assets/nz5Uy5lF-c5WtlKwrEaM1bOsAgjxMJCz/web-proxy/web-proxy.jpg?GoogleAccessId=zmlp-archivist@zvi-dev.iam.gserviceaccount.com&Expires=1626206826&Signature=SkZXUPTdvJO1nGsaDvOcLwqcizWnCxhXKIeDaLDoQ%2FYdt1VMiWqvvazK%2By9yVrR362IAIPX5MhYyAzDJxJuwdBwSNic4x33B9zWvNjadtYuW0dzgFYwMXhwBmPMFx1Sz22opKlhwW97KeKvhaIbZGlS1CyeN5UtlxT3gK%2Bw2UtJ%2BJZfp2wmL19muXwFYh%2BQ9DpXikGm4%2Bnif0DcZ7hmswhFwRuxV2xzO%2FHchNMJT0N%2BdyNrHLU0d374qKo1JFW4fWO8DMGz8J4td66rpDamOh7YtfOcWPS%2BR7gP82gf32DOuuH5lGzimy3hfINf%2FkwJcnZklFKDJaoQKXPPGxbtb1w%3D%3D",
+         "coord":[
+            543.5999755859375,
+            151.8000030517578,
+            66.800048828125,
+            72.39999389648438
+         ],
+         "instances":[
+            {
+               "id":23,
+               "uri":" http://data.disney.com/resources/z4973095a-d4fc-429e-ad77-00c27f97c349",
+               "label":" Klementieff, Pom",
+               "prob":0.5985265535949081,
+               "uncertainty":2.0518858007002883
+            }
+         ]
+      }
+   ]
+}
+
+
+OBJECT_DETECTION_RESULT_DATA = {
+     "algorithm":"PyObjectDetector2",
+     "calls":0,
+     "detections":[
+        {
+           "end":0,
+           "end_pts":0,
+           "instances":[
+              {
+                 "label":"Captain America's shield",
+                 "prob":0.9423460364341736,
+                 "uri":"http://data.disney.com/resources/712d106a-a3d4-4b23-8bfa-0b28d93e901c"
+              }
+           ],
+           "segment":"https://storage.googleapis.com/zvi-dev-archivist-data/projects/a3370a22-440e-43c3-85ad-fba64c7d5160/assets/ygmeTYdz7TGc-fETCiEC6EeG5enr8Ha5/web-proxy/web-proxy.jpg?GoogleAccessId=zmlp-archivist@zvi-dev.iam.gserviceaccount.com&Expires=1626217078&Signature=VfwFINinLYhQfpbXtDh8J3%2Fi7yBqR6OoTKR8vhWaw%2Bul4GULBAze6sFMI1d3HKVYHCv%2BXkR93s0NxJc1pyM77yycf2AXOEmlRoy05VGplBv6xKhg3l5Z3u0x6UGsaU1xXOBIWCR1lmMwQFnqpSkq4odT3QYwdfWJq0ddLpMuF1N3eI%2Fb3GbKLItkfOHih6HCkgAPZAzs5VwyKC4Tw2%2B%2FPD%2Fayshm691KiRyhhcHdqAYgdKLmMWIie1WdaJcdx7EjgsfjXcLu1tOidBN4oF%2BAJMOIETDElGuUC4PUgKpx5qRjAapEDn3PuZf6nnHDpZY8UTfk8ovHy6yyYH%2BaSC%2BDLQ%3D%3D",
+           "start":0,
+           "start_pts":0,
+           "track":[
+              {
+                 "position":[
+                    586,
+                    0,
+                    322,
+                    208
+                 ],
+                 "pts":0,
+                 "timestamp":0
+              }
+           ]
+        }
+     ],
+     "image_info":{
+        "https://storage.googleapis.com/zvi-dev-archivist-data/projects/a3370a22-440e-43c3-85ad-fba64c7d5160/assets/ygmeTYdz7TGc-fETCiEC6EeG5enr8Ha5/web-proxy/web-proxy.jpg?GoogleAccessId=zmlp-archivist@zvi-dev.iam.gserviceaccount.com&Expires=1626217078&Signature=VfwFINinLYhQfpbXtDh8J3%2Fi7yBqR6OoTKR8vhWaw%2Bul4GULBAze6sFMI1d3HKVYHCv%2BXkR93s0NxJc1pyM77yycf2AXOEmlRoy05VGplBv6xKhg3l5Z3u0x6UGsaU1xXOBIWCR1lmMwQFnqpSkq4odT3QYwdfWJq0ddLpMuF1N3eI%2Fb3GbKLItkfOHih6HCkgAPZAzs5VwyKC4Tw2%2B%2FPD%2Fayshm691KiRyhhcHdqAYgdKLmMWIie1WdaJcdx7EjgsfjXcLu1tOidBN4oF%2BAJMOIETDElGuUC4PUgKpx5qRjAapEDn3PuZf6nnHDpZY8UTfk8ovHy6yyYH%2BaSC%2BDLQ%3D%3D":{
+           "height":540,
+           "width":1024
+        }
+     },
+     "media_type":"",
+     "model_version":"2019-11-13 09:51:13",
+     "task_id":3298819,
+     "task_time":11,
+     "type":"Detectors"
+}
+
+
+FULL_FRAME_CLASSIFIER_RESULT_DATA = {
+    "algorithm":"FullFrameClassifier",
+    "calls":0,
+    "detections":[
+    {
+       "end":"None",
+       "instances":[
+          {
+             "label":"sky or clouds from ground",
+             "prob":0.8778038620948792,
+             "uri":"http://data.disney.com/resources/invented/16d5037a-4974-4fa7-a05c-eaa2f754e856"
+          },
+          {
+             "label":"locations tiles driving",
+             "prob":0.8793227672576904,
+             "uri":"http://data.disney.com/resources/invented/d9987286-9a96-4a3e-a84a-75d3b2afcee4"
+          }
+       ],
+       "segment":"https://storage.googleapis.com/zvi-dev-archivist-data/projects/a3370a22-440e-43c3-85ad-fba64c7d5160/assets/ygmeTYdz7TGc-fETCiEC6EeG5enr8Ha5/web-proxy/web-proxy.jpg?GoogleAccessId=zmlp-archivist@zvi-dev.iam.gserviceaccount.com&Expires=1626219917&Signature=l4ytcRIZxub3Crdvd1wUXy2NZVP1qaXjXpa3jTU7D3%2BhVDTx72V8PvUxk9VUwCWPetPIlHcZCZ%2B0xa%2B12sU3bPZwS9v7V%2FO2gNJXuOcIVwIFikQukB%2F%2By1hXIBhR5fWs6k%2BRgW2C9of2rXMPzlA2p61%2FqjhWcBjhu%2F54dbC9SbdJ4sVuB7bJ3JvTpE40Uqb5bMuyRDjH5SAl%2FX2WD3GY2Ge7%2FCYZ%2BKw1owRIuITMSAvO0eZ8TkYlgkpVXrLB%2Bt9VCND64ar1tCcCmcHTMCdn4%2ByI9%2BubhrwSe5i7OS5Pc%2B90R%2BSAVDtTUeLZ5zH6w36nfSNUYvHaF%2Fr0vZWiy3k8rw%3D%3D",
+       "start":"None"
+    }
+    ],
+    "media_type":"",
+    "model_version":"2020-06-30 23:00:20",
+    "task_id":3298820,
+    "task_time":7,
+    "type":"Classifiers"
+}
