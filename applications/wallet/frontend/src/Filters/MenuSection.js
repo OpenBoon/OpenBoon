@@ -67,8 +67,7 @@ const FiltersMenuSection = ({
     >
       <h4
         css={{
-          fontFamily: typography.family.mono,
-          fontWeight: typography.weight.regular,
+          fontWeight: typography.weight.bold,
         }}
       >
         {attribute}
