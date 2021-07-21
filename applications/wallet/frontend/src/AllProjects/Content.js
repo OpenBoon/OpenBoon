@@ -6,6 +6,7 @@ import { colors, constants, spacing } from '../Styles'
 import { useLocalStorage } from '../LocalStorage/helpers'
 
 import NoProject from '../NoProject'
+import PageTitle from '../PageTitle'
 import InputSearch, { VARIANTS as INPUT_SEARCH_VARIANTS } from '../Input/Search'
 import Select, { VARIANTS as SELECT_VARIANTS } from '../Select'
 
@@ -64,6 +65,7 @@ const AllProjectsContent = () => {
 
   return (
     <>
+      <PageTitle>All Projects</PageTitle>
       <div
         css={{
           display: 'flex',
