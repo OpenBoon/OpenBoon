@@ -24,3 +24,4 @@ def test_function(client):
     result = rsp.get_json()
     assert 'analysis' in result
     assert 'custom-fields' in result
+    print(result)

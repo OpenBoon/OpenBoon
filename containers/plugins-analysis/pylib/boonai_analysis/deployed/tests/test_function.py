@@ -32,8 +32,8 @@ class BoonFunctionTests(PluginUnitTestCase):
             }
         )
         predict_patch.return_value = {
-            'analysis': [
-                {
+            'analysis': {
+                "__MAIN__": {
                     'type': 'labels',
                     'predictions': [
                         {
@@ -42,12 +42,12 @@ class BoonFunctionTests(PluginUnitTestCase):
                         }
                     ]
                 },
-                {
+                "caption": {
                     'section': 'caption',
                     'type': 'content',
                     'content': 'I can has cheeseburger'
                 }
-            ],
+            },
             'custom-fields': {
                 'test': '12345',
                 'cat_name': 'snowball'

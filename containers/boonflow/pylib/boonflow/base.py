@@ -25,7 +25,8 @@ __all__ = [
     "FileTypes",
     "ModelTrainer",
     "Singleton",
-    "ImageInputStream"
+    "ImageInputStream",
+    "BoonFunctionResponse"
 ]
 
 
@@ -597,3 +598,42 @@ class ImageInputStream:
     def __iter__(self):
         self.buffer.seek(0)
         return self.buffer.__iter__()
+
+
+class BoonFunctionResponse:
+    """
+    A convenience class for crafting a Boon Function response.
+    """
+    def __init__(self):
+        self.analysis = {}
+        self.custom = {}
+
+    def add_analysis(self, analysis, sub_section=None):
+        """
+        Add an Analysis structure to the response.
+
+        Args:
+            analysis (mixed): An Analysis object
+            sub_section (str): An optional subsection name.
+        """
+        if not sub_section:
+            section = "__MAIN__"
+        else:
+            section = sub_section
+        self.analysis[section] = analysis
+
+    def set_custom_field(self, name, value):
+        """
+        Set the value a custom field.
+
+        Args:
+            name (str): The name of field.
+            value (mixed): A value for the field.
+        """
+        self.custom[name] = value
+
+    def for_json(self):
+        return {
+            'analysis': self.analysis,
+            'custom-fields': self.custom
+        }
