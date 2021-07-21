@@ -1,6 +1,8 @@
 import logging
 import os
 import tempfile
+
+import flask
 import pytest
 
 from unittest import TestCase
@@ -69,6 +71,19 @@ class FileCacheTests(TestCase):
         assert os.path.exists(path)
         self.lfc.clear()
         assert not os.path.exists(path)
+
+    @patch.object(BoonClient, 'sign_request')
+    def test_clear_request_cache(self, sign_patch):
+        os.environ['BOONFLOW_IN_FLASK'] = 'yes'
+
+        app = flask.Flask("test")
+        with app.app_context():
+            flask.g.request_id = "hamburger"
+            lfc = storage.FileCache(app_from_env())
+            path = lfc.get_path('https://i.imgur.com/WkomVeG.jpg')
+            assert "/hamburger/" in path
+            lfc.clear_request_cache()
+            assert not os.path.exists(os.path.dirname(path))
 
     def test_close(self):
         self.lfc.localize_uri('https://i.imgur.com/WkomVeG.jpg')
