@@ -1,4 +1,5 @@
 import json
+import os
 
 from boonsdk.client import BoonSdkNotFoundException
 from boonsdk.entity import PostTrainAction
@@ -192,6 +193,28 @@ class ModelViewSet(ZmlpCreateMixin,
                                  test_set_only=test_set_only)
         thumbnail = matrix.create_thumbnail_image()
         return HttpResponse(thumbnail.read(), content_type='image/png')
+
+    @action(methods=['get'], detail=True)
+    def upload_url(self, request, project_pk, pk):
+        """Returns a signed GCS upload url. Only works for models that allow uploaded models.
+        After upload to GCS is complete the "finish_upload" endpoint needs to be called to
+        complete the process.
+
+        """
+        path = os.path.join(self.zmlp_root_api_path, pk, '_get_upload_url')
+        signed_url = request.client.get(path)['uri']
+        return Response({"signedUrl": signed_url})
+
+    @action(methods=['put'], detail=True)
+    def finish_upload(self, request, project_pk, pk):
+        """Should be called after using the "upload_url" endpoint and uploading model files to GCS.
+        This endpoint will alert the archivist that new files have been uploaded and complete the
+        model upload process.
+
+        """
+        path = os.path.join(self.zmlp_root_api_path, pk, '_deploy')
+        response = request.client.post(path, {})
+        return Response({"success": response['success']})
 
     def _get_model(self, app, model_id):
         """Gets the model for the given ID"""
