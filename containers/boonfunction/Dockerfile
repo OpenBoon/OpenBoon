@@ -11,6 +11,8 @@ WORKDIR /app
 RUN --mount=type=cache,target=/root/.cache/pip pip install -r requirements.txt
 RUN rm /app/requirements.txt
 
+ENV BOONFLOW_IN_FLASK=true
+
 # This won't run as is, we need a subclass container to copy in endpoint.py
 USER boonai
 ENTRYPOINT [ "python3" ]
