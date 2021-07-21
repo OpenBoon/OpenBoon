@@ -61,7 +61,7 @@ class FileCacheTests(TestCase):
         os.environ['BOONAI_PROJECT_ID'] = 'abc123'
         try:
             path = self.lfc.get_path('spock', '.kirk')
-            filename = 'c85be874d0f9c380a790f583c2bec6633109386e.kirk'
+            filename = '1a569625e9949f82ab1be5257ab2cab1f7524c6d.kirk'
             assert path.endswith(filename)
         finally:
             del os.environ['BOONAI_PROJECT_ID']
@@ -76,14 +76,17 @@ class FileCacheTests(TestCase):
     def test_clear_request_cache(self, sign_patch):
         os.environ['BOONFLOW_IN_FLASK'] = 'yes'
 
-        app = flask.Flask("test")
-        with app.app_context():
-            flask.g.request_id = "hamburger"
-            lfc = storage.FileCache(app_from_env())
-            path = lfc.get_path('https://i.imgur.com/WkomVeG.jpg')
-            assert "/hamburger/" in path
-            lfc.clear_request_cache()
-            assert not os.path.exists(os.path.dirname(path))
+        try:
+            app = flask.Flask("test")
+            with app.app_context():
+                flask.g.request_id = "hamburger"
+                lfc = storage.FileCache(app_from_env())
+                path = lfc.get_path('https://i.imgur.com/WkomVeG.jpg')
+                assert "/hamburger/" in path
+                lfc.clear_request_cache()
+                assert not os.path.exists(os.path.dirname(path))
+        finally:
+            del  os.environ['BOONFLOW_IN_FLASK']
 
     def test_close(self):
         self.lfc.localize_uri('https://i.imgur.com/WkomVeG.jpg')
