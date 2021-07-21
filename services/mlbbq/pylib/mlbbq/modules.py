@@ -36,6 +36,8 @@ class BBQExecutor:
         for ref in self.pipeline.get("execute", []):
             wrapper = self.exec.get_processor_wrapper(ref, {})
             wrapper.init()
+            if not wrapper.instance:
+                raise RuntimeError('Unable to initialize processor: {}'.format(ref))
             wrapper.instance.fatal_errors = True
             wrappers.append(wrapper)
 
