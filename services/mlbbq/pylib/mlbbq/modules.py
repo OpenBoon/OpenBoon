@@ -7,7 +7,7 @@ import flask
 import boonsdk
 import boondocks.process as boonproc
 from boondocks.reactor import Reactor
-from boonflow import Frame, ImageInputStream
+from boonflow import Frame, ImageInputStream, file_storage
 from boonflow.env import app_instance
 from boonsdk import Asset
 from .auth import check_write_access
@@ -61,7 +61,7 @@ class BBQExecutor:
             int: Response code
         """
         if self.error:
-            return 400
+            return 412
         else:
             return 200
 
@@ -98,6 +98,8 @@ def setup_endpoints(app):
         except Exception as e:
             logger.exception('Failed to execute pipeline: {}'.format(e))
             flask.abort(500, description='Unexpected server side exception')
+        finally:
+            file_storage.cache.clear_request_cache()
 
     @app.route('/ml/v1/modules/apply-to-file', methods=['POST'])
     def apply_to_file():
@@ -132,3 +134,5 @@ def setup_endpoints(app):
         except Exception as e:
             logger.exception('Failed to execute pipeline: {}'.format(e))
             flask.abort(500, description='Unexpected server side exception')
+        finally:
+            file_storage.cache.clear_request_cache()
