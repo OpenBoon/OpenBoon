@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
 import logging
 import json
+import random
+import string
 
 import flask
 from gevent.pywsgi import WSGIServer
 from boonsdk import Asset
 from boonsdk.util import to_json
+from boonflow import file_storage
 
 import function
 
@@ -13,6 +16,12 @@ logger = logging.getLogger('boonai')
 logging.basicConfig(level=logging.INFO)
 
 app = flask.Flask(__name__)
+
+
+@app.before_request
+def before_request():
+    request_id = ''.join(random.choices(string.ascii_uppercase + string.digits, k=24))
+    flask.g.request_id = request_id
 
 
 @app.route('/', methods=['POST'])
@@ -25,6 +34,8 @@ def endpoint():
     except Exception as e:
         logger.exception('Failed to process request: {}'.format(e))
         return str(e), 400
+    finally:
+        file_storage.cache.clear_request_cache()
     return flask.jsonify({})
 
 
