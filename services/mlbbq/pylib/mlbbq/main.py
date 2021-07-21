@@ -4,14 +4,22 @@ import argparse
 import logging
 import os
 import importlib
+import random
+import string
 
-from flask import Flask, jsonify
+from flask import Flask, jsonify, g
 from gevent.pywsgi import WSGIServer
 
 app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
 logger = logging.getLogger('mlbbq')
+
+
+@app.before_request
+def before_request():
+    request_id = ''.join(random.choices(string.ascii_uppercase + string.digits, k=24))
+    g.request_id = request_id
 
 
 def main():
