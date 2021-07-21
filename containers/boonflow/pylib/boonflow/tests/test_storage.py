@@ -1,16 +1,16 @@
 import logging
 import os
 import tempfile
+from unittest import TestCase
+from unittest.mock import patch
 
 import flask
 import pytest
 
-from unittest import TestCase
-from unittest.mock import patch
-from boonsdk import StoredFile, BoonClient, AnalysisModule, Job, Model, app_from_env
-from boonsdk.app import ModelApp
 from boonflow import storage
 from boonflow.testing import test_data, TestAsset
+from boonsdk import StoredFile, BoonClient, AnalysisModule, Job, Model, app_from_env
+from boonsdk.app import ModelApp
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -86,7 +86,7 @@ class FileCacheTests(TestCase):
                 lfc.clear_request_cache()
                 assert not os.path.exists(os.path.dirname(path))
         finally:
-            del  os.environ['BOONFLOW_IN_FLASK']
+            del os.environ['BOONFLOW_IN_FLASK']
 
     def test_close(self):
         self.lfc.localize_uri('https://i.imgur.com/WkomVeG.jpg')
