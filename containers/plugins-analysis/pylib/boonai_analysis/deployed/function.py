@@ -1,15 +1,16 @@
 import re
 
+import backoff
 import requests
 
-from boonsdk.util import to_json
 from boonflow import Argument, FileTypes
 from boonflow.analysis import LabelDetectionAnalysis, ContentDetectionAnalysis
+from boonsdk.util import to_json
 from ..custom.base import CustomModelProcessor
 
 
 class BoonFunctionProcessor(CustomModelProcessor):
-    file_types = FileTypes.images | FileTypes.documents
+    file_types = FileTypes.all
 
     def __init__(self):
         super(BoonFunctionProcessor, self).__init__()
@@ -26,6 +27,10 @@ class BoonFunctionProcessor(CustomModelProcessor):
     def process(self, frame):
         self.process_asset(frame)
 
+    @backoff.on_exception(backoff.expo,
+                          (requests.exceptions.Timeout,
+                           requests.exceptions.ConnectionError),
+                          max_time=300)
     def predict(self, asset):
         headers = {
             'Content-Type': 'application/json'

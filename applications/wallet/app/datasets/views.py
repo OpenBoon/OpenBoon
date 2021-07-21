@@ -203,10 +203,15 @@ class DatasetsViewSet(ZmlpCreateMixin,
 
     @action(methods=['get'], detail=False)
     def dataset_types(self, request, project_pk):
-        """Get the available dataset types from boonsdk."""
+        """Get the available dataset types from boonsdk. Removes 'Detection' type. """
         path = f'{self.zmlp_root_api_path}/_types'
         dataset_types = request.client.get(path)
-        serializer = DatasetTypeSerializer(data=dataset_types, many=True,
+        # Remove the detections type here
+        allowed_datasets = []
+        for _type in dataset_types:
+            if _type['name'] != 'Detection':
+                allowed_datasets.append(_type)
+        serializer = DatasetTypeSerializer(data=allowed_datasets, many=True,
                                            context=self.get_serializer_context())
         validate_zmlp_data(serializer)
         return Response({'results': serializer.data})

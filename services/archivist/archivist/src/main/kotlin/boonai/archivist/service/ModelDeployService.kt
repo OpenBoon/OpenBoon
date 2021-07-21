@@ -61,8 +61,13 @@ class ModelDeployServiceImpl(
         if (!model.type.uploadable) {
             throw IllegalArgumentException("This type of model cannot be uploaded")
         }
+        logger.event(
+            LogObject.MODEL, LogAction.SIGN_FOR_WRITE,
+            mapOf("modelId" to model.id, "modelName" to model.name, "image" to model.imageName())
+        )
+
         return fileStorageService.getSignedUrl(
-            model.getModelStorageLocator("latest"), true, 10L, TimeUnit.MINUTES
+            model.getModelStorageLocator("latest"), true, 30L, TimeUnit.MINUTES
         )
     }
 
@@ -70,6 +75,10 @@ class ModelDeployServiceImpl(
         if (!model.type.uploadable) {
             throw IllegalArgumentException("This type of model cannot be uploaded")
         }
+        logger.event(
+            LogObject.MODEL, LogAction.DEPLOY,
+            mapOf("modelId" to model.id, "modelName" to model.name, "image" to model.imageName())
+        )
         modelService.postToModelEventTopic(buildDeployPubsubMessage(model))
     }
 

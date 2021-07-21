@@ -50,7 +50,7 @@ class ModelController(
     }
 
     @ApiOperation("Get a Model record")
-    @PreAuthorize("hasAuthority('ModelTraining')")
+    @PreAuthorize("hasAnyAuthority('ModelTraining','SystemProjectDecrypt','SystemManage')")
     @GetMapping(value = ["/api/v3/models/{id}"])
     fun get(@PathVariable id: UUID): Model {
         return modelService.getModel(id)
@@ -65,7 +65,7 @@ class ModelController(
         return modelService.trainModel(model, req)
     }
 
-    @PreAuthorize("hasAuthority('ModelTraining')")
+    @PreAuthorize("hasAnyAuthority('ModelTraining','SystemProjectDecrypt','SystemManage')")
     @PostMapping(value = ["/api/v4/models/{id}/_train"])
     fun trainV4(@PathVariable id: UUID, @RequestBody request: ModelTrainingRequest): Job {
         val model = modelService.getModel(id)
@@ -85,12 +85,14 @@ class ModelController(
     }
 
     @ApiOperation("Search for Models.")
+    @PreAuthorize("hasAnyAuthority('ModelTraining','SystemProjectDecrypt','SystemManage')")
     @PostMapping("/api/v3/models/_search")
     fun find(@RequestBody(required = false) filter: ModelFilter?): KPagedList<Model> {
         return modelService.find(filter ?: ModelFilter())
     }
 
     @ApiOperation("Find a single Model")
+    @PreAuthorize("hasAnyAuthority('ModelTraining','SystemProjectDecrypt','SystemManage')")
     @PostMapping("/api/v3/models/_find_one")
     fun findOne(@RequestBody(required = false) filter: ModelFilter?): Model {
         return modelService.findOne(filter ?: ModelFilter())
@@ -150,20 +152,20 @@ class ModelController(
 
     @ApiOperation("Deploy the model and apply to given search.")
     @PostMapping(value = ["/api/v3/models/{id}/_apply"])
-    @PreAuthorize("hasAnyAuthority('AssetsImport', 'ModelTraining')")
+    @PreAuthorize("hasAnyAuthority('AssetsImport', 'ModelTraining', 'SystemProjectDecrypt', 'SystemManage')")
     fun apply(@PathVariable id: UUID, @RequestBody req: ModelApplyRequest): ModelApplyResponse {
         return modelService.applyModel(modelService.getModel(id), req)
     }
 
     @ApiOperation("Test the model and apply to given search.")
-    @PreAuthorize("hasAuthority('ModelTraining')")
+    @PreAuthorize("hasAnyAuthority('AssetsImport', 'ModelTraining', 'SystemProjectDecrypt', 'SystemManage')")
     @PostMapping("/api/v3/models/{id}/_test")
     fun test(@PathVariable id: UUID, @RequestBody req: ModelApplyRequest): ModelApplyResponse {
         return modelService.testModel(modelService.getModel(id), req)
     }
 
     @ApiOperation("Approve the latest model.")
-    @PreAuthorize("hasAuthority('ModelTraining')")
+    @PreAuthorize("hasAnyAuthority('ModelTraining', 'SystemProjectDecrypt', 'SystemManage')")
     @PostMapping("/api/v3/models/{id}/_approve")
     fun approve(@PathVariable id: UUID): Any {
         // For now we just copy latest to approved.
@@ -174,20 +176,20 @@ class ModelController(
     }
 
     @ApiOperation("Test the model and apply to given search.")
-    @PreAuthorize("hasAuthority('ModelTraining')")
+    @PreAuthorize("hasAnyAuthority('ModelTraining', 'SystemProjectDecrypt', 'SystemManage')")
     @GetMapping("/api/v3/models/{id}/_tags")
     fun getVersionTags(@PathVariable id: UUID): Set<String> {
         return modelService.getModelVersions(modelService.getModel(id))
     }
 
     @ApiOperation("Upload the model zip file.")
-    @PreAuthorize("hasAuthority('ModelTraining')")
+    @PreAuthorize("hasAnyAuthority('ModelTraining', 'SystemProjectDecrypt', 'SystemManage')")
     @PostMapping(value = ["/api/v3/models/{id}/_upload"])
     fun upload(@ApiParam("ModelId") @PathVariable id: UUID, req: HttpServletRequest): FileStorage {
         return modelDeployService.deployUploadedModel(modelService.getModel(id), req.inputStream)
     }
 
-    @PreAuthorize("hasAuthority('ModelTraining')")
+    @PreAuthorize("hasAnyAuthority('ModelTraining', 'SystemProjectDecrypt', 'SystemManage')")
     @GetMapping(value = ["/api/v3/models/{id}/_get_upload_url"])
     fun getSignedUploadUrl(@ApiParam("ModelId") @PathVariable id: UUID): Map<String, Any> {
         return modelDeployService.getSignedModelUploadUrl(modelService.getModel(id))
@@ -200,6 +202,7 @@ class ModelController(
         return HttpUtils.status("Model", "deploy", true)
     }
 
+    @PreAuthorize("hasAuthority('ModelTraining')")
     @PutMapping(value = ["/api/v3/models/{id}"])
     fun update(@PathVariable id: UUID, @RequestBody spec: ModelUpdateRequest): Any {
         modelService.updateModel(id, spec)

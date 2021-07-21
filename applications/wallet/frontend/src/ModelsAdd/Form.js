@@ -15,8 +15,6 @@ import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 
 import { onSubmit, slugify } from './helpers'
 
-const PRE_TRAINED_MODEL_TYPE = 'PYTORCH_MODEL_ARCHIVE'
-
 const SOURCES = [
   { value: 'CREATE', label: 'Train in Boon AI' },
   // { value: 'UPLOAD', label: 'Upload Pre-Trained Model' },
@@ -110,8 +108,6 @@ const ModelsAddForm = () => {
 
       <div css={{ marginRight: -130, paddingBottom: spacing.normal }}>
         {modelTypes.map(({ name, label, description }) => {
-          if (name === PRE_TRAINED_MODEL_TYPE) return null
-
           return (
             <div key={name} css={{ paddingTop: spacing.normal }}>
               <Radio

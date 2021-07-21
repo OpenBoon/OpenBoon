@@ -162,8 +162,7 @@ exports[`<FiltersMenuSection /> should render properly for a sub-section 1`] = `
 }
 
 .emotion-1 {
-  font-family: Roboto Mono;
-  font-weight: 400;
+  font-weight: 700;
 }
 
 .emotion-2 {

@@ -336,7 +336,7 @@ Array [
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
-          Labels
+          Labeled Assets
         </a>
       </li>
       <li
@@ -1008,7 +1008,7 @@ Array [
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
-          Labels
+          Labeled Assets
         </a>
       </li>
       <li
@@ -1611,7 +1611,7 @@ Array [
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
-          Labels
+          Labeled Assets
         </a>
       </li>
       <li
@@ -1904,7 +1904,7 @@ Array [
           onClick={[Function]}
           onMouseEnter={[Function]}
         >
-          Labels
+          Labeled Assets
         </a>
       </li>
       <li
