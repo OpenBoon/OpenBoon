@@ -227,10 +227,11 @@ plugin-container-tests:
     - apk add docker-compose
     - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
   script:
-    - ./buildx --plugins
+    - ./buildx --plugins mlbbq
     - docker run -v ${PWD}/test-data:/test-data boonai/plugins-core:latest pytest -s /boonai/pylib
     - docker run -v ${PWD}/test-data:/test-data boonai/plugins-analysis:latest pytest -s /boonai/pylib
     - docker run -v ${PWD}/test-data:/test-data boonai/plugins-train:latest pytest -s /boonai/pylib
+    - docker run -v ${PWD}/test-data:/test-data boonai/ml-bbq:latest pytest -s /service/pylib
   rules:
     # Scheduled Pipelines
     - if: '$CI_PIPELINE_SOURCE == "schedule"'
