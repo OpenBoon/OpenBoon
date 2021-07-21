@@ -351,3 +351,24 @@ class TestModelViewSetActions:
                             'isMatrixApplicable': True,
                             'datasetId': None,
                             'unappliedChanges': False}
+
+    def test_upload_url(self, login, api_client, monkeypatch, project):
+        uri = 'https://storage.googleapis.com/zvi-dev-archivist-data/projects/d15d4f94-fe5a-4516-8d03-3aaa9c5b69f9/models/a8ae4ac5-8c68-1e29-ab93-e62c8425a62a/latest/model.mar?GoogleAccessId=zmlp-archivist@zvi-dev.iam.gserviceaccount.com&Expires=1626890567&Signature=paQsD1T12hVEbTXs4sJnSpLpE3RAU7qEI8uKJBMq%2BYefRHBan3b3lji61b8PBZA0wIrFcNj7%2FW%2BnD9O%2FwoJC6EK75437%2FiwhkR92Ao8BGSCRrjzGY8aUDiMjQ%2BgwUc0R6zw2XP5sOWkQe1lqnkJhQ%2ByEtKnNnmw4M9Mi%2F4jubjGaeV51m%2F6T4Efbovg7GY4N%2Fv7r21HQYduOzuwGyJDhBjf0%2F%2BATW9sx4DZMIxEA%2F%2BxbZroepQH1h9PAxIvOrD8fQUDgTzQMrILAMR9hXXjt508cOc%2BM41um8qbICFcksR1Psaef4TcN0kRZwOvkkzGzIBCnYOOrZM4Ax9XjbIC3yQ%3D%3D'
+
+        def mock_get_response(*args, **kwargs):
+            return {'uri': uri, 'mediaType': 'application/octet-stream'}  # noqa
+
+        monkeypatch.setattr(BoonClient, 'get', mock_get_response)
+        path = reverse('model-upload-url', kwargs={'project_pk': project.id, 'pk': '1'})
+        response = check_response(api_client.get(path))
+        assert response['signedUrl'] == uri
+
+    def test_finish_upload(self, login, api_client, monkeypatch, project):
+
+        def mock_post_response(*args, **kwargs):
+            return {'type': 'Model', 'op': 'deploy', 'success': True}
+
+        monkeypatch.setattr(BoonClient, 'post', mock_post_response)
+        path = reverse('model-finish-upload', kwargs={'project_pk': project.id, 'pk': '1'})
+        response = check_response(api_client.put(path, {}))
+        assert response['success'] is True

@@ -37,7 +37,7 @@ exports[`<Projects /> should render an access denied screen if the url projectId
   -ms-flex-align: center;
   align-items: center;
   background-color: #2e2e2e;
-  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
   z-index: 100;
   padding-left: 16px;
   padding-right: 16px;
