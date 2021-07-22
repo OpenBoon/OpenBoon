@@ -16,4 +16,5 @@ RUN touch /app/function/__init__.py
 
 RUN /app/prepare.sh
 
+ENV BOONFLOW_IN_FLASK=true
 USER boonai
