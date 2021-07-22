@@ -83,7 +83,7 @@ const Datasets = () => {
         url={`/api/v1/projects/${projectId}/datasets/`}
         refreshKeys={[]}
         refreshButton={false}
-        columns={['Name', 'Type', 'Linked Models', '#Actions#']}
+        columns={['Name', 'Type', '#Actions#']}
         expandColumn={0}
         renderEmpty="There are currently no datasets."
         renderRow={({ result, revalidate }) => (
