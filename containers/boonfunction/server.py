@@ -10,9 +10,9 @@ from boonsdk import Asset
 from boonsdk.util import to_json
 from boonflow import file_storage
 
-import function
+from function import function
 
-logger = logging.getLogger('boonai')
+logger = logging.getLogger('boonfunc')
 logging.basicConfig(level=logging.INFO)
 
 app = flask.Flask(__name__)
@@ -33,7 +33,7 @@ def endpoint():
             return flask.Response(to_json(result), mimetype='application/json')
     except Exception as e:
         logger.exception('Failed to process request: {}'.format(e))
-        return str(e), 400
+        return str(e), 412
     finally:
         file_storage.cache.clear_request_cache()
     return flask.jsonify({})
