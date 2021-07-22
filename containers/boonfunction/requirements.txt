@@ -5,7 +5,4 @@ boonsdk
 numpy
 scikit-learn
 scipy
-nameparser
-street-address
-dateparser
 pillow==8.2.0

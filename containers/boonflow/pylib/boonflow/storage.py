@@ -678,6 +678,9 @@ class FileCache:
         """
         if not os.environ.get('BOONFLOW_IN_FLASK'):
             return
+        if not self.root:
+            return
+
         path = os.path.join(self.root, flask.g.request_id)
 
         def run_on_error(func, path, excinfo):

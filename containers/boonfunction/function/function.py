@@ -1,4 +1,7 @@
+
 from boonflow import BoonFunctionResponse, LabelDetectionAnalysis
+
+from . import support
 
 def process(asset):
     rsp = BoonFunctionResponse()
