@@ -20,9 +20,11 @@ class TesEnvClasses(TestCase):
         except Exception:
             pass
 
+    token_path = os.path.dirname(__file__) + "/token.txt"
+
     def test_app_istance_from_flask(self):
         app = flask.Flask('test')
-        with open('token.txt') as fp:
+        with open(self.token_path) as fp:
             token = fp.read()
         request_ctx = app.test_request_context(headers={'Authorization': f'Bearer {token}'})
         request_ctx.push()
@@ -32,7 +34,7 @@ class TesEnvClasses(TestCase):
 
     def test_get_server(self):
         app = flask.Flask('test')
-        with open('token.txt') as fp:
+        with open(self.token_path) as fp:
             token = fp.read()
         with app.test_request_context(headers={'Authorization': f'Bearer {token}'}):
             sdk = base.app_instance()
