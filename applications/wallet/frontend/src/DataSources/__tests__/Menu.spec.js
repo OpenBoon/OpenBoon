@@ -15,6 +15,7 @@ describe('<DataSourcesMenu />', () => {
       <DataSourcesMenu
         projectId={PROJECT_ID}
         dataSourceId={DATA_SOURCE_ID}
+        name="My Awesome Data Source"
         revalidate={mockFn}
       />,
     )
@@ -80,6 +81,7 @@ describe('<DataSourcesMenu />', () => {
       <DataSourcesMenu
         projectId={PROJECT_ID}
         dataSourceId={DATA_SOURCE_ID}
+        name="My Awesome Data Source"
         revalidate={mockFn}
       />,
     )

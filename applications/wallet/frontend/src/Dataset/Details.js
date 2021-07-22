@@ -71,6 +71,7 @@ const DatasetDetails = ({ projectId, datasetId }) => {
         <DatasetDeleteModal
           projectId={projectId}
           datasetId={datasetId}
+          name={name}
           isDeleteModalOpen={isDeleteModalOpen}
           setDeleteModalOpen={setDeleteModalOpen}
           setDatasetFields={setDatasetFields}

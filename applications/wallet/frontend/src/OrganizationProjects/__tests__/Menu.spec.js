@@ -15,6 +15,7 @@ describe('<OrganizationProjectsMenu />', () => {
       <OrganizationProjectsMenu
         organizationId={ORGANIZATION_ID}
         projectId={PROJECT_ID}
+        name="My Great Project"
         revalidate={mockFn}
       />,
     )

@@ -10,7 +10,12 @@ import ButtonActions from '../Button/Actions'
 import ButtonExternal from '../Button/External'
 import Modal from '../Modal'
 
-const OrganizationUserProjectsMenu = ({ userId, projectId, revalidate }) => {
+const OrganizationUserProjectsMenu = ({
+  userId,
+  projectId,
+  name,
+  revalidate,
+}) => {
   const [isRemoveModalOpen, setRemoveModalOpen] = useState(false)
 
   return (
@@ -64,7 +69,7 @@ const OrganizationUserProjectsMenu = ({ userId, projectId, revalidate }) => {
       {isRemoveModalOpen && (
         <Modal
           title="Remove User from Project"
-          message="Are your sure you want to remove this user?"
+          message={`Are you sure you want to remove this user from the "${name}" project?`}
           action="Remove User"
           onCancel={() => {
             setRemoveModalOpen(false)
@@ -87,6 +92,7 @@ const OrganizationUserProjectsMenu = ({ userId, projectId, revalidate }) => {
 OrganizationUserProjectsMenu.propTypes = {
   userId: PropTypes.number.isRequired,
   projectId: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
   revalidate: PropTypes.func.isRequired,
 }
 

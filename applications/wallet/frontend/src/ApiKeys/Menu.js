@@ -9,7 +9,7 @@ import Button, { VARIANTS } from '../Button'
 import ButtonActions from '../Button/Actions'
 import Modal from '../Modal'
 
-const ApiKeysMenu = ({ projectId, apiKeyId, revalidate }) => {
+const ApiKeysMenu = ({ projectId, apiKeyId, name, revalidate }) => {
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
 
@@ -38,7 +38,7 @@ const ApiKeysMenu = ({ projectId, apiKeyId, revalidate }) => {
       {isDeleteModalOpen && (
         <Modal
           title="Delete API Key"
-          message="Deleting this key cannot be undone."
+          message={`Are you sure you want to delete the "${name}" API key? This cannot be undone.`}
           action={isDeleting ? 'Deleting...' : 'Delete Permanently'}
           onCancel={() => {
             setDeleteModalOpen(false)
@@ -67,6 +67,7 @@ const ApiKeysMenu = ({ projectId, apiKeyId, revalidate }) => {
 ApiKeysMenu.propTypes = {
   projectId: PropTypes.string.isRequired,
   apiKeyId: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
   revalidate: PropTypes.func.isRequired,
 }
 

@@ -51,9 +51,7 @@ describe('<ModelDatasetHeader />', () => {
     })
 
     await act(async () => {
-      component.root
-        .findByProps({ children: 'Unlink Permanently' })
-        .props.onClick()
+      component.root.findByProps({ children: 'Unlink' }).props.onClick()
     })
 
     // Mock Success
@@ -65,9 +63,7 @@ describe('<ModelDatasetHeader />', () => {
     })
 
     await act(async () => {
-      component.root
-        .findByProps({ children: 'Unlink Permanently' })
-        .props.onClick()
+      component.root.findByProps({ children: 'Unlink' }).props.onClick()
     })
 
     expect(fetch.mock.calls.length).toEqual(2)

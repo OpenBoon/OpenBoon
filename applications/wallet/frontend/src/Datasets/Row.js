@@ -38,6 +38,7 @@ const DatasetsRow = ({
         <DatasetsMenu
           projectId={projectId}
           datasetId={datasetId}
+          name={name}
           revalidate={revalidate}
           setDatasetFields={setDatasetFields}
         />
