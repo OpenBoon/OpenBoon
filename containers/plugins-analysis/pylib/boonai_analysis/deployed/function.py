@@ -34,7 +34,7 @@ class BoonFunctionProcessor(CustomModelProcessor):
     def predict(self, asset):
         headers = {
             'Content-Type': 'application/json',
-            'Authentication': self.app.client.sign_request()
+            'Authorization': self.app.client.sign_request()
         }
         rsp = requests.post(self.endpoint, data=to_json(asset), headers=headers)
         rsp.raise_for_status()
