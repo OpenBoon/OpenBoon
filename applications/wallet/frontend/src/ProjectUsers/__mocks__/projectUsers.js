@@ -6,8 +6,8 @@ const projectUsers = {
     {
       id: 42,
       username: 'jane@zorroa.com',
-      firstName: 'Jane',
-      lastName: 'Doe',
+      first_name: 'Jane',
+      last_name: 'Doe',
       email: 'jane@zorroa.com',
       isActive: true,
       isStaff: false,

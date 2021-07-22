@@ -8,7 +8,7 @@ import Button, { VARIANTS } from '../Button'
 import ButtonActions from '../Button/Actions'
 import Modal from '../Modal'
 
-const OrganizationUsersMenu = ({ organizationId, userId, revalidate }) => {
+const OrganizationUsersMenu = ({ organizationId, user, revalidate }) => {
   const [isRemoveModalOpen, setRemoveModalOpen] = useState(false)
 
   return (
@@ -38,7 +38,7 @@ const OrganizationUsersMenu = ({ organizationId, userId, revalidate }) => {
       {isRemoveModalOpen && (
         <Modal
           title="Remove User From All Projects"
-          message="This user will be removed from all projects in the organization. Removing the user cannot be undone."
+          message={`Are you sure you want to remove "${user.firstName} ${user.lastName}" from all projects in this organization? This cannot be undone.`}
           action="Remove User"
           onCancel={() => {
             setRemoveModalOpen(false)
@@ -47,7 +47,7 @@ const OrganizationUsersMenu = ({ organizationId, userId, revalidate }) => {
             setRemoveModalOpen(false)
 
             await fetcher(
-              `/api/v1/organizations/${organizationId}/users/${userId}/`,
+              `/api/v1/organizations/${organizationId}/users/${user.id}/`,
               {
                 method: 'DELETE',
               },
@@ -63,7 +63,13 @@ const OrganizationUsersMenu = ({ organizationId, userId, revalidate }) => {
 
 OrganizationUsersMenu.propTypes = {
   organizationId: PropTypes.string.isRequired,
-  userId: PropTypes.number.isRequired,
+  user: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    email: PropTypes.string.isRequired,
+    firstName: PropTypes.string.isRequired,
+    lastName: PropTypes.string.isRequired,
+    projectCount: PropTypes.number.isRequired,
+  }).isRequired,
   revalidate: PropTypes.func.isRequired,
 }
 

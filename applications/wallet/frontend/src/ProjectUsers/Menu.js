@@ -9,7 +9,7 @@ import Button, { VARIANTS } from '../Button'
 import ButtonActions from '../Button/Actions'
 import Modal from '../Modal'
 
-const ProjectUsersMenu = ({ projectId, userId, revalidate }) => {
+const ProjectUsersMenu = ({ projectId, user, revalidate }) => {
   const [isRemoveModalOpen, setRemoveModalOpen] = useState(false)
 
   return (
@@ -21,7 +21,7 @@ const ProjectUsersMenu = ({ projectId, userId, revalidate }) => {
               <li>
                 <Link
                   href="/[projectId]/users/[userId]/edit"
-                  as={`/${projectId}/users/${userId}/edit`}
+                  as={`/${projectId}/users/${user.id}/edit`}
                   passHref
                 >
                   <Button
@@ -49,10 +49,11 @@ const ProjectUsersMenu = ({ projectId, userId, revalidate }) => {
           </div>
         )}
       </Menu>
+
       {isRemoveModalOpen && (
         <Modal
           title="Remove User from Project"
-          message="Are your sure you want to remove this user?"
+          message={`Are you sure you want to remove "${user.first_name} ${user.last_name}" from this project?`}
           action="Remove User"
           onCancel={() => {
             setRemoveModalOpen(false)
@@ -60,7 +61,7 @@ const ProjectUsersMenu = ({ projectId, userId, revalidate }) => {
           onConfirm={async () => {
             setRemoveModalOpen(false)
 
-            await fetcher(`/api/v1/projects/${projectId}/users/${userId}/`, {
+            await fetcher(`/api/v1/projects/${projectId}/users/${user.id}/`, {
               method: 'DELETE',
             })
 
@@ -74,7 +75,13 @@ const ProjectUsersMenu = ({ projectId, userId, revalidate }) => {
 
 ProjectUsersMenu.propTypes = {
   projectId: PropTypes.string.isRequired,
-  userId: PropTypes.number.isRequired,
+  user: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    email: PropTypes.string.isRequired,
+    first_name: PropTypes.string.isRequired,
+    last_name: PropTypes.string.isRequired,
+    roles: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+  }).isRequired,
   revalidate: PropTypes.func.isRequired,
 }
 

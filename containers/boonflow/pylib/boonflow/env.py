@@ -1,8 +1,12 @@
 import os
+import logging
+import jwt
 
 from flask import request
 
 from boonsdk import BoonClient, BoonApp, app_from_env
+
+logger = logging.getLogger("boonflow.env")
 
 
 def app_instance():
@@ -29,10 +33,16 @@ class FlaskBoonClient(BoonClient):
     """
 
     def __init__(self, client):
-        super(FlaskBoonClient, self).__init__(None, client.server)
+        super(FlaskBoonClient, self).__init__(None, None)
+
+    def get_server(self):
+        token = jwt.decode(request.headers.get("Authorization")[7:],
+                           options={"verify_signature": False})
+        return token['aud']
 
     def sign_request(self):
-        return request.headers.get("Authorization")
+        token = request.headers.get("Authorization")
+        return token
 
     def headers(self, content_type="application/json"):
         headers = super().headers()

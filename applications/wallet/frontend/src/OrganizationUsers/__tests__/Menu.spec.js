@@ -1,9 +1,10 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
+import organizationUsers from '../__mocks__/organizationUsers'
+
 import OrganizationUsersMenu from '../Menu'
 
 const ORGANIZATION_ID = '42869703-fb62-4988-a0d1-e59b15caff06'
-const USER_ID = 42
 
 describe('<OrganizationUsersMenu />', () => {
   it('should render properly', async () => {
@@ -14,7 +15,7 @@ describe('<OrganizationUsersMenu />', () => {
     const component = TestRenderer.create(
       <OrganizationUsersMenu
         organizationId={ORGANIZATION_ID}
-        userId={USER_ID}
+        user={organizationUsers.results[0]}
         revalidate={mockFn}
       />,
     )
@@ -62,7 +63,7 @@ describe('<OrganizationUsersMenu />', () => {
     expect(fetch.mock.calls.length).toEqual(1)
 
     expect(fetch.mock.calls[0][0]).toEqual(
-      `/api/v1/organizations/${ORGANIZATION_ID}/users/${USER_ID}/`,
+      `/api/v1/organizations/${ORGANIZATION_ID}/users/${organizationUsers.results[0].id}/`,
     )
 
     expect(fetch.mock.calls[0][1]).toEqual({

@@ -133,6 +133,7 @@ const ModelDetails = ({ projectId, modelId, modelTypes }) => {
           <ModelDeleteModal
             projectId={projectId}
             modelId={modelId}
+            name={name}
             isDeleteModalOpen={isDeleteModalOpen}
             setDeleteModalOpen={setDeleteModalOpen}
           />

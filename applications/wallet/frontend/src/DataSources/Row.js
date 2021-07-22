@@ -95,6 +95,7 @@ const DataSourcesRow = ({
         <DataSourcesMenu
           projectId={projectId}
           dataSourceId={dataSourceId}
+          name={name}
           revalidate={revalidate}
         />
       </td>

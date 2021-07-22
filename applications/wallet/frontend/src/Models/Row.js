@@ -37,7 +37,7 @@ const ModelsRow = ({
       <td>{moduleName}</td>
 
       <td>
-        <ModelsMenu projectId={projectId} modelId={modelId} />
+        <ModelsMenu projectId={projectId} modelId={modelId} name={name} />
       </td>
     </tr>
   )

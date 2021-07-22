@@ -7,7 +7,8 @@ import OrganizationOwnersMenu from './Menu'
 
 const OrganizationOwnersRow = ({
   organizationId,
-  owner: { id, email, firstName, lastName },
+  owner,
+  owner: { email, firstName, lastName },
   revalidate,
 }) => {
   const {
@@ -23,7 +24,7 @@ const OrganizationOwnersRow = ({
         {email !== currentUserEmail && (
           <OrganizationOwnersMenu
             organizationId={organizationId}
-            ownerId={id}
+            owner={owner}
             revalidate={revalidate}
           />
         )}

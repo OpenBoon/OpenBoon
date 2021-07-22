@@ -21,6 +21,7 @@ const OrganizationUserProjectsRow = ({
         <OrganizationUserProjectsMenu
           userId={userId}
           projectId={projectId}
+          name={name}
           revalidate={revalidate}
         />
       </td>

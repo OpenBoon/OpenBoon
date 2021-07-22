@@ -19,6 +19,7 @@ const ApiKeysRow = ({
         <ApiKeysMenu
           projectId={projectId}
           apiKeyId={apiKeyId}
+          name={name}
           revalidate={revalidate}
         />
       </td>
