@@ -430,10 +430,20 @@ class BoonClient:
         """
         Returns the full URL including the configured server part.
         """
-        url = urljoin(self.server, path)
+        url = urljoin(self.get_server(), path)
         if logger.getEffectiveLevel() == logging.DEBUG:
             logger.debug("url: '%s' path: '%s' body: '%s'" % (url, path, body))
         return url
+
+    def get_server(self):
+        """
+        Return the server address.  This is here to be overriden by subclasses.  The
+        public 'server' propertly has been left in for backwards compat for now.
+
+        Returns:
+            str: The server URL
+        """
+        return self.server
 
     def headers(self, content_type="application/json"):
         """
@@ -477,7 +487,7 @@ class BoonClient:
         if not self.apikey:
             raise RuntimeError('Unable to make request, no ApiKey has been specified.')
         claims = {
-            'aud': self.server,
+            'aud': self.get_server(),
             'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=60),
             'accessKey': self.apikey['accessKey'],
         }

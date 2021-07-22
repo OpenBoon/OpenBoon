@@ -15,6 +15,7 @@ RUN pip3 uninstall opencv-python
 RUN pip3 install -r /service/requirements.txt
 RUN rm /service/requirements.txt
 
+ENV BOONFLOW_IN_FLASK=true
 ENV PYTHONPATH="/service/pylib"
 USER boonai
 EXPOSE 8282
