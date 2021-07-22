@@ -15,6 +15,7 @@ describe('<ApiKeysMenu />', () => {
       <ApiKeysMenu
         projectId={PROJECT_ID}
         apiKeyId={API_KEY_ID}
+        name="My API Key"
         revalidate={mockFn}
       />,
     )

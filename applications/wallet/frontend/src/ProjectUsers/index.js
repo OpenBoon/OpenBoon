@@ -49,8 +49,8 @@ const ProjectUsers = () => {
         url={`/api/v1/projects/${projectId}/users/`}
         refreshKeys={[]}
         refreshButton={false}
-        columns={['Email', 'Roles', '#Actions#']}
-        expandColumn={2}
+        columns={['Email', 'First Name', 'Last Name', 'Roles', '#Actions#']}
+        expandColumn={0}
         renderEmpty="There are currently no users for this project."
         renderRow={({ result, revalidate }) => (
           <ProjectUsersRow

@@ -9,6 +9,7 @@ import Modal from '../Modal'
 const ModelDeleteModal = ({
   projectId,
   modelId,
+  name,
   isDeleteModalOpen,
   setDeleteModalOpen,
 }) => {
@@ -19,7 +20,7 @@ const ModelDeleteModal = ({
   return (
     <Modal
       title="Delete Model"
-      message="Deleting this model cannot be undone."
+      message={`Are you sure you want to delete the "${name}" model? This cannot be undone.`}
       action={isDeleting ? 'Deleting...' : 'Delete Permanently'}
       onCancel={() => {
         setDeleteModalOpen(false)
@@ -51,6 +52,7 @@ const ModelDeleteModal = ({
 ModelDeleteModal.propTypes = {
   projectId: PropTypes.string.isRequired,
   modelId: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
   isDeleteModalOpen: PropTypes.bool.isRequired,
   setDeleteModalOpen: PropTypes.func.isRequired,
 }

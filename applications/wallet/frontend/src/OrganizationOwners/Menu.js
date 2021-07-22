@@ -9,7 +9,7 @@ import Button, { VARIANTS } from '../Button'
 import ButtonActions from '../Button/Actions'
 import Modal from '../Modal'
 
-const OrganizationOwnersMenu = ({ organizationId, ownerId, revalidate }) => {
+const OrganizationOwnersMenu = ({ organizationId, owner, revalidate }) => {
   const [isRemoveModalOpen, setRemoveModalOpen] = useState(false)
   const [isRemoving, setIsRemoving] = useState(false)
 
@@ -40,7 +40,7 @@ const OrganizationOwnersMenu = ({ organizationId, ownerId, revalidate }) => {
       {isRemoveModalOpen && (
         <Modal
           title="Remove Owner from Organization"
-          message="This owner will be removed from the organization admin, but will retain access to any projects previously added to."
+          message={`Are you sure you want to remove "${owner.firstName} ${owner.lastName}" from this organization? They will retain access to any projects they were previously added to.`}
           action={isRemoving ? 'Removing...' : 'Remove Owner'}
           onCancel={() => {
             setRemoveModalOpen(false)
@@ -49,7 +49,7 @@ const OrganizationOwnersMenu = ({ organizationId, ownerId, revalidate }) => {
             setIsRemoving(true)
 
             await fetcher(
-              `/api/v1/organizations/${organizationId}/owners/${ownerId}/`,
+              `/api/v1/organizations/${organizationId}/owners/${owner.id}/`,
               {
                 method: 'DELETE',
               },
@@ -76,7 +76,12 @@ const OrganizationOwnersMenu = ({ organizationId, ownerId, revalidate }) => {
 
 OrganizationOwnersMenu.propTypes = {
   organizationId: PropTypes.string.isRequired,
-  ownerId: PropTypes.number.isRequired,
+  owner: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    email: PropTypes.string.isRequired,
+    firstName: PropTypes.string.isRequired,
+    lastName: PropTypes.string.isRequired,
+  }).isRequired,
   revalidate: PropTypes.func.isRequired,
 }
 

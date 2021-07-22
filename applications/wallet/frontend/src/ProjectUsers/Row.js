@@ -7,27 +7,25 @@ import Pills from '../Pills'
 
 import ProjectUsersMenu from './Menu'
 
-const ProjectUsersRow = ({
-  projectId,
-  user: { id: userId, email, roles },
-  revalidate,
-}) => {
+const ProjectUsersRow = ({ projectId, user, revalidate }) => {
   const {
     user: { email: currentUserEmail },
   } = useContext(UserContext)
 
   return (
     <tr>
-      <td>{email}</td>
+      <td>{user.email}</td>
+      <td>{user.first_name}</td>
+      <td>{user.last_name}</td>
       <td>
-        <Pills>{roles}</Pills>
+        <Pills>{user.roles}</Pills>
       </td>
       <td>
-        {email !== currentUserEmail &&
-          !roles.includes('Organization_Owner') && (
+        {user.email !== currentUserEmail &&
+          !user.roles.includes('Organization_Owner') && (
             <ProjectUsersMenu
               projectId={projectId}
-              userId={userId}
+              user={user}
               revalidate={revalidate}
             />
           )}
@@ -41,6 +39,8 @@ ProjectUsersRow.propTypes = {
   user: PropTypes.shape({
     id: PropTypes.number.isRequired,
     email: PropTypes.string.isRequired,
+    first_name: PropTypes.string.isRequired,
+    last_name: PropTypes.string.isRequired,
     roles: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
   }).isRequired,
   revalidate: PropTypes.func.isRequired,

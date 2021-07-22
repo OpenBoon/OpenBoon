@@ -64,7 +64,7 @@ const WebhooksMenu = ({ projectId, webhook, revalidate }) => {
       {isDeleteModalOpen && (
         <Modal
           title="Delete Webhook"
-          message="Deleting this webhook cannot be undone."
+          message={`Are you sure you want to delete the "${webhook.url}" webhook? This cannot be undone.`}
           action={isDeleting ? 'Deleting...' : 'Delete Permanently'}
           onCancel={() => {
             setDeleteModalOpen(false)

@@ -53,7 +53,7 @@ const DatasetConceptsMenu = ({ projectId, datasetId, label, revalidate }) => {
       {isDeleteModalOpen && (
         <Modal
           title="Delete Concept"
-          message="Deleting this concept cannot be undone."
+          message={`Are you sure you want to delete the "${label}" concept? This cannot be undone.`}
           action={isDeleting ? 'Deleting...' : 'Delete Permanently'}
           onCancel={() => {
             setDeleteModalOpen(false)

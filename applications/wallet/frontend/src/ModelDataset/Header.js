@@ -56,8 +56,8 @@ const ModelDatasetHeader = ({ projectId, modelId, model, setErrors }) => {
       {isUnlinkModalOpen && (
         <Modal
           title="Unlink Dataset"
-          message="Unlinking this dataset cannot be undone."
-          action={isUnlinking ? 'Unlinking...' : 'Unlink Permanently'}
+          message={`Are you sure you want to unlink the "${name}" dataset?`}
+          action={isUnlinking ? 'Unlinking...' : 'Unlink'}
           onCancel={() => {
             setUnlinkModalOpen(false)
           }}
