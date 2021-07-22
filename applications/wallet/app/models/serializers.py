@@ -65,6 +65,7 @@ class ModelTypeSerializer(serializers.Serializer):
     deployOnTrainingSet = serializers.BooleanField()
     minConcepts = serializers.IntegerField()
     minExamples = serializers.IntegerField()
+    uploadable = serializers.BooleanField(required=False, default=False)
     datasetType = serializers.CharField()
 
 

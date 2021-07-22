@@ -1,14 +1,16 @@
 import logging
 import os
 import tempfile
-import pytest
-
 from unittest import TestCase
 from unittest.mock import patch
-from boonsdk import StoredFile, BoonClient, AnalysisModule, Job, Model, app_from_env
-from boonsdk.app import ModelApp
+
+import flask
+import pytest
+
 from boonflow import storage
 from boonflow.testing import test_data, TestAsset
+from boonsdk import StoredFile, BoonClient, AnalysisModule, Job, Model, app_from_env
+from boonsdk.app import ModelApp
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -59,7 +61,7 @@ class FileCacheTests(TestCase):
         os.environ['BOONAI_PROJECT_ID'] = 'abc123'
         try:
             path = self.lfc.get_path('spock', '.kirk')
-            filename = 'c85be874d0f9c380a790f583c2bec6633109386e.kirk'
+            filename = '1a569625e9949f82ab1be5257ab2cab1f7524c6d.kirk'
             assert path.endswith(filename)
         finally:
             del os.environ['BOONAI_PROJECT_ID']
@@ -69,6 +71,22 @@ class FileCacheTests(TestCase):
         assert os.path.exists(path)
         self.lfc.clear()
         assert not os.path.exists(path)
+
+    @patch.object(BoonClient, 'sign_request')
+    def test_clear_request_cache(self, sign_patch):
+        os.environ['BOONFLOW_IN_FLASK'] = 'yes'
+
+        try:
+            app = flask.Flask("test")
+            with app.app_context():
+                flask.g.request_id = "hamburger"
+                lfc = storage.FileCache(app_from_env())
+                path = lfc.get_path('https://i.imgur.com/WkomVeG.jpg')
+                assert "/hamburger/" in path
+                lfc.clear_request_cache()
+                assert not os.path.exists(os.path.dirname(path))
+        finally:
+            del os.environ['BOONFLOW_IN_FLASK']
 
     def test_close(self):
         self.lfc.localize_uri('https://i.imgur.com/WkomVeG.jpg')

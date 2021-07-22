@@ -7,25 +7,28 @@ import pytest
 
 import mlbbq.main as server
 from boonflow.testing import test_path
+from boonflow.base import ImageInputStream
 from boonsdk import BoonClient
 from mlbbq.modules import setup_endpoints
 
+from boonai_analysis.boonai import ZviFaceDetectionProcessor
+
 logging.basicConfig(level=logging.INFO)
+setup_endpoints(server.app)
 
 
 @pytest.fixture
 def client():
-    setup_endpoints(server.app)
     with server.app.test_client() as client:
         yield client
 
 
 @mock.patch.object(BoonClient, 'post')
 @mock.patch("mlbbq.modules.check_write_access")
-@mock.patch('boonai_analysis.boonai.faces.get_proxy_level_path')
+@mock.patch.object(ZviFaceDetectionProcessor, 'load_proxy_image')
 def test_apply_to_asset(proxy_patch, auth_patch, post_patch, client):
     image_path = test_path('images/face-recognition/face1.jpg')
-    proxy_patch.return_value = image_path
+    proxy_patch.return_value = ImageInputStream.from_path(image_path)
 
     script = {
         "execute": [
@@ -126,4 +129,4 @@ def test_apply_to_file_bad_data(auth_patch, post_patch, client):
     with open(image_path, 'rb') as fp:
         rsp = client.post("/ml/v1/modules/apply-to-file?modules=boonai-face-detection",
                           data=fp, content_type='application/octet-stream')
-    assert rsp.status_code == 400
+    assert rsp.status_code == 412
