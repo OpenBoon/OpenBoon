@@ -12,7 +12,7 @@ from boonflow.env import app_instance
 from boonsdk import Asset
 from .auth import check_write_access
 
-logger = logging.getLogger('mlbbq-modules')
+logger = logging.getLogger('mlbbq.modules')
 
 
 class BBQExecutor:
@@ -96,10 +96,13 @@ def setup_endpoints(app):
                                   mimetype='application/json', status=exec.code())
 
         except Exception as e:
-            logger.exception('Failed to execute pipeline: {}'.format(e))
+            logger.error('Failed to execute pipeline: {}'.format(e))
             flask.abort(500, description='Unexpected server side exception')
         finally:
-            file_storage.cache.clear_request_cache()
+            try:
+                file_storage.cache.clear_request_cache()
+            except Exception as ex:
+                logger.warning('Failed to cleanup request cache: {}'.format(ex), ex)
 
     @app.route('/ml/v1/modules/apply-to-file', methods=['POST'])
     def apply_to_file():
@@ -132,7 +135,10 @@ def setup_endpoints(app):
                                   mimetype='application/json', status=exec.code())
 
         except Exception as e:
-            logger.exception('Failed to execute pipeline: {}'.format(e))
+            logger.error('Failed to execute pipeline: {}'.format(e))
             flask.abort(500, description='Unexpected server side exception')
         finally:
-            file_storage.cache.clear_request_cache()
+            try:
+                file_storage.cache.clear_request_cache()
+            except Exception as ex:
+                logger.warning('Failed to cleanup request cache: {}'.format(ex), ex)
