@@ -8,7 +8,7 @@ import DatasetsMenu from './Menu'
 
 const DatasetsRow = ({
   projectId,
-  dataset: { id: datasetId, name, type, modelCount },
+  dataset: { id: datasetId, name, type },
   revalidate,
   setDatasetFields,
 }) => {
@@ -31,8 +31,6 @@ const DatasetsRow = ({
       </td>
 
       <td>{decamelize({ word: type })}</td>
-
-      <td>{modelCount}</td>
 
       <td>
         <DatasetsMenu

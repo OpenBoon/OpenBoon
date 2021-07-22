@@ -322,7 +322,7 @@ Array [
 }
 
 .emotion-6 td {
-  max-width: calc(100vw / 3);
+  max-width: calc(100vw / 2);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -368,7 +368,7 @@ Array [
   padding: 12px 16px;
 }
 
-.emotion-13 {
+.emotion-11 {
   text-align: left;
   white-space: pre-line;
   vertical-align: bottom;
@@ -382,15 +382,15 @@ Array [
   width: 1px;
 }
 
-.emotion-13:nth-of-type(0) {
+.emotion-11:nth-of-type(0) {
   width: 100%;
 }
 
-.emotion-13:not(:last-child) {
+.emotion-11:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-14 {
+.emotion-12 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -398,12 +398,12 @@ Array [
   padding: 12px 16px;
 }
 
-.emotion-15 {
+.emotion-13 {
   height: 100%;
   pointer-events: none;
 }
 
-.emotion-16 {
+.emotion-14 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -425,7 +425,7 @@ Array [
   line-height: 19px;
 }
 
-.emotion-17 {
+.emotion-15 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -488,19 +488,10 @@ Array [
                   </div>
                 </th>
                 <th
-                  className="emotion-7"
+                  className="emotion-11"
                 >
                   <div
-                    className="emotion-8"
-                  >
-                    Linked Models
-                  </div>
-                </th>
-                <th
-                  className="emotion-13"
-                >
-                  <div
-                    className="emotion-14"
+                    className="emotion-12"
                   >
                     <svg
                       data-file-name="kebab.svg"
@@ -512,16 +503,16 @@ Array [
             </thead>
             <tbody>
               <tr
-                className="emotion-15"
+                className="emotion-13"
               >
                 <td
-                  colSpan={4}
+                  colSpan={3}
                 >
                   <div
-                    className="emotion-16"
+                    className="emotion-14"
                   >
                     <div
-                      className="emotion-17"
+                      className="emotion-15"
                     >
                       <svg
                         data-file-name="noJobs.svg"
@@ -867,7 +858,7 @@ Array [
 }
 
 .emotion-6 td {
-  max-width: calc(100vw / 3);
+  max-width: calc(100vw / 2);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -913,7 +904,7 @@ Array [
   padding: 12px 16px;
 }
 
-.emotion-13 {
+.emotion-11 {
   text-align: left;
   white-space: pre-line;
   vertical-align: bottom;
@@ -927,15 +918,15 @@ Array [
   width: 1px;
 }
 
-.emotion-13:nth-of-type(0) {
+.emotion-11:nth-of-type(0) {
   width: 100%;
 }
 
-.emotion-13:not(:last-child) {
+.emotion-11:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-14 {
+.emotion-12 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -943,21 +934,21 @@ Array [
   padding: 12px 16px;
 }
 
-.emotion-15 {
+.emotion-13 {
   cursor: pointer;
 }
 
-.emotion-16:hover {
+.emotion-14:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.emotion-17 {
+.emotion-15 {
   position: relative;
   height: 100%;
 }
 
-.emotion-18 {
+.emotion-16 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -989,8 +980,8 @@ Array [
   margin: -6px;
 }
 
-.emotion-18:hover,
-.emotion-18.focus-visible:focus {
+.emotion-16:hover,
+.emotion-16.focus-visible:focus {
   color: #ffffff!important;
 }
 
@@ -1041,19 +1032,10 @@ Array [
                   </div>
                 </th>
                 <th
-                  className="emotion-7"
+                  className="emotion-11"
                 >
                   <div
-                    className="emotion-8"
-                  >
-                    Linked Models
-                  </div>
-                </th>
-                <th
-                  className="emotion-13"
-                >
-                  <div
-                    className="emotion-14"
+                    className="emotion-12"
                   >
                     <svg
                       data-file-name="kebab.svg"
@@ -1065,7 +1047,7 @@ Array [
             </thead>
             <tbody>
               <tr
-                className="emotion-15"
+                className="emotion-13"
                 onClick={[Function]}
               >
                 <td>
@@ -1075,7 +1057,7 @@ Array [
                     passHref={true}
                   >
                     <a
-                      className="emotion-16"
+                      className="emotion-14"
                     >
                       faces
                     </a>
@@ -1085,15 +1067,12 @@ Array [
                   Face Recognition
                 </td>
                 <td>
-                  0
-                </td>
-                <td>
                   <div
-                    className="emotion-17"
+                    className="emotion-15"
                   >
                     <button
                       aria-label="Toggle Actions Menu"
-                      className="actions emotion-18"
+                      className="actions emotion-16"
                       onBlur={[Function]}
                       onClick={[Function]}
                       type="button"
@@ -1107,7 +1086,7 @@ Array [
                 </td>
               </tr>
               <tr
-                className="emotion-15"
+                className="emotion-13"
                 onClick={[Function]}
               >
                 <td>
@@ -1117,7 +1096,7 @@ Array [
                     passHref={true}
                   >
                     <a
-                      className="emotion-16"
+                      className="emotion-14"
                     >
                       cats
                     </a>
@@ -1127,15 +1106,12 @@ Array [
                   Classification
                 </td>
                 <td>
-                  1
-                </td>
-                <td>
                   <div
-                    className="emotion-17"
+                    className="emotion-15"
                   >
                     <button
                       aria-label="Toggle Actions Menu"
-                      className="actions emotion-18"
+                      className="actions emotion-16"
                       onBlur={[Function]}
                       onClick={[Function]}
                       type="button"
@@ -1149,7 +1125,7 @@ Array [
                 </td>
               </tr>
               <tr
-                className="emotion-15"
+                className="emotion-13"
                 onClick={[Function]}
               >
                 <td>
@@ -1159,7 +1135,7 @@ Array [
                     passHref={true}
                   >
                     <a
-                      className="emotion-16"
+                      className="emotion-14"
                     >
                       pets
                     </a>
@@ -1169,15 +1145,12 @@ Array [
                   Object Detection
                 </td>
                 <td>
-                  2
-                </td>
-                <td>
                   <div
-                    className="emotion-17"
+                    className="emotion-15"
                   >
                     <button
                       aria-label="Toggle Actions Menu"
-                      className="actions emotion-18"
+                      className="actions emotion-16"
                       onBlur={[Function]}
                       onClick={[Function]}
                       type="button"
@@ -1191,7 +1164,7 @@ Array [
                 </td>
               </tr>
               <tr
-                className="emotion-15"
+                className="emotion-13"
                 onClick={[Function]}
               >
                 <td>
@@ -1201,7 +1174,7 @@ Array [
                     passHref={true}
                   >
                     <a
-                      className="emotion-16"
+                      className="emotion-14"
                     >
                       mystery
                     </a>
@@ -1211,15 +1184,12 @@ Array [
                   Unknown Type
                 </td>
                 <td>
-                  0
-                </td>
-                <td>
                   <div
-                    className="emotion-17"
+                    className="emotion-15"
                   >
                     <button
                       aria-label="Toggle Actions Menu"
-                      className="actions emotion-18"
+                      className="actions emotion-16"
                       onBlur={[Function]}
                       onClick={[Function]}
                       type="button"
