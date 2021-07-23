@@ -11,6 +11,7 @@ import SuspenseBoundary, { ROLES } from '../SuspenseBoundary'
 import Tabs from '../Tabs'
 
 import ModelDataset from '../ModelDataset'
+// import ModelUpload from '../ModelUpload'
 
 import ModelContent from './Content'
 
@@ -55,6 +56,8 @@ const Model = () => {
 
       <SuspenseBoundary role={ROLES.ML_Tools}>
         <ModelContent />
+
+        {/* <ModelUpload /> */}
 
         <Tabs
           tabs={[{ title: 'Dataset', href: '/[projectId]/models/[modelId]' }]}

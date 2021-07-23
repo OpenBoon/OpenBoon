@@ -23,10 +23,11 @@ class TensorflowTransferLearningClassifierTests(PluginUnitTestCase):
         except FileNotFoundError:
             print("Didn't clear out model cache, this is ok.")
 
+    @patch.object(ModelApp, "get_training_args")
     @patch.object(ModelApp, "get_model")
     @patch.object(file_storage.projects, "localize_file")
     @patch("boonai_analysis.custom.labels.get_proxy_level_path")
-    def test_predict(self, proxy_patch, file_patch, model_patch):
+    def test_predict(self, proxy_patch, file_patch, model_patch, targs_patch):
         name = "custom-flowers-label-detection-tf2-xfer-mobilenet2"
         model_file = test_path("training/{}.zip".format(name))
         file_patch.return_value = model_file
@@ -39,6 +40,9 @@ class TensorflowTransferLearningClassifierTests(PluginUnitTestCase):
                 "moduleName": name
             }
         )
+        targs_patch.return_value = {
+            "base_model": "resnet"
+        }
 
         args = {
             "model_id": self.model_id,
@@ -76,11 +80,12 @@ class VideoTensorflowTransferLearningClassifierTests(PluginUnitTestCase):
         asset.set_attr('media.type', 'video')
         self.frame = Frame(asset)
 
+    @patch.object(ModelApp, "get_training_args")
     @patch.object(ModelApp, "get_model")
     @patch.object(file_storage.projects, "localize_file")
     @patch("boonai_analysis.custom.labels.video.save_timeline", return_value={})
     @patch('boonai_analysis.custom.labels.proxy.get_video_proxy')
-    def test_predict(self, proxy_path_patch, _, file_patch, model_patch):
+    def test_predict(self, proxy_path_patch, _, file_patch, model_patch, targs_patch):
         proxy_path_patch.return_value = self.video_path
         model_file = test_path("training/{}.zip".format(self.name))
         file_patch.return_value = model_file
@@ -93,6 +98,9 @@ class VideoTensorflowTransferLearningClassifierTests(PluginUnitTestCase):
                 "moduleName": self.name
             }
         )
+        targs_patch.return_value = {
+            "base_model": "resnet"
+        }
 
         args = {
             "model_id": self.model_id,

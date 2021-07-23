@@ -65,7 +65,7 @@ const ModelMatrixMinimap = ({
           : constants.borders.large.steel,
         padding: isInteractive ? 0 : spacing.hairline,
         borderRadius: constants.borderRadius.small,
-        marginBottom: spacing.base,
+        marginBottom: isInteractive ? spacing.base : 0,
         display: 'grid',
         gridTemplate: `repeat(${matrix.labels.length}, 1fr) / repeat(${matrix.labels.length}, 1fr)`,
       }}

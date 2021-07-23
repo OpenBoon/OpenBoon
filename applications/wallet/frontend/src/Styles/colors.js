@@ -41,6 +41,7 @@ const colors = {
   key: {
     one: '#3A5DFF', // dark
     two: '#6088FE', // light
+    three: '#92a5ff',
   },
 
   graph: {

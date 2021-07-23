@@ -1,4 +1,4 @@
-from tensorflow.keras.applications.resnet_v2 import preprocess_input
+import importlib
 
 from boonai_analysis.utils.prechecks import Prechecks
 from boonflow import Prediction
@@ -16,7 +16,9 @@ class TensorflowTransferLearningClassifier(CustomModelProcessor):
         super(TensorflowTransferLearningClassifier, self).__init__()
 
         self.trained_model = None
+        self.train_args = {}
         self.labels = None
+        self.preprocess_func = None
 
     def init(self):
         """Init constructor """
@@ -26,6 +28,17 @@ class TensorflowTransferLearningClassifier(CustomModelProcessor):
         # unzip and extract needed files for trained model and labels
         model_path = self.get_model_path()
         self.trained_model, self.labels = load_keras_model(model_path)
+        self.train_args = self.app.models.get_training_args(self.app_model)
+        self.import_preprocess_func()
+
+    def import_preprocess_func(self):
+        if 'efficientnet' in self.train_args['base_model']:
+            func = getattr(importlib.import_module(
+                'tensorflow.keras.applications.efficientnet'), 'preprocess_input')
+        else:
+            func = getattr(importlib.import_module(
+                'tensorflow.keras.applications.resnet_v2'), 'preprocess_input')
+        self.preprocess_func = func
 
     def process(self, frame):
         asset = frame.asset
@@ -45,10 +58,10 @@ class TensorflowTransferLearningClassifier(CustomModelProcessor):
         """
         # This is set for tests only
         max_preds = self.context.settings.get('maxPredictions')
-        proxy_path = get_proxy_level_path(asset, 0)
+        proxy_path = get_proxy_level_path(asset, 1)
         predictions = self.predict(proxy_path)
 
-        analysis = LabelDetectionAnalysis(min_score=0.01, max_predictions=max_preds)
+        analysis = LabelDetectionAnalysis(min_score=0.15, max_predictions=max_preds)
         for label in predictions:
             analysis.add_label_and_score(label[0], label[1])
 
@@ -66,7 +79,7 @@ class TensorflowTransferLearningClassifier(CustomModelProcessor):
         """
         img = load_keras_image(path)
         # get predictions
-        proba = self.trained_model.predict(preprocess_input(img))[0]
+        proba = self.trained_model.predict(self.preprocess_func(img))[0]
         # create list of tuples for labels and prob scores
         result = [*zip(self.labels, proba)]
         return result
@@ -111,7 +124,7 @@ class TensorflowTransferLearningClassifier(CustomModelProcessor):
             (tuple): asset detection analysis, clip_tracker
         """
         analysis = LabelDetectionAnalysis(collapse_labels=True,
-                                          min_score=0.01,
+                                          min_score=0.15,
                                           save_pred_attrs=False)
 
         for time_ms, path in extractor:

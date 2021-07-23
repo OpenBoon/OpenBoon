@@ -27,6 +27,10 @@ resource "google_storage_bucket" "data" {
     origin = ["*"]
     method = ["GET"]
   }
+  cors {
+    origin = ["http://localhost:3000", "https://dev.boonai.app", "https://qa.boonai.app", "https://boonai.app"]
+    method = ["PUT"]
+  }
   versioning {
     enabled = true
   }

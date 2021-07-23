@@ -51,7 +51,7 @@ const ModelMatrixLink = ({ projectId, model }) => {
   if (matrix.isMatrixApplicable && matrix.matrix.length === 0) {
     return (
       <div css={{ display: 'flex' }}>
-        <div css={{ width: MINIMAP_WIDTH, paddingRight: spacing.normal }}>
+        <div css={{ width: MINIMAP_WIDTH, marginRight: spacing.normal }}>
           <ModelMatrixEmptyMinimap
             isMatrixApplicable={matrix.isMatrixApplicable}
           />
@@ -148,7 +148,7 @@ const ModelMatrixLink = ({ projectId, model }) => {
 
   return (
     <div css={{ display: 'flex' }}>
-      <div css={{ width: MINIMAP_WIDTH, paddingRight: spacing.normal }}>
+      <div css={{ width: MINIMAP_WIDTH, marginRight: spacing.normal }}>
         <ModelMatrixMinimap
           matrix={matrix}
           settings={{

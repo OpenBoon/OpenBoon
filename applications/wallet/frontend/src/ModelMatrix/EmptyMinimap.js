@@ -14,7 +14,6 @@ const ModelMatrixEmptyMinimap = ({ isMatrixApplicable }) => {
           : constants.borders.large.smoke,
         padding: spacing.hairline,
         borderRadius: constants.borderRadius.small,
-        marginBottom: spacing.base,
         display: 'grid',
         gridTemplate: `repeat(${EMPTY_MATRIX.length}, 1fr) / repeat(${EMPTY_MATRIX.length}, 1fr)`,
       }}

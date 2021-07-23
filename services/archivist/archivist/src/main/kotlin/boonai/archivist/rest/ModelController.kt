@@ -125,7 +125,7 @@ class ModelController(
     }
 
     @ApiOperation("Set model training arguments")
-    @PreAuthorize("hasAuthority('ModelTraining')")
+    @PreAuthorize("hasAnyAuthority('ModelTraining','SystemProjectDecrypt','SystemManage')")
     @GetMapping("/api/v3/models/{id}/_training_args")
     fun resolveTrainingArguments(@PathVariable id: UUID): Any {
         val model = modelService.getModel(id)
