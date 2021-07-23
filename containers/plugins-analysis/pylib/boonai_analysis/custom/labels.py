@@ -61,7 +61,7 @@ class TensorflowTransferLearningClassifier(CustomModelProcessor):
         proxy_path = get_proxy_level_path(asset, 1)
         predictions = self.predict(proxy_path)
 
-        analysis = LabelDetectionAnalysis(min_score=0.01, max_predictions=max_preds)
+        analysis = LabelDetectionAnalysis(min_score=0.15, max_predictions=max_preds)
         for label in predictions:
             analysis.add_label_and_score(label[0], label[1])
 
@@ -124,7 +124,7 @@ class TensorflowTransferLearningClassifier(CustomModelProcessor):
             (tuple): asset detection analysis, clip_tracker
         """
         analysis = LabelDetectionAnalysis(collapse_labels=True,
-                                          min_score=0.01,
+                                          min_score=0.15,
                                           save_pred_attrs=False)
 
         for time_ms, path in extractor:
