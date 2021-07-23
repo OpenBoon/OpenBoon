@@ -86,7 +86,8 @@ class TensorflowTransferLearningTrainerTests(PluginUnitTestCase):
     @patch('boonai_train.tf2.train.download_labeled_images', download_images)
     @patch.object(file_storage.models, 'save_model')
     @patch.object(file_storage.projects, 'store_file')
-    def test_process(self, store_plot_patch, upload_patch, labels_patch, model_patch, pub_patch):
+    def test_train_efficientnet(self, store_plot_patch,
+                                upload_patch, labels_patch, model_patch, pub_patch):
         self.prep_assets()
         name = 'boonai-flowers-label-detection'
         store_plot_patch.side_effect = [{}, {}]
@@ -109,9 +110,51 @@ class TensorflowTransferLearningTrainerTests(PluginUnitTestCase):
 
         args = {
             'model_id': self.model_id,
-            'base_model': 'efficientnet-b0',
-            'epochs': 10,
-            'fine_tune_epochs': 10,
+            'base_model': 'efficientnet-b1',
+            'epochs': 5,
+            'fine_tune_epochs': 5,
+            'validation_split': 0.3,
+            'tag': 'latest'
+        }
+
+        processor = TensorflowTransferLearningTrainer()
+        processor.min_examples = 6
+        processor = self.init_processor(processor, args)
+        processor.process(Frame(TestAsset()))
+
+    @patch.object(file_storage.models, 'publish_model')
+    @patch.object(ModelApp, 'get_model')
+    @patch.object(DatasetApp, 'get_label_counts')
+    @patch('boonai_train.tf2.train.download_labeled_images', download_images)
+    @patch.object(file_storage.models, 'save_model')
+    @patch.object(file_storage.projects, 'store_file')
+    def test_train_resnet(self, store_plot_patch,
+                          upload_patch, labels_patch, model_patch, pub_patch):
+        self.prep_assets()
+        name = 'boonai-flowers-label-detection'
+        store_plot_patch.side_effect = [{}, {}]
+        pub_patch.return_value = AnalysisModule({
+            'id': "12345",
+            'name': name
+        })
+        model_patch.return_value = Model({
+            'id': self.model_id,
+            'type': "TF_CLASSIFIER",
+            'fileId': 'models/{}/foo/bar'.format(self.model_id),
+            'moduleName': name,
+            'name': name
+        })
+        labels_patch.return_value = {
+            'roses': 6,
+            'daisy': 6
+        }
+        upload_patch.return_value = StoredFile({'id': '12345'})
+
+        args = {
+            'model_id': self.model_id,
+            'base_model': 'resnet50_v2',
+            'epochs': 5,
+            'fine_tune_epochs': 5,
             'validation_split': 0.3,
             'tag': 'latest'
         }

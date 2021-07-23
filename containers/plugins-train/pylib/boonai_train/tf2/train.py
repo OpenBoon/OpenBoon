@@ -9,6 +9,7 @@ from tensorflow.keras.applications import efficientnet as efficientnet
 from tensorflow.keras.applications import resnet_v2 as resnet_v2
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras.layers.experimental import preprocessing
 
 from boonflow import ModelTrainer, Argument, file_storage
 from boonflow.training import download_labeled_images
@@ -27,15 +28,15 @@ class TensorflowTransferLearningTrainer(ModelTrainer):
         super(TensorflowTransferLearningTrainer, self).__init__()
 
         # These can be set optionally.
-        self.add_arg(Argument("base_model", "str", required=True, default="efficientnet-b1",
+        self.add_arg(Argument("base_model", "str", required=True, default="efficientnet-b2",
                               toolTip="The base Keras model."))
-        self.add_arg(Argument("epochs", "int", required=True, default=100,
+        self.add_arg(Argument("epochs", "int", required=True, default=20,
                               toolTip="The number of training epochs"))
         self.add_arg(Argument("validation_split", "int", required=True, default=0.2,
                               toolTip="The number of training images vs test images"))
-        self.add_arg(Argument("fine_tune_at_layer", "int", required=True, default=100,
+        self.add_arg(Argument("fine_tune_at_layer", "int", required=True, default=20,
                               toolTip="The layer to start find-tuning at."))
-        self.add_arg(Argument("fine_tune_epochs", "int", required=True, default=100,
+        self.add_arg(Argument("fine_tune_epochs", "int", required=True, default=20,
                               toolTip="The number of fine-tuning epochs."))
 
         self.model = None
@@ -153,12 +154,7 @@ class TensorflowTransferLearningTrainer(ModelTrainer):
         Build and train Tensorflow model using the base model specified in the args.
 
         """
-
-        # Make a new model from the base ResNet50 model.
-        base_model = self.get_base_model()
-        base_model.trainable = False
-
-        self.model = self.build_model(base_model)
+        self.model = self.build_model()
         self.model.summary()
 
         self.logger.info('Compiling...')
@@ -189,11 +185,7 @@ class TensorflowTransferLearningTrainer(ModelTrainer):
 
         # Now that we've trained our new layers, we're going to actually lightly retrain
         # all layers after the 100th layer in ResNet50.
-        base_model.trainable = True
-
-        # Freezes all the layers before the `fine_tune_at_layer` layer
-        for layer in base_model.layers[:fine_tune_at_layer]:
-            layer.trainable = False
+        self.unfreeze_model(fine_tune_at_layer)
 
         self.model.compile(loss='categorical_crossentropy',
                            optimizer=Adam(1e-4),
@@ -221,12 +213,6 @@ class TensorflowTransferLearningTrainer(ModelTrainer):
 
         train_gen = ImageDataGenerator(
             rescale=1. / 255,
-            rotation_range=40,
-            width_shift_range=0.2,
-            height_shift_range=0.2,
-            shear_range=0.2,
-            zoom_range=0.2,
-            horizontal_flip=True,
             fill_mode='nearest',
             validation_split=val_split
         )
@@ -254,7 +240,7 @@ class TensorflowTransferLearningTrainer(ModelTrainer):
 
         return train_ds, val_ds
 
-    def get_base_model(self):
+    def get_base_model(self, input_tf):
         """
         Return the base ResNet50 model.
 
@@ -266,63 +252,77 @@ class TensorflowTransferLearningTrainer(ModelTrainer):
 
         """
         base = self.arg_value('base_model')
-        shape = self.img_size + (3,)
 
         if base == 'resnet50_v2':
             return resnet_v2.ResNet50V2(
-                weights='imagenet', include_top=False, input_shape=shape)
+                weights='imagenet', include_top=False, input_tensor=input_tf)
         elif base == 'resnet101_v2':
             return resnet_v2.ResNet101V2(
-                weights='imagenet', include_top=False, input_shape=shape)
+                weights='imagenet', include_top=False, input_tensor=input_tf)
         elif base == 'resnet152_v2':
             return resnet_v2.ResNet152V2(
-                weights='imagenet', include_top=False, input_shape=shape)
+                weights='imagenet', include_top=False, input_tensor=input_tf)
         elif base == 'efficientnet-b0':
             return efficientnet.EfficientNetB0(
-                weights='imagenet', include_top=False, input_shape=shape)
+                weights='imagenet', include_top=False, input_tensor=input_tf)
         elif base == 'efficientnet-b1':
             return efficientnet.EfficientNetB1(
-                weights='imagenet', include_top=False, input_shape=shape)
+                weights='imagenet', include_top=False, input_tensor=input_tf)
         elif base == 'efficientnet-b2':
             return efficientnet.EfficientNetB2(
-                weights='imagenet', include_top=False, input_shape=shape)
+                weights='imagenet', include_top=False, input_tensor=input_tf)
         elif base == 'efficientnet-b3':
             return efficientnet.EfficientNetB3(
-                weights='imagenet', include_top=False, input_shape=shape)
+                weights='imagenet', include_top=False, input_tensor=input_tf)
         elif base == 'efficientnet-b4':
             return efficientnet.EfficientNetB4(
-                weights='imagenet', include_top=False, input_shape=shape)
+                weights='imagenet', include_top=False, input_tensor=input_tf)
         elif base == 'efficientnet-b5':
             return efficientnet.EfficientNetB5(
-                weights='imagenet', include_top=False, input_shape=shape)
+                weights='imagenet', include_top=False, input_tensor=input_tf)
         else:
             raise RuntimeError(f'{base} is not a valid base model type')
 
-    def build_model(self, base_model):
+    def build_model(self):
+
         base = self.arg_value('base_model')
-        if 'resnet' in base:
-            return tf.keras.models.Sequential([
-                base_model,
-                layers.Flatten(),
-                layers.BatchNormalization(),
-                layers.Dense(256, activation='relu'),
-                layers.Dropout(0.5),
-                layers.BatchNormalization(),
-                layers.Dense(128, activation='relu'),
-                layers.Dropout(0.5),
-                layers.BatchNormalization(),
-                layers.Dense(64, activation='relu'),
-                layers.Dropout(0.5),
-                layers.BatchNormalization(),
-                layers.Dense(len(self.labels), activation='softmax')
-            ])
-        else:
-            return tf.keras.models.Sequential([
-                base_model,
-                layers.GlobalAveragePooling2D(name="avg_pool"),
-                layers.Dropout(0.2, name="top_dropout"),
-                layers.Dense(len(self.labels), activation="softmax", name="pred")
-            ])
+        img_augmentation = tf.keras.models.Sequential(
+            [
+                preprocessing.RandomRotation(factor=0.15),
+                preprocessing.RandomTranslation(height_factor=0.1, width_factor=0.1),
+                preprocessing.RandomFlip(),
+                preprocessing.RandomContrast(factor=0.1),
+            ],
+            name="img_augmentation",
+        )
+
+        size = self.get_image_size()
+        inputs = layers.Input(shape=(size[0], size[1], 3))
+        input_node = img_augmentation(inputs)
+
+        concepts = len(self.labels)
+        base_model = self.get_base_model(input_node)
+        base_model.trainable = False
+        x = layers.GlobalAveragePooling2D(name="avg_pool")(base_model.output)
+        x = layers.BatchNormalization()(x)
+        x = layers.Dropout(0.2, name="top_dropout")(x)
+        outputs = layers.Dense(concepts, activation="softmax", name="pred")(x)
+        return tf.keras.Model(inputs, outputs, name=base)
+
+    def unfreeze_model(self, at_layer):
+        """
+        Unfreezes model at particular layer.  Don't unfreeze BatchNormalization,
+        it messes things up.
+
+        Args:
+            at_layer (int): The layer to unfreeze at.
+        """
+        self.model.trainable = True
+        at_layer = at_layer * -1
+
+        for layer in self.model.layers[at_layer:]:
+            if not isinstance(layer, layers.BatchNormalization):
+                layer.trainable = True
 
 
 class HaltCallback(tf.keras.callbacks.Callback):
