@@ -37,8 +37,8 @@ const NoProject = () => {
         <h2
           css={{
             color: colors.key.two,
-            fontSize: typography.size.colossal,
-            lineHeight: typography.height.colossal,
+            fontSize: typography.size.enormous,
+            lineHeight: typography.height.enormous,
             paddingTop: spacing.base,
           }}
         >
@@ -49,8 +49,8 @@ const NoProject = () => {
           <>
             <h3
               css={{
-                fontSize: 28,
-                lineHeight: '37px',
+                fontSize: typography.size.colossal,
+                lineHeight: typography.height.colossal,
                 fontWeight: typography.weight.regular,
                 paddingTop: spacing.normal,
               }}
@@ -76,8 +76,8 @@ const NoProject = () => {
           <>
             <h3
               css={{
-                fontSize: 28,
-                lineHeight: '37px',
+                fontSize: typography.size.colossal,
+                lineHeight: typography.height.colossal,
                 fontWeight: typography.weight.regular,
               }}
             >
@@ -99,8 +99,8 @@ const NoProject = () => {
           <>
             <h3
               css={{
-                fontSize: 28,
-                lineHeight: '37px',
+                fontSize: typography.size.colossal,
+                lineHeight: typography.height.colossal,
                 fontWeight: typography.weight.regular,
               }}
             >
