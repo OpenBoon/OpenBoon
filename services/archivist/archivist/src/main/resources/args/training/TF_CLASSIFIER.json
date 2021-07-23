@@ -12,12 +12,17 @@
     },
     "epochs": {
       "type": "integer",
-      "defaultValue": 100,
+      "defaultValue": 20,
       "description": "The number of training passes using the full data set."
     },
     "fine_tune_epochs": {
       "type": "integer",
-      "defaultValue": 100,
+      "defaultValue": 20,
+      "description": "The number of fine tuning passes using the full data set."
+    },
+    "fine_tune_at_layer": {
+      "type": "integer",
+      "defaultValue": 20,
       "description": "The number of fine tuning passes using the full data set."
     }
   }
