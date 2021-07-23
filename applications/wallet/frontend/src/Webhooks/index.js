@@ -1,12 +1,14 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
+import Link from 'next/link'
 
-import { spacing } from '../Styles'
+import { spacing, typography, colors } from '../Styles'
 
 import PageTitle from '../PageTitle'
 import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
 import Tabs from '../Tabs'
 import Table, { ROLES } from '../Table'
+import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 
 import WebhooksRow from './Row'
 
@@ -49,7 +51,35 @@ const Webhooks = () => {
         refreshButton={false}
         columns={['URL', 'Triggers', 'Active', '#Actions#']}
         expandColumn={1}
-        renderEmpty="There are currently no webhooks for this project."
+        renderEmpty={
+          <div
+            css={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
+            <div
+              css={{
+                fontSize: typography.size.colossal,
+                lineHeight: typography.height.colossal,
+                fontWeight: typography.weight.bold,
+                color: colors.structure.white,
+                paddingBottom: spacing.normal,
+              }}
+            >
+              There are currently no webhooks.
+            </div>
+
+            <div css={{ display: 'flex' }}>
+              <Link href={`/${projectId}/webhooks/add`} passHref>
+                <Button variant={BUTTON_VARIANTS.PRIMARY}>
+                  Create a Webhook
+                </Button>
+              </Link>
+            </div>
+          </div>
+        }
         renderRow={({ result, revalidate }) => (
           <WebhooksRow
             key={result.id}

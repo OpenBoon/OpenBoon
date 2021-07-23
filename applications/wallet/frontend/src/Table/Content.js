@@ -93,24 +93,27 @@ const TableContent = ({
                 '&:nth-of-type(2n)': {
                   backgroundColor: colors.structure.mattGrey,
                 },
-                ':hover': {
-                  backgroundColor: colors.structure.iron,
-                  boxShadow: constants.boxShadows.tableRow,
-                  '.actions': {
-                    color: colors.structure.zinc,
-                  },
-                  td: {
-                    border: constants.borders.regular.steel,
-                    borderLeft: '0',
-                    borderRight: '0',
-                    '&:first-of-type': {
-                      borderLeft: constants.borders.regular.steel,
-                    },
-                    '&:last-of-type': {
-                      borderRight: constants.borders.regular.steel,
-                    },
-                  },
-                },
+                ':hover':
+                  count === 0
+                    ? {}
+                    : {
+                        backgroundColor: colors.structure.iron,
+                        boxShadow: constants.boxShadows.tableRow,
+                        '.actions': {
+                          color: colors.structure.zinc,
+                        },
+                        td: {
+                          border: constants.borders.regular.steel,
+                          borderLeft: '0',
+                          borderRight: '0',
+                          '&:first-of-type': {
+                            borderLeft: constants.borders.regular.steel,
+                          },
+                          '&:last-of-type': {
+                            borderRight: constants.borders.regular.steel,
+                          },
+                        },
+                      },
               },
               td: {
                 maxWidth: `calc(100vw / ${columns.length - 1})`,

@@ -4,7 +4,7 @@ import { colors, typography } from '../Styles'
 
 const TableException = ({ numColumns, children }) => {
   return (
-    <tr css={{ height: '100%', pointerEvents: 'none' }}>
+    <tr css={{ height: '100%' }}>
       <td colSpan={numColumns}>
         <div
           css={{

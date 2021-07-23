@@ -2138,29 +2138,6 @@ Array [
   background-color: #2e2e2e;
 }
 
-.emotion-13 tr:hover {
-  background-color: #4a4a4a;
-  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
-}
-
-.emotion-13 tr:hover .actions {
-  color: #b3b3b3;
-}
-
-.emotion-13 tr:hover td {
-  border: 1px solid #808080;
-  border-left: 0;
-  border-right: 0;
-}
-
-.emotion-13 tr:hover td:first-of-type {
-  border-left: 1px solid #808080;
-}
-
-.emotion-13 tr:hover td:last-of-type {
-  border-right: 1px solid #808080;
-}
-
 .emotion-13 td {
   max-width: calc(100vw / 7);
   overflow: hidden;
@@ -2322,7 +2299,6 @@ Array [
 
 .emotion-34 {
   height: 100%;
-  pointer-events: none;
 }
 
 .emotion-35 {

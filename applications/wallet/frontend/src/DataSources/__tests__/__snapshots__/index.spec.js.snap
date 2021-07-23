@@ -2038,29 +2038,6 @@ Array [
   background-color: #2e2e2e;
 }
 
-.emotion-6 tr:hover {
-  background-color: #4a4a4a;
-  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
-}
-
-.emotion-6 tr:hover .actions {
-  color: #b3b3b3;
-}
-
-.emotion-6 tr:hover td {
-  border: 1px solid #808080;
-  border-left: 0;
-  border-right: 0;
-}
-
-.emotion-6 tr:hover td:first-of-type {
-  border-left: 1px solid #808080;
-}
-
-.emotion-6 tr:hover td:last-of-type {
-  border-right: 1px solid #808080;
-}
-
 .emotion-6 td {
   max-width: calc(100vw / 6);
   overflow: hidden;
@@ -2140,7 +2117,6 @@ Array [
 
 .emotion-21 {
   height: 100%;
-  pointer-events: none;
 }
 
 .emotion-22 {
@@ -2179,6 +2155,86 @@ Array [
   align-items: center;
   font-size: 18px;
   line-height: 21px;
+}
+
+.emotion-24 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-25 {
+  font-size: 28px;
+  line-height: 37px;
+  font-weight: 700;
+  color: #ffffff;
+  padding-bottom: 16px;
+}
+
+.emotion-26 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-27 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-27,
+.emotion-27:hover,
+.emotion-27:visited,
+.emotion-27 .noop {
+  background-color: #3A5DFF;
+}
+
+.emotion-27:hover,
+.emotion-27 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #6088FE;
+}
+
+.emotion-27[aria-disabled=true],
+.emotion-27 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 <div
@@ -2294,7 +2350,27 @@ Array [
                         data-file-name="noJobs.svg"
                         width={200}
                       />
-                      There are currently no data sources.
+                      <div
+                        className="emotion-24"
+                      >
+                        <div
+                          className="emotion-25"
+                        >
+                          There are currently no data sources.
+                        </div>
+                        <div
+                          className="emotion-26"
+                        >
+                          <a
+                            className="emotion-27"
+                            href="/76917058-b147-4556-987a-0a0f11e46d9b/data-sources/add"
+                            onClick={[Function]}
+                            onMouseEnter={[Function]}
+                          >
+                            Create a Data Source
+                          </a>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </td>
