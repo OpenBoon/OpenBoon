@@ -23,7 +23,7 @@
     "fine_tune_at_layer": {
       "type": "integer",
       "defaultValue": 20,
-      "description": "The number of fine tuning passes using the full data set."
+      "description": "The number of layers to fine tune."
     }
   }
 }
