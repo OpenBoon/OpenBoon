@@ -257,6 +257,30 @@ class TorchModelTextClassifier(TorchModelBase):
 
 class TorchModelImageSegmenter(TorchModelBase):
 
+    CLASSES_LABEL = [
+        ('Unknown', [0, 0, 0]),
+        ('Aeroplane', [50, 50, 50]),
+        ('Bicycle', [1, 127, 31]),
+        ('Bird', [2, 254, 62]),
+        ('Boat', [255, 0, 0]),
+        ('Bottle', [4, 253, 124]),
+        ('Bus', [5, 125, 155]),
+        ('Car', [6, 252, 186]),
+        ('Cat', [7, 124, 217]),
+        ('Chair', [8, 251, 248]),
+        ('Cow', [9, 123, 24]),
+        ('Diningtable', [10, 250, 55]),
+        ('Dog', [11, 122, 86]),
+        ('Horse', [12, 249, 117]),
+        ('Motorbike', [13, 121, 148]),
+        ('Person', [255, 255, 255]),
+        ('Potted plant', [15, 120, 210]),
+        ('Sheep', [16, 247, 241]),
+        ('Sofa', [17, 119, 17]),
+        ('Train', [18, 246, 48]),
+        ('Tv/Monitor', [19, 118, 79])
+    ]
+
     def __init__(self):
         super(TorchModelImageSegmenter, self).__init__()
 
@@ -278,8 +302,8 @@ class TorchModelImageSegmenter(TorchModelBase):
         """
         raw_predictions = self.predict(image)
         predictions = []
-        for label in raw_predictions:
-            predictions.append(Prediction(label[0], label[1]))
+        # for label in raw_predictions:
+        #     predictions.append(Prediction(label[0], label[1]))
 
         return predictions
 
@@ -304,22 +328,15 @@ class TorchModelImageSegmenter(TorchModelBase):
 
         return response_image
 
-    def _segment_image(self, image, response_image):
-        input_image = image.pil_img()
-
-        # create a color pallette, selecting a color for each class
-        palette = torch.tensor([2 ** 25 - 1, 2 ** 15 - 1, 2 ** 21 - 1])
-        colors = torch.as_tensor([i for i in range(21)])[:, None] * palette
-        colors = (colors % 255).numpy().astype("uint8")
-
-        # plot the semantic segmentation predictions of 21 classes in each color
+    def _segment_image(self, original_image, response_image):
 
         response_np = np.delete(np.array(response_image), 1, 2)
-        image_np = np.array(response_image).argmax(2)
 
-        image = Image.fromarray(image_np.astype(np.uint8))
+        original_shape = list(response_np.shape)
+        original_shape[-1] = 3
 
-        r = image.resize(input_image.size)
+        colored_image = np.array([self.CLASSES_LABEL[x][1] for x in response_np.astype(int).flatten()])\
+            .reshape(original_shape).astype(np.uint8)
 
-        r.putpalette(colors)
-        r.convert('RGB').save("/home/iron/Desktop/image.png")
+        r1 = Image.fromarray(colored_image, 'RGB').resize(original_image.pil_img().size)
+        # r1.save("/home/iron/Desktop/image.png")
