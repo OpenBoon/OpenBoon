@@ -55,6 +55,7 @@ exports[`<ModelMatrixLink /> should render properly when a dataset has not yet b
 }
 
 .emotion-21 li {
+  line-height: 21px;
   list-style-type: none;
   display: -webkit-box;
   display: -webkit-flex;
@@ -791,6 +792,7 @@ exports[`<ModelMatrixLink /> should render properly when the dataset is missing 
 }
 
 .emotion-21 li {
+  line-height: 21px;
   list-style-type: none;
   display: -webkit-box;
   display: -webkit-flex;
@@ -974,6 +976,7 @@ exports[`<ModelMatrixLink /> should render properly when the model has been appl
 }
 
 .emotion-21 li {
+  line-height: 21px;
   list-style-type: none;
   display: -webkit-box;
   display: -webkit-flex;
@@ -1157,6 +1160,7 @@ exports[`<ModelMatrixLink /> should render properly when the model has not yet b
 }
 
 .emotion-21 li {
+  line-height: 21px;
   list-style-type: none;
   display: -webkit-box;
   display: -webkit-flex;

@@ -29,7 +29,7 @@ const ModelTip = () => {
           >
             Train Model
           </h3>
-          Train a model without applying it to your assets.
+          Train a model without running it on your assets.
           <h3
             css={{
               fontSize: typography.size.regular,
@@ -39,10 +39,10 @@ const ModelTip = () => {
           >
             Train &amp; Test
           </h3>
-          Train and apply the model to your test set ONLY. This enables you to
+          Train and run the model on your test set ONLY. This enables you to
           view the results in the matrix and assess your model’s performance. To
-          save processing time, make adjustments to your model before applying
-          it to all of your assets.
+          save processing time, make adjustments to your model before running it
+          on all of your assets.
           <h3
             css={{
               fontSize: typography.size.regular,

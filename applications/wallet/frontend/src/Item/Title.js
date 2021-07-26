@@ -4,7 +4,7 @@ import { spacing, typography, colors } from '../Styles'
 
 const ItemTitle = ({ type, name }) => {
   return (
-    <div>
+    <div css={{ paddingTop: spacing.base }}>
       <div
         css={{
           color: colors.structure.zinc,

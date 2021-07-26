@@ -73,7 +73,7 @@ exports[`<ModelLinkForm /> should render properly for Existing 1`] = `
 }
 
 .emotion-7 {
-  padding-left: 12px;
+  padding-left: 8px;
 }
 
 .emotion-8 {
@@ -431,7 +431,7 @@ exports[`<ModelLinkForm /> should render properly for Existing 2`] = `
 }
 
 .emotion-7 {
-  padding-left: 12px;
+  padding-left: 8px;
 }
 
 .emotion-8 {
@@ -788,7 +788,7 @@ exports[`<ModelLinkForm /> should render properly for New 1`] = `
 }
 
 .emotion-7 {
-  padding-left: 12px;
+  padding-left: 8px;
 }
 
 .emotion-8 {

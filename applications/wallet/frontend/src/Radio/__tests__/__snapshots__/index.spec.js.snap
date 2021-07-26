@@ -48,7 +48,7 @@ exports[`<Radio /> should render properly checked 1`] = `
 }
 
 .emotion-4 {
-  padding-left: 12px;
+  padding-left: 8px;
 }
 
 .emotion-5 {
@@ -145,7 +145,7 @@ exports[`<Radio /> should render properly unchecked 1`] = `
 }
 
 .emotion-4 {
-  padding-left: 12px;
+  padding-left: 8px;
 }
 
 .emotion-5 {

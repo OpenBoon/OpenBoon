@@ -43,7 +43,7 @@ Array [
   display: -ms-flexbox;
   display: flex;
   padding: 0;
-  padding-right: 16px;
+  padding-right: 12px;
   float: left;
   font-size: 15px;
   line-height: 19px;
@@ -51,7 +51,7 @@ Array [
 }
 
 .emotion-4 {
-  padding-right: 24px;
+  padding-right: 12px;
 }
 
 .emotion-5 {
@@ -101,7 +101,7 @@ Array [
 }
 
 .emotion-9 {
-  padding-left: 12px;
+  padding-left: 8px;
 }
 
 .emotion-10 {
@@ -541,7 +541,7 @@ Array [
   display: -ms-flexbox;
   display: flex;
   padding: 0;
-  padding-right: 16px;
+  padding-right: 12px;
   float: left;
   font-size: 15px;
   line-height: 19px;
@@ -549,7 +549,7 @@ Array [
 }
 
 .emotion-4 {
-  padding-right: 24px;
+  padding-right: 12px;
 }
 
 .emotion-5 {
@@ -599,7 +599,7 @@ Array [
 }
 
 .emotion-9 {
-  padding-left: 12px;
+  padding-left: 8px;
 }
 
 .emotion-10 {
