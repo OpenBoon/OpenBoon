@@ -21,7 +21,7 @@ const Radio = ({
           onClick={onClick}
         />
 
-        <div css={{ paddingLeft: spacing.moderate }}>
+        <div css={{ paddingLeft: spacing.base }}>
           <div
             css={{
               fontWeight: legend

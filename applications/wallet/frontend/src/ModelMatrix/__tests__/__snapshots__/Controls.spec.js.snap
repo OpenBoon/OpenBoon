@@ -29,7 +29,7 @@ exports[`<ModelMatrixControls should not crash when min equals max 1`] = `
   display: -ms-flexbox;
   display: flex;
   padding: 0;
-  padding-right: 16px;
+  padding-right: 12px;
   float: left;
   font-size: 15px;
   line-height: 19px;
@@ -37,7 +37,7 @@ exports[`<ModelMatrixControls should not crash when min equals max 1`] = `
 }
 
 .emotion-3 {
-  padding-right: 24px;
+  padding-right: 12px;
 }
 
 .emotion-4 {
@@ -87,7 +87,7 @@ exports[`<ModelMatrixControls should not crash when min equals max 1`] = `
 }
 
 .emotion-8 {
-  padding-left: 12px;
+  padding-left: 8px;
 }
 
 .emotion-9 {
@@ -340,7 +340,7 @@ exports[`<ModelMatrixControls should render properly 1`] = `
   display: -ms-flexbox;
   display: flex;
   padding: 0;
-  padding-right: 16px;
+  padding-right: 12px;
   float: left;
   font-size: 15px;
   line-height: 19px;
@@ -348,7 +348,7 @@ exports[`<ModelMatrixControls should render properly 1`] = `
 }
 
 .emotion-3 {
-  padding-right: 24px;
+  padding-right: 12px;
 }
 
 .emotion-4 {
@@ -398,7 +398,7 @@ exports[`<ModelMatrixControls should render properly 1`] = `
 }
 
 .emotion-8 {
-  padding-left: 12px;
+  padding-left: 8px;
 }
 
 .emotion-9 {

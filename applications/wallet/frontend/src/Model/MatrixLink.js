@@ -78,6 +78,7 @@ const ModelMatrixLink = ({ projectId, model }) => {
                 padding: 0,
                 paddingTop: spacing.base,
                 li: {
+                  lineHeight: typography.height.large,
                   listStyleType: 'none',
                   display: 'flex',
                   alignItems: 'center',

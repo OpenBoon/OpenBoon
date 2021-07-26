@@ -19,7 +19,7 @@ const RadioGroup = ({ legend, options, onClick }) => {
         css={{
           display: 'flex',
           padding: 0,
-          paddingRight: spacing.normal,
+          paddingRight: spacing.moderate,
           float: 'left',
           fontSize: typography.size.regular,
           lineHeight: typography.height.regular,
@@ -30,7 +30,7 @@ const RadioGroup = ({ legend, options, onClick }) => {
       </legend>
 
       {options.map((option) => (
-        <div key={option.value} css={{ paddingRight: spacing.comfy }}>
+        <div key={option.value} css={{ paddingRight: spacing.moderate }}>
           <Radio name={legend} option={option} onClick={onClick} />
         </div>
       ))}
