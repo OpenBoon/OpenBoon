@@ -170,9 +170,21 @@ Array [
 }
 
 .emotion-6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-7 {
   color: #b3b3b3;
   font-family: Roboto Condensed;
   text-transform: uppercase;
+  padding-right: 8px;
 }
 
 <div>
@@ -212,25 +224,35 @@ Array [
     <ul
       className="emotion-5"
     >
-      <li>
-        <span
-          className="emotion-6"
+      <li
+        className="emotion-6"
+      >
+        <div
+          className="emotion-7"
         >
           Dataset Type
           :
-        </span>
-         
-        Classification
-      </li>
-      <li>
-        <span
+        </div>
+        <div
           className="emotion-6"
+        >
+          Classification
+        </div>
+      </li>
+      <li
+        className="emotion-6"
+      >
+        <div
+          className="emotion-7"
         >
           Description
           :
-        </span>
-         
-        A dataset for model training
+        </div>
+        <div
+          className="emotion-6"
+        >
+          A dataset for model training
+        </div>
       </li>
     </ul>
   </div>,
@@ -818,9 +840,21 @@ Array [
 }
 
 .emotion-6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-7 {
   color: #b3b3b3;
   font-family: Roboto Condensed;
   text-transform: uppercase;
+  padding-right: 8px;
 }
 
 <div>
@@ -860,25 +894,35 @@ Array [
     <ul
       className="emotion-5"
     >
-      <li>
-        <span
-          className="emotion-6"
+      <li
+        className="emotion-6"
+      >
+        <div
+          className="emotion-7"
         >
           Dataset Type
           :
-        </span>
-         
-        Classification
-      </li>
-      <li>
-        <span
+        </div>
+        <div
           className="emotion-6"
+        >
+          Classification
+        </div>
+      </li>
+      <li
+        className="emotion-6"
+      >
+        <div
+          className="emotion-7"
         >
           Description
           :
-        </span>
-         
-        A dataset for model training
+        </div>
+        <div
+          className="emotion-6"
+        >
+          A dataset for model training
+        </div>
       </li>
     </ul>
   </div>,
@@ -1421,9 +1465,21 @@ Array [
 }
 
 .emotion-6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-7 {
   color: #b3b3b3;
   font-family: Roboto Condensed;
   text-transform: uppercase;
+  padding-right: 8px;
 }
 
 <div>
@@ -1463,25 +1519,35 @@ Array [
     <ul
       className="emotion-5"
     >
-      <li>
-        <span
-          className="emotion-6"
+      <li
+        className="emotion-6"
+      >
+        <div
+          className="emotion-7"
         >
           Dataset Type
           :
-        </span>
-         
-        Classification
-      </li>
-      <li>
-        <span
+        </div>
+        <div
           className="emotion-6"
+        >
+          Classification
+        </div>
+      </li>
+      <li
+        className="emotion-6"
+      >
+        <div
+          className="emotion-7"
         >
           Description
           :
-        </span>
-         
-        A dataset for model training
+        </div>
+        <div
+          className="emotion-6"
+        >
+          A dataset for model training
+        </div>
       </li>
     </ul>
   </div>,
@@ -1714,9 +1780,21 @@ Array [
 }
 
 .emotion-6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-7 {
   color: #b3b3b3;
   font-family: Roboto Condensed;
   text-transform: uppercase;
+  padding-right: 8px;
 }
 
 <div>
@@ -1756,25 +1834,35 @@ Array [
     <ul
       className="emotion-5"
     >
-      <li>
-        <span
-          className="emotion-6"
+      <li
+        className="emotion-6"
+      >
+        <div
+          className="emotion-7"
         >
           Dataset Type
           :
-        </span>
-         
-        Classification
-      </li>
-      <li>
-        <span
+        </div>
+        <div
           className="emotion-6"
+        >
+          Classification
+        </div>
+      </li>
+      <li
+        className="emotion-6"
+      >
+        <div
+          className="emotion-7"
         >
           Description
           :
-        </span>
-         
-        A dataset for model training
+        </div>
+        <div
+          className="emotion-6"
+        >
+          A dataset for model training
+        </div>
       </li>
     </ul>
   </div>,
