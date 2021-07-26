@@ -9,9 +9,6 @@ from boonflow.base import ImageInputStream
 from ..custom.base import CustomModelProcessor
 
 from PIL import Image
-from torchvision import transforms
-import matplotlib.pyplot as plt
-import torch
 import numpy as np
 
 
@@ -256,7 +253,6 @@ class TorchModelTextClassifier(TorchModelBase):
 
 
 class TorchModelImageSegmenter(TorchModelBase):
-
     CLASSES_LABEL = [
         ('Unknown', [0, 0, 0]),
         ('Aeroplane', [50, 50, 50]),
@@ -300,7 +296,8 @@ class TorchModelImageSegmenter(TorchModelBase):
             list[Prediction]: A list of Prediction objects
 
         """
-        raw_predictions = self.predict(image)
+        self.predict(image)
+        # raw_predictions = self.predict(image)
         predictions = []
         # for label in raw_predictions:
         #     predictions.append(Prediction(label[0], label[1]))
@@ -335,8 +332,7 @@ class TorchModelImageSegmenter(TorchModelBase):
         original_shape = list(response_np.shape)
         original_shape[-1] = 3
 
-        colored_image = np.array([self.CLASSES_LABEL[x][1] for x in response_np.astype(int).flatten()])\
+        colored_image = np.array([self.CLASSES_LABEL[x][1] for x in response_np.astype(int).flatten()]) \
             .reshape(original_shape).astype(np.uint8)
 
-        r1 = Image.fromarray(colored_image, 'RGB').resize(original_image.pil_img().size)
-        # r1.save("/home/iron/Desktop/image.png")
+        # r1 = Image.fromarray(colored_image, 'RGB').resize(original_image.pil_img().size)
