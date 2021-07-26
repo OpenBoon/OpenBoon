@@ -156,6 +156,10 @@ resource "kubernetes_deployment" "tugboat" {
             name  = "PORT"
             value = "9393"
           }
+          env {
+            name  = "BOONAI_ENV"
+            value = var.environment
+          }
           volume_mount {
             mount_path = "/etc/ssl/certs"
             name       = "certs"
