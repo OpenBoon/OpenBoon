@@ -127,6 +127,7 @@ def generate_build_file(spec, build_path):
     img = spec['image']
     model_id = spec['modelId']
     model_file = spec['modelFile']
+    boonenv = os.environ.get('BOONAI_ENV', 'prod')
 
     build = {
         'steps': [
@@ -148,6 +149,7 @@ def generate_build_file(spec, build_path):
                          '--allow-unauthenticated',
                          '--memory=2Gi',
                          '--max-instances', '4',
+                         '--update-env-vars', f'BOONAI_ENV={boonenv}',
                          '--labels', f'model-id={model_id}']
             }
         ],
