@@ -273,7 +273,7 @@ exports[`<Layout /> should render properly 1`] = `
     setSidebarOpen={[Function]}
     user={
       Object {
-        "agreedToPoliciesDate": "20210211",
+        "agreedToPoliciesDate": "20210726",
         "dateJoined": "2020-03-02T19:09:16Z",
         "email": "jane.doe@zorroa.com",
         "firstName": "Jane",
@@ -586,7 +586,7 @@ exports[`<Layout /> should render properly 2`] = `
     setSidebarOpen={[Function]}
     user={
       Object {
-        "agreedToPoliciesDate": "20210211",
+        "agreedToPoliciesDate": "20210726",
         "dateJoined": "2020-03-02T19:09:16Z",
         "email": "jane.doe@zorroa.com",
         "firstName": "Jane",
