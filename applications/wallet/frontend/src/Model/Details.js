@@ -208,6 +208,19 @@ const ModelDetails = ({ projectId, modelId, modelTypes }) => {
       {datasetId &&
         !missingLabels &&
         !missingLabelsOnAssets &&
+        !timeLastTrained &&
+        !!unappliedChanges && (
+          <div css={{ display: 'flex', paddingBottom: spacing.normal }}>
+            <FlashMessage variant={FLASH_VARIANTS.INFO}>
+              The model is ready to train.
+            </FlashMessage>
+          </div>
+        )}
+
+      {datasetId &&
+        !missingLabels &&
+        !missingLabelsOnAssets &&
+        !!timeLastTrained &&
         !!unappliedChanges && (
           <div css={{ display: 'flex', paddingBottom: spacing.normal }}>
             <FlashMessage variant={FLASH_VARIANTS.INFO}>
@@ -231,7 +244,7 @@ const ModelDetails = ({ projectId, modelId, modelTypes }) => {
                 'Last Analyzed',
                 timeLastApplied
                   ? formatFullDate({ timestamp: timeLastApplied })
-                  : 'Model Analysis has not been run.',
+                  : 'Model analysis has not been run.',
               ],
             ]}
           />
