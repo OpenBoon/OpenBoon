@@ -13,12 +13,15 @@ class TesEnvClasses(TestCase):
 
     def setUp(self):
         os.environ['BOONFLOW_IN_FLASK'] = "yes"
+        os.environ['BOONAI_ENV'] = "qa"
 
     def tearDown(self):
-        try:
-            del os.environ['BOONFLOW_IN_FLASK']
-        except Exception:
-            pass
+        del_envs = ['BOONFLOW_IN_FLASK', 'BOONAI_ENV']
+        for env_name in del_envs:
+            try:
+                del os.environ[env_name]
+            except Exception:
+                pass
 
     token_path = os.path.dirname(__file__) + "/token.txt"
 
@@ -32,11 +35,16 @@ class TesEnvClasses(TestCase):
         sdk = base.app_instance()
         f'Bearer {token}' in sdk.client.headers().values()
 
-    def test_get_server(self):
-        app = flask.Flask('test')
-        with open(self.token_path) as fp:
-            token = fp.read()
-        with app.test_request_context(headers={'Authorization': f'Bearer {token}'}):
+    def test_get_server_by_endpoint_map(self):
+        sdk = base.app_instance()
+        server = sdk.client.get_server()
+        assert server == 'https://qa.api.boonai.app'
+
+    def test_get_server_by_server_env(self):
+        try:
+            os.environ['BOONAI_SERVER'] = 'https://localhost'
             sdk = base.app_instance()
             server = sdk.client.get_server()
-            assert server == 'https://dev.api.boonai.app'
+            assert server == 'https://localhost'
+        finally:
+            del os.environ['BOONAI_SERVER']
