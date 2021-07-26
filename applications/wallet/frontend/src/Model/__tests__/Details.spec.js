@@ -45,6 +45,36 @@ describe('<ModelDetails />', () => {
     expect(component.toJSON()).toMatchSnapshot()
   })
 
+  it('should render properly when just created', async () => {
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/models/[modelId]',
+      query: {
+        projectId: PROJECT_ID,
+        modelId: MODEL_ID,
+      },
+    })
+
+    require('swr').__setMockUseSWRResponse({
+      data: {
+        ...model,
+        datasetId: DATASET_ID,
+        timeLastTrained: null,
+        timeLastApplied: null,
+        modelTypeRestrictions: { missingLabels: 0 },
+      },
+    })
+
+    const component = TestRenderer.create(
+      <ModelDetails
+        projectId={PROJECT_ID}
+        modelId={MODEL_ID}
+        modelTypes={modelTypes.results}
+      />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
   it('should render properly with missing labels', async () => {
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/models/[modelId]',
