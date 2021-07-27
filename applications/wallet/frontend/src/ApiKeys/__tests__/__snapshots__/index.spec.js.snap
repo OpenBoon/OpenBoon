@@ -445,12 +445,12 @@ Array [
                   <span
                     className="emotion-13"
                   >
-                     Assets Read
+                     Assets Import
                   </span>
                   <span
                     className="emotion-13"
                   >
-                     Assets Import
+                     Assets Read
                   </span>
                   <span
                     className="emotion-13"
@@ -460,12 +460,12 @@ Array [
                   <span
                     className="emotion-13"
                   >
-                     System Project Decrypt
+                     Project Files Write
                   </span>
                   <span
                     className="emotion-13"
                   >
-                     Project Files Write
+                     System Project Decrypt
                   </span>
                 </td>
                 <td>
