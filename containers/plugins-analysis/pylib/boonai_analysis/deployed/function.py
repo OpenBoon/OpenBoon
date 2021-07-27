@@ -76,4 +76,4 @@ class BoonFunctionProcessor(CustomModelProcessor):
             return f'{self.app_model.module_name}-{section}'
 
     def validate_name(self, name):
-        return re.fullmatch('[A-Za-z0-9_]+', name, re.IGNORECASE) is not None
+        return re.fullmatch('[A-Za-z0-9_\\-]+', name, re.IGNORECASE) is not None

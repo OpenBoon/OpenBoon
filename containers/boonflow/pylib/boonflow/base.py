@@ -2,6 +2,7 @@ import logging
 import io
 
 import cv2
+import deprecation
 from PIL import Image
 import numpy as np
 
@@ -604,10 +605,31 @@ class BoonFunctionResponse:
     """
     A convenience class for crafting a Boon Function response.
     """
+
     def __init__(self):
         self.analysis = {}
         self.custom = {}
 
+    def set_analysis(self, analysis):
+        """
+        Set the main analysis for this BoonFuction response.
+
+        Args:
+            analysis (mixed): An Analysis object
+        """
+        self.analysis["__MAIN__"] = analysis
+
+    def add_more_analysis(self, name, analysis):
+        """
+        Add additional analysis under a subsection name.
+
+        Args:
+            name (str): The name of the subsection.
+            analysis (mixed): The analysis object.
+        """
+        self.analysis[name] = analysis
+
+    @deprecation.deprecated(details="see set_analysis() and add_more_analysis()")
     def add_analysis(self, analysis, sub_section=None):
         """
         Add an Analysis structure to the response.
