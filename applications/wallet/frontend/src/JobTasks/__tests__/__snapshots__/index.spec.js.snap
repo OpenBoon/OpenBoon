@@ -748,29 +748,6 @@ exports[`<JobTasks /> should render properly without job tasks 1`] = `
   background-color: #2e2e2e;
 }
 
-.emotion-10 tr:hover {
-  background-color: #4a4a4a;
-  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
-}
-
-.emotion-10 tr:hover .actions {
-  color: #b3b3b3;
-}
-
-.emotion-10 tr:hover td {
-  border: 1px solid #808080;
-  border-left: 0;
-  border-right: 0;
-}
-
-.emotion-10 tr:hover td:first-of-type {
-  border-left: 1px solid #808080;
-}
-
-.emotion-10 tr:hover td:last-of-type {
-  border-right: 1px solid #808080;
-}
-
 .emotion-10 td {
   max-width: calc(100vw / 4);
   overflow: hidden;
@@ -820,7 +797,6 @@ exports[`<JobTasks /> should render properly without job tasks 1`] = `
 
 .emotion-21 {
   height: 100%;
-  pointer-events: none;
 }
 
 .emotion-22 {

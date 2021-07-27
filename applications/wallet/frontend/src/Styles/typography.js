@@ -6,7 +6,8 @@ const typography = {
     medium: 17,
     large: 18,
     giant: 21,
-    colossal: 32,
+    colossal: 28,
+    enormous: 32,
   },
   height: {
     invisible: '15px',
@@ -15,7 +16,8 @@ const typography = {
     medium: '20px',
     large: '21px',
     giant: '30px',
-    colossal: '43px',
+    colossal: '37px',
+    enormous: '43px',
   },
   weight: {
     regular: 400,

@@ -11,6 +11,7 @@ import SuspenseBoundary, { ROLES } from '../SuspenseBoundary'
 import Tabs from '../Tabs'
 
 import ModelDataset from '../ModelDataset'
+import ModelDeployment from '../ModelDeployment'
 // import ModelUpload from '../ModelUpload'
 
 import ModelContent from './Content'
@@ -19,6 +20,7 @@ const Model = () => {
   const [errors, setErrors] = useState({})
 
   const {
+    pathname,
     query: { action },
   } = useRouter()
 
@@ -60,10 +62,22 @@ const Model = () => {
         {/* <ModelUpload /> */}
 
         <Tabs
-          tabs={[{ title: 'Dataset', href: '/[projectId]/models/[modelId]' }]}
+          tabs={[
+            { title: 'Dataset', href: '/[projectId]/models/[modelId]' },
+            {
+              title: 'Deployment',
+              href: '/[projectId]/models/[modelId]/deployment',
+            },
+          ]}
         />
 
-        <ModelDataset setErrors={setErrors} />
+        {pathname === '/[projectId]/models/[modelId]' && (
+          <ModelDataset setErrors={setErrors} />
+        )}
+
+        {pathname === '/[projectId]/models/[modelId]/deployment' && (
+          <ModelDeployment />
+        )}
       </SuspenseBoundary>
     </>
   )

@@ -13,7 +13,12 @@ const ApiKeysRow = ({
     <tr>
       <td>{name}</td>
       <td>
-        <Pills>{permissions}</Pills>
+        <Pills>
+          {permissions.sort((a, b) => {
+            if (a.toLowerCase() < b.toLowerCase()) return -1
+            return 1
+          })}
+        </Pills>
       </td>
       <td>
         <ApiKeysMenu

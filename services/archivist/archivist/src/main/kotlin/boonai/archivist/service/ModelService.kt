@@ -389,6 +389,16 @@ class ModelServiceImpl(
             pipelineModService.delete(it.id)
         }
 
+        val msg = PubsubMessage.newBuilder()
+            .putAttributes("type", "model-delete")
+            .putAttributes("modelId", model.id.toString())
+            .putAttributes("deployed", model.type.uploadable.toString())
+            .putAttributes("projectId", model.projectId.toString())
+            .putAttributes("image", model.imageName())
+            .build()
+
+        postToModelEventTopic(msg)
+
         GlobalScope.launch(Dispatchers.IO) {
             try {
                 fileStorageService.recursiveDelete(

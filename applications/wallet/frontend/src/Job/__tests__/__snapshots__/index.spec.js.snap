@@ -31,12 +31,16 @@ Array [
 }
 
 .emotion-1 {
+  padding-top: 8px;
+}
+
+.emotion-2 {
   color: #b3b3b3;
   font-family: Roboto Condensed;
   text-transform: uppercase;
 }
 
-.emotion-2 {
+.emotion-3 {
   color: #ffffff;
   font-weight: 500;
   font-size: 21px;
@@ -44,17 +48,11 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-3 {
+.emotion-4 {
   margin: 0;
   padding: 0;
   list-style: none;
   line-height: 23px;
-}
-
-.emotion-4 {
-  color: #b3b3b3;
-  font-family: Roboto Condensed;
-  text-transform: uppercase;
 }
 
 .emotion-5 {
@@ -62,9 +60,27 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 
 .emotion-6 {
+  color: #b3b3b3;
+  font-family: Roboto Condensed;
+  text-transform: uppercase;
+  padding-right: 8px;
+}
+
+.emotion-8 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-9 {
   color: #212121;
   background-color: #ebb52e;
   font-weight: 500;
@@ -77,16 +93,16 @@ Array [
   padding-right: 24px;
 }
 
-.emotion-7 {
+.emotion-10 {
   height: 16px;
 }
 
-.emotion-8 {
+.emotion-11 {
   border: none;
   border-bottom: 1px solid #4a4a4a;
 }
 
-.emotion-9 {
+.emotion-12 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -97,7 +113,7 @@ Array [
   align-items: center;
 }
 
-.emotion-10 {
+.emotion-13 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -106,12 +122,12 @@ Array [
   padding-right: 48px;
 }
 
-.emotion-11 {
+.emotion-14 {
   position: relative;
   height: 100%;
 }
 
-.emotion-12 {
+.emotion-15 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -155,21 +171,21 @@ Array [
   color: #ffffff;
 }
 
-.emotion-12,
-.emotion-12:hover,
-.emotion-12:visited {
+.emotion-15,
+.emotion-15:hover,
+.emotion-15:visited {
   background-color: #808080;
 }
 
-.emotion-12:hover {
+.emotion-15:hover {
   background-color: #b3b3b3;
 }
 
-.emotion-12[aria-disabled=true] {
+.emotion-15[aria-disabled=true] {
   background-color: #808080;
 }
 
-.emotion-13 {
+.emotion-16 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -182,14 +198,14 @@ Array [
   padding-bottom: 12px;
 }
 
-.emotion-14 {
+.emotion-17 {
   color: #b3b3b3;
   font-family: Roboto Condensed;
   text-transform: uppercase;
   padding-bottom: 4px;
 }
 
-.emotion-19 {
+.emotion-22 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -199,7 +215,7 @@ Array [
   position: relative;
 }
 
-.emotion-20 {
+.emotion-23 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -207,7 +223,7 @@ Array [
   width: 100%;
 }
 
-.emotion-21 {
+.emotion-24 {
   height: 100%;
   -webkit-flex: 3 0 auto;
   -ms-flex: 3 0 auto;
@@ -215,12 +231,12 @@ Array [
   background-color: #009f22;
 }
 
-.emotion-21:first-of-type {
+.emotion-24:first-of-type {
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
 }
 
-.emotion-21:last-of-type {
+.emotion-24:last-of-type {
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
 }
@@ -230,39 +246,46 @@ Array [
       className="emotion-0"
     >
       <div>
-        <div>
+        <div
+          className="emotion-1"
+        >
           <div
-            className="emotion-1"
+            className="emotion-2"
           >
             Job
              Name:
           </div>
           <h3
-            className="emotion-2"
+            className="emotion-3"
           >
             image_similarity.json
           </h3>
         </div>
         <ul
-          className="emotion-3"
+          className="emotion-4"
         >
-          <li>
-            <span
-              className="emotion-4"
+          <li
+            className="emotion-5"
+          >
+            <div
+              className="emotion-6"
             >
               ID
               :
-            </span>
-             
-            82d5308b-67c2-1433-8fef-0a580a000956
+            </div>
+            <div
+              className="emotion-5"
+            >
+              82d5308b-67c2-1433-8fef-0a580a000956
+            </div>
           </li>
         </ul>
       </div>
       <div
-        className="emotion-5"
+        className="emotion-8"
       >
         <div
-          className="emotion-6"
+          className="emotion-9"
         >
           Job
            
@@ -271,23 +294,23 @@ Array [
       </div>
     </div>
     <div
-      className="emotion-7"
+      className="emotion-10"
     />
     <hr
-      className="emotion-8"
+      className="emotion-11"
     />
     <div
-      className="emotion-9"
+      className="emotion-12"
     >
       <div
-        className="emotion-10"
+        className="emotion-13"
       >
         <div
-          className="emotion-11"
+          className="emotion-14"
         >
           <button
             aria-label="Toggle Dropdown Menu"
-            className="emotion-12"
+            className="emotion-15"
             onBlur={[Function]}
             onClick={[Function]}
             type="button"
@@ -301,10 +324,10 @@ Array [
         </div>
       </div>
       <div
-        className="emotion-13"
+        className="emotion-16"
       >
         <div
-          className="emotion-14"
+          className="emotion-17"
         >
           Priority
           :
@@ -314,10 +337,10 @@ Array [
         </div>
       </div>
       <div
-        className="emotion-13"
+        className="emotion-16"
       >
         <div
-          className="emotion-14"
+          className="emotion-17"
         >
           # Assets
           :
@@ -327,10 +350,10 @@ Array [
         </div>
       </div>
       <div
-        className="emotion-13"
+        className="emotion-16"
       >
         <div
-          className="emotion-14"
+          className="emotion-17"
         >
           Task Progress
           :
@@ -338,7 +361,7 @@ Array [
         <div>
           <div
             aria-label="Progress Bar"
-            className="emotion-19"
+            className="emotion-22"
             onKeyPress={[Function]}
             onMouseEnter={[Function]}
             onMouseLeave={[Function]}
@@ -346,10 +369,10 @@ Array [
             tabIndex="0"
           >
             <div
-              className="emotion-20"
+              className="emotion-23"
             >
               <div
-                className="emotion-21"
+                className="emotion-24"
               />
             </div>
           </div>
@@ -491,7 +514,7 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  padding-bottom: 16px;
+  padding-bottom: 8px;
 }
 
 .emotion-1 {
@@ -546,12 +569,16 @@ Array [
 }
 
 .emotion-4 {
+  padding-top: 8px;
+}
+
+.emotion-5 {
   color: #b3b3b3;
   font-family: Roboto Condensed;
   text-transform: uppercase;
 }
 
-.emotion-5 {
+.emotion-6 {
   color: #ffffff;
   font-weight: 500;
   font-size: 21px;
@@ -559,17 +586,11 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-6 {
+.emotion-7 {
   margin: 0;
   padding: 0;
   list-style: none;
   line-height: 23px;
-}
-
-.emotion-7 {
-  color: #b3b3b3;
-  font-family: Roboto Condensed;
-  text-transform: uppercase;
 }
 
 .emotion-8 {
@@ -577,9 +598,27 @@ Array [
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 
 .emotion-9 {
+  color: #b3b3b3;
+  font-family: Roboto Condensed;
+  text-transform: uppercase;
+  padding-right: 8px;
+}
+
+.emotion-11 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-12 {
   color: #212121;
   background-color: #009f22;
   font-weight: 500;
@@ -592,16 +631,16 @@ Array [
   padding-right: 24px;
 }
 
-.emotion-10 {
+.emotion-13 {
   height: 16px;
 }
 
-.emotion-11 {
+.emotion-14 {
   border: none;
   border-bottom: 1px solid #4a4a4a;
 }
 
-.emotion-12 {
+.emotion-15 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -612,7 +651,7 @@ Array [
   align-items: center;
 }
 
-.emotion-13 {
+.emotion-16 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -625,14 +664,14 @@ Array [
   padding-bottom: 12px;
 }
 
-.emotion-14 {
+.emotion-17 {
   color: #b3b3b3;
   font-family: Roboto Condensed;
   text-transform: uppercase;
   padding-bottom: 4px;
 }
 
-.emotion-19 {
+.emotion-22 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -642,7 +681,7 @@ Array [
   position: relative;
 }
 
-.emotion-20 {
+.emotion-23 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -650,7 +689,7 @@ Array [
   width: 100%;
 }
 
-.emotion-21 {
+.emotion-24 {
   height: 100%;
   -webkit-flex: 3 0 auto;
   -ms-flex: 3 0 auto;
@@ -658,12 +697,12 @@ Array [
   background-color: #009f22;
 }
 
-.emotion-21:first-of-type {
+.emotion-24:first-of-type {
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
 }
 
-.emotion-21:last-of-type {
+.emotion-24:last-of-type {
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
 }
@@ -692,39 +731,46 @@ Array [
       className="emotion-3"
     >
       <div>
-        <div>
+        <div
+          className="emotion-4"
+        >
           <div
-            className="emotion-4"
+            className="emotion-5"
           >
             Job
              Name:
           </div>
           <h3
-            className="emotion-5"
+            className="emotion-6"
           >
             image_similarity.json
           </h3>
         </div>
         <ul
-          className="emotion-6"
+          className="emotion-7"
         >
-          <li>
-            <span
-              className="emotion-7"
+          <li
+            className="emotion-8"
+          >
+            <div
+              className="emotion-9"
             >
               ID
               :
-            </span>
-             
-            82d5308b-67c2-1433-8fef-0a580a000956
+            </div>
+            <div
+              className="emotion-8"
+            >
+              82d5308b-67c2-1433-8fef-0a580a000956
+            </div>
           </li>
         </ul>
       </div>
       <div
-        className="emotion-8"
+        className="emotion-11"
       >
         <div
-          className="emotion-9"
+          className="emotion-12"
         >
           Job
            
@@ -733,19 +779,19 @@ Array [
       </div>
     </div>
     <div
-      className="emotion-10"
+      className="emotion-13"
     />
     <hr
-      className="emotion-11"
+      className="emotion-14"
     />
     <div
-      className="emotion-12"
+      className="emotion-15"
     >
       <div
-        className="emotion-13"
+        className="emotion-16"
       >
         <div
-          className="emotion-14"
+          className="emotion-17"
         >
           Priority
           :
@@ -755,10 +801,10 @@ Array [
         </div>
       </div>
       <div
-        className="emotion-13"
+        className="emotion-16"
       >
         <div
-          className="emotion-14"
+          className="emotion-17"
         >
           # Assets
           :
@@ -768,10 +814,10 @@ Array [
         </div>
       </div>
       <div
-        className="emotion-13"
+        className="emotion-16"
       >
         <div
-          className="emotion-14"
+          className="emotion-17"
         >
           Task Progress
           :
@@ -779,7 +825,7 @@ Array [
         <div>
           <div
             aria-label="Progress Bar"
-            className="emotion-19"
+            className="emotion-22"
             onKeyPress={[Function]}
             onMouseEnter={[Function]}
             onMouseLeave={[Function]}
@@ -787,10 +833,10 @@ Array [
             tabIndex="0"
           >
             <div
-              className="emotion-20"
+              className="emotion-23"
             >
               <div
-                className="emotion-21"
+                className="emotion-24"
               />
             </div>
           </div>

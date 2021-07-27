@@ -1,10 +1,13 @@
 import logging
 import os
+import json
 from unittest import TestCase
 
 import boonflow.base as base
+import boonflow.analysis as analysis
 import boonflow.testing as testing
 from boonflow import BoonEnv
+from boonsdk import to_json
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -49,3 +52,23 @@ class TestBaseClasses(TestCase):
         for i in range(0, 2):
             image = stream.cv_img()
             assert image.shape == (341, 512, 3)
+
+    def test_boon_func_rsp_set_analysis(self):
+        an = analysis.LabelDetectionAnalysis()
+        an.add_label_and_score('cat', 0.5)
+
+        rsp = base.BoonFunctionResponse()
+        rsp.set_analysis(an)
+
+        res = json.loads(to_json(rsp))
+        assert res['analysis']['__MAIN__']
+
+    def test_boon_func_rsp_add_more_analysis(self):
+        an = analysis.LabelDetectionAnalysis()
+        an.add_label_and_score('cat', 0.5)
+
+        rsp = base.BoonFunctionResponse()
+        rsp.add_more_analysis('cats', an)
+
+        res = json.loads(to_json(rsp))
+        assert res['analysis']['cats']

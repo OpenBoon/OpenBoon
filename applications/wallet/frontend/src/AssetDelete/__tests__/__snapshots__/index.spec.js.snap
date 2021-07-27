@@ -64,7 +64,7 @@ exports[`<AssetDelete /> should render properly when an asset is selected 1`] = 
 }
 
 .emotion-5 {
-  padding-left: 12px;
+  padding-left: 8px;
 }
 
 .emotion-6 {

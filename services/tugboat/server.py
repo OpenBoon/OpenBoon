@@ -6,6 +6,7 @@ import shutil
 import subprocess
 import tempfile
 import time
+import json
 
 import urllib3
 import yaml
@@ -35,9 +36,14 @@ def message_poller(sub):
     """
     def callback(msg):
         try:
-            if msg.attributes['type'] == "model-upload":
+            msg_type = msg.attributes['type']
+            if msg_type == 'model-upload':
                 spec = dict(msg.attributes)
                 build_and_deploy(spec)
+            elif msg_type == 'model-delete':
+                spec = dict(msg.attributes)
+                if spec.get('deployed') == 'true':
+                    shutdown_service(spec)
         except Exception as e:
             logger.error("Error handling pubsub message, ", e)
         finally:
@@ -112,6 +118,77 @@ def submit_build(spec, build_path):
     run_cloud_build(build_file, build_path)
 
 
+def delete_model(event):
+    """
+    Delete a model.
+
+    Args:
+        event (dict): The pubsub event.
+    """
+    shutdown_service(event)
+    delete_images(event)
+
+
+def shutdown_service(event):
+    """
+    Shut down the model service for the given spec.
+
+    Args:
+        event (dict): A model event.
+    """
+    model_id = event['modelId']
+    service_name = f'mod-{model_id}'
+
+    logger.info(f'shutting down service: {service_name}')
+
+    cmd = [
+        'gcloud',
+        'run',
+        'services',
+        'delete',
+        service_name
+    ]
+    logger.info(f'Running: {cmd}')
+    subprocess.check_call(cmd)
+
+
+def delete_images(event):
+    image = event['image']
+
+    try:
+        tags = get_image_tags(image)
+        for tag in tags:
+            digest = tag['digest'][7:]
+            cmd = [
+                'gcloud',
+                'container',
+                'images',
+                'delete',
+                f'{image}@{digest}'
+            ]
+            logger.info(f'Running: {cmd}')
+            subprocess.call(cmd, shell=False)
+    except Exception as e:
+        logger.error(f'Error deleting tags for image {image}', e)
+
+
+def get_image_tags(image):
+    cmd = [
+        'gcloud',
+        'container',
+        'images',
+        'list-tags',
+        image,
+        '--format=json'
+    ]
+    proc = subprocess.Popen(
+        cmd,
+        shell=False,
+        stdout=subprocess.PIPE)
+    jstr, _ = proc.communicate()
+    return json.loads(jstr)
+
+
 def generate_build_file(spec, build_path):
     """
     Generates a Cloud Build Yaml file.
@@ -127,6 +204,8 @@ def generate_build_file(spec, build_path):
     img = spec['image']
     model_id = spec['modelId']
     model_file = spec['modelFile']
+    boonenv = os.environ.get('BOONAI_ENV', 'prod')
+    service_name = f'mod-{model_id}'
 
     build = {
         'steps': [
@@ -141,13 +220,14 @@ def generate_build_file(spec, build_path):
             {
                 'name': 'gcr.io/google.com/cloudsdktool/cloud-sdk',
                 'entrypoint': 'gcloud',
-                'args': ['run', 'deploy', f'mod-{model_id}', '--image', img,
+                'args': ['run', 'deploy', service_name, '--image', img,
                          '--region', 'us-central1',
                          '--platform', 'managed',
                          '--ingress', 'internal',
                          '--allow-unauthenticated',
                          '--memory=2Gi',
                          '--max-instances', '4',
+                         '--update-env-vars', f'BOONAI_ENV={boonenv}',
                          '--labels', f'model-id={model_id}']
             }
         ],

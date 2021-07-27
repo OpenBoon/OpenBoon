@@ -1,6 +1,5 @@
 import os
 import logging
-import jwt
 
 from flask import request
 
@@ -31,14 +30,21 @@ class FlaskBoonClient(BoonClient):
     A BoonAI client that automatically uses an Authorization header
     from a Flask request to make additional requests.
     """
+    endpoint_map = {
+        'prod': 'https://api.boonai.app',
+        'qa': 'https://qa.api.boonai.app',
+        'dev': 'https://dev.api.boonai.app',
+    }
 
     def __init__(self, client):
         super(FlaskBoonClient, self).__init__(None, None)
 
     def get_server(self):
-        token = jwt.decode(request.headers.get("Authorization")[7:],
-                           options={"verify_signature": False})
-        return token['aud']
+        if os.environ.get("BOONAI_SERVER"):
+            return os.environ.get("BOONAI_SERVER")
+        else:
+            env_name = os.environ.get("BOONAI_ENV") or 'prod'
+            return self.endpoint_map.get(env_name)
 
     def sign_request(self):
         token = request.headers.get("Authorization")

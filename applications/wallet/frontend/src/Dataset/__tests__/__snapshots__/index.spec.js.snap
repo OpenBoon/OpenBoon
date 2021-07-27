@@ -92,12 +92,16 @@ Array [
 }
 
 .emotion-1 {
+  padding-top: 8px;
+}
+
+.emotion-2 {
   color: #b3b3b3;
   font-family: Roboto Condensed;
   text-transform: uppercase;
 }
 
-.emotion-2 {
+.emotion-3 {
   color: #ffffff;
   font-weight: 500;
   font-size: 21px;
@@ -105,12 +109,12 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-3 {
+.emotion-4 {
   position: relative;
   height: 100%;
 }
 
-.emotion-4 {
+.emotion-5 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -142,62 +146,76 @@ Array [
   margin-bottom: 4px;
 }
 
-.emotion-4,
-.emotion-4:hover,
-.emotion-4:visited,
-.emotion-4 .noop {
+.emotion-5,
+.emotion-5:hover,
+.emotion-5:visited,
+.emotion-5 .noop {
   background-color: #808080;
 }
 
-.emotion-4:hover,
-.emotion-4 .noop {
+.emotion-5:hover,
+.emotion-5 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-4[aria-disabled=true],
-.emotion-4 .noop {
+.emotion-5[aria-disabled=true],
+.emotion-5 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-5 {
+.emotion-6 {
   margin: 0;
   padding: 0;
   list-style: none;
   line-height: 23px;
 }
 
-.emotion-6 {
+.emotion-7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-8 {
   color: #b3b3b3;
   font-family: Roboto Condensed;
   text-transform: uppercase;
+  padding-right: 8px;
 }
 
 <div>
     <div
       className="emotion-0"
     >
-      <div>
+      <div
+        className="emotion-1"
+      >
         <div
-          className="emotion-1"
+          className="emotion-2"
         >
           Dataset
            Name:
         </div>
         <h3
-          className="emotion-2"
+          className="emotion-3"
         >
           cats
         </h3>
       </div>
       <div
-        className="emotion-3"
+        className="emotion-4"
       >
         <button
           aria-label="Toggle Actions Menu"
-          className="emotion-4"
+          className="emotion-5"
           onBlur={[Function]}
           onClick={[Function]}
           type="button"
@@ -210,27 +228,37 @@ Array [
       </div>
     </div>
     <ul
-      className="emotion-5"
+      className="emotion-6"
     >
-      <li>
-        <span
-          className="emotion-6"
+      <li
+        className="emotion-7"
+      >
+        <div
+          className="emotion-8"
         >
           Dataset Type
           :
-        </span>
-         
-        Classification
+        </div>
+        <div
+          className="emotion-7"
+        >
+          Classification
+        </div>
       </li>
-      <li>
-        <span
-          className="emotion-6"
+      <li
+        className="emotion-7"
+      >
+        <div
+          className="emotion-8"
         >
           Description
           :
-        </span>
-         
-        A dataset for model training
+        </div>
+        <div
+          className="emotion-7"
+        >
+          A dataset for model training
+        </div>
       </li>
     </ul>
   </div>,
@@ -429,29 +457,6 @@ Array [
   background-color: #2e2e2e;
 }
 
-.emotion-6 tr:hover {
-  background-color: #4a4a4a;
-  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
-}
-
-.emotion-6 tr:hover .actions {
-  color: #b3b3b3;
-}
-
-.emotion-6 tr:hover td {
-  border: 1px solid #808080;
-  border-left: 0;
-  border-right: 0;
-}
-
-.emotion-6 tr:hover td:first-of-type {
-  border-left: 1px solid #808080;
-}
-
-.emotion-6 tr:hover td:last-of-type {
-  border-right: 1px solid #808080;
-}
-
 .emotion-6 td {
   max-width: calc(100vw / 3);
   overflow: hidden;
@@ -531,7 +536,6 @@ Array [
 
 .emotion-15 {
   height: 100%;
-  pointer-events: none;
 }
 
 .emotion-16 {
@@ -764,12 +768,16 @@ Array [
 }
 
 .emotion-1 {
+  padding-top: 8px;
+}
+
+.emotion-2 {
   color: #b3b3b3;
   font-family: Roboto Condensed;
   text-transform: uppercase;
 }
 
-.emotion-2 {
+.emotion-3 {
   color: #ffffff;
   font-weight: 500;
   font-size: 21px;
@@ -777,12 +785,12 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-3 {
+.emotion-4 {
   position: relative;
   height: 100%;
 }
 
-.emotion-4 {
+.emotion-5 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -814,62 +822,76 @@ Array [
   margin-bottom: 4px;
 }
 
-.emotion-4,
-.emotion-4:hover,
-.emotion-4:visited,
-.emotion-4 .noop {
+.emotion-5,
+.emotion-5:hover,
+.emotion-5:visited,
+.emotion-5 .noop {
   background-color: #808080;
 }
 
-.emotion-4:hover,
-.emotion-4 .noop {
+.emotion-5:hover,
+.emotion-5 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-4[aria-disabled=true],
-.emotion-4 .noop {
+.emotion-5[aria-disabled=true],
+.emotion-5 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-5 {
+.emotion-6 {
   margin: 0;
   padding: 0;
   list-style: none;
   line-height: 23px;
 }
 
-.emotion-6 {
+.emotion-7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-8 {
   color: #b3b3b3;
   font-family: Roboto Condensed;
   text-transform: uppercase;
+  padding-right: 8px;
 }
 
 <div>
     <div
       className="emotion-0"
     >
-      <div>
+      <div
+        className="emotion-1"
+      >
         <div
-          className="emotion-1"
+          className="emotion-2"
         >
           Dataset
            Name:
         </div>
         <h3
-          className="emotion-2"
+          className="emotion-3"
         >
           cats
         </h3>
       </div>
       <div
-        className="emotion-3"
+        className="emotion-4"
       >
         <button
           aria-label="Toggle Actions Menu"
-          className="emotion-4"
+          className="emotion-5"
           onBlur={[Function]}
           onClick={[Function]}
           type="button"
@@ -882,27 +904,37 @@ Array [
       </div>
     </div>
     <ul
-      className="emotion-5"
+      className="emotion-6"
     >
-      <li>
-        <span
-          className="emotion-6"
+      <li
+        className="emotion-7"
+      >
+        <div
+          className="emotion-8"
         >
           Dataset Type
           :
-        </span>
-         
-        Classification
+        </div>
+        <div
+          className="emotion-7"
+        >
+          Classification
+        </div>
       </li>
-      <li>
-        <span
-          className="emotion-6"
+      <li
+        className="emotion-7"
+      >
+        <div
+          className="emotion-8"
         >
           Description
           :
-        </span>
-         
-        A dataset for model training
+        </div>
+        <div
+          className="emotion-7"
+        >
+          A dataset for model training
+        </div>
       </li>
     </ul>
   </div>,
@@ -1367,12 +1399,16 @@ Array [
 }
 
 .emotion-1 {
+  padding-top: 8px;
+}
+
+.emotion-2 {
   color: #b3b3b3;
   font-family: Roboto Condensed;
   text-transform: uppercase;
 }
 
-.emotion-2 {
+.emotion-3 {
   color: #ffffff;
   font-weight: 500;
   font-size: 21px;
@@ -1380,12 +1416,12 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-3 {
+.emotion-4 {
   position: relative;
   height: 100%;
 }
 
-.emotion-4 {
+.emotion-5 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1417,62 +1453,76 @@ Array [
   margin-bottom: 4px;
 }
 
-.emotion-4,
-.emotion-4:hover,
-.emotion-4:visited,
-.emotion-4 .noop {
+.emotion-5,
+.emotion-5:hover,
+.emotion-5:visited,
+.emotion-5 .noop {
   background-color: #808080;
 }
 
-.emotion-4:hover,
-.emotion-4 .noop {
+.emotion-5:hover,
+.emotion-5 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-4[aria-disabled=true],
-.emotion-4 .noop {
+.emotion-5[aria-disabled=true],
+.emotion-5 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-5 {
+.emotion-6 {
   margin: 0;
   padding: 0;
   list-style: none;
   line-height: 23px;
 }
 
-.emotion-6 {
+.emotion-7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-8 {
   color: #b3b3b3;
   font-family: Roboto Condensed;
   text-transform: uppercase;
+  padding-right: 8px;
 }
 
 <div>
     <div
       className="emotion-0"
     >
-      <div>
+      <div
+        className="emotion-1"
+      >
         <div
-          className="emotion-1"
+          className="emotion-2"
         >
           Dataset
            Name:
         </div>
         <h3
-          className="emotion-2"
+          className="emotion-3"
         >
           cats
         </h3>
       </div>
       <div
-        className="emotion-3"
+        className="emotion-4"
       >
         <button
           aria-label="Toggle Actions Menu"
-          className="emotion-4"
+          className="emotion-5"
           onBlur={[Function]}
           onClick={[Function]}
           type="button"
@@ -1485,27 +1535,37 @@ Array [
       </div>
     </div>
     <ul
-      className="emotion-5"
+      className="emotion-6"
     >
-      <li>
-        <span
-          className="emotion-6"
+      <li
+        className="emotion-7"
+      >
+        <div
+          className="emotion-8"
         >
           Dataset Type
           :
-        </span>
-         
-        Classification
+        </div>
+        <div
+          className="emotion-7"
+        >
+          Classification
+        </div>
       </li>
-      <li>
-        <span
-          className="emotion-6"
+      <li
+        className="emotion-7"
+      >
+        <div
+          className="emotion-8"
         >
           Description
           :
-        </span>
-         
-        A dataset for model training
+        </div>
+        <div
+          className="emotion-7"
+        >
+          A dataset for model training
+        </div>
       </li>
     </ul>
   </div>,
@@ -1660,12 +1720,16 @@ Array [
 }
 
 .emotion-1 {
+  padding-top: 8px;
+}
+
+.emotion-2 {
   color: #b3b3b3;
   font-family: Roboto Condensed;
   text-transform: uppercase;
 }
 
-.emotion-2 {
+.emotion-3 {
   color: #ffffff;
   font-weight: 500;
   font-size: 21px;
@@ -1673,12 +1737,12 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-3 {
+.emotion-4 {
   position: relative;
   height: 100%;
 }
 
-.emotion-4 {
+.emotion-5 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1710,62 +1774,76 @@ Array [
   margin-bottom: 4px;
 }
 
-.emotion-4,
-.emotion-4:hover,
-.emotion-4:visited,
-.emotion-4 .noop {
+.emotion-5,
+.emotion-5:hover,
+.emotion-5:visited,
+.emotion-5 .noop {
   background-color: #808080;
 }
 
-.emotion-4:hover,
-.emotion-4 .noop {
+.emotion-5:hover,
+.emotion-5 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-4[aria-disabled=true],
-.emotion-4 .noop {
+.emotion-5[aria-disabled=true],
+.emotion-5 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-5 {
+.emotion-6 {
   margin: 0;
   padding: 0;
   list-style: none;
   line-height: 23px;
 }
 
-.emotion-6 {
+.emotion-7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-8 {
   color: #b3b3b3;
   font-family: Roboto Condensed;
   text-transform: uppercase;
+  padding-right: 8px;
 }
 
 <div>
     <div
       className="emotion-0"
     >
-      <div>
+      <div
+        className="emotion-1"
+      >
         <div
-          className="emotion-1"
+          className="emotion-2"
         >
           Dataset
            Name:
         </div>
         <h3
-          className="emotion-2"
+          className="emotion-3"
         >
           cats
         </h3>
       </div>
       <div
-        className="emotion-3"
+        className="emotion-4"
       >
         <button
           aria-label="Toggle Actions Menu"
-          className="emotion-4"
+          className="emotion-5"
           onBlur={[Function]}
           onClick={[Function]}
           type="button"
@@ -1778,27 +1856,37 @@ Array [
       </div>
     </div>
     <ul
-      className="emotion-5"
+      className="emotion-6"
     >
-      <li>
-        <span
-          className="emotion-6"
+      <li
+        className="emotion-7"
+      >
+        <div
+          className="emotion-8"
         >
           Dataset Type
           :
-        </span>
-         
-        Classification
+        </div>
+        <div
+          className="emotion-7"
+        >
+          Classification
+        </div>
       </li>
-      <li>
-        <span
-          className="emotion-6"
+      <li
+        className="emotion-7"
+      >
+        <div
+          className="emotion-8"
         >
           Description
           :
-        </span>
-         
-        A dataset for model training
+        </div>
+        <div
+          className="emotion-7"
+        >
+          A dataset for model training
+        </div>
       </li>
     </ul>
   </div>,

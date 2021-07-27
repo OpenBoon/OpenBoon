@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import useSWR from 'swr'
 import Link from 'next/link'
 
-import { colors, spacing, typography } from '../Styles'
+import { colors, constants, spacing, typography } from '../Styles'
 
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 import ModelMatrixMinimap from '../ModelMatrix/Minimap'
@@ -78,6 +78,7 @@ const ModelMatrixLink = ({ projectId, model }) => {
                 padding: 0,
                 paddingTop: spacing.base,
                 li: {
+                  lineHeight: '24px',
                   listStyleType: 'none',
                   display: 'flex',
                   alignItems: 'center',
@@ -95,9 +96,20 @@ const ModelMatrixLink = ({ projectId, model }) => {
                 }}
               >
                 {!datasetId ? (
-                  <span>—</span>
+                  <span
+                    css={{
+                      padding: spacing.small,
+                      paddingTop: 0,
+                      paddingBottom: 0,
+                    }}
+                  >
+                    —
+                  </span>
                 ) : (
-                  <CheckmarkSvg height={14} color={colors.signal.grass.base} />
+                  <CheckmarkSvg
+                    height={constants.icons.regular}
+                    color={colors.signal.grass.base}
+                  />
                 )}
                 add a dataset
               </li>
@@ -111,9 +123,20 @@ const ModelMatrixLink = ({ projectId, model }) => {
                 }}
               >
                 {!datasetId || !!missingLabels || !!missingLabelsOnAssets ? (
-                  <span>—</span>
+                  <span
+                    css={{
+                      padding: spacing.small,
+                      paddingTop: 0,
+                      paddingBottom: 0,
+                    }}
+                  >
+                    —
+                  </span>
                 ) : (
-                  <CheckmarkSvg height={14} color={colors.signal.grass.base} />
+                  <CheckmarkSvg
+                    height={constants.icons.regular}
+                    color={colors.signal.grass.base}
+                  />
                 )}
                 add test labels to dataset
               </li>
@@ -133,9 +156,20 @@ const ModelMatrixLink = ({ projectId, model }) => {
                 !!missingLabels ||
                 !!missingLabelsOnAssets ||
                 !timeLastApplied ? (
-                  <span>—</span>
+                  <span
+                    css={{
+                      padding: spacing.small,
+                      paddingTop: 0,
+                      paddingBottom: 0,
+                    }}
+                  >
+                    —
+                  </span>
                 ) : (
-                  <CheckmarkSvg height={14} color={colors.signal.grass.base} />
+                  <CheckmarkSvg
+                    height={constants.icons.regular}
+                    color={colors.signal.grass.base}
+                  />
                 )}
                 run &quot;test&quot; or &quot;analyze all&quot;
               </li>

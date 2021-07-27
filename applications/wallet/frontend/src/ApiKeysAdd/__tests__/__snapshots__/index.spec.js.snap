@@ -449,158 +449,6 @@ Array [
             defaultChecked={false}
             onClick={[Function]}
             type="checkbox"
-            value="SystemMonitor"
-          />
-          <div
-            className="emotion-12"
-          >
-            <svg
-              className="emotion-13"
-              data-file-name="checkmark.svg"
-              height={20}
-            />
-          </div>
-        </div>
-        <div
-          className="emotion-14"
-        >
-          <span
-            className="emotion-15"
-          >
-             System Monitor
-          </span>
-          <span
-            className="emotion-16"
-          >
-            Allows access to monitoring endpoints
-          </span>
-        </div>
-      </label>
-      <label
-        className="emotion-9"
-      >
-        <div
-          className="emotion-10"
-        >
-          <input
-            className="emotion-11"
-            defaultChecked={false}
-            onClick={[Function]}
-            type="checkbox"
-            value="SystemManage"
-          />
-          <div
-            className="emotion-12"
-          >
-            <svg
-              className="emotion-13"
-              data-file-name="checkmark.svg"
-              height={20}
-            />
-          </div>
-        </div>
-        <div
-          className="emotion-14"
-        >
-          <span
-            className="emotion-15"
-          >
-             System Manage
-          </span>
-          <span
-            className="emotion-16"
-          >
-            Allows access to platform management endpoints
-          </span>
-        </div>
-      </label>
-      <label
-        className="emotion-9"
-      >
-        <div
-          className="emotion-10"
-        >
-          <input
-            className="emotion-11"
-            defaultChecked={false}
-            onClick={[Function]}
-            type="checkbox"
-            value="SystemProjectOverride"
-          />
-          <div
-            className="emotion-12"
-          >
-            <svg
-              className="emotion-13"
-              data-file-name="checkmark.svg"
-              height={20}
-            />
-          </div>
-        </div>
-        <div
-          className="emotion-14"
-        >
-          <span
-            className="emotion-15"
-          >
-             System Project Override
-          </span>
-          <span
-            className="emotion-16"
-          >
-            Provides ability to switch projects
-          </span>
-        </div>
-      </label>
-      <label
-        className="emotion-9"
-      >
-        <div
-          className="emotion-10"
-        >
-          <input
-            className="emotion-11"
-            defaultChecked={false}
-            onClick={[Function]}
-            type="checkbox"
-            value="SystemProjectDecrypt"
-          />
-          <div
-            className="emotion-12"
-          >
-            <svg
-              className="emotion-13"
-              data-file-name="checkmark.svg"
-              height={20}
-            />
-          </div>
-        </div>
-        <div
-          className="emotion-14"
-        >
-          <span
-            className="emotion-15"
-          >
-             System Project Decrypt
-          </span>
-          <span
-            className="emotion-16"
-          >
-            Provides ability to view encrypted project data
-          </span>
-        </div>
-      </label>
-      <label
-        className="emotion-9"
-      >
-        <div
-          className="emotion-10"
-        >
-          <input
-            className="emotion-11"
-            defaultChecked={false}
-            onClick={[Function]}
-            type="checkbox"
             value="ApiKeyManage"
           />
           <div
@@ -625,82 +473,6 @@ Array [
             className="emotion-16"
           >
             Provides ability to manage API keys
-          </span>
-        </div>
-      </label>
-      <label
-        className="emotion-9"
-      >
-        <div
-          className="emotion-10"
-        >
-          <input
-            className="emotion-11"
-            defaultChecked={false}
-            onClick={[Function]}
-            type="checkbox"
-            value="AssetsRead"
-          />
-          <div
-            className="emotion-12"
-          >
-            <svg
-              className="emotion-13"
-              data-file-name="checkmark.svg"
-              height={20}
-            />
-          </div>
-        </div>
-        <div
-          className="emotion-14"
-        >
-          <span
-            className="emotion-15"
-          >
-             Assets Read
-          </span>
-          <span
-            className="emotion-16"
-          >
-            Provides ability to read assets and associated files
-          </span>
-        </div>
-      </label>
-      <label
-        className="emotion-9"
-      >
-        <div
-          className="emotion-10"
-        >
-          <input
-            className="emotion-11"
-            defaultChecked={false}
-            onClick={[Function]}
-            type="checkbox"
-            value="AssetsImport"
-          />
-          <div
-            className="emotion-12"
-          >
-            <svg
-              className="emotion-13"
-              data-file-name="checkmark.svg"
-              height={20}
-            />
-          </div>
-        </div>
-        <div
-          className="emotion-14"
-        >
-          <span
-            className="emotion-15"
-          >
-             Assets Import
-          </span>
-          <span
-            className="emotion-16"
-          >
-            Provides ability to import assets. (created and update)
           </span>
         </div>
       </label>
@@ -753,7 +525,7 @@ Array [
             defaultChecked={false}
             onClick={[Function]}
             type="checkbox"
-            value="ProjectManage"
+            value="AssetsImport"
           />
           <div
             className="emotion-12"
@@ -771,12 +543,50 @@ Array [
           <span
             className="emotion-15"
           >
-             Project Manage
+             Assets Import
           </span>
           <span
             className="emotion-16"
           >
-            Provides ability to manage projects.
+            Provides ability to import assets. (created and update)
+          </span>
+        </div>
+      </label>
+      <label
+        className="emotion-9"
+      >
+        <div
+          className="emotion-10"
+        >
+          <input
+            className="emotion-11"
+            defaultChecked={false}
+            onClick={[Function]}
+            type="checkbox"
+            value="AssetsRead"
+          />
+          <div
+            className="emotion-12"
+          >
+            <svg
+              className="emotion-13"
+              data-file-name="checkmark.svg"
+              height={20}
+            />
+          </div>
+        </div>
+        <div
+          className="emotion-14"
+        >
+          <span
+            className="emotion-15"
+          >
+             Assets Read
+          </span>
+          <span
+            className="emotion-16"
+          >
+            Provides ability to read assets and associated files
           </span>
         </div>
       </label>
@@ -891,6 +701,196 @@ Array [
             className="emotion-16"
           >
             Provides ability to store project files in cloud storage.
+          </span>
+        </div>
+      </label>
+      <label
+        className="emotion-9"
+      >
+        <div
+          className="emotion-10"
+        >
+          <input
+            className="emotion-11"
+            defaultChecked={false}
+            onClick={[Function]}
+            type="checkbox"
+            value="ProjectManage"
+          />
+          <div
+            className="emotion-12"
+          >
+            <svg
+              className="emotion-13"
+              data-file-name="checkmark.svg"
+              height={20}
+            />
+          </div>
+        </div>
+        <div
+          className="emotion-14"
+        >
+          <span
+            className="emotion-15"
+          >
+             Project Manage
+          </span>
+          <span
+            className="emotion-16"
+          >
+            Provides ability to manage projects.
+          </span>
+        </div>
+      </label>
+      <label
+        className="emotion-9"
+      >
+        <div
+          className="emotion-10"
+        >
+          <input
+            className="emotion-11"
+            defaultChecked={false}
+            onClick={[Function]}
+            type="checkbox"
+            value="SystemManage"
+          />
+          <div
+            className="emotion-12"
+          >
+            <svg
+              className="emotion-13"
+              data-file-name="checkmark.svg"
+              height={20}
+            />
+          </div>
+        </div>
+        <div
+          className="emotion-14"
+        >
+          <span
+            className="emotion-15"
+          >
+             System Manage
+          </span>
+          <span
+            className="emotion-16"
+          >
+            Allows access to platform management endpoints
+          </span>
+        </div>
+      </label>
+      <label
+        className="emotion-9"
+      >
+        <div
+          className="emotion-10"
+        >
+          <input
+            className="emotion-11"
+            defaultChecked={false}
+            onClick={[Function]}
+            type="checkbox"
+            value="SystemMonitor"
+          />
+          <div
+            className="emotion-12"
+          >
+            <svg
+              className="emotion-13"
+              data-file-name="checkmark.svg"
+              height={20}
+            />
+          </div>
+        </div>
+        <div
+          className="emotion-14"
+        >
+          <span
+            className="emotion-15"
+          >
+             System Monitor
+          </span>
+          <span
+            className="emotion-16"
+          >
+            Allows access to monitoring endpoints
+          </span>
+        </div>
+      </label>
+      <label
+        className="emotion-9"
+      >
+        <div
+          className="emotion-10"
+        >
+          <input
+            className="emotion-11"
+            defaultChecked={false}
+            onClick={[Function]}
+            type="checkbox"
+            value="SystemProjectDecrypt"
+          />
+          <div
+            className="emotion-12"
+          >
+            <svg
+              className="emotion-13"
+              data-file-name="checkmark.svg"
+              height={20}
+            />
+          </div>
+        </div>
+        <div
+          className="emotion-14"
+        >
+          <span
+            className="emotion-15"
+          >
+             System Project Decrypt
+          </span>
+          <span
+            className="emotion-16"
+          >
+            Provides ability to view encrypted project data
+          </span>
+        </div>
+      </label>
+      <label
+        className="emotion-9"
+      >
+        <div
+          className="emotion-10"
+        >
+          <input
+            className="emotion-11"
+            defaultChecked={false}
+            onClick={[Function]}
+            type="checkbox"
+            value="SystemProjectOverride"
+          />
+          <div
+            className="emotion-12"
+          >
+            <svg
+              className="emotion-13"
+              data-file-name="checkmark.svg"
+              height={20}
+            />
+          </div>
+        </div>
+        <div
+          className="emotion-14"
+        >
+          <span
+            className="emotion-15"
+          >
+             System Project Override
+          </span>
+          <span
+            className="emotion-16"
+          >
+            Provides ability to switch projects
           </span>
         </div>
       </label>
@@ -1890,158 +1890,6 @@ Array [
             defaultChecked={false}
             onClick={[Function]}
             type="checkbox"
-            value="SystemMonitor"
-          />
-          <div
-            className="emotion-12"
-          >
-            <svg
-              className="emotion-13"
-              data-file-name="checkmark.svg"
-              height={20}
-            />
-          </div>
-        </div>
-        <div
-          className="emotion-14"
-        >
-          <span
-            className="emotion-15"
-          >
-             System Monitor
-          </span>
-          <span
-            className="emotion-16"
-          >
-            Allows access to monitoring endpoints
-          </span>
-        </div>
-      </label>
-      <label
-        className="emotion-9"
-      >
-        <div
-          className="emotion-10"
-        >
-          <input
-            className="emotion-11"
-            defaultChecked={false}
-            onClick={[Function]}
-            type="checkbox"
-            value="SystemManage"
-          />
-          <div
-            className="emotion-12"
-          >
-            <svg
-              className="emotion-13"
-              data-file-name="checkmark.svg"
-              height={20}
-            />
-          </div>
-        </div>
-        <div
-          className="emotion-14"
-        >
-          <span
-            className="emotion-15"
-          >
-             System Manage
-          </span>
-          <span
-            className="emotion-16"
-          >
-            Allows access to platform management endpoints
-          </span>
-        </div>
-      </label>
-      <label
-        className="emotion-9"
-      >
-        <div
-          className="emotion-10"
-        >
-          <input
-            className="emotion-11"
-            defaultChecked={false}
-            onClick={[Function]}
-            type="checkbox"
-            value="SystemProjectOverride"
-          />
-          <div
-            className="emotion-12"
-          >
-            <svg
-              className="emotion-13"
-              data-file-name="checkmark.svg"
-              height={20}
-            />
-          </div>
-        </div>
-        <div
-          className="emotion-14"
-        >
-          <span
-            className="emotion-15"
-          >
-             System Project Override
-          </span>
-          <span
-            className="emotion-16"
-          >
-            Provides ability to switch projects
-          </span>
-        </div>
-      </label>
-      <label
-        className="emotion-9"
-      >
-        <div
-          className="emotion-10"
-        >
-          <input
-            className="emotion-11"
-            defaultChecked={false}
-            onClick={[Function]}
-            type="checkbox"
-            value="SystemProjectDecrypt"
-          />
-          <div
-            className="emotion-12"
-          >
-            <svg
-              className="emotion-13"
-              data-file-name="checkmark.svg"
-              height={20}
-            />
-          </div>
-        </div>
-        <div
-          className="emotion-14"
-        >
-          <span
-            className="emotion-15"
-          >
-             System Project Decrypt
-          </span>
-          <span
-            className="emotion-16"
-          >
-            Provides ability to view encrypted project data
-          </span>
-        </div>
-      </label>
-      <label
-        className="emotion-9"
-      >
-        <div
-          className="emotion-10"
-        >
-          <input
-            className="emotion-11"
-            defaultChecked={false}
-            onClick={[Function]}
-            type="checkbox"
             value="ApiKeyManage"
           />
           <div
@@ -2066,82 +1914,6 @@ Array [
             className="emotion-16"
           >
             Provides ability to manage API keys
-          </span>
-        </div>
-      </label>
-      <label
-        className="emotion-9"
-      >
-        <div
-          className="emotion-10"
-        >
-          <input
-            className="emotion-11"
-            defaultChecked={false}
-            onClick={[Function]}
-            type="checkbox"
-            value="AssetsRead"
-          />
-          <div
-            className="emotion-12"
-          >
-            <svg
-              className="emotion-13"
-              data-file-name="checkmark.svg"
-              height={20}
-            />
-          </div>
-        </div>
-        <div
-          className="emotion-14"
-        >
-          <span
-            className="emotion-15"
-          >
-             Assets Read
-          </span>
-          <span
-            className="emotion-16"
-          >
-            Provides ability to read assets and associated files
-          </span>
-        </div>
-      </label>
-      <label
-        className="emotion-9"
-      >
-        <div
-          className="emotion-10"
-        >
-          <input
-            className="emotion-11"
-            defaultChecked={false}
-            onClick={[Function]}
-            type="checkbox"
-            value="AssetsImport"
-          />
-          <div
-            className="emotion-12"
-          >
-            <svg
-              className="emotion-13"
-              data-file-name="checkmark.svg"
-              height={20}
-            />
-          </div>
-        </div>
-        <div
-          className="emotion-14"
-        >
-          <span
-            className="emotion-15"
-          >
-             Assets Import
-          </span>
-          <span
-            className="emotion-16"
-          >
-            Provides ability to import assets. (created and update)
           </span>
         </div>
       </label>
@@ -2194,7 +1966,7 @@ Array [
             defaultChecked={false}
             onClick={[Function]}
             type="checkbox"
-            value="ProjectManage"
+            value="AssetsImport"
           />
           <div
             className="emotion-12"
@@ -2212,12 +1984,50 @@ Array [
           <span
             className="emotion-15"
           >
-             Project Manage
+             Assets Import
           </span>
           <span
             className="emotion-16"
           >
-            Provides ability to manage projects.
+            Provides ability to import assets. (created and update)
+          </span>
+        </div>
+      </label>
+      <label
+        className="emotion-9"
+      >
+        <div
+          className="emotion-10"
+        >
+          <input
+            className="emotion-11"
+            defaultChecked={false}
+            onClick={[Function]}
+            type="checkbox"
+            value="AssetsRead"
+          />
+          <div
+            className="emotion-12"
+          >
+            <svg
+              className="emotion-13"
+              data-file-name="checkmark.svg"
+              height={20}
+            />
+          </div>
+        </div>
+        <div
+          className="emotion-14"
+        >
+          <span
+            className="emotion-15"
+          >
+             Assets Read
+          </span>
+          <span
+            className="emotion-16"
+          >
+            Provides ability to read assets and associated files
           </span>
         </div>
       </label>
@@ -2332,6 +2142,196 @@ Array [
             className="emotion-16"
           >
             Provides ability to store project files in cloud storage.
+          </span>
+        </div>
+      </label>
+      <label
+        className="emotion-9"
+      >
+        <div
+          className="emotion-10"
+        >
+          <input
+            className="emotion-11"
+            defaultChecked={false}
+            onClick={[Function]}
+            type="checkbox"
+            value="ProjectManage"
+          />
+          <div
+            className="emotion-12"
+          >
+            <svg
+              className="emotion-13"
+              data-file-name="checkmark.svg"
+              height={20}
+            />
+          </div>
+        </div>
+        <div
+          className="emotion-14"
+        >
+          <span
+            className="emotion-15"
+          >
+             Project Manage
+          </span>
+          <span
+            className="emotion-16"
+          >
+            Provides ability to manage projects.
+          </span>
+        </div>
+      </label>
+      <label
+        className="emotion-9"
+      >
+        <div
+          className="emotion-10"
+        >
+          <input
+            className="emotion-11"
+            defaultChecked={false}
+            onClick={[Function]}
+            type="checkbox"
+            value="SystemManage"
+          />
+          <div
+            className="emotion-12"
+          >
+            <svg
+              className="emotion-13"
+              data-file-name="checkmark.svg"
+              height={20}
+            />
+          </div>
+        </div>
+        <div
+          className="emotion-14"
+        >
+          <span
+            className="emotion-15"
+          >
+             System Manage
+          </span>
+          <span
+            className="emotion-16"
+          >
+            Allows access to platform management endpoints
+          </span>
+        </div>
+      </label>
+      <label
+        className="emotion-9"
+      >
+        <div
+          className="emotion-10"
+        >
+          <input
+            className="emotion-11"
+            defaultChecked={false}
+            onClick={[Function]}
+            type="checkbox"
+            value="SystemMonitor"
+          />
+          <div
+            className="emotion-12"
+          >
+            <svg
+              className="emotion-13"
+              data-file-name="checkmark.svg"
+              height={20}
+            />
+          </div>
+        </div>
+        <div
+          className="emotion-14"
+        >
+          <span
+            className="emotion-15"
+          >
+             System Monitor
+          </span>
+          <span
+            className="emotion-16"
+          >
+            Allows access to monitoring endpoints
+          </span>
+        </div>
+      </label>
+      <label
+        className="emotion-9"
+      >
+        <div
+          className="emotion-10"
+        >
+          <input
+            className="emotion-11"
+            defaultChecked={false}
+            onClick={[Function]}
+            type="checkbox"
+            value="SystemProjectDecrypt"
+          />
+          <div
+            className="emotion-12"
+          >
+            <svg
+              className="emotion-13"
+              data-file-name="checkmark.svg"
+              height={20}
+            />
+          </div>
+        </div>
+        <div
+          className="emotion-14"
+        >
+          <span
+            className="emotion-15"
+          >
+             System Project Decrypt
+          </span>
+          <span
+            className="emotion-16"
+          >
+            Provides ability to view encrypted project data
+          </span>
+        </div>
+      </label>
+      <label
+        className="emotion-9"
+      >
+        <div
+          className="emotion-10"
+        >
+          <input
+            className="emotion-11"
+            defaultChecked={false}
+            onClick={[Function]}
+            type="checkbox"
+            value="SystemProjectOverride"
+          />
+          <div
+            className="emotion-12"
+          >
+            <svg
+              className="emotion-13"
+              data-file-name="checkmark.svg"
+              height={20}
+            />
+          </div>
+        </div>
+        <div
+          className="emotion-14"
+        >
+          <span
+            className="emotion-15"
+          >
+             System Project Override
+          </span>
+          <span
+            className="emotion-16"
+          >
+            Provides ability to switch projects
           </span>
         </div>
       </label>
