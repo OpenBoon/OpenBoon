@@ -11,6 +11,7 @@ from metrics.records.models import ApiCall
 def callback(message):
     """Callback for handling Cloud Pub/Sub messages."""
     if message.attributes['type'] != 'assets-indexed':
+        print(f'Ignoring {message.attributes["type"]} type message.')
         message.ack()
         return
     metrics = json.loads(message.data)
@@ -27,11 +28,12 @@ def callback(message):
             if asset_type == 'video':
                 record.video_seconds = length
             elif asset_type in ['image', 'document']:
-                record.image_count == length
+                record.image_count = length
             else:
                 raise TypeError(f'{asset_type} is not a supported metric type.')
             records.append(record)
     created_records = ApiCall.objects.bulk_create(records)
+    message.ack()
     for record in created_records:
         log = dict(severity='INFO',
                    log_type='record-created',
