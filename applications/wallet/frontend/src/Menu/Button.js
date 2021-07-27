@@ -50,7 +50,7 @@ MenuButton.defaultProps = {
 MenuButton.propTypes = {
   onBlur: PropTypes.func.isRequired,
   onClick: PropTypes.func.isRequired,
-  legend: PropTypes.string.isRequired,
+  legend: PropTypes.node.isRequired,
   style: stylesShape,
 }
 
