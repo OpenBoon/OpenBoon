@@ -13,7 +13,7 @@ from boonflow import file_storage
 from function import function
 
 logger = logging.getLogger('boonfunc')
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.DEBUG)
 
 app = flask.Flask(__name__)
 
