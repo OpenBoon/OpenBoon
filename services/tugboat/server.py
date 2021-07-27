@@ -227,7 +227,7 @@ def generate_build_file(spec, build_path):
                          '--allow-unauthenticated',
                          '--memory=2Gi',
                          '--max-instances', '4',
-                         '--update-env-vars', f'BOONAI_ENV={boonenv}',
+                         '--update-env-vars', f'BOONAI_ENV={boonenv},BOONFLOW_IN_FLASK=yes',
                          '--labels', f'model-id={model_id}']
             }
         ],
