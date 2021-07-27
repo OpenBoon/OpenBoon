@@ -9,7 +9,6 @@ from rest_framework.settings import api_settings
 from metrics.records.models import ApiCall
 from metrics.records.serializers import ApiCallSerializer, ReportSerializer, \
     TieredUsageSerializer
-from metrics.records.tasks import upsert_api_call
 from .mixins import CSVFileMixin
 from .renderers import ReportCSVRenderer
 
@@ -24,9 +23,6 @@ class ApiCallViewSet(CSVFileMixin, viewsets.ModelViewSet):
     permission_classes = []
     renderer_classes(api_settings.DEFAULT_RENDERER_CLASSES + [ReportCSVRenderer])
     filename = 'billing_report.csv'
-
-    def perform_create(self, serializer):
-        upsert_api_call.delay(serializer.data)
 
     def get_queryset(self):
         queryset = ApiCall.objects.all()

@@ -19,5 +19,5 @@ gunicorn -c python:gunicornconfig metrics.wsgi &
 # Start nginx gateway server
 nginx -g "daemon off;" &
 
-# Start the celery worker for processing DB inserts.
-celery -A metrics.records.tasks worker --loglevel=INFO --uid=boonai --gid=boonai
+# Start the pubsub listener to get metrics messages from the archivist.
+python3 -u ./app/manage.py pubsublistener

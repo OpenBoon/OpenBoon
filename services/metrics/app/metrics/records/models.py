@@ -72,9 +72,6 @@ class ApiCall(models.Model):
                       'azure-text-detection']
 
     class Meta:
-        unique_together = (
-            ('service', 'asset_id', 'project')
-        )
         indexes = [
             models.Index(fields=['service', 'project', 'created_date'])
         ]

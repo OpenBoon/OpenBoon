@@ -371,6 +371,7 @@ module "reporter" {
 
 module "metrics" {
   source                       = "./modules/metrics"
+  project                      = var.project
   sql-instance-name            = module.postgres.instance-name
   sql-connection-name          = module.postgres.connection-name
   sql-service-account-key-date = module.postgres.sql-service-account-key-date
@@ -386,6 +387,7 @@ module "metrics" {
   django-log-level             = var.metrics-django-log-level
   log-requests                 = var.metrics-log-requests
   redis-host                   = module.redis.ip-address
+  metrics-pub-sub-topic        = module.archivist.pubsub-topic-name-metrics
 }
 
 module "swivel" {
