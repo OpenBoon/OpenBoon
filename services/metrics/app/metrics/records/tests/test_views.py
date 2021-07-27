@@ -1,8 +1,8 @@
 import pytest
-import boonsdk
-
-from django.urls import reverse
 from django.conf import settings
+from django.urls import reverse
+
+import boonsdk
 from metrics.records.models import ApiCall
 
 pytestmark = pytest.mark.django_db
@@ -14,24 +14,6 @@ class TestAPICallsViewSet:
         response = api_client.get(reverse('apicalls-list'))
         assert response.json() == {'count': 0, 'next': None,
                                    'previous': None, 'results': []}
-
-    def test_create_call(self, api_client):
-        body = {'project': '92db38cc-a9d1-43af-bfb5-7be32de1d33d',
-                'service': 'CoolMlStuff',
-                'asset_id': 'GTZ6ppbXYwXO4ssWYcPVaQJsXNC-cVap',
-                'asset_path': 'gs://bucket/image.jpg',
-                'image_count': 1,
-                'video_seconds': 0.0}
-        response = api_client.post(reverse('apicalls-list'), body)
-        assert response.status_code == 201
-        first_api_call = ApiCall.objects.first()
-
-        # Make sure upserting works.
-        response = api_client.post(reverse('apicalls-list'), body)
-        assert response.status_code == 201
-        second_api_call = ApiCall.objects.get(id=first_api_call.id)
-        assert first_api_call.created_date == second_api_call.created_date
-        assert first_api_call.modified_date < second_api_call.modified_date
 
     def test_get_single_record(self, api_client, single_record):
         url = reverse('apicalls-detail', kwargs={'pk': single_record.id})

@@ -1,3 +1,8 @@
+variable "project" {
+}
+
+variable "metrics-pub-sub-topic" {
+}
 
 variable "sql-instance-name" {
 }

@@ -18,3 +18,7 @@ output "pubsub-topic-name-builds" {
 output "pubsub-topic-name-models" {
   value = google_pubsub_topic.model-events.name
 }
+
+output "pubsub-topic-name-metrics" {
+  value = google_pubsub_topic.metrics.name
+}

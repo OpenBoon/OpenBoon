@@ -30,6 +30,7 @@ importlib-metadata = "*"
 typing-extensions = "*"
 deprecated = "*"
 cached-property = "*"
+google-cloud-pubsub = "*"
 
 [requires]
 python_version = "3.7"
