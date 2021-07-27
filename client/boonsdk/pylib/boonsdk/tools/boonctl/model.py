@@ -91,7 +91,7 @@ def display_list(args):
 
 def upload_model(args):
     model = get_model(args.id)
-    print(app.models.upload_pretrained_model(model, args.path, labels=None))
+    print(app.models.upload_pretrained_model(model, args.path))
 
 
 def create_model(args):
