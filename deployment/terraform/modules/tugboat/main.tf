@@ -15,6 +15,12 @@ resource "google_pubsub_subscription" "tugboat-model-events" {
   topic = var.pubsub-topic
 }
 
+resource "google_service_account" "boon-function" {
+  project      = var.project
+  account_id   = "boon-function"
+  display_name = "Boon Function Service Account"
+}
+
 resource "google_service_account" "tugboat" {
   project      = var.project
   account_id   = "zmlp-tugboat"
@@ -159,6 +165,10 @@ resource "kubernetes_deployment" "tugboat" {
           env {
             name  = "BOONAI_ENV"
             value = var.environment
+          }
+          env {
+            name = "BOONAI_FUNC_SVC_ACCOUNT"
+            value = google_service_account.boon-function.email
           }
           volume_mount {
             mount_path = "/etc/ssl/certs"
