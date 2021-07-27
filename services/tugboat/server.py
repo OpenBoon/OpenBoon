@@ -233,6 +233,7 @@ def generate_build_file(spec, build_path):
                          '--max-instances', '4',
                          '--timeout', '30m',
                          '--update-env-vars', f'BOONAI_ENV={boonenv},BOONFLOW_IN_FLASK=yes',
+                         '--service-account', os.environ.get('BOONAI_FUNC_SVC_ACCOUNT'),
                          '--labels', f'model-id={model_id}']
             }
         ],
