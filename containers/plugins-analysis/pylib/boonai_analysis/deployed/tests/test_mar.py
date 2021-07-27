@@ -487,6 +487,6 @@ class TorchModelImageSegmenterIntegrationTests(PluginUnitTestCase):
         )
         processor.process(frame)
 
-        analysis = frame.asset.get_analysis(self.name)
+        frame.asset.get_analysis(self.name)
 
         assert True

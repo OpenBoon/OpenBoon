@@ -332,7 +332,8 @@ class TorchModelImageSegmenter(TorchModelBase):
         original_shape = list(response_np.shape)
         original_shape[-1] = 3
 
-        colored_image = np.array([self.CLASSES_LABEL[x][1] for x in response_np.astype(int).flatten()]) \
+        colored_image = np.array(
+            [self.CLASSES_LABEL[x][1] for x in response_np.astype(int).flatten()]) \
             .reshape(original_shape).astype(np.uint8)
 
-        # r1 = Image.fromarray(colored_image, 'RGB').resize(original_image.pil_img().size)
+        Image.fromarray(colored_image, 'RGB').resize(original_image.pil_img().size)
