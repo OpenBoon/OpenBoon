@@ -95,6 +95,20 @@ class JobViewSet(BoonAISortArgsMixin,
         if filter:
             search_filter['keywords'] = filter
 
+        # Filter on statuses/states
+        states = request.query_params.get('states')
+        allowed_states = ['InProgress', 'Cancelled', 'Success', 'Archived', 'Failure']
+        bad_states = []
+        if states:
+            states = states.split(',')
+            for state in states:
+                if state not in allowed_states:
+                    bad_states.append(state)
+            if bad_states:
+                return Response(status=status.HTTP_400_BAD_REQUEST,
+                                data={'detail': [f'These states are not allowed: {bad_states}']})
+            search_filter['states'] = states
+
         return self._zmlp_list_from_search(request, search_filter=search_filter,
                                            item_modifier=item_modifier)
 
