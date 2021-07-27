@@ -146,7 +146,9 @@ def shutdown_service(event):
         'run',
         'services',
         'delete',
-        service_name
+        service_name,
+        '--region',
+        'us-central1'
     ]
     logger.info(f'Running: {cmd}')
     subprocess.check_call(cmd)
