@@ -148,7 +148,8 @@ def shutdown_service(event):
         'delete',
         service_name,
         '--region',
-        'us-central1'
+        'us-central1',
+        '--quiet'
     ]
     logger.info(f'Running: {cmd}')
     subprocess.check_call(cmd)
@@ -166,7 +167,8 @@ def delete_images(event):
                 'container',
                 'images',
                 'delete',
-                f'{image}@{digest}'
+                f'{image}@{digest}',
+                '--quiet'
             ]
             logger.info(f'Running: {cmd}')
             subprocess.call(cmd, shell=False)
