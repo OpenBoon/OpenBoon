@@ -48,7 +48,7 @@ const STYLES = {
       color: colors.structure.white,
       fontSize: typography.size.regular,
       lineHeight: typography.height.regular,
-      fontWeight: typography.weight.bold,
+      fontWeight: typography.weight.medium,
     },
     legend: {
       paddingLeft: 0,

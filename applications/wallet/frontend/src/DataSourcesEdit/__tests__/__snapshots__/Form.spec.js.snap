@@ -301,7 +301,7 @@ exports[`<DataSourcesEditForm /> should display an error with an empty source na
   color: #ffffff;
   font-size: 15px;
   line-height: 19px;
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .emotion-43 {
@@ -1828,7 +1828,7 @@ exports[`<DataSourcesEditForm /> should render properly 1`] = `
   color: #ffffff;
   font-size: 15px;
   line-height: 19px;
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .emotion-42 {

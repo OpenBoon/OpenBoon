@@ -7,6 +7,7 @@ import { colors, constants, spacing, typography } from '../Styles'
 import NoJobsSvg from '../Icons/noJobs.svg'
 
 import { getQueryString } from '../Fetch/helpers'
+import { decode } from '../Filters/helpers'
 
 import FetchAhead from '../Fetch/Ahead'
 import Pagination from '../Pagination'
@@ -29,15 +30,26 @@ const TableContent = ({
   options,
 }) => {
   const {
-    query: { page = 1, sort, search = '' },
+    query: { page = 1, sort, search = '', filters: query },
   } = useRouter()
+
+  const filters = decode({ query })
+  const filterParams = Object.entries(filters).reduce((acc, [key, value]) => {
+    return { ...acc, [key]: value.join(',') }
+  }, {})
 
   const parsedPage = parseInt(page, 10)
   const from = parsedPage * SIZE - SIZE
   const queryParam =
     page > 1
-      ? getQueryString({ from, size: SIZE, ordering: sort, search })
-      : getQueryString({ ordering: sort, search })
+      ? getQueryString({
+          from,
+          size: SIZE,
+          ordering: sort,
+          search,
+          ...filterParams,
+        })
+      : getQueryString({ ordering: sort, search, ...filterParams })
 
   const {
     data: { count = 0, results, previous, next },

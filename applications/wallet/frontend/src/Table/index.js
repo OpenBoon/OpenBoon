@@ -11,7 +11,7 @@ import SuspenseBoundary, { ROLES } from '../SuspenseBoundary'
 
 import TableContent from './Content'
 
-const Table = ({ role, searchLabel, ...props }) => {
+const Table = ({ role, searchLabel, filters, ...props }) => {
   const {
     pathname,
     query,
@@ -24,8 +24,6 @@ const Table = ({ role, searchLabel, ...props }) => {
         <div
           css={{
             display: 'flex',
-            alignItems: 'flex-end',
-            justifyContent: 'space-between',
             paddingBottom: spacing.normal,
             flexShrink: 0,
           }}
@@ -33,7 +31,7 @@ const Table = ({ role, searchLabel, ...props }) => {
           <div
             css={{
               width: constants.form.maxWidth,
-              paddingRight: spacing.spacious,
+              paddingRight: spacing.normal,
             }}
           >
             <InputSearch
@@ -45,19 +43,43 @@ const Table = ({ role, searchLabel, ...props }) => {
                   query: query.query,
                   sort: query.sort,
                   search: value,
+                  filters: query.filters,
                 })
+
                 const href = `${pathname}${queryParamFilter}`
+
                 const as = href
                   .split('/')
                   .map((s) =>
                     s.replace(/\[(.*)\]/gi, (_, group) => query[group]),
                   )
                   .join('/')
+
                 Router.push(href, as)
               }}
               variant={INPUT_SEARCH_VARIANTS.EXTRADARK}
             />
           </div>
+
+          {filters({
+            onChange: ({ value }) => {
+              const queryParamFilter = getQueryString({
+                query: query.query,
+                sort: query.sort,
+                search: query.search,
+                filters: value,
+              })
+
+              const href = `${pathname}${queryParamFilter}`
+
+              const as = href
+                .split('/')
+                .map((s) => s.replace(/\[(.*)\]/gi, (_, group) => query[group]))
+                .join('/')
+
+              Router.push(href, as)
+            },
+          })}
         </div>
       )}
       <SuspenseBoundary role={role}>
@@ -70,11 +92,13 @@ const Table = ({ role, searchLabel, ...props }) => {
 Table.defaultProps = {
   role: null,
   searchLabel: '',
+  filters: () => {},
 }
 
 Table.propTypes = {
   role: PropTypes.oneOf(Object.keys(ROLES)),
   searchLabel: PropTypes.string,
+  filters: PropTypes.func,
 }
 
 export { Table as default, ROLES }
