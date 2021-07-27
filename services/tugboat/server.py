@@ -146,7 +146,9 @@ def shutdown_service(event):
         'run',
         'services',
         'delete',
-        service_name
+        service_name,
+        '--region',
+        'us-central1'
     ]
     logger.info(f'Running: {cmd}')
     subprocess.check_call(cmd)
@@ -227,7 +229,8 @@ def generate_build_file(spec, build_path):
                          '--allow-unauthenticated',
                          '--memory=2Gi',
                          '--max-instances', '4',
-                         '--update-env-vars', f'BOONAI_ENV={boonenv}',
+                         '--timeout', '30m',
+                         '--update-env-vars', f'BOONAI_ENV={boonenv},BOONFLOW_IN_FLASK=yes',
                          '--labels', f'model-id={model_id}']
             }
         ],
