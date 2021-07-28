@@ -33,6 +33,9 @@ resource "google_project_iam_custom_role" "tugboat" {
   title       = "ZMLP Tugboat Role"
   description = "Role assigned to the service account used by Tugboat."
   permissions = [
+    "run.services.delete",
+    "run.services.list",
+    "run.services.get",
     "cloudbuild.builds.create",
     "cloudbuild.builds.get",
     "cloudbuild.builds.list",
