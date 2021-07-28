@@ -457,7 +457,8 @@ class TorchModelImageSegmenterTests(PluginUnitTestCase):
     @patch.object(file_storage.assets, 'store_file')
     @patch.object(ModelApp, "get_model")
     @patch("boonflow.base.get_proxy_level_path")
-    def test_image_segmenter(self, proxy_patch, model_patch, file_storage_patch, predict_patch, segment_image_patch):
+    def test_image_segmenter(self, proxy_patch, model_patch, file_storage_patch,
+                             predict_patch, segment_image_patch):
         model_patch.return_value = Model(
             {
                 "id": self.model_id,
@@ -551,7 +552,8 @@ class TorchModelImageSegmenterIntegrationTests(PluginUnitTestCase):
     @patch.object(file_storage.assets, 'store_file')
     @patch.object(ModelApp, "get_model")
     @patch("boonflow.proxy.get_video_proxy")
-    def test_video_segmenter(self, proxy_patch, model_patch, file_storage_patch, save_timeline_patch):
+    def test_video_segmenter(self, proxy_patch, model_patch,
+                             file_storage_patch, save_timeline_patch):
         model_patch.return_value = Model(
             {
                 "id": self.model_id,
@@ -562,7 +564,7 @@ class TorchModelImageSegmenterIntegrationTests(PluginUnitTestCase):
             }
         )
 
-        path = '' # Video Path
+        path = ''  # Video Path
         proxy_patch.return_value = path
 
         args = {
