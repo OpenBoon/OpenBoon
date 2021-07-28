@@ -458,9 +458,10 @@ class TorchModelImageSegmenterIntegrationTests(PluginUnitTestCase):
     name = "custom-label"
     torch_model_name = "deeplabv3"
 
+    @patch.object(file_storage.assets, 'store_file')
     @patch.object(ModelApp, "get_model")
     @patch("boonflow.base.get_proxy_level_path")
-    def test_image_segmenter(self, proxy_patch, model_patch):
+    def test_image_segmenter(self, proxy_patch, model_patch, file_storage_patch):
         model_patch.return_value = Model(
             {
                 "id": self.model_id,
@@ -487,6 +488,12 @@ class TorchModelImageSegmenterIntegrationTests(PluginUnitTestCase):
         )
         processor.process(frame)
 
-        frame.asset.get_analysis(self.name)
+        analysis = frame.asset.get_analysis(self.name)
 
-        assert True
+        assert len(analysis['predictions']) == 2
+        assert analysis['count'] == 2
+        assert analysis['predictions'][0]['label'] == 'Unknown'
+        assert analysis['predictions'][0]['kwargs']['color'] == '#000000'
+        assert analysis['predictions'][1]['label'] == 'Person'
+        assert analysis['predictions'][1]['kwargs']['color'] == '#ff4400'
+

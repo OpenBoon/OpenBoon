@@ -1,6 +1,7 @@
 import os
 
 import requests
+import tempfile
 
 from boonai_analysis.utils.prechecks import Prechecks
 from boonflow import Argument, file_storage, proxy, clips, video, Prediction
@@ -254,35 +255,37 @@ class TorchModelTextClassifier(TorchModelBase):
 
 class TorchModelImageSegmenter(TorchModelBase):
     CLASSES_LABEL = [
-        ('Unknown', [0, 0, 0]),
-        ('Aeroplane', [50, 50, 50]),
-        ('Bicycle', [1, 127, 31]),
-        ('Bird', [2, 254, 62]),
-        ('Boat', [255, 0, 0]),
-        ('Bottle', [4, 253, 124]),
-        ('Bus', [5, 125, 155]),
-        ('Car', [6, 252, 186]),
-        ('Cat', [7, 124, 217]),
-        ('Chair', [8, 251, 248]),
-        ('Cow', [9, 123, 24]),
-        ('Diningtable', [10, 250, 55]),
-        ('Dog', [11, 122, 86]),
-        ('Horse', [12, 249, 117]),
-        ('Motorbike', [13, 121, 148]),
-        ('Person', [255, 255, 255]),
-        ('Potted plant', [15, 120, 210]),
-        ('Sheep', [16, 247, 241]),
-        ('Sofa', [17, 119, 17]),
-        ('Train', [18, 246, 48]),
-        ('Tv/Monitor', [19, 118, 79])
+        ('Unknown', [0, 0, 0], '#000000'),
+        ('Aeroplane', [128, 128, 128], '#808080'),
+        ('Bicycle', [0, 0, 128], '#000080'),
+        ('Bird', [0, 191, 255], '#00bfff'),
+        ('Boat', [0, 128, 128], '#008080'),
+        ('Bottle', [0, 100, 0], '#006400'),
+        ('Bus', [128, 128, 0], '#808000'),
+        ('Car', [139, 69, 19], '#8b4513'),
+        ('Cat', [255, 222, 173], '#ff16ad'),
+        ('Chair', [75, 0, 130], '#4c0082'),
+        ('Cow', [139, 0, 139], '#8b008b'),
+        ('Diningtable', [255, 0, 255], '#ff00ff'),
+        ('Dog', [255, 20, 147], '#ff1491'),
+        ('Horse', [139, 0, 0], '#8b0000'),
+        ('Motorbike', [255, 0, 0], '#ff0000'),
+        ('Person', [255, 69, 0], '#ff4400'),
+        ('Potted plant', [255, 255, 0], '#ffff00'),
+        ('Sheep', [250, 128, 114], '#fa8090'),
+        ('Sofa', [148, 0, 211], '#9400d3'),
+        ('Train', [211, 211, 211], '#d3d3d3'),
+        ('Tv/Monitor', [66, 49, 49], '#423131')
     ]
 
     def __init__(self):
         super(TorchModelImageSegmenter, self).__init__()
+        self.asset = None
 
     def process(self, frame):
+        self.asset = frame.asset
         if frame.asset.get_attr('media.type') == "video":
-            self.process_video(frame.asset)
+            self.process_video(self.asset)
         else:
             self.process_image(frame)
 
@@ -290,17 +293,16 @@ class TorchModelImageSegmenter(TorchModelBase):
         """
             Run prediction methods and returns a list of Prediction objects
         Args:
-            text: A String that will have the content predicted.
+            image: The image that will be segmented
 
         Returns:
-            list[Prediction]: A list of Prediction objects
+            list[Prediction]: A list of Prediction Labels containing the colors present in the image
 
         """
-        self.predict(image)
-        # raw_predictions = self.predict(image)
+        raw_predictions = self.predict(image)
         predictions = []
-        # for label in raw_predictions:
-        #     predictions.append(Prediction(label[0], label[1]))
+        for label in raw_predictions:
+            predictions.append(Prediction(label[0], 1, kwargs={'color': label[1]}))
 
         return predictions
 
@@ -319,21 +321,40 @@ class TorchModelImageSegmenter(TorchModelBase):
 
         rsp.raise_for_status()
 
-        response_image = rsp.json()
+        pred_labels = self._segment_image(image, rsp.json())
 
-        self._segment_image(image, response_image)
-
-        return response_image
+        return pred_labels
 
     def _segment_image(self, original_image, response_image):
 
         response_np = np.delete(np.array(response_image), 1, 2)
 
-        original_shape = list(response_np.shape)
-        original_shape[-1] = 3
+        labels_response = [[self.CLASSES_LABEL[x][0], self.CLASSES_LABEL[x][2]] for x in
+                           np.unique(response_np).astype(np.uint8)]
 
-        colored_image = np.array(
+        response_shape = list(response_np.shape)
+        response_shape[-1] = 3
+
+        np_colored_image = np.array(
             [self.CLASSES_LABEL[x][1] for x in response_np.astype(int).flatten()]) \
-            .reshape(original_shape).astype(np.uint8)
+            .reshape(response_shape).astype(np.uint8)
 
-        Image.fromarray(colored_image, 'RGB').resize(original_image.pil_img().size)
+        original_image_size = original_image.pil_img().size
+        colored_image = Image.fromarray(np_colored_image, 'RGB').resize(original_image_size)
+        colored_image_file = self._save_to_file(colored_image)
+
+        # Create Proxy image
+        self._create_proxy_image(colored_image_file, original_image_size)
+
+        # return labels and colors
+        return labels_response
+
+    def _save_to_file(self, colored_image):
+        _, path = tempfile.mkstemp(suffix='.jpg')
+        colored_image.save(path)
+        return path
+
+    def _create_proxy_image(self, colored_image_file, original_shape):
+        attrs = {"width": original_shape[0], "height": original_shape[1]}
+        return file_storage.assets.store_file(colored_image_file, self.asset, "web-proxy",
+                                              "web-proxy.jpg", attrs)
