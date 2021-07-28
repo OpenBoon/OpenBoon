@@ -17,6 +17,14 @@ import javax.persistence.Entity
 import javax.persistence.Id
 import javax.persistence.Table
 
+enum class ModelState {
+    RequiresTraining,
+    RequiresUpload,
+    Trained,
+    Deploying,
+    Ready
+}
+
 /**
  * Type of models that can be trained.
  */
@@ -251,12 +259,7 @@ enum class PostTrainAction {
     /**
      * Run on test labels only.
      */
-    TEST,
-
-    /**
-     * Deploy
-     */
-    DEPLOY
+    TEST
 }
 
 @ApiModel("ModelTrainingArgs", description = "Arguments set to the training processor.")
@@ -372,6 +375,9 @@ class Model(
     @Column(name = "pk_dataset", nullable = true)
     var datasetId: UUID?,
 
+    @Column(name = "int-state", nullable = false)
+    var state: ModelState,
+
     @Column(name = "int_type")
     val type: ModelType,
 
@@ -437,7 +443,19 @@ class Model(
     var timeLastTested: Long?,
 
     @Column(name = "actor_last_tested")
-    var actorLastTested: String?
+    var actorLastTested: String?,
+
+    @Column(name = "time_last_uploaded")
+    var timeLastUploaded: Long?,
+
+    @Column(name = "actor_last_uploadedd")
+    var actorLastUploaded: String?,
+
+    @Column(name = "time_last_deployed")
+    var timeLastDeployed: Long?,
+
+    @Column(name = "actor_last_deployed")
+    var actorLastDeployed: String?
 
 ) : LabelSet {
 

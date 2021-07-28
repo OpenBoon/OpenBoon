@@ -15,6 +15,7 @@ import boonai.archivist.domain.ModelFilter
 import boonai.archivist.domain.ModelPatchRequestV2
 import boonai.archivist.domain.ModelPublishRequest
 import boonai.archivist.domain.ModelSpec
+import boonai.archivist.domain.ModelState
 import boonai.archivist.domain.ModelTrainingRequest
 import boonai.archivist.domain.ModelType
 import boonai.archivist.domain.ModelUpdateRequest
@@ -126,10 +127,17 @@ class ModelServiceImpl(
 
         argValidationService.validateArgsUnknownOnly("training/${spec.type.name}", spec.trainingArgs)
 
+        val state = if (spec.type.uploadable) {
+            ModelState.RequiresUpload
+        } else {
+            ModelState.RequiresTraining
+        }
+
         val model = Model(
             id,
             getProjectId(),
             spec.datasetId,
+            state,
             spec.type,
             spec.name,
             moduleName,
@@ -143,7 +151,7 @@ class ModelServiceImpl(
             time,
             actor.toString(),
             actor.toString(),
-            null, null, null, null, null, null
+            null, null, null, null, null, null, null, null, null, null
         )
 
         logger.event(
@@ -328,6 +336,11 @@ class ModelServiceImpl(
         val version = versionUp(model)
         val ops = buildModuleOps(model, req, version)
 
+        logger.event(
+            LogObject.MODEL, LogAction.DEPLOY,
+            mapOf("modelId" to model.id, "modelName" to model.name)
+        )
+
         if (mod != null) {
             // Set version number to change checksum
             val update = PipelineModUpdate(
@@ -350,6 +363,7 @@ class ModelServiceImpl(
             )
 
             model.ready = true
+            model.state = ModelState.Ready
             return pipelineModService.create(modspec)
         }
     }
@@ -383,6 +397,11 @@ class ModelServiceImpl(
     }
 
     override fun deleteModel(model: Model) {
+        logger.event(
+            LogObject.MODEL, LogAction.DELETE,
+            mapOf("modelId" to model.id, "modelName" to model.name)
+        )
+
         modelJdbcDao.delete(model)
 
         pipelineModService.findByName(model.moduleName, false)?.let {
