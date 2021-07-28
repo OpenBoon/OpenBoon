@@ -94,7 +94,7 @@ class ModelServiceTests : AbstractTest() {
         val ds = datasetService.createDataset(DatasetSpec("foo", DatasetType.Classification))
         val model = create()
 
-        val update = ModelUpdateRequest("bing", ds.id)
+        val update = ModelUpdateRequest("bing", ds.id, listOf())
         val umod = modelService.updateModel(model.id, update)
         assertEquals(ds.id, umod.datasetId)
         assertEquals("bing", umod.name)

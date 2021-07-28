@@ -32,6 +32,7 @@ import boonai.archivist.domain.StandardContainers
 import boonai.archivist.repository.KPagedList
 import boonai.archivist.repository.ModelDao
 import boonai.archivist.repository.ModelJdbcDao
+import boonai.archivist.repository.PipelineModDao
 import boonai.archivist.repository.UUIDGen
 import boonai.archivist.security.getProjectId
 import boonai.archivist.security.getZmlpActor
@@ -81,6 +82,7 @@ class ModelServiceImpl(
     val jobLaunchService: JobLaunchService,
     val jobService: JobService,
     val pipelineModService: PipelineModService,
+    val pipelineModDao: PipelineModDao,
     val indexRoutingService: IndexRoutingService,
     val assetSearchService: AssetSearchService,
     val fileStorageService: ProjectStorageService,
@@ -147,6 +149,7 @@ class ModelServiceImpl(
             false,
             spec.applySearch, // VALIDATE THIS PARSES.
             spec.trainingArgs,
+            spec.dependsOn.minus(moduleName),
             time,
             time,
             actor.toString(),
@@ -173,6 +176,7 @@ class ModelServiceImpl(
 
         model.name = update.name
         model.datasetId = update.datasetId
+        model.dependencies = update.dependencies
         model.timeModified = System.currentTimeMillis()
         model.actorModified = getZmlpActor().toString()
         return model
@@ -189,7 +193,11 @@ class ModelServiceImpl(
         }
 
         if (update.isFieldSet("name")) {
-            update.name?.let { model.name }
+            update.name?.let { model.name = it }
+        }
+
+        if (update.isFieldSet("dependencies")) {
+            update.dependencies?.let { model.dependencies = it }
         }
 
         model.timeModified = System.currentTimeMillis()
@@ -432,10 +440,14 @@ class ModelServiceImpl(
     fun buildModuleOps(model: Model, req: ModelPublishRequest, version: String): List<ModOp> {
         val ops = mutableListOf<ModOp>()
 
+        // I don't know what this does but might be duplicate
+        // of what the pipeline resolver is doing.
+        /*
         for (depend in model.type.dependencies) {
             val mod = pipelineModService.findByName(depend, true)
             ops.addAll(mod?.ops ?: emptyList())
         }
+         */
 
         // Add the dependency before.
         if (model.type.dependencies.isNotEmpty()) {
@@ -447,15 +459,19 @@ class ModelServiceImpl(
             )
         }
 
-        val opType = if (model.type.classifyProcessor == ModelType.BOON_FUNCTION.classifyProcessor) {
-            ModOpType.LAST
-        } else {
-            ModOpType.APPEND
+        val validModules = pipelineModDao.findByNameIn(model.dependencies)
+        if (validModules.isNotEmpty()) {
+            ops.add(
+                ModOp(
+                    ModOpType.DEPEND,
+                    validModules
+                )
+            )
         }
 
         ops.add(
             ModOp(
-                opType,
+                ModOpType.APPEND,
                 listOf(
                     ProcessorRef(
                         model.type.classifyProcessor,
