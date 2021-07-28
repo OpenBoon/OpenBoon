@@ -6,17 +6,21 @@ RUN apt-get update && apt-get -y upgrade && apt-get --no-install-recommends -y i
     libquadmath0 \
      --no-install-recommends
 
-RUN mkdir /service
-COPY . /service
-WORKDIR /service
+RUN mkdir /app
+COPY . /app
+WORKDIR /app
+ENV APP_HOME /app
 
-COPY ./requirements.txt /service/requirements.txt
+COPY ./requirements.txt /app/requirements.txt
 RUN pip3 uninstall opencv-python
-RUN pip3 install -r /service/requirements.txt
-RUN rm /service/requirements.txt
+RUN pip3 install -r /app/requirements.txt
+RUN rm /app/requirements.txt
 
 ENV BOONFLOW_IN_FLASK=true
-ENV PYTHONPATH="/service/pylib"
+ENV PYTHONPATH="/app/pylib"
+ENV PYTHONUNBUFFERED True
+
 USER boonai
 EXPOSE 8282
-ENTRYPOINT ["/service/bin/server.py"]
+
+CMD exec gunicorn --bind :8282 --workers 1 --threads 8 --timeout 0 mlbbq.main:app

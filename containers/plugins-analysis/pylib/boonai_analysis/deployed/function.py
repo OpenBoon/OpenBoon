@@ -1,6 +1,5 @@
 import re
 
-import backoff
 import requests
 
 from boonflow import Argument, FileTypes
@@ -27,22 +26,21 @@ class BoonFunctionProcessor(CustomModelProcessor):
     def process(self, frame):
         self.process_asset(frame)
 
-    @backoff.on_exception(backoff.expo,
-                          (requests.exceptions.Timeout,
-                           requests.exceptions.ConnectionError),
-                          max_time=300)
     def predict(self, asset):
         headers = {
             'Content-Type': 'application/json',
             'Authorization': self.app.client.sign_request()
         }
-        rsp = requests.post(self.endpoint, data=to_json(asset), headers=headers)
+        rsp = requests.post(self.endpoint, data=to_json(asset), headers=headers, timeout=30)
         rsp.raise_for_status()
         return rsp.json()
 
     def process_asset(self, frame):
         asset = frame.asset
+        self.logger.info(f'Calling BoonFunction {self.endpoint}')
         result = self.predict(asset)
+        self.logger.info('BoonFunction responded')
+
         for section, analysis in result.get('analysis', {}).items():
 
             analysis_type = analysis.get('type')
