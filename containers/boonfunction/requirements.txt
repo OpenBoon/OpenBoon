@@ -1,5 +1,5 @@
 flask
-gevent
+gunicorn
 PyJWT==2.1.0
 boonsdk
 numpy

@@ -12,8 +12,10 @@ RUN --mount=type=cache,target=/root/.cache/pip pip install -r requirements.txt
 RUN rm /app/requirements.txt
 
 ENV BOONFLOW_IN_FLASK=true
+ENV PYTHONUNBUFFERED True
+ENV APP_HOME /app
 
 # This won't run as is, we need a subclass container to copy in endpoint.py
 USER boonai
-ENTRYPOINT [ "python3" ]
-CMD [ "server.py" ]
+
+CMD exec gunicorn --bind :$PORT --workers 1 --threads 8 --timeout 0 server:app
