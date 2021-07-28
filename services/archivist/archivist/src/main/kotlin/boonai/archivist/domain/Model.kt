@@ -201,6 +201,24 @@ enum class ModelType(
         null,
         "model.mar"
     ),
+    TORCH_MAR_IMAGE_SEGMENTER(
+        "Torch Model Archive Image Segmenter",
+        "None",
+        "boonai_analysis.deployed.mar.TorchModelImageSegmenter",
+        null,
+        "Upload a pre-trained Pytorch Model Archive",
+        ModelObjective.IMAGE_SEGMENTATION,
+        Provider.BOONAI,
+        true,
+        0,
+        0,
+        listOf(),
+        false,
+        true,
+        false,
+        null,
+        "model.mar"
+    ),
     BOON_FUNCTION(
         "Boon Function",
         "None",

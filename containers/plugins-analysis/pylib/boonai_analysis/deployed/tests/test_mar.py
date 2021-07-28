@@ -447,6 +447,55 @@ class TorchModelArchiveTextClassificationIntegrationTests(PluginUnitTestCase):
         assert analysis['predictions'][0]['score'] == 0.927
 
 
+class TorchModelImageSegmenterTests(PluginUnitTestCase):
+    model_id = "model-id-34568"
+    name = "custom-label"
+    torch_model_name = "deeplabv3"
+
+    @patch.object(TorchModelImageSegmenter, "predict")
+    @patch.object(file_storage.assets, 'store_file')
+    @patch.object(ModelApp, "get_model")
+    @patch("boonflow.base.get_proxy_level_path")
+    def test_image_segmenter(self, proxy_patch, model_patch, file_storage_patch, predict_patch):
+        model_patch.return_value = Model(
+            {
+                "id": self.model_id,
+                "type": "TORCH_MAR_DETECTOR",
+                "fileId": "models/{}/foo/bar".format(self.model_id),
+                "name": self.name,
+                "moduleName": self.name
+            }
+        )
+
+        predict_patch.return_value = [['Unknown', '#000000'], ['Person', '#ff4400']]
+
+        path = test_path("images/set01/faces.jpg")
+        proxy_patch.return_value = path
+
+        args = {
+            "model_id": self.model_id,
+            "tag": "latest",
+            "endpoint": "http://127.0.0.1:8080",
+            "model": self.torch_model_name
+        }
+
+        frame = Frame(TestAsset(path))
+
+        processor = self.init_processor(
+            TorchModelImageSegmenter(), args
+        )
+        processor.process(frame)
+
+        analysis = frame.asset.get_analysis(self.name)
+
+        assert len(analysis['predictions']) == 2
+        assert analysis['count'] == 2
+        assert analysis['predictions'][0]['label'] == 'Unknown'
+        assert analysis['predictions'][0]['kwargs']['color'] == '#000000'
+        assert analysis['predictions'][1]['label'] == 'Person'
+        assert analysis['predictions'][1]['kwargs']['color'] == '#ff4400'
+
+
 @pytest.mark.skip(reason='dont run automatically')
 class TorchModelImageSegmenterIntegrationTests(PluginUnitTestCase):
     """
@@ -496,4 +545,3 @@ class TorchModelImageSegmenterIntegrationTests(PluginUnitTestCase):
         assert analysis['predictions'][0]['kwargs']['color'] == '#000000'
         assert analysis['predictions'][1]['label'] == 'Person'
         assert analysis['predictions'][1]['kwargs']['color'] == '#ff4400'
-

@@ -45,6 +45,7 @@ object ModelObjective {
     const val IMAGE_TEXT_DETECTION = "Image Text Detection"
     const val SPEECH_RECOGNITION = "Speech Recognition"
     const val IMAGE_DESCRIPTION = "Image Description"
+    const val IMAGE_SEGMENTATION = "Image Segmentation"
 }
 
 /**
