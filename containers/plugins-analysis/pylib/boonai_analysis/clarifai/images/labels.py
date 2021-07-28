@@ -39,7 +39,7 @@ class AbstractClarifaiLabelProcessor(AbstractClarifaiProcessor):
 class ClarifaiLabelDetectionProcessor(AbstractClarifaiLabelProcessor):
     """ Clarifai label detection"""
     attribute_name = 'label-detection'
-    model_id = 'fedcc08b2b72481aa17d4b8153570cc1'
+    model_id = 'aaa03c23b3724a16a56b629203edc62c'
 
 
 class ClarifaiFoodDetectionProcessor(AbstractClarifaiLabelProcessor):
