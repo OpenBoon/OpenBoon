@@ -452,15 +452,16 @@ class TorchModelImageSegmenterTests(PluginUnitTestCase):
     name = "custom-label"
     torch_model_name = "deeplabv3"
 
+    @patch.object(TorchModelImageSegmenter, "_segment_image")
     @patch.object(TorchModelImageSegmenter, "predict")
     @patch.object(file_storage.assets, 'store_file')
     @patch.object(ModelApp, "get_model")
     @patch("boonflow.base.get_proxy_level_path")
-    def test_image_segmenter(self, proxy_patch, model_patch, file_storage_patch, predict_patch):
+    def test_image_segmenter(self, proxy_patch, model_patch, file_storage_patch, predict_patch, segment_image_patch):
         model_patch.return_value = Model(
             {
                 "id": self.model_id,
-                "type": "TORCH_MAR_DETECTOR",
+                "type": "TORCH_MAR_IMAGE_SEGMENTER",
                 "fileId": "models/{}/foo/bar".format(self.model_id),
                 "name": self.name,
                 "moduleName": self.name
@@ -514,7 +515,7 @@ class TorchModelImageSegmenterIntegrationTests(PluginUnitTestCase):
         model_patch.return_value = Model(
             {
                 "id": self.model_id,
-                "type": "TORCH_MAR_DETECTOR",
+                "type": "TORCH_MAR_IMAGE_SEGMENTER",
                 "fileId": "models/{}/foo/bar".format(self.model_id),
                 "name": self.name,
                 "moduleName": self.name
@@ -545,3 +546,42 @@ class TorchModelImageSegmenterIntegrationTests(PluginUnitTestCase):
         assert analysis['predictions'][0]['kwargs']['color'] == '#000000'
         assert analysis['predictions'][1]['label'] == 'Person'
         assert analysis['predictions'][1]['kwargs']['color'] == '#ff4400'
+
+    @patch("boonflow.video.save_timeline")
+    @patch.object(file_storage.assets, 'store_file')
+    @patch.object(ModelApp, "get_model")
+    @patch("boonflow.proxy.get_video_proxy")
+    def test_video_segmenter(self, proxy_patch, model_patch, file_storage_patch, save_timeline_patch):
+        model_patch.return_value = Model(
+            {
+                "id": self.model_id,
+                "type": "TORCH_MAR_IMAGE_SEGMENTER",
+                "fileId": "models/{}/foo/bar".format(self.model_id),
+                "name": self.name,
+                "moduleName": self.name
+            }
+        )
+
+        path = '' # Video Path
+        proxy_patch.return_value = path
+
+        args = {
+            "model_id": self.model_id,
+            "tag": "latest",
+            "endpoint": "http://127.0.0.1:8080",
+            "model": self.torch_model_name
+        }
+
+        frame = Frame(TestAsset(path, attrs={'media.type': 'video', "media.length": 73}))
+
+        processor = self.init_processor(
+            TorchModelImageSegmenter(), args
+        )
+        processor.process(frame)
+
+        analysis = frame.asset.get_analysis(self.name)
+
+        assert analysis['count'] == 9
+        assert analysis['predictions'][0]['label'] == 'Unknown'
+        assert analysis['predictions'][1]['label'] == 'Aeroplane'
+        assert analysis['predictions'][2]['label'] == 'Boat'

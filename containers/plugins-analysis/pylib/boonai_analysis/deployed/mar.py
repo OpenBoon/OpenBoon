@@ -280,12 +280,14 @@ class TorchModelImageSegmenter(TorchModelBase):
 
     def __init__(self):
         super(TorchModelImageSegmenter, self).__init__()
+        self.image = None
+        self.response_image = None
         self.asset = None
 
     def process(self, frame):
         self.asset = frame.asset
         if frame.asset.get_attr('media.type') == "video":
-            self.process_video(self.asset)
+            self.process_video(frame.asset)
         else:
             self.process_image(frame)
 
@@ -299,6 +301,7 @@ class TorchModelImageSegmenter(TorchModelBase):
             list[Prediction]: A list of Prediction Labels containing the colors present in the image
 
         """
+        self.image = image
         raw_predictions = self.predict(image)
         predictions = []
         for label in raw_predictions:
@@ -321,17 +324,22 @@ class TorchModelImageSegmenter(TorchModelBase):
 
         rsp.raise_for_status()
 
-        pred_labels = self._segment_image(image, rsp.json())
+        self.response_image = rsp.json()
 
-        return pred_labels
+        return self._get_labels(rsp.json())
+
+    def process_image(self, frame):
+        super(TorchModelImageSegmenter, self).process_image(frame)
+        self._segment_image(original_image=self.image, response_image=self.response_image)
+
+    def _get_labels(self, response_image):
+        response_np = np.delete(np.array(response_image), 1, 2)
+        return [[self.CLASSES_LABEL[x][0], self.CLASSES_LABEL[x][2]] for x in
+                np.unique(response_np).astype(np.uint8)]
 
     def _segment_image(self, original_image, response_image):
 
         response_np = np.delete(np.array(response_image), 1, 2)
-
-        labels_response = [[self.CLASSES_LABEL[x][0], self.CLASSES_LABEL[x][2]] for x in
-                           np.unique(response_np).astype(np.uint8)]
-
         response_shape = list(response_np.shape)
         response_shape[-1] = 3
 
@@ -345,9 +353,6 @@ class TorchModelImageSegmenter(TorchModelBase):
 
         # Create Proxy image
         self._create_proxy_image(colored_image_file, original_image_size)
-
-        # return labels and colors
-        return labels_response
 
     def _save_to_file(self, colored_image):
         _, path = tempfile.mkstemp(suffix='.jpg')
