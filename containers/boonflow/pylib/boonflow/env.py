@@ -44,7 +44,9 @@ class FlaskBoonClient(BoonClient):
             return os.environ.get("BOONAI_SERVER")
         else:
             env_name = os.environ.get("BOONAI_ENV") or 'prod'
-            return self.endpoint_map.get(env_name)
+            endpoint = self.endpoint_map.get(env_name)
+            logger.info(f'Selected BoonAI endpoint {endpoint} / env: {env_name}')
+            return endpoint
 
     def sign_request(self):
         token = request.headers.get("Authorization")

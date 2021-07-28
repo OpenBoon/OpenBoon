@@ -146,7 +146,10 @@ def shutdown_service(event):
         'run',
         'services',
         'delete',
-        service_name
+        service_name,
+        '--region',
+        'us-central1',
+        '--quiet'
     ]
     logger.info(f'Running: {cmd}')
     subprocess.check_call(cmd)
@@ -164,7 +167,8 @@ def delete_images(event):
                 'container',
                 'images',
                 'delete',
-                f'{image}@{digest}'
+                f'{image}@{digest}',
+                '--quiet'
             ]
             logger.info(f'Running: {cmd}')
             subprocess.call(cmd, shell=False)
@@ -227,7 +231,9 @@ def generate_build_file(spec, build_path):
                          '--allow-unauthenticated',
                          '--memory=2Gi',
                          '--max-instances', '4',
-                         '--update-env-vars', f'BOONAI_ENV={boonenv}',
+                         '--timeout', '30m',
+                         '--update-env-vars', f'BOONAI_ENV={boonenv},BOONFLOW_IN_FLASK=yes',
+                         '--service-account', os.environ.get('BOONAI_FUNC_SVC_ACCOUNT'),
                          '--labels', f'model-id={model_id}']
             }
         ],
