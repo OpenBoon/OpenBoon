@@ -104,6 +104,7 @@ def copy_template(spec, build_dir):
     shutil.copytree(tmpl, build_dir)
     return True
 
+
 def submit_build(spec, build_path):
     """
     Submit a build to google cloud build. The submission is async how the function may
