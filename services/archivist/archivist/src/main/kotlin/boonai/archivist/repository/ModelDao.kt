@@ -2,6 +2,7 @@ package boonai.archivist.repository
 
 import boonai.archivist.domain.Model
 import boonai.archivist.domain.ModelFilter
+import boonai.archivist.domain.ModelState
 import boonai.archivist.domain.ModelType
 import boonai.common.util.Json
 import org.springframework.data.jpa.repository.JpaRepository
@@ -94,6 +95,7 @@ class ModelJdbcDaoImpl : AbstractDao(), ModelJdbcDao {
             rs.getObject("pk_model") as UUID,
             rs.getObject("pk_project") as UUID,
             rs.getObject("pk_dataset") as UUID?,
+            ModelState.values()[rs.getInt("int_state")],
             ModelType.values()[rs.getInt("int_type")],
             rs.getString("str_name"),
             rs.getString("str_module"),
@@ -103,6 +105,7 @@ class ModelJdbcDaoImpl : AbstractDao(), ModelJdbcDao {
             rs.getBoolean("bool_trained"),
             Json.Mapper.readValue(rs.getString("json_apply_search"), Json.GENERIC_MAP),
             Json.Mapper.readValue(rs.getString("json_train_args"), Json.GENERIC_MAP),
+            Json.Mapper.readValue(rs.getString("json_depends"), Json.LIST_OF_STRING),
             rs.getLong("time_created"),
             rs.getLong("time_modified"),
             rs.getString("actor_created"),
@@ -112,7 +115,11 @@ class ModelJdbcDaoImpl : AbstractDao(), ModelJdbcDao {
             rs.getLong("time_last_applied"),
             rs.getString("actor_last_applied"),
             rs.getLong("time_last_tested"),
-            rs.getString("actor_last_tested")
+            rs.getString("actor_last_tested"),
+            rs.getLong("time_last_uploaded"),
+            rs.getString("actor_last_uploaded"),
+            rs.getLong("time_last_deployed"),
+            rs.getString("actor_last_deployed")
         )
     }
 

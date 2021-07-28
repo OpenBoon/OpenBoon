@@ -25,6 +25,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import java.io.FileInputStream
 import java.nio.file.Files
 import java.nio.file.Paths
+import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 
@@ -443,7 +444,7 @@ class ModelControllerTests : MockMvcTest() {
         val model = modelService.createModel(ModelSpec("foo", ModelType.KNN_CLASSIFIER, datasetId = ds.id))
 
         val req = """
-            {"name": "mongo", "datasetId": null }
+            {"name": "mongo", "datasetId": null, "dependencies": ["boonai-text-detection"] }
         """.trimMargin()
 
         mvc.perform(
@@ -457,6 +458,7 @@ class ModelControllerTests : MockMvcTest() {
             .andReturn()
 
         assertNull(model.datasetId)
+        assertEquals(model.dependencies, listOf("boonai-text-detection"))
     }
 
     @Test
@@ -484,7 +486,7 @@ class ModelControllerTests : MockMvcTest() {
     @Test
     fun testUpdate() {
         val ds = datasetService.createDataset(DatasetSpec("stuff", DatasetType.Classification))
-        val update = ModelUpdateRequest(name = "mongo", datasetId = ds.datasetId())
+        val update = ModelUpdateRequest(name = "mongo", datasetId = ds.datasetId(), dependencies = listOf())
 
         mvc.perform(
             MockMvcRequestBuilders.put("/api/v3/models/${model.id}")

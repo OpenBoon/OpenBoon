@@ -102,6 +102,7 @@ def copy_template(spec, build_dir):
 
     logger.info(f'copying {tmpl} template to dir {build_dir}')
     shutil.copytree(tmpl, build_dir)
+    return True
 
 
 def submit_build(spec, build_path):
@@ -208,8 +209,13 @@ def generate_build_file(spec, build_path):
     img = spec['image']
     model_id = spec['modelId']
     model_file = spec['modelFile']
+    model_type = spec['modelType']
     boonenv = os.environ.get('BOONAI_ENV', 'prod')
     service_name = f'mod-{model_id}'
+
+    memory = "2Gi"
+    if model_type == 'BOON_FUNCTION':
+        memory = "512Mi"
 
     build = {
         'steps': [
@@ -229,7 +235,7 @@ def generate_build_file(spec, build_path):
                          '--platform', 'managed',
                          '--ingress', 'internal',
                          '--allow-unauthenticated',
-                         '--memory=2Gi',
+                         '--memory', memory,
                          '--max-instances', '4',
                          '--timeout', '30m',
                          '--update-env-vars', f'BOONAI_ENV={boonenv},BOONFLOW_IN_FLASK=yes',
