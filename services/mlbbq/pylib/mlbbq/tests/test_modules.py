@@ -5,16 +5,16 @@ import unittest.mock as mock
 
 import pytest
 
-import mlbbq.main as server
-from boonflow.testing import test_path
+from boonai_analysis.boonai import ZviFaceDetectionProcessor
+from boonai_analysis.utils.simengine import SimilarityEngine
 from boonflow.base import ImageInputStream
 from boonsdk import BoonClient
-from mlbbq.modules import setup_endpoints
+from boonflow.testing import test_path
 
-from boonai_analysis.boonai import ZviFaceDetectionProcessor
+SimilarityEngine.default_model_path = test_path("models/resnet-152")
+import mlbbq.main as server
 
 logging.basicConfig(level=logging.INFO)
-setup_endpoints(server.app)
 
 
 @pytest.fixture

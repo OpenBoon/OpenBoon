@@ -1,15 +1,14 @@
 #!/usr/bin/env python3
-import logging
 import json
+import logging
 import random
 import string
 
 import flask
-from gevent.pywsgi import WSGIServer
+
+from boonflow import file_storage
 from boonsdk import Asset
 from boonsdk.util import to_json
-from boonflow import file_storage
-
 from function import function
 
 logger = logging.getLogger('boonfunc')
@@ -37,9 +36,3 @@ def endpoint():
     finally:
         file_storage.cache.clear_request_cache()
     return flask.jsonify({})
-
-
-if __name__ == '__main__':
-    logger.info('Listening on port 8080')
-    server = WSGIServer(('0.0.0.0', 8080), app, log=None)
-    server.serve_forever()
