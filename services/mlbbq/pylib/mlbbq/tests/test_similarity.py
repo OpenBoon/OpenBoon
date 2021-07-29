@@ -9,15 +9,11 @@ SimilarityEngine.default_model_path = test_path("models/resnet-152")
 import unittest.mock as mock
 
 import pytest
-import mlbbq.main
-from mlbbq.similarity import setup_endpoints
-
-setup_endpoints(mlbbq.main.app)
-
+import mlbbq.main as server
 
 @pytest.fixture
 def client():
-    with mlbbq.main.app.test_client() as client:
+    with server.app.test_client() as client:
         yield client
 
 

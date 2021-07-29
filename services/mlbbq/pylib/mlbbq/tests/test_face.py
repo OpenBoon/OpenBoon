@@ -4,15 +4,17 @@ import unittest.mock as mock
 
 import pytest
 
+from boonai_analysis.utils.simengine import SimilarityEngine
 from boonflow.testing import test_path
-from mlbbq.face import setup_endpoints
+
+SimilarityEngine.default_model_path = test_path("models/resnet-152")
 import mlbbq.main as server
 
 logging.basicConfig(level=logging.DEBUG)
 
+
 @pytest.fixture
 def client():
-    setup_endpoints(server.app)
     with server.app.test_client() as client:
         yield client
 
