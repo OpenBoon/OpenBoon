@@ -47,6 +47,18 @@ class ModelAppTests(unittest.TestCase):
         model = self.app.models.get_model(str(uuid.uuid4()))
         self.assert_model(model)
 
+    @patch.object(BoonClient, 'delete')
+    def test_delete_model(self, del_patch):
+        del_patch.return_value = {'success': True}
+        model = Model({
+            'id': '12345',
+            'type': 'TF_CLASSIFIER',
+            'name': 'foo',
+            'uploadable': False
+        })
+        rsp = self.app.models.delete_model(model)
+        assert rsp.get('success')
+
     @patch.object(BoonClient, 'post')
     def test_get_model_by_name(self, get_patch):
         get_patch.return_value = self.model_data
