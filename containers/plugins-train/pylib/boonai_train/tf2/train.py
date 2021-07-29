@@ -9,7 +9,6 @@ from tensorflow.keras.applications import efficientnet as efficientnet
 from tensorflow.keras.applications import resnet_v2 as resnet_v2
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
-from tensorflow.keras.layers.experimental import preprocessing
 
 from boonflow import ModelTrainer, Argument, file_storage
 from boonflow.training import download_labeled_images
@@ -28,13 +27,13 @@ class TensorflowTransferLearningTrainer(ModelTrainer):
         super(TensorflowTransferLearningTrainer, self).__init__()
 
         # These can be set optionally.
-        self.add_arg(Argument("base_model", "str", required=True, default="efficientnet-b2",
+        self.add_arg(Argument("base_model", "str", required=True, default="efficientnet-b0",
                               toolTip="The base Keras model."))
         self.add_arg(Argument("epochs", "int", required=True, default=20,
                               toolTip="The number of training epochs"))
-        self.add_arg(Argument("validation_split", "int", required=True, default=0.2,
+        self.add_arg(Argument("validation_split", "float", required=True, default=0.2,
                               toolTip="The number of training images vs test images"))
-        self.add_arg(Argument("fine_tune_at_layer", "int", required=True, default=20,
+        self.add_arg(Argument("fine_tune_at_layer", "int", required=True, default=40,
                               toolTip="The layer to start find-tuning at."))
         self.add_arg(Argument("fine_tune_epochs", "int", required=True, default=20,
                               toolTip="The number of fine-tuning epochs."))
@@ -74,10 +73,8 @@ class TensorflowTransferLearningTrainer(ModelTrainer):
         train_gen, test_gen = self.build_generators()
         self.train_model(train_gen, test_gen)
 
-        # Build the label list
-        labels = [None] * len(self.labels)
-        for label, idx in train_gen.class_indices.items():
-            labels[int(idx)] = label
+        labels = os.listdir(self.base_dir + "/train")
+        labels.sort()
 
         self.publish_model(labels)
 
@@ -127,7 +124,7 @@ class TensorflowTransferLearningTrainer(ModelTrainer):
         self.model.save(model_dir)
         with open(model_dir + '/labels.txt', 'w') as fp:
             for label in labels:
-                fp.write('{}\n'.format(label))
+                fp.write(f'{label}\n')
 
         tf2_dir = os.path.dirname(os.path.realpath(__file__))
         shutil.copy2(os.path.join(tf2_dir, "predict.py"), model_dir)
@@ -209,16 +206,27 @@ class TensorflowTransferLearningTrainer(ModelTrainer):
         """
         val_split = self.arg_value('validation_split')
         batch_size = 8
-        data_dir = '{}/train/'.format(self.base_dir)
+        train_dir = '{}/train/'.format(self.base_dir)
+
+        if 'efficient' in self.arg_value('base_model'):
+            rescale = None
+        else:
+            rescale = 1./255
 
         train_gen = ImageDataGenerator(
-            rescale=1. / 255,
+            rotation_range=40,
+            width_shift_range=0.2,
+            height_shift_range=0.2,
+            rescale=rescale,
+            shear_range=0.2,
+            zoom_range=0.2,
+            horizontal_flip=True,
             fill_mode='nearest',
             validation_split=val_split
         )
 
         train_ds = train_gen.flow_from_directory(
-            data_dir,
+            train_dir,
             batch_size=batch_size,
             class_mode='categorical',
             target_size=self.img_size,
@@ -226,12 +234,13 @@ class TensorflowTransferLearningTrainer(ModelTrainer):
         )
 
         val_gen = ImageDataGenerator(
-            rescale=1. / 255.,
+            rescale=rescale,
             validation_split=val_split
         )
 
+        # Uses am
         val_ds = val_gen.flow_from_directory(
-            data_dir,
+            train_dir,
             batch_size=batch_size,
             class_mode='categorical',
             target_size=self.img_size,
@@ -240,7 +249,7 @@ class TensorflowTransferLearningTrainer(ModelTrainer):
 
         return train_ds, val_ds
 
-    def get_base_model(self, input_tf):
+    def get_base_model(self):
         """
         Return the base ResNet50 model.
 
@@ -255,59 +264,48 @@ class TensorflowTransferLearningTrainer(ModelTrainer):
 
         if base == 'resnet50_v2':
             return resnet_v2.ResNet50V2(
-                weights='imagenet', include_top=False, input_tensor=input_tf)
+                weights='imagenet', include_top=False)
         elif base == 'resnet101_v2':
             return resnet_v2.ResNet101V2(
-                weights='imagenet', include_top=False, input_tensor=input_tf)
+                weights='imagenet', include_top=False)
         elif base == 'resnet152_v2':
             return resnet_v2.ResNet152V2(
-                weights='imagenet', include_top=False, input_tensor=input_tf)
+                weights='imagenet', include_top=False)
         elif base == 'efficientnet-b0':
             return efficientnet.EfficientNetB0(
-                weights='imagenet', include_top=False, input_tensor=input_tf)
+                weights='imagenet', include_top=False)
         elif base == 'efficientnet-b1':
             return efficientnet.EfficientNetB1(
-                weights='imagenet', include_top=False, input_tensor=input_tf)
+                weights='imagenet', include_top=False)
         elif base == 'efficientnet-b2':
             return efficientnet.EfficientNetB2(
-                weights='imagenet', include_top=False, input_tensor=input_tf)
+                weights='imagenet', include_top=False)
         elif base == 'efficientnet-b3':
             return efficientnet.EfficientNetB3(
-                weights='imagenet', include_top=False, input_tensor=input_tf)
+                weights='imagenet', include_top=False)
         elif base == 'efficientnet-b4':
             return efficientnet.EfficientNetB4(
-                weights='imagenet', include_top=False, input_tensor=input_tf)
+                weights='imagenet', include_top=False)
         elif base == 'efficientnet-b5':
             return efficientnet.EfficientNetB5(
-                weights='imagenet', include_top=False, input_tensor=input_tf)
+                weights='imagenet', include_top=False)
         else:
             raise RuntimeError(f'{base} is not a valid base model type')
 
     def build_model(self):
-
+        # https://keras.io/examples/vision/image_classification_efficientnet_fine_tuning/
         base = self.arg_value('base_model')
-        img_augmentation = tf.keras.models.Sequential(
-            [
-                preprocessing.RandomRotation(factor=0.15),
-                preprocessing.RandomTranslation(height_factor=0.1, width_factor=0.1),
-                preprocessing.RandomFlip(),
-                preprocessing.RandomContrast(factor=0.1),
-            ],
-            name="img_augmentation",
-        )
-
-        size = self.get_image_size()
-        inputs = layers.Input(shape=(size[0], size[1], 3))
-        input_node = img_augmentation(inputs)
 
         concepts = len(self.labels)
-        base_model = self.get_base_model(input_node)
-        base_model.trainable = False
-        x = layers.GlobalAveragePooling2D(name="avg_pool")(base_model.output)
-        x = layers.BatchNormalization()(x)
-        x = layers.Dropout(0.2, name="top_dropout")(x)
+        base_model = self.get_base_model()
+        for layer in base_model.layers:
+            layer.trainable = False
+        x = base_model.output
+        x = layers.GlobalAveragePooling2D(name="avg_pool")(x)
+        x = layers.Dense(512, activation='relu')(x)
+        x = layers.Dropout(0.5)(x)
         outputs = layers.Dense(concepts, activation="softmax", name="pred")(x)
-        return tf.keras.Model(inputs, outputs, name=base)
+        return tf.keras.Model(base_model.input, outputs, name=base)
 
     def unfreeze_model(self, at_layer):
         """
@@ -321,8 +319,7 @@ class TensorflowTransferLearningTrainer(ModelTrainer):
         at_layer = at_layer * -1
 
         for layer in self.model.layers[at_layer:]:
-            if not isinstance(layer, layers.BatchNormalization):
-                layer.trainable = True
+            layer.trainable = True
 
 
 class HaltCallback(tf.keras.callbacks.Callback):
