@@ -464,7 +464,7 @@ class ModelServiceImpl(
             ops.add(
                 ModOp(
                     ModOpType.DEPEND,
-                    validModules
+                    validModules.map { it.name }
                 )
             )
         }
