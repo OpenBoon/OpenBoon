@@ -13,7 +13,7 @@ class KnnFaceRecognitionTrainer(ModelTrainer):
 
     max_detections = 100
 
-    label_reqs = ['label', 'simhash', 'bbox']
+    label_reqs = ['label', 'simhash']
 
     def __init__(self):
         super(KnnFaceRecognitionTrainer, self).__init__()
@@ -46,9 +46,11 @@ class KnnFaceRecognitionTrainer(ModelTrainer):
         face_model = []
         for asset in self.app.assets.scroll_search(query):
             for label in asset['labels']:
-                if not self.is_valid_label(label):
-                    raise ProcessorException(f'Invalid label on {asset.id}, '
-                                             f'missing a property: {self.label_reqs}')
+                # It's possible to still get other datasets, so skip ones
+                # that are not in this dataset.
+                if label['datasetId'] != self.app_model.dataset_id:
+                    continue
+                self.check_valid_label(asset, label)
                 face_model.append({'simhash': label['simhash'], 'label': label['label']})
 
         if not face_model:
@@ -64,19 +66,18 @@ class KnnFaceRecognitionTrainer(ModelTrainer):
         classifier.fit(x_train, y_train)
         self.publish_model(classifier)
 
-    def is_valid_label(self, label):
+    def check_valid_label(self, asset, label):
         """
-        Return true if a label is valid.
+        Checks to see if our label has the right properties.  Throws if it does not.
 
         Args:
-            label (dict): A label dict.
-
-        Returns:
-            bool: true if label is useful
+            asset (Asset): The Asset.
+            label (dict): The label
         """
-        if label['datasetId'] != self.app_model.dataset_id:
-            return False
-        return all([lr in label for lr in self.label_reqs])
+        for prop in self.label_reqs:
+            if prop not in label:
+                raise ProcessorException(f'Invalid label on {asset.id}, '
+                                         f'missing a property: {prop}')
 
     @staticmethod
     def num_hashes(hashes):
