@@ -33,6 +33,7 @@ def add_subparser(subparsers):
                             default=0.1, help='The percentage of assets to label as test.')
     import_cmd.add_argument('-q', '--quiet', action="store_true",
                             default=False, help='Don\'t ask questions')
+    import_cmd.add_argument('-l', '--label', action='append', help='Adds label to allowed labels')
     import_cmd.set_defaults(func=import_ds)
 
     info_cmd = commands.add_parser('info', help='Get Info about a Dataset')
@@ -142,6 +143,10 @@ def import_classification(args):
         dataset = app.datasets.find_one_dataset(name=ds_name)
 
     for label in labels:
+
+        if args.label and label not in args.label:
+            continue
+
         lpath = os.path.join(args.path, label)
         files = [name for name in os.listdir(lpath) if boonsdk.FileTypes.supported(name)]
 
