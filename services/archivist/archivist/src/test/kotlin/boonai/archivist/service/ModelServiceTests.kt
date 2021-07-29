@@ -14,6 +14,7 @@ import boonai.archivist.domain.Model
 import boonai.archivist.domain.ModelApplyRequest
 import boonai.archivist.domain.ModelCopyRequest
 import boonai.archivist.domain.ModelFilter
+import boonai.archivist.domain.ModelPatchRequestV2
 import boonai.archivist.domain.ModelPublishRequest
 import boonai.archivist.domain.ModelSpec
 import boonai.archivist.domain.ModelTrainingRequest
@@ -61,6 +62,9 @@ class ModelServiceTests : AbstractTest() {
     @Autowired
     lateinit var fileStorageService: ProjectStorageService
 
+    @Autowired
+    lateinit var pipelineResolverService: PipelineResolverService
+
     @PersistenceContext
     lateinit var entityManager: EntityManager
 
@@ -98,6 +102,8 @@ class ModelServiceTests : AbstractTest() {
         val umod = modelService.updateModel(model.id, update)
         assertEquals(ds.id, umod.datasetId)
         assertEquals("bing", umod.name)
+
+        assertNull(pipelineModService.findByName(model.moduleName, false))
     }
 
     @Test
@@ -238,6 +244,24 @@ class ModelServiceTests : AbstractTest() {
     }
 
     @Test
+    fun testPublishThenUpdateDepend() {
+        pipelineModService.updateStandardMods()
+
+        val model1 = create()
+        modelService.publishModel(model1, ModelPublishRequest())
+        modelService.patchModel(
+            model1.id,
+            ModelPatchRequestV2().apply {
+                setDependencies(listOf("boonai-face-detection"))
+            }
+        )
+
+        val mod = pipelineModService.getByName(model1.moduleName)
+        assertEquals(ModOpType.DEPEND, mod.ops[0].type)
+        assertEquals(ModOpType.APPEND, mod.ops[1].type)
+        assertEquals(ModelType.FACE_RECOGNITION.dependencies, mod.ops[0].apply as List<String>)
+    }
+    @Test
     fun testPublishModelWithDepend() {
         val model1 = create(type = ModelType.FACE_RECOGNITION)
         val mod = modelService.publishModel(model1, ModelPublishRequest())
@@ -246,6 +270,25 @@ class ModelServiceTests : AbstractTest() {
         assertEquals(ModelType.FACE_RECOGNITION.dependencies, mod.ops[0].apply as List<String>)
     }
 
+    @Test
+    fun testPublishModelWithUserSuppliedDepend() {
+        pipelineModService.updateStandardMods()
+        val model1 = create(type = ModelType.BOON_FUNCTION)
+        modelService.patchModel(
+            model1.id,
+            ModelPatchRequestV2().apply {
+                setDependencies(listOf("boonai-face-detection"))
+            }
+        )
+        val mod = modelService.publishModel(model1, ModelPublishRequest())
+        assertEquals(ModOpType.DEPEND, mod.ops[0].type)
+        assertEquals(ModOpType.APPEND, mod.ops[1].type)
+        assertEquals(ModelType.FACE_RECOGNITION.dependencies, mod.ops[0].apply as List<String>)
+
+        val pipe = pipelineResolverService.resolveModular(listOf(mod))
+        val shouldBeFace = pipe.execute.last { it.className == "boonai_analysis.boonai.ZviFaceDetectionProcessor" }
+        assertEquals("boonai_analysis.boonai.ZviFaceDetectionProcessor", shouldBeFace.className)
+    }
     @Test
     fun testPublishModelUpdate() {
         val model1 = create()
