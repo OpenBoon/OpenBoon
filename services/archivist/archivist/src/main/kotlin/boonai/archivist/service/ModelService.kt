@@ -179,6 +179,12 @@ class ModelServiceImpl(
         model.dependencies = update.dependencies
         model.timeModified = System.currentTimeMillis()
         model.actorModified = getZmlpActor().toString()
+
+        val mod = pipelineModDao.findByNameIn(listOf(model.name))
+        if (mod.isNotEmpty()) {
+            publishModel(model, ModelPublishRequest())
+        }
+
         return model
     }
 
@@ -202,6 +208,12 @@ class ModelServiceImpl(
 
         model.timeModified = System.currentTimeMillis()
         model.actorModified = getZmlpActor().toString()
+
+        val mod = pipelineModDao.findByNameIn(listOf(model.name))
+        if (mod.isNotEmpty()) {
+            publishModel(model, ModelPublishRequest())
+        }
+
         return model
     }
 
@@ -464,7 +476,7 @@ class ModelServiceImpl(
             ops.add(
                 ModOp(
                     ModOpType.DEPEND,
-                    validModules
+                    validModules.map { it.name }
                 )
             )
         }
