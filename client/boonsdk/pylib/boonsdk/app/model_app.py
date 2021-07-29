@@ -148,6 +148,19 @@ class ModelApp:
         mid = as_id(model)
         return Job(self.app.client.post(f'/api/v3/models/{mid}/_test', {}))
 
+    def delete_model(self, model):
+        """
+        Delete the given model.
+
+        Args:
+            model (Model): A Model instance or a model unique Id.
+
+        Returns:
+            dict: status dict
+        """
+        mid = as_id(model)
+        return self.app.client.delete(f'/api/v3/models/{mid}')
+
     def upload_pretrained_model(self, model, model_path):
         """
         Upload a trained model directory to Boon AI.  The model is not ready to use
