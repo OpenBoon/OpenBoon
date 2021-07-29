@@ -153,39 +153,43 @@ def shutdown_service(event):
         '--quiet'
     ]
     logger.info(f'Running: {cmd}')
-    subprocess.check_call(cmd)
+    subprocess.call(cmd)
 
 
 def delete_images(event):
     image = event['image']
+    logger.info(f'deleting images: {image}')
 
-    try:
-        tags = get_image_tags(image)
-        for tag in tags:
-            digest = tag['digest'][7:]
-            cmd = [
-                'gcloud',
-                'container',
-                'images',
-                'delete',
-                f'{image}@{digest}',
-                '--quiet'
-            ]
-            logger.info(f'Running: {cmd}')
-            subprocess.call(cmd, shell=False)
-    except Exception as e:
-        logger.error(f'Error deleting tags for image {image}', e)
+    tags = get_image_tags(image)
+    for tag in tags:
+        digest = tag['digest']
+        cmd = [
+            'gcloud',
+            'container',
+            'images',
+            'delete',
+            f'{image}@{digest}',
+            '--quiet'
+        ]
+        logger.info(f'Running: {cmd}')
+        try:
+            subprocess.check_call(cmd, shell=False)
+        except subprocess.CalledProcessError:
+            logger.exception(f'Failed to delete tag: {image}')
 
 
 def get_image_tags(image):
+
     cmd = [
         'gcloud',
         'container',
         'images',
         'list-tags',
         image,
-        '--format=json'
+        '--format', 'json'
     ]
+
+    logger.info(f'Running: {cmd}')
     proc = subprocess.Popen(
         cmd,
         shell=False,
