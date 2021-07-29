@@ -19,7 +19,7 @@ def before_request():
 
 
 def setup_endpoints():
-    modules = ["similarity", "face"]
+    modules = ["similarity", "face", "modules"]
     for mod in modules:
         logger.info(f"setting up endpoints for {mod}")
         imported = importlib.import_module(f'.{mod}', package="mlbbq")
