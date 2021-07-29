@@ -50,10 +50,13 @@ def get_model_type_restrictions(label_counts, min_concepts, min_examples):
 
 
 def item_modifier(request, item):
-    # Convert ready to unapplied changes
-    ready = item['ready']
+    # Remove ready and convert state to unappliedChanges
     del(item['ready'])
-    item['unappliedChanges'] = not ready
+    state = item['state']
+    if state in ('Trained', 'Ready'):
+        item['unappliedChanges'] = False
+    else:
+        item['unappliedChanges'] = True
 
 
 def detail_item_modifier(request, item):
