@@ -18,8 +18,10 @@ pytestmark = pytest.mark.django_db
 @pytest.fixture
 def model_fields():
     return ['id', 'name', 'type', 'moduleName', 'fileId', 'trainingJobName',
-            'unappliedChanges', 'applySearch', 'timeCreated', 'timeModified', 'actorCreated',
-            'actorModified', 'link', 'projectId', 'datasetId']
+            'unappliedChanges', 'applySearch', 'timeCreated', 'timeModified', 'timeLastTested',
+            'timeLastTrained', 'actorCreated', 'actorLastTested', 'actorLastTrained',
+            'actorModified', 'link', 'projectId', 'datasetId', 'dependencies', 'state',
+            'trainingArgs', 'trainingJobName', 'uploadable']
 
 
 class TestGetModelTypeRestrictions:
@@ -60,7 +62,7 @@ class TestModelViewSetList:
     def test_list(self, login, project, api_client, monkeypatch, model_fields):
 
         def mock_response(*args, **kwargs):
-            return {'list': [{'id': 'b9c52abf-9914-1020-b9f0-0242ac12000a', 'projectId': '00000000-0000-0000-0000-000000000000', 'type': 'ZVI_LABEL_DETECTION', 'name': 'Labeller', 'datasetId': None, 'moduleName': 'zvi-labeller-label-detection', 'fileId': 'models/b9c52abf-9914-1020-b9f0-0242ac12000a/zvi-labeller-label-detection/zvi-labeller-label-detection.zip', 'trainingJobName': 'Train Labeller / zvi-labeller-label-detection', 'ready': False, 'datasetId': None, 'applySearch': {'query': {'match_all': {}}}, 'timeCreated': 1594678625043, 'timeModified': 1594678625043, 'actorCreated': '33492e0d-9bf2-418e-b0cb-22310926baed/Admin Console Generated Key - a265c25a-0b21-48bc-b57f-42693b28bfaa - software@zorroa.com_00000000-0000-0000-0000-000000000000', 'actorModified': '33492e0d-9bf2-418e-b0cb-22310926baed/Admin Console Generated Key - a265c25a-0b21-48bc-b57f-42693b28bfaa - software@zorroa.com_00000000-0000-0000-0000-000000000000'}, {'id': 'b9c52abe-9914-1020-b9f0-0242ac12000a', 'projectId': '00000000-0000-0000-0000-000000000000', 'type': 'ZVI_KNN_CLASSIFIER', 'name': 'MyClassifier', 'moduleName': 'zvi-myclassifier-cluster', 'fileId': 'models/b9c52abe-9914-1020-b9f0-0242ac12000a/zvi-myclassifier-cluster/zvi-myclassifier-cluster.zip', 'trainingJobName': 'Train MyClassifier / zvi-myclassifier-cluster', 'ready': False, 'datasetId': None, 'applySearch': {'query': {'match_all': {}}}, 'timeCreated': 1594676501554, 'timeModified': 1594676501554, 'actorCreated': '33492e0d-9bf2-418e-b0cb-22310926baed/Admin Console Generated Key - a265c25a-0b21-48bc-b57f-42693b28bfaa - software@zorroa.com_00000000-0000-0000-0000-000000000000', 'actorModified': '33492e0d-9bf2-418e-b0cb-22310926baed/Admin Console Generated Key - a265c25a-0b21-48bc-b57f-42693b28bfaa - software@zorroa.com_00000000-0000-0000-0000-000000000000'}], 'page': {'from': 0, 'size': 50, 'disabled': False, 'totalCount': 2}}  # noqa
+            return {'list': [{'id': '6fec6366-3289-10ca-8ee0-c2dc28c54abf', 'datasetId': '12345', 'projectId': '6892bd17-8660-49f5-be2a-843d87c47bb3', 'state': 'Trained', 'type': 'KNN_CLASSIFIER', 'name': 'foo', 'moduleName': 'foo', 'fileId': 'models/6fec6366-3289-10ca-8ee0-c2dc28c54abf/__TAG__/model.zip', 'trainingJobName': 'Training model: foo - [Label Detection]', 'ready': False, 'applySearch': {'query': {'match_all': {}}}, 'trainingArgs': {}, 'dependencies': [], 'timeCreated': 1627407276005, 'timeModified': 1627407276005, 'actorCreated': '07ae05fc-b764-41f6-96cc-e7d764f6e0e8/Admin Console Generated Key - bdcd0930-a569-4f3d-bf8e-d8838160937c - jbuhler@zorroa.com_6892bd17-8660-49f5-be2a-843d87c47bb3', 'actorModified': '07ae05fc-b764-41f6-96cc-e7d764f6e0e8/Admin Console Generated Key - bdcd0930-a569-4f3d-bf8e-d8838160937c - jbuhler@zorroa.com_6892bd17-8660-49f5-be2a-843d87c47bb3', 'timeLastTrained': 0, 'timeLastApplied': 0, 'timeLastTested': 0, 'timeLastUploaded': 0, 'timeLastDeployed': 0, 'uploadable': False}, {'id': '313e28b1-9f0e-1595-a6c0-ea38f4c81474', 'projectId': '6892bd17-8660-49f5-be2a-843d87c47bb3', 'datasetId': '313e28b1-9f0e-1595-a6c0-ea38f4c81474', 'state': 'Trained', 'type': 'TF_CLASSIFIER', 'name': 'tensorflow-quality', 'moduleName': 'tensorflow-quality', 'fileId': 'models/313e28b1-9f0e-1595-a6c0-ea38f4c81474/__TAG__/model.zip', 'trainingJobName': 'Training model: tensorflow-quality - [Label Detection]', 'ready': False, 'applySearch': {'query': {'match_all': {}}}, 'trainingArgs': {}, 'dependencies': [], 'timeCreated': 1621012834907, 'timeModified': 1621012834907, 'actorCreated': 'e41a24b1-b45a-4e9e-b716-9a9d89b32839/Admin Console Generated Key - d9997529-8822-44a1-9850-64880338094d - wallet-project-key-6892bd17-8660-49f5-be2a-843d87c47bb3', 'actorModified': 'e41a24b1-b45a-4e9e-b716-9a9d89b32839/Admin Console Generated Key - d9997529-8822-44a1-9850-64880338094d - wallet-project-key-6892bd17-8660-49f5-be2a-843d87c47bb3', 'timeLastTrained': 0, 'timeLastApplied': 0, 'timeLastTested': 0, 'timeLastUploaded': 0, 'timeLastDeployed': 0, 'uploadable': False}, {'id': 'ef965880-4559-10f2-801c-4a8fc1a4e308', 'projectId': '6892bd17-8660-49f5-be2a-843d87c47bb3', 'datasetId': 'ef965880-4559-10f2-801c-4a8fc1a4e308', 'state': 'Trained', 'type': 'KNN_CLASSIFIER', 'name': 'knn-quality', 'moduleName': 'knn-quality', 'fileId': 'models/ef965880-4559-10f2-801c-4a8fc1a4e308/__TAG__/model.zip', 'trainingJobName': 'Training model: knn-quality - [Label Detection]', 'ready': True, 'applySearch': {'query': {'match_all': {}}}, 'trainingArgs': {}, 'dependencies': [], 'timeCreated': 1616783169869, 'timeModified': 1616783169869, 'actorCreated': '931fd6fc-6538-48d8-b7f5-cb45613d9503/Admin Console Generated Key - c4dfc976-2df2-47f4-8cd6-ad5b57f1d558 - jbuhler@zorroa.com_6892bd17-8660-49f5-be2a-843d87c47bb3', 'actorModified': '931fd6fc-6538-48d8-b7f5-cb45613d9503/Admin Console Generated Key - c4dfc976-2df2-47f4-8cd6-ad5b57f1d558 - jbuhler@zorroa.com_6892bd17-8660-49f5-be2a-843d87c47bb3', 'timeLastTrained': 0, 'timeLastApplied': 0, 'timeLastTested': 0, 'timeLastUploaded': 0, 'timeLastDeployed': 0, 'uploadable': False}], 'page': {'from': 0, 'size': 20, 'disabled': False, 'totalCount': 3}}  # noqa
 
         def job_response(*args, **kwargs):
             return []
@@ -71,19 +73,19 @@ class TestModelViewSetList:
         response = api_client.get(path)
         content = check_response(response)
         results = content['results']
-        assert len(results) == 2
-        assert results[0]['name'] == 'Labeller'
-        assert results[0]['type'] == 'ZVI_LABEL_DETECTION'
+        assert len(results) == 3
+        assert results[0]['name'] == 'foo'
+        assert results[0]['type'] == 'KNN_CLASSIFIER'
         assert set(model_fields) == set(results[0].keys())
 
 
 class TestModelViewSetListAll:
 
-    @override_settings(REST_FRAMEWORK={'PAGE_SIZE': 2})
+    @override_settings(REST_FRAMEWORK={'PAGE_SIZE': 1})
     def test_list_all(self, login, project, api_client, monkeypatch, model_fields):
 
         def mock_response(*args, **kwargs):
-            return {'list': [{'id': 'b9c52abf-9914-1020-b9f0-0242ac12000a', 'projectId': '00000000-0000-0000-0000-000000000000', 'type': 'ZVI_LABEL_DETECTION', 'name': 'Labeller', 'datasetId': None, 'moduleName': 'zvi-labeller-label-detection', 'fileId': 'models/b9c52abf-9914-1020-b9f0-0242ac12000a/zvi-labeller-label-detection/zvi-labeller-label-detection.zip', 'trainingJobName': 'Train Labeller / zvi-labeller-label-detection', 'ready': False, 'applySearch': {'query': {'match_all': {}}}, 'timeCreated': 1594678625043, 'timeModified': 1594678625043, 'actorCreated': '33492e0d-9bf2-418e-b0cb-22310926baed/Admin Console Generated Key - a265c25a-0b21-48bc-b57f-42693b28bfaa - software@zorroa.com_00000000-0000-0000-0000-000000000000', 'actorModified': '33492e0d-9bf2-418e-b0cb-22310926baed/Admin Console Generated Key - a265c25a-0b21-48bc-b57f-42693b28bfaa - software@zorroa.com_00000000-0000-0000-0000-000000000000'}, {'id': 'b9c52abe-9914-1020-b9f0-0242ac12000a', 'projectId': '00000000-0000-0000-0000-000000000000', 'type': 'ZVI_KNN_CLASSIFIER', 'name': 'MyClassifier', 'datasetId': None, 'moduleName': 'zvi-myclassifier-cluster', 'fileId': 'models/b9c52abe-9914-1020-b9f0-0242ac12000a/zvi-myclassifier-cluster/zvi-myclassifier-cluster.zip', 'trainingJobName': 'Train MyClassifier / zvi-myclassifier-cluster', 'ready': False, 'applySearch': {'query': {'match_all': {}}}, 'timeCreated': 1594676501554, 'timeModified': 1594676501554, 'actorCreated': '33492e0d-9bf2-418e-b0cb-22310926baed/Admin Console Generated Key - a265c25a-0b21-48bc-b57f-42693b28bfaa - software@zorroa.com_00000000-0000-0000-0000-000000000000', 'actorModified': '33492e0d-9bf2-418e-b0cb-22310926baed/Admin Console Generated Key - a265c25a-0b21-48bc-b57f-42693b28bfaa - software@zorroa.com_00000000-0000-0000-0000-000000000000'}], 'page': {'from': 0, 'size': 50, 'disabled': False, 'totalCount': 9}}  # noqa
+            return {'list': [{'id': '6fec6366-3289-10ca-8ee0-c2dc28c54abf', 'datasetId': '12345', 'projectId': '6892bd17-8660-49f5-be2a-843d87c47bb3', 'state': 'Trained', 'type': 'KNN_CLASSIFIER', 'name': 'foo', 'moduleName': 'foo', 'fileId': 'models/6fec6366-3289-10ca-8ee0-c2dc28c54abf/__TAG__/model.zip', 'trainingJobName': 'Training model: foo - [Label Detection]', 'ready': False, 'applySearch': {'query': {'match_all': {}}}, 'trainingArgs': {}, 'dependencies': [], 'timeCreated': 1627407276005, 'timeModified': 1627407276005, 'actorCreated': '07ae05fc-b764-41f6-96cc-e7d764f6e0e8/Admin Console Generated Key - bdcd0930-a569-4f3d-bf8e-d8838160937c - jbuhler@zorroa.com_6892bd17-8660-49f5-be2a-843d87c47bb3', 'actorModified': '07ae05fc-b764-41f6-96cc-e7d764f6e0e8/Admin Console Generated Key - bdcd0930-a569-4f3d-bf8e-d8838160937c - jbuhler@zorroa.com_6892bd17-8660-49f5-be2a-843d87c47bb3', 'timeLastTrained': 0, 'timeLastApplied': 0, 'timeLastTested': 0, 'timeLastUploaded': 0, 'timeLastDeployed': 0, 'uploadable': False}], 'page': {'from': 0, 'size': 1, 'disabled': False, 'totalCount': 3}}  # noqa
 
         def job_response(*args, **kwargs):
             return []
@@ -94,9 +96,9 @@ class TestModelViewSetListAll:
         response = api_client.get(path)
         content = check_response(response)
         results = content['results']
-        assert len(results) == 10
-        assert results[0]['name'] == 'Labeller'
-        assert results[0]['type'] == 'ZVI_LABEL_DETECTION'
+        assert len(results) == 3
+        assert results[0]['name'] == 'foo'
+        assert results[0]['type'] == 'KNN_CLASSIFIER'
         assert set(model_fields) == set(results[0].keys())
 
 
@@ -104,7 +106,7 @@ class TestModelViewSetRetrieve:
     def test_retrieve(self, login, project, api_client, monkeypatch, model_fields):
         model_id = 'b9c52abf-9914-1020-b9f0-0242ac12000a'
 
-        model_response = {'id': model_id, 'projectId': '18e87cfe-23a0-4f62-973d-4e22f0f4b8d8', 'datasetId': 'ebf3e4a6-458f-15d4-a6b1-aab1332fef21', 'type': 'KNN_CLASSIFIER', 'name': 'knn', 'moduleName': 'knn', 'fileId': 'models/ebf3e4a6-458f-15d4-a6b1-aab1332fef21/__TAG__/model.zip', 'trainingJobName': 'Training model: knn - [Label Detection]', 'ready': False, 'applySearch': {'query': {'match_all': {}}}, 'trainingArgs': {}, 'timeCreated': 1619725616046, 'timeLastTrained': None, 'timeLastTested': 1619725616046, 'timeLastApplied': 1619725616046, 'timeModified': 1619725616046, 'actorCreated': '9250c03e-a167-4cb9-a0fc-2198a1a00779/Admin Console Generated Key - 5f52268e-749c-4141-80b3-2fe4daa4552b - jbuhler@zorroa.com_18e87cfe-23a0-4f62-973d-4e22f0f4b8d8', 'actorModified': '9250c03e-a167-4cb9-a0fc-2198a1a00779/Admin Console Generated Key - 5f52268e-749c-4141-80b3-2fe4daa4552b - jbuhler@zorroa.com_18e87cfe-23a0-4f62-973d-4e22f0f4b8d8'}  # noqa
+        model_response = {'id': model_id, 'projectId': '4c40d135-e1cd-4206-b496-94f10ff00f64', 'datasetId': 'ea787a54-e5a9-11eb-b8e0-c696422502ba', 'state': 'Ready', 'type': 'KNN_CLASSIFIER', 'name': 'sail-no-sail', 'moduleName': 'sail-no-sail', 'fileId': 'models/ea129371-b978-1242-bf29-f6107c2f812a/__TAG__/model.zip', 'trainingJobName': 'Training model: sail-no-sail - [Label Detection]', 'ready': False, 'applySearch': {'query': {'match_all': {}}}, 'trainingArgs': {}, 'dependencies': [], 'timeCreated': 1627578639958, 'timeModified': 1627578646452, 'actorCreated': 'e171ba12-7cfe-41e0-a5e6-34a9f2e829c8/Admin Console Generated Key - d0365a16-f7f3-4a4e-815d-188d0479aa3e - wallet-project-key-4c40d135-e1cd-4206-b496-94f10ff00f64', 'actorModified': 'e171ba12-7cfe-41e0-a5e6-34a9f2e829c8/Admin Console Generated Key - d0365a16-f7f3-4a4e-815d-188d0479aa3e - wallet-project-key-4c40d135-e1cd-4206-b496-94f10ff00f64', 'timeLastTrained': 1627578913212, 'actorLastTrained': 'e171ba12-7cfe-41e0-a5e6-34a9f2e829c8/Admin Console Generated Key - d0365a16-f7f3-4a4e-815d-188d0479aa3e - wallet-project-key-4c40d135-e1cd-4206-b496-94f10ff00f64', 'timeLastTested': 1627578922702, 'actorLastTested': '6d9c8605-97b9-4906-9b8d-95c146f6f3af/job-runner', 'uploadable': False}  # noqa
         model_type_response = [{'name': 'KNN_CLASSIFIER', 'description': 'Classify images, documents and video clips using a KNN classifier.  This type of model can work great with just a single labeled example.If no labels are provided, the model automatically generates numbered groups of similar assets. These groups can be renamed and edited in subsequent training passes.', 'objective': 'Label Detection', 'provider': 'Boon AI', 'deployOnTrainingSet': True, 'minConcepts': 0, 'minExamples': 0, 'dependencies': [], 'label': 'K-Nearest Neighbors Classifier', 'datasetType': 'Classification'}, {'name': 'TF_CLASSIFIER', 'description': 'Classify images or documents using a custom strained CNN deep learning algorithm.  This type of modelgenerates multiple predictions and can be trained to identify very specific features. The label detection classifier requires at least 2 concepts with 10 labeled images each. ', 'objective': 'Label Detection', 'provider': 'Boon AI', 'deployOnTrainingSet': False, 'minConcepts': 2, 'minExamples': 10, 'dependencies': [], 'label': 'Tensorflow Transfer Learning Classifier', 'datasetType': 'Classification'}, {'name': 'FACE_RECOGNITION', 'description': 'Label faces detected by the boonai-face-detection module, and classify them with a KNN model. ', 'objective': 'Face Recognition', 'provider': 'Boon AI', 'deployOnTrainingSet': True, 'minConcepts': 1, 'minExamples': 1, 'dependencies': ['boonai-face-detection'], 'label': 'Face Recognition', 'datasetType': 'FaceRecognition'}, {'name': 'TORCH_MAR_CLASSIFIER', 'description': 'Upload a pre-trained Pytorch Model Archive', 'objective': 'Label Detection', 'provider': 'Boon AI', 'deployOnTrainingSet': True, 'minConcepts': 0, 'minExamples': 0, 'dependencies': [], 'label': 'A Torch Model Archive using the image_classifier handler.', 'datasetType': 'Classification'}, {'name': 'TORCH_MAR_DETECTOR', 'description': 'Upload a pre-trained Pytorch Model Archive', 'objective': 'Label Detection', 'provider': 'Boon AI', 'deployOnTrainingSet': True, 'minConcepts': 0, 'minExamples': 0, 'dependencies': [], 'label': 'A Torch Model Archive using the object_detector handler.', 'datasetType': 'Detection'}]  # noqa
         mock_get_responses = [model_type_response, model_response]
 
@@ -137,7 +139,7 @@ class TestModelViewSetRetrieve:
         assert restrictions['missingLabels'] == 0
         assert restrictions['missingLabelsOnAssets'] == 1
         assert content['datasetType'] == 'Classification'
-        assert content['timeLastTrained'] == 0
+        assert content['timeLastTrained'] == 1627578913212
 
 
 class TestModelViewSetDestroy:
@@ -190,7 +192,8 @@ class TestModelViewSetCreate:
         assert content['type'] == 'KNN_CLASSIFIER'
         fields = ['id', 'projectId', 'type', 'name', 'moduleName', 'fileId', 'trainingJobName',
                   'ready', 'applySearch', 'timeCreated', 'timeModified', 'actorCreated',
-                  'actorModified', 'datasetId']
+                  'actorModified', 'actorLastTrained', 'actorLastTested', 'datasetId',
+                  'dependencies', 'state', 'trainingArgs', 'type', 'uploadable']
         assert set(fields) == set(content.keys())
 
 
