@@ -3,6 +3,7 @@ FROM boonai/boonsdk:latest
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && apt-get -y upgrade && apt-get -y install \
+    libmagic-dev \
     libjpeg-turbo8-dev \
     libpng-dev \
     libraw-dev \
