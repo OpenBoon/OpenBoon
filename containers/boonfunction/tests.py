@@ -24,3 +24,9 @@ def test_function(client):
     result = rsp.get_json()
     assert 'analysis' in result
     assert 'custom-fields' in result
+
+
+def test_custom_error(client):
+    rsp = server.custom_error('failure', 404)
+    assert rsp.content_type == 'application/json'
+    assert rsp.status_code == 404

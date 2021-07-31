@@ -33,7 +33,17 @@ to BoonAI if you've set a Base64 encoded BoonAI ApiKey as an environment variabl
   app = boonsdk.app_from_env()
 
 
-You can also load your JSON based BoonAI API key directly.
+
+
+You can load your key from a file.
+
+.. code-block:: python
+
+   app = boonsdk.app_from_keyfile("mykey.json")
+
+
+
+You can load your JSON based BoonAI API key directly.
 
 .. code-block:: python
 
@@ -42,7 +52,7 @@ You can also load your JSON based BoonAI API key directly.
        "accessKey": "UT3rW1J68QCCkddiPuHOXg",
        "secretKey": "wueiEHo44hVK3H1nPkzh1g"
    }
-   app = app = boonsdk.BoonSdkApp(apikey)
+   app = boonsdk.BoonApp(apikey)
 
 You can now make calls into the BoonAI system.
 
@@ -91,4 +101,5 @@ which contained a mouse.
   datasets
   models
   jobs
+  func
   webhooks
