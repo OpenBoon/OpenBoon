@@ -1,5 +1,5 @@
 # syntax = docker/dockerfile:experimental
-FROM boonai/py3-base
+FROM boonai/boonsdk
 
 RUN mkdir /app
 

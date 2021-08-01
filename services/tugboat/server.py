@@ -221,11 +221,17 @@ def generate_build_file(spec, build_path):
     if model_type == 'BOON_FUNCTION':
         memory = "512Mi"
 
+    build_tag = get_base_image_tag()
+
     build = {
         'steps': [
             {
                 'name': 'gcr.io/cloud-builders/docker',
-                'args': ['build', '-t', img, '--build-arg', f'MODEL_URL={model_file}', '.']
+                'args': ['build',
+                         '-t', img,
+                         '--build-arg', f'MODEL_URL={model_file}',
+                         '--build-arg', f'BASE_IMG_TAG={build_tag}',
+                         '.']
             },
             {
                 'name': 'gcr.io/cloud-builders/docker',
@@ -259,6 +265,16 @@ def generate_build_file(spec, build_path):
     return build_file
 
 
+def get_base_image_tag():
+    boonenv = os.environ.get('BOONAI_ENV', 'dev')
+    tag_map = {
+        'prod': 'stable',
+        'qa': 'qa',
+        'dev': 'latest'
+    }
+    return tag_map.get(boonenv)
+
+
 def get_boon_env():
     """
     Craft the boonfunction Env.
@@ -266,7 +282,7 @@ def get_boon_env():
     Returns:
         str: a CSV string of env vars.
     """
-    boonenv = os.environ.get('BOONAI_ENV', 'prod')
+    boonenv = os.environ.get('BOONAI_ENV', 'dev')
     endpoint_map = {
         'prod': 'https://api.boonai.app',
         'qa': 'https://qa.api.boonai.app',
