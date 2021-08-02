@@ -7,6 +7,8 @@ import DatasetConcepts from '../DatasetConcepts'
 
 import ModelDatasetHeader from './Header'
 
+const REQUIRES_UPLOAD = 'RequiresUpload'
+
 const ModelDataset = ({ setErrors }) => {
   const {
     query: { projectId, modelId },
@@ -15,6 +17,10 @@ const ModelDataset = ({ setErrors }) => {
   const { data: model } = useSWR(
     `/api/v1/projects/${projectId}/models/${modelId}/`,
   )
+
+  if (model.state === REQUIRES_UPLOAD) {
+    return null
+  }
 
   if (!model.datasetId) {
     return <ModelLink />

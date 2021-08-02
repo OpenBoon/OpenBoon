@@ -30,12 +30,11 @@ export const onSubmit = async ({ projectId, modelId, state, dispatch }) => {
 
   // request finished event
   /* istanbul ignore next */
-  request.addEventListener('load', () => {
-    // HTTP status message (200, 404 etc)
-    console.log(request.status)
-
-    // request.response holds response from the server
-    console.log(request.response)
+  request.addEventListener('load', async () => {
+    await fetcher(
+      `/api/v1/projects/${projectId}/models/${modelId}/finish_upload/`,
+      { method: 'PUT' },
+    )
   })
 
   // send POST request to server

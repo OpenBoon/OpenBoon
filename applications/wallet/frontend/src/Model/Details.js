@@ -1,5 +1,3 @@
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
 import { useState } from 'react'
 import PropTypes from 'prop-types'
 import useSWR from 'swr'
@@ -13,25 +11,19 @@ import ItemList from '../Item/List'
 import ItemSeparator from '../Item/Separator'
 import Menu from '../Menu'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
-import ButtonGroup from '../Button/Group'
-
-import { formatFullDate } from '../Date/helpers'
-import { usePanel, ACTIONS } from '../Panel/helpers'
-import { useLabelTool } from '../AssetLabeling/helpers'
+import SectionTitle from '../SectionTitle'
+import ModelUpload from '../ModelUpload'
 
 import KebabSvg from '../Icons/kebab.svg'
 
-import { onTrain } from './helpers'
-
-import ModelMatrixLink from './MatrixLink'
-import ModelTip from './Tip'
 import ModelDeleteModal from './DeleteModal'
+import ModelTrain from './Train'
+
+const REQUIRES_UPLOAD = 'RequiresUpload'
 
 const ModelDetails = ({ projectId, modelId, modelTypes }) => {
   const [error, setError] = useState('')
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false)
-  const [, setLeftOpeningPanel] = usePanel({ openToThe: 'left' })
-  const [, setDataSet] = useLabelTool({ projectId })
 
   const { data: model } = useSWR(
     `/api/v1/projects/${projectId}/models/${modelId}/`,
@@ -40,22 +32,7 @@ const ModelDetails = ({ projectId, modelId, modelTypes }) => {
     },
   )
 
-  const {
-    name,
-    type,
-    description,
-    runningJobId,
-    modelTypeRestrictions: {
-      missingLabels,
-      missingLabelsOnAssets,
-      requiredLabels,
-      requiredAssetsPerLabel,
-    },
-    datasetId,
-    timeLastTrained,
-    timeLastApplied,
-    unappliedChanges,
-  } = model
+  const { name, type, description, runningJobId, state } = model
 
   const { label } = modelTypes.find(({ name: n }) => n === type) || {
     label: type,
@@ -151,162 +128,17 @@ const ModelDetails = ({ projectId, modelId, modelTypes }) => {
 
       <ItemSeparator />
 
-      <div css={{ height: spacing.normal }} />
-
-      {!datasetId && (
-        <div css={{ display: 'flex', paddingBottom: spacing.normal }}>
-          <FlashMessage variant={FLASH_VARIANTS.INFO}>
-            You must add a dataset below before you can train or apply the
-            model, or view the matrix.
-          </FlashMessage>
-        </div>
-      )}
-
-      {datasetId && (!!missingLabels || !!missingLabelsOnAssets) && (
-        <div css={{ display: 'flex', paddingBottom: spacing.normal }}>
-          <FlashMessage variant={FLASH_VARIANTS.INFO}>
-            This type of model requires a larger dataset before it can be
-            trained.
-            <Link
-              href="/[projectId]/visualizer"
-              as={`/${projectId}/visualizer`}
-              passHref
-            >
-              <a
-                onClick={() => {
-                  setLeftOpeningPanel({
-                    type: ACTIONS.OPEN,
-                    payload: { openPanel: 'assetLabeling' },
-                  })
-
-                  setDataSet({ datasetId, labels: {} })
-                }}
-              >
-                Add More Labels
-              </a>
-            </Link>
-            <br />
-            <ul css={{ margin: 0 }}>
-              {!!missingLabels && (
-                <li>
-                  {missingLabels} more label{missingLabels > 1 && 's'} (min. ={' '}
-                  {requiredLabels} unique{requiredLabels > 1 && 's'})
-                </li>
-              )}
-              {!!missingLabelsOnAssets && (
-                <li>
-                  {missingLabelsOnAssets} more labeled asset
-                  {missingLabelsOnAssets > 1 && 's'} (min. ={' '}
-                  {requiredAssetsPerLabel} of each label)
-                </li>
-              )}
-            </ul>
-          </FlashMessage>
-        </div>
-      )}
-
-      {datasetId &&
-        !missingLabels &&
-        !missingLabelsOnAssets &&
-        !timeLastTrained &&
-        !!unappliedChanges && (
-          <div css={{ display: 'flex', paddingBottom: spacing.normal }}>
-            <FlashMessage variant={FLASH_VARIANTS.INFO}>
-              The model is ready to train.
-            </FlashMessage>
-          </div>
-        )}
-
-      {datasetId &&
-        !missingLabels &&
-        !missingLabelsOnAssets &&
-        !!timeLastTrained &&
-        !!unappliedChanges && (
-          <div css={{ display: 'flex', paddingBottom: spacing.normal }}>
-            <FlashMessage variant={FLASH_VARIANTS.INFO}>
-              Changes have been made to the dataset since the model was last
-              trained and applied.
-            </FlashMessage>
-          </div>
-        )}
-
-      <div css={{ display: 'flex', justifyContent: 'space-between' }}>
+      {state === REQUIRES_UPLOAD ? (
         <div>
-          <ItemList
-            attributes={[
-              [
-                'Last Trained',
-                timeLastTrained
-                  ? formatFullDate({ timestamp: timeLastTrained })
-                  : 'Untrained',
-              ],
-              [
-                'Last Analyzed',
-                timeLastApplied
-                  ? formatFullDate({ timestamp: timeLastApplied })
-                  : 'Model analysis has not been run.',
-              ],
-            ]}
-          />
+          <SectionTitle>Upload {label} File</SectionTitle>
 
-          <ButtonGroup>
-            <Button
-              variant={BUTTON_VARIANTS.PRIMARY}
-              onClick={() =>
-                onTrain({
-                  model,
-                  apply: false,
-                  test: false,
-                  projectId,
-                  modelId,
-                  setError,
-                })
-              }
-              isDisabled={!!missingLabels}
-            >
-              Train Model
-            </Button>
+          <div css={{ height: spacing.normal }} />
 
-            <Button
-              variant={BUTTON_VARIANTS.PRIMARY}
-              onClick={() =>
-                onTrain({
-                  model,
-                  apply: false,
-                  test: true,
-                  projectId,
-                  modelId,
-                  setError,
-                })
-              }
-              isDisabled={!!missingLabels}
-            >
-              Train &amp; Test
-            </Button>
-
-            <Button
-              variant={BUTTON_VARIANTS.PRIMARY}
-              onClick={() =>
-                onTrain({
-                  model,
-                  apply: true,
-                  test: false,
-                  projectId,
-                  modelId,
-                  setError,
-                })
-              }
-              isDisabled={!!missingLabels}
-            >
-              Train &amp; Analyze All
-            </Button>
-
-            <ModelTip />
-          </ButtonGroup>
+          <ModelUpload />
         </div>
-
-        <ModelMatrixLink projectId={projectId} model={model} />
-      </div>
+      ) : (
+        <ModelTrain projectId={projectId} model={model} setError={setError} />
+      )}
     </div>
   )
 }

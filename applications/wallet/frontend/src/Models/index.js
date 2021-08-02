@@ -27,14 +27,6 @@ const Models = () => {
         Custom Models
       </PageTitle>
 
-      {action === 'add-model-success' && (
-        <div css={{ display: 'flex', paddingTop: spacing.base }}>
-          <FlashMessage variant={FLASH_VARIANTS.SUCCESS}>
-            Model created.
-          </FlashMessage>
-        </div>
-      )}
-
       {action === 'delete-model-success' && (
         <div css={{ display: 'flex', paddingTop: spacing.base }}>
           <FlashMessage variant={FLASH_VARIANTS.SUCCESS}>

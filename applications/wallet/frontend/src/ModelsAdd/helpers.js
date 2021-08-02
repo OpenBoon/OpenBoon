@@ -44,12 +44,12 @@ export const onSubmit = async ({
       key: `/api/v1/projects/${projectId}/models/all/`,
     })
 
-    const queryString = getQueryString({
-      action: 'add-model-success',
-      modelId,
-    })
+    const queryString = getQueryString({ action: 'add-model-success' })
 
-    Router.push(`/[projectId]/models${queryString}`, `/${projectId}/models`)
+    Router.push(
+      `/[projectId]/models/[modelId]${queryString}`,
+      `/${projectId}/models/${modelId}`,
+    )
   } catch (response) {
     const errors = await parseResponse({ response })
 

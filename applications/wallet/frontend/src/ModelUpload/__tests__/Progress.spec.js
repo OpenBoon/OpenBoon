@@ -34,4 +34,31 @@ describe('<ModelUploadProgress />', () => {
 
     expect(component.toJSON()).toMatchSnapshot()
   })
+
+  it('should render properly when it has succeeded', () => {
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/models/[modelId]',
+      query: { projectId: PROJECT_ID, modelId: MODEL_ID },
+    })
+
+    const component = TestRenderer.create(
+      <ModelUploadProgress
+        state={{
+          file: {
+            name: 'model.zip',
+            size: 123456789,
+          },
+          isConfirmed: true,
+          progress: 100,
+          hasFailed: false,
+          request: {
+            abort: noop,
+          },
+        }}
+        dispatch={noop}
+      />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
 })
