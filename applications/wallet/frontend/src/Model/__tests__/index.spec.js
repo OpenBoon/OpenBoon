@@ -58,6 +58,27 @@ describe('<Model />', () => {
     expect(component.toJSON()).toMatchSnapshot()
   })
 
+  it('should render properly after creation', () => {
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/models/[modelId]',
+      query: {
+        projectId: PROJECT_ID,
+        modelId: MODEL_ID,
+        action: 'add-model-success',
+      },
+    })
+
+    require('swr').__setMockUseSWRResponse({ data: modelTypes })
+
+    const component = TestRenderer.create(
+      <User initialUser={mockUser}>
+        <Model />
+      </User>,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
   it('should render properly for deployment', () => {
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/models/[modelId]/deployment',

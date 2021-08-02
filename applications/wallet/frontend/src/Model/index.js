@@ -8,11 +8,9 @@ import Breadcrumbs from '../Breadcrumbs'
 import FlashMessageErrors from '../FlashMessage/Errors'
 import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
 import SuspenseBoundary, { ROLES } from '../SuspenseBoundary'
-import Tabs from '../Tabs'
 
 import ModelDataset from '../ModelDataset'
 import ModelDeployment from '../ModelDeployment'
-// import ModelUpload from '../ModelUpload'
 
 import ModelContent from './Content'
 
@@ -42,6 +40,20 @@ const Model = () => {
         styles={{ paddingTop: spacing.base, paddingBottom: spacing.normal }}
       />
 
+      {action === 'add-model-success' && (
+        <div
+          css={{
+            display: 'flex',
+            paddingTop: spacing.base,
+            paddingBottom: spacing.normal,
+          }}
+        >
+          <FlashMessage variant={FLASH_VARIANTS.SUCCESS}>
+            Model created.
+          </FlashMessage>
+        </div>
+      )}
+
       {['link-dataset-success', 'unlink-dataset-success'].includes(action) && (
         <div
           css={{
@@ -58,18 +70,6 @@ const Model = () => {
 
       <SuspenseBoundary role={ROLES.ML_Tools}>
         <ModelContent />
-
-        {/* <ModelUpload /> */}
-
-        <Tabs
-          tabs={[
-            { title: 'Dataset', href: '/[projectId]/models/[modelId]' },
-            {
-              title: 'Deployment',
-              href: '/[projectId]/models/[modelId]/deployment',
-            },
-          ]}
-        />
 
         {pathname === '/[projectId]/models/[modelId]' && (
           <ModelDataset setErrors={setErrors} />
