@@ -332,12 +332,16 @@ Array [
   background-color: none;
 }
 
-.emotion-30 {
+.emotion-29 {
+  padding-top: 8px;
+}
+
+.emotion-31 {
   margin-right: -130px;
   padding-bottom: 16px;
 }
 
-.emotion-32 {
+.emotion-33 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -348,12 +352,12 @@ Array [
   align-items: flex-start;
 }
 
-.emotion-37 {
+.emotion-38 {
   font-weight: 700;
   color: #ffffff;
 }
 
-.emotion-55 {
+.emotion-56 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -362,17 +366,17 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-55 button,
-.emotion-55 a {
+.emotion-56 button,
+.emotion-56 a {
   margin-right: 16px;
 }
 
-.emotion-55 button:last-child,
-.emotion-55 a:last-child {
+.emotion-56 button:last-child,
+.emotion-56 a:last-child {
   margin-right: 0;
 }
 
-.emotion-56 {
+.emotion-57 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -403,22 +407,22 @@ Array [
   background-color: transparent;
 }
 
-.emotion-56,
-.emotion-56:hover,
-.emotion-56:visited,
-.emotion-56 .noop {
+.emotion-57,
+.emotion-57:hover,
+.emotion-57:visited,
+.emotion-57 .noop {
   background-color: #3A5DFF;
 }
 
-.emotion-56:hover,
-.emotion-56 .noop {
+.emotion-57:hover,
+.emotion-57 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #6088FE;
 }
 
-.emotion-56[aria-disabled=true],
-.emotion-56 .noop {
+.emotion-57[aria-disabled=true],
+.emotion-57 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -574,20 +578,25 @@ Array [
         </label>
       </div>
     </div>
+    <div
+      className="emotion-29"
+    >
+       
+    </div>
     <h3
       className="emotion-1"
     >
       Select Model Type
     </h3>
     <div
-      className="emotion-30"
+      className="emotion-31"
     >
       <div
         className="emotion-13"
       >
         <div>
           <label
-            className="emotion-32"
+            className="emotion-33"
           >
             <div
               className="emotion-15"
@@ -608,7 +617,7 @@ Array [
               className="emotion-18"
             >
               <div
-                className="emotion-37"
+                className="emotion-38"
               >
                 K-Nearest Neighbors Classifier
               </div>
@@ -626,7 +635,7 @@ Array [
       >
         <div>
           <label
-            className="emotion-32"
+            className="emotion-33"
           >
             <div
               className="emotion-15"
@@ -647,7 +656,7 @@ Array [
               className="emotion-18"
             >
               <div
-                className="emotion-37"
+                className="emotion-38"
               >
                 Tensorflow Transfer Learning Classifier
               </div>
@@ -665,7 +674,7 @@ Array [
       >
         <div>
           <label
-            className="emotion-32"
+            className="emotion-33"
           >
             <div
               className="emotion-15"
@@ -686,7 +695,7 @@ Array [
               className="emotion-18"
             >
               <div
-                className="emotion-37"
+                className="emotion-38"
               >
                 Face Recognition
               </div>
@@ -701,11 +710,11 @@ Array [
       </div>
     </div>
     <div
-      className="emotion-55"
+      className="emotion-56"
     >
       <button
         aria-disabled={true}
-        className="emotion-56"
+        className="emotion-57"
         onClick={[Function]}
         type="submit"
       >
@@ -1048,12 +1057,16 @@ Array [
   background-color: #3A5DFF;
 }
 
-.emotion-30 {
+.emotion-29 {
+  padding-top: 8px;
+}
+
+.emotion-31 {
   margin-right: -130px;
   padding-bottom: 16px;
 }
 
-.emotion-32 {
+.emotion-33 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1064,12 +1077,12 @@ Array [
   align-items: flex-start;
 }
 
-.emotion-37 {
+.emotion-38 {
   font-weight: 700;
   color: #ffffff;
 }
 
-.emotion-39 {
+.emotion-40 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1078,17 +1091,17 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-39 button,
-.emotion-39 a {
+.emotion-40 button,
+.emotion-40 a {
   margin-right: 16px;
 }
 
-.emotion-39 button:last-child,
-.emotion-39 a:last-child {
+.emotion-40 button:last-child,
+.emotion-40 a:last-child {
   margin-right: 0;
 }
 
-.emotion-40 {
+.emotion-41 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1119,22 +1132,22 @@ Array [
   background-color: transparent;
 }
 
-.emotion-40,
-.emotion-40:hover,
-.emotion-40:visited,
-.emotion-40 .noop {
+.emotion-41,
+.emotion-41:hover,
+.emotion-41:visited,
+.emotion-41 .noop {
   background-color: #3A5DFF;
 }
 
-.emotion-40:hover,
-.emotion-40 .noop {
+.emotion-41:hover,
+.emotion-41 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #6088FE;
 }
 
-.emotion-40[aria-disabled=true],
-.emotion-40 .noop {
+.emotion-41[aria-disabled=true],
+.emotion-41 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -1290,20 +1303,25 @@ Array [
         </label>
       </div>
     </div>
+    <div
+      className="emotion-29"
+    >
+       
+    </div>
     <h3
       className="emotion-1"
     >
       Select Model Type
     </h3>
     <div
-      className="emotion-30"
+      className="emotion-31"
     >
       <div
         className="emotion-13"
       >
         <div>
           <label
-            className="emotion-32"
+            className="emotion-33"
           >
             <div
               className="emotion-15"
@@ -1324,7 +1342,7 @@ Array [
               className="emotion-18"
             >
               <div
-                className="emotion-37"
+                className="emotion-38"
               >
                 A Pytorch Model Archive. image_classifier, image_segmenter, object_detector, or text_classifier.
               </div>
@@ -1339,10 +1357,10 @@ Array [
       </div>
     </div>
     <div
-      className="emotion-39"
+      className="emotion-40"
     >
       <button
-        className="emotion-40"
+        className="emotion-41"
         onClick={[Function]}
         type="submit"
       >
