@@ -101,6 +101,8 @@ const ModelsAddForm = () => {
         )
       })}
 
+      <div css={{ paddingTop: spacing.base }}>&nbsp;</div>
+
       <SectionTitle>Select Model Type</SectionTitle>
 
       <div css={{ marginRight: -130, paddingBottom: spacing.normal }}>
