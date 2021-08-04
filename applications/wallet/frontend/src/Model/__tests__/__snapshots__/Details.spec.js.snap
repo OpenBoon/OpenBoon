@@ -560,7 +560,9 @@ exports[`<ModelDetails /> should render properly 1`] = `
         </div>
         <div
           className="emotion-11"
-        />
+        >
+          
+        </div>
       </li>
     </ul>
   </div>
@@ -712,11 +714,14 @@ exports[`<ModelDetails /> should render properly 1`] = `
           Object {
             "actorCreated": "56fb89be-f380-423f-bcf5-70b43b384a99/Admin Console Generated Key - c2825674-a1fe-4b51-8207-231bc46c1279 - danny@zorroa.com_6a72b6c1-aa96-415b-8c2d-df355ba9c8f5",
             "actorModified": "56fb89be-f380-423f-bcf5-70b43b384a99/Admin Console Generated Key - c2825674-a1fe-4b51-8207-231bc46c1279 - danny@zorroa.com_6a72b6c1-aa96-415b-8c2d-df355ba9c8f5",
+            "datasetId": null,
+            "datasetType": "FaceRecognition",
             "deploySearch": Object {
               "query": Object {
                 "matchAll": Object {},
               },
             },
+            "description": "",
             "fileId": "models/621bf775-89d9-1244-9596-d6df43f1ede5/boonai-console_face_recognition-face-recognition/boonai-console_face_recognition-face-recognition.zip",
             "id": "621bf775-89d9-1244-9596-d6df43f1ede5",
             "modelTypeRestrictions": Object {
@@ -1374,7 +1379,9 @@ exports[`<ModelDetails /> should render properly 2`] = `
         </div>
         <div
           className="emotion-14"
-        />
+        >
+          
+        </div>
       </li>
     </ul>
   </div>
@@ -1526,11 +1533,14 @@ exports[`<ModelDetails /> should render properly 2`] = `
           Object {
             "actorCreated": "56fb89be-f380-423f-bcf5-70b43b384a99/Admin Console Generated Key - c2825674-a1fe-4b51-8207-231bc46c1279 - danny@zorroa.com_6a72b6c1-aa96-415b-8c2d-df355ba9c8f5",
             "actorModified": "56fb89be-f380-423f-bcf5-70b43b384a99/Admin Console Generated Key - c2825674-a1fe-4b51-8207-231bc46c1279 - danny@zorroa.com_6a72b6c1-aa96-415b-8c2d-df355ba9c8f5",
+            "datasetId": null,
+            "datasetType": "FaceRecognition",
             "deploySearch": Object {
               "query": Object {
                 "matchAll": Object {},
               },
             },
+            "description": "",
             "fileId": "models/621bf775-89d9-1244-9596-d6df43f1ede5/boonai-console_face_recognition-face-recognition/boonai-console_face_recognition-face-recognition.zip",
             "id": "621bf775-89d9-1244-9596-d6df43f1ede5",
             "modelTypeRestrictions": Object {
@@ -2094,7 +2104,9 @@ exports[`<ModelDetails /> should render properly when just created 1`] = `
         </div>
         <div
           className="emotion-7"
-        />
+        >
+          
+        </div>
       </li>
     </ul>
   </div>
@@ -2247,11 +2259,13 @@ exports[`<ModelDetails /> should render properly when just created 1`] = `
             "actorCreated": "56fb89be-f380-423f-bcf5-70b43b384a99/Admin Console Generated Key - c2825674-a1fe-4b51-8207-231bc46c1279 - danny@zorroa.com_6a72b6c1-aa96-415b-8c2d-df355ba9c8f5",
             "actorModified": "56fb89be-f380-423f-bcf5-70b43b384a99/Admin Console Generated Key - c2825674-a1fe-4b51-8207-231bc46c1279 - danny@zorroa.com_6a72b6c1-aa96-415b-8c2d-df355ba9c8f5",
             "datasetId": "4b0b10a8-cec1-155c-b12f-ee2bc8787e06",
+            "datasetType": "FaceRecognition",
             "deploySearch": Object {
               "query": Object {
                 "matchAll": Object {},
               },
             },
+            "description": "",
             "fileId": "models/621bf775-89d9-1244-9596-d6df43f1ede5/boonai-console_face_recognition-face-recognition/boonai-console_face_recognition-face-recognition.zip",
             "id": "621bf775-89d9-1244-9596-d6df43f1ede5",
             "modelTypeRestrictions": Object {
@@ -2690,7 +2704,9 @@ exports[`<ModelDetails /> should render properly when requiring a file upload 1`
         </div>
         <div
           className="emotion-11"
-        />
+        >
+          
+        </div>
       </li>
     </ul>
   </div>
@@ -3309,7 +3325,9 @@ exports[`<ModelDetails /> should render properly when trained and applied 1`] = 
         </div>
         <div
           className="emotion-11"
-        />
+        >
+          
+        </div>
       </li>
     </ul>
   </div>
@@ -3461,11 +3479,14 @@ exports[`<ModelDetails /> should render properly when trained and applied 1`] = 
           Object {
             "actorCreated": "56fb89be-f380-423f-bcf5-70b43b384a99/Admin Console Generated Key - c2825674-a1fe-4b51-8207-231bc46c1279 - danny@zorroa.com_6a72b6c1-aa96-415b-8c2d-df355ba9c8f5",
             "actorModified": "56fb89be-f380-423f-bcf5-70b43b384a99/Admin Console Generated Key - c2825674-a1fe-4b51-8207-231bc46c1279 - danny@zorroa.com_6a72b6c1-aa96-415b-8c2d-df355ba9c8f5",
+            "datasetId": null,
+            "datasetType": "FaceRecognition",
             "deploySearch": Object {
               "query": Object {
                 "matchAll": Object {},
               },
             },
+            "description": "",
             "fileId": "models/621bf775-89d9-1244-9596-d6df43f1ede5/boonai-console_face_recognition-face-recognition/boonai-console_face_recognition-face-recognition.zip",
             "id": "621bf775-89d9-1244-9596-d6df43f1ede5",
             "modelTypeRestrictions": Object {
@@ -4035,7 +4056,9 @@ exports[`<ModelDetails /> should render properly with missing labels 1`] = `
         </div>
         <div
           className="emotion-7"
-        />
+        >
+          
+        </div>
       </li>
     </ul>
   </div>
@@ -4227,11 +4250,13 @@ exports[`<ModelDetails /> should render properly with missing labels 1`] = `
             "actorCreated": "56fb89be-f380-423f-bcf5-70b43b384a99/Admin Console Generated Key - c2825674-a1fe-4b51-8207-231bc46c1279 - danny@zorroa.com_6a72b6c1-aa96-415b-8c2d-df355ba9c8f5",
             "actorModified": "56fb89be-f380-423f-bcf5-70b43b384a99/Admin Console Generated Key - c2825674-a1fe-4b51-8207-231bc46c1279 - danny@zorroa.com_6a72b6c1-aa96-415b-8c2d-df355ba9c8f5",
             "datasetId": "4b0b10a8-cec1-155c-b12f-ee2bc8787e06",
+            "datasetType": "FaceRecognition",
             "deploySearch": Object {
               "query": Object {
                 "matchAll": Object {},
               },
             },
+            "description": "",
             "fileId": "models/621bf775-89d9-1244-9596-d6df43f1ede5/boonai-console_face_recognition-face-recognition/boonai-console_face_recognition-face-recognition.zip",
             "id": "621bf775-89d9-1244-9596-d6df43f1ede5",
             "modelTypeRestrictions": Object {
@@ -4800,7 +4825,9 @@ exports[`<ModelDetails /> should render properly with unapplied changes 1`] = `
         </div>
         <div
           className="emotion-7"
-        />
+        >
+          
+        </div>
       </li>
     </ul>
   </div>
@@ -4953,11 +4980,13 @@ exports[`<ModelDetails /> should render properly with unapplied changes 1`] = `
             "actorCreated": "56fb89be-f380-423f-bcf5-70b43b384a99/Admin Console Generated Key - c2825674-a1fe-4b51-8207-231bc46c1279 - danny@zorroa.com_6a72b6c1-aa96-415b-8c2d-df355ba9c8f5",
             "actorModified": "56fb89be-f380-423f-bcf5-70b43b384a99/Admin Console Generated Key - c2825674-a1fe-4b51-8207-231bc46c1279 - danny@zorroa.com_6a72b6c1-aa96-415b-8c2d-df355ba9c8f5",
             "datasetId": "4b0b10a8-cec1-155c-b12f-ee2bc8787e06",
+            "datasetType": "FaceRecognition",
             "deploySearch": Object {
               "query": Object {
                 "matchAll": Object {},
               },
             },
+            "description": "",
             "fileId": "models/621bf775-89d9-1244-9596-d6df43f1ede5/boonai-console_face_recognition-face-recognition/boonai-console_face_recognition-face-recognition.zip",
             "id": "621bf775-89d9-1244-9596-d6df43f1ede5",
             "modelTypeRestrictions": Object {

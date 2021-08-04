@@ -200,7 +200,7 @@ const ModelTrain = ({ projectId, model, setError }) => {
         </div>
 
         <ModelMatrixLink
-          key={`${state}${runningJobId}`}
+          key={`${datasetId}${state}${runningJobId}`}
           projectId={projectId}
           model={model}
         />
