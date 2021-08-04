@@ -14,17 +14,18 @@ requirements = [
     "PyJWT>=2.0",
     "backoff",
     "pytest",
-    "deprecation"
+    "deprecation",
+    "flask"
 ]
 
 setup(
     name='boonsdk',
-    version="1.4.0",
+    version="1.4.1",
     description='Boon AI SDK',
     url='http://www.boonai.io',
     license='Apache2',
     package_dir={'': 'pylib'},
-    packages=['boonsdk', 'boonsdk.app', 'boonsdk.entity', 'boonsdk.tools.boonctl'],
+    packages=['boonsdk', 'boonsdk.app', 'boonsdk.entity', 'boonsdk.func', 'boonsdk.tools.boonctl'],
     scripts=['bin/boonctl'],
     author="Boon AI Team",
     author_email="support@boonai.io",

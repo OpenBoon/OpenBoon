@@ -3,10 +3,11 @@ import json
 import logging
 import random
 import string
+import uuid
 
 import flask
 
-from boonflow import file_storage
+import boonsdk.func
 from boonsdk import Asset
 from boonsdk.util import to_json
 from function import function
@@ -29,10 +30,23 @@ def endpoint():
         asset = Asset(json.loads(flask.request.data))
         result = function.process(asset)
         if result:
-            return flask.Response(to_json(result), mimetype='application/json')
+            if not isinstance(result, boonsdk.func.FunctionResponse):
+                return custom_error("process() must return a FunctionResponse object", 417)
+            else:
+                return flask.Response(to_json(result), mimetype='application/json')
     except Exception as e:
         logger.exception('Failed to process request: {}'.format(e))
-        return str(e), 412
-    finally:
-        file_storage.cache.clear_request_cache()
+        return custom_error(str(e), 412)
+
     return flask.jsonify({})
+
+
+def custom_error(message, status_code):
+    err_id = str(uuid.uuid4())
+    logging.warning(f'{message} - error_id = {err_id}')
+    struct = {
+        'errorId': err_id,
+        'code': status_code,
+        'message': message
+    }
+    return flask.Response(to_json(struct), status=status_code, mimetype='application/json')

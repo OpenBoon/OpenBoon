@@ -1,3 +1,5 @@
+ARG BASE_IMG_TAG=latest
+
 FROM boonai/py3-base AS build
 
 RUN mkdir /tmp/function
@@ -7,7 +9,9 @@ ARG MODEL_URL
 RUN curl -s -o model.zip $MODEL_URL
 RUN unzip model.zip
 
-FROM boonai/boonfunction
+
+FROM boonai/boonfunction:$BASE_IMG_TAG
+
 WORKDIR /app
 
 USER root

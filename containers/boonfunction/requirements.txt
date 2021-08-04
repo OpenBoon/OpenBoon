@@ -1,8 +1,2 @@
 flask
 gunicorn
-PyJWT==2.1.0
-boonsdk
-numpy
-scikit-learn
-scipy
-pillow==8.2.0
