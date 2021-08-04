@@ -3,6 +3,8 @@ import json
 import logging
 import random
 import string
+import sys
+import traceback
 import uuid
 
 import flask
@@ -31,22 +33,41 @@ def endpoint():
         result = function.process(asset)
         if result:
             if not isinstance(result, boonsdk.func.FunctionResponse):
-                return custom_error("process() must return a FunctionResponse object", 417)
+                return custom_error("process() must return a FunctionResponse object")
             else:
                 return flask.Response(to_json(result), mimetype='application/json')
     except Exception as e:
         logger.exception('Failed to process request: {}'.format(e))
-        return custom_error(str(e), 412)
+        return custom_error(str(e), sys.exc_info()[2])
 
     return flask.jsonify({})
 
 
-def custom_error(message, status_code):
+def custom_error(message, exec_traceback=None):
     err_id = str(uuid.uuid4())
     logging.warning(f'{message} - error_id = {err_id}')
-    struct = {
+    payload = {
         'errorId': err_id,
-        'code': status_code,
-        'message': message
+        'code': 551,
+        'message': message,
+        'path': '/',
+        'exception': 'BoonFunctionException'
     }
-    return flask.Response(to_json(struct), status=status_code, mimetype='application/json')
+
+    if exec_traceback:
+        trace_limit = 10
+        trace = traceback.extract_tb(exec_traceback)
+        if len(trace) > trace_limit:
+            trace = trace[-trace_limit:]
+
+        stack_trace_for_payload = []
+        for ste in trace:
+            stack_trace_for_payload.append({
+                "filename": ste[0],
+                "lineno": ste[1],
+                "name": ste[2],
+                "line": ste[3]
+            })
+        payload["stackTrace"] = stack_trace_for_payload
+
+    return flask.Response(to_json(payload), status=511, mimetype='application/json')

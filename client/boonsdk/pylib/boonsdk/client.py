@@ -550,7 +550,7 @@ class BoonSdkRequestException(BoonClientException):
 
     @property
     def cause(self):
-        return self.__data["cause"]
+        return self.__data.get("cause")
 
     @property
     def endpoint(self):
@@ -652,6 +652,19 @@ class BoonSdkInvalidRequestException(BoonSdkRequestException):
         super(BoonSdkInvalidRequestException, self).__init__(data)
 
 
+class BoonFunctionException(BoonSdkRequestException):
+    """
+    This exception is thrown from Boon Functions which contain information about
+    the error that occured.
+    """
+
+    def __init__(self, data):
+        super(BoonFunctionException, self).__init__(data)
+
+    def stacktrace(self):
+        return self._data['stackTrace']
+
+
 """
 A map of HTTP response codes to local exception types.
 """
@@ -661,7 +674,8 @@ EXCEPTION_MAP = {
     500: BoonSdkInvalidRequestException,
     400: BoonSdkInvalidRequestException,
     401: BoonSdkSecurityException,
-    403: BoonSdkSecurityException
+    403: BoonSdkSecurityException,
+    551: BoonFunctionException
 }
 
 
