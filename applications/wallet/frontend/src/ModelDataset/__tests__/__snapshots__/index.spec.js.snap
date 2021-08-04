@@ -23,11 +23,13 @@ exports[`<ModelDataset /> should render properly with a datasetId 1`] = `
         "actorCreated": "56fb89be-f380-423f-bcf5-70b43b384a99/Admin Console Generated Key - c2825674-a1fe-4b51-8207-231bc46c1279 - danny@zorroa.com_6a72b6c1-aa96-415b-8c2d-df355ba9c8f5",
         "actorModified": "56fb89be-f380-423f-bcf5-70b43b384a99/Admin Console Generated Key - c2825674-a1fe-4b51-8207-231bc46c1279 - danny@zorroa.com_6a72b6c1-aa96-415b-8c2d-df355ba9c8f5",
         "datasetId": "4b0b10a8-cec1-155c-b12f-ee2bc8787e06",
+        "datasetType": "FaceRecognition",
         "deploySearch": Object {
           "query": Object {
             "matchAll": Object {},
           },
         },
+        "description": "",
         "fileId": "models/621bf775-89d9-1244-9596-d6df43f1ede5/boonai-console_face_recognition-face-recognition/boonai-console_face_recognition-face-recognition.zip",
         "id": "621bf775-89d9-1244-9596-d6df43f1ede5",
         "modelTypeRestrictions": Object {
@@ -47,7 +49,6 @@ exports[`<ModelDataset /> should render properly with a datasetId 1`] = `
         "unappliedChanges": true,
       }
     }
-    modelId="621bf775-89d9-1244-9596-d6df43f1ede5"
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
     setErrors={[Function]}
   />
@@ -59,4 +60,38 @@ exports[`<ModelDataset /> should render properly with a datasetId 1`] = `
 </div>
 `;
 
-exports[`<ModelDataset /> should render properly without a datasetId 1`] = `<ModelLink />`;
+exports[`<ModelDataset /> should render properly without a datasetId 1`] = `
+<ModelLink
+  model={
+    Object {
+      "actorCreated": "56fb89be-f380-423f-bcf5-70b43b384a99/Admin Console Generated Key - c2825674-a1fe-4b51-8207-231bc46c1279 - danny@zorroa.com_6a72b6c1-aa96-415b-8c2d-df355ba9c8f5",
+      "actorModified": "56fb89be-f380-423f-bcf5-70b43b384a99/Admin Console Generated Key - c2825674-a1fe-4b51-8207-231bc46c1279 - danny@zorroa.com_6a72b6c1-aa96-415b-8c2d-df355ba9c8f5",
+      "datasetId": null,
+      "datasetType": "FaceRecognition",
+      "deploySearch": Object {
+        "query": Object {
+          "matchAll": Object {},
+        },
+      },
+      "description": "",
+      "fileId": "models/621bf775-89d9-1244-9596-d6df43f1ede5/boonai-console_face_recognition-face-recognition/boonai-console_face_recognition-face-recognition.zip",
+      "id": "621bf775-89d9-1244-9596-d6df43f1ede5",
+      "modelTypeRestrictions": Object {
+        "missingLabels": 1,
+        "missingLabelsOnAssets": 15,
+        "requiredAssetsPerLabel": 10,
+        "requiredLabels": 2,
+      },
+      "moduleName": "boonai-console_face_recognition-face-recognition",
+      "name": "console_face_recognition",
+      "runningJobId": "223fd17d-7028-1519-94a8-d2f0132bc0c8",
+      "state": "RequiresTraining",
+      "timeCreated": 1594243397871,
+      "timeModified": 1594243397871,
+      "trainingJobName": "Train console_face_recognition / boonai-console_face_recognition-face-recognition",
+      "type": "ZVI_FACE_RECOGNITION",
+      "unappliedChanges": true,
+    }
+  }
+/>
+`;

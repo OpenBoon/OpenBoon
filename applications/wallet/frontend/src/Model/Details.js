@@ -21,16 +21,13 @@ import ModelTrain from './Train'
 
 const REQUIRES_UPLOAD = 'RequiresUpload'
 
-const ModelDetails = ({ projectId, modelId, modelTypes }) => {
+const ModelDetails = ({ projectId, model }) => {
   const [error, setError] = useState('')
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false)
 
-  const { data: model } = useSWR(
-    `/api/v1/projects/${projectId}/models/${modelId}/`,
-    {
-      refreshInterval: 3000,
-    },
-  )
+  const {
+    data: { results: modelTypes },
+  } = useSWR(`/api/v1/projects/${projectId}/models/model_types/`)
 
   const { name, type, description, runningJobId, state } = model
 
@@ -109,7 +106,7 @@ const ModelDetails = ({ projectId, modelId, modelTypes }) => {
 
           <ModelDeleteModal
             projectId={projectId}
-            modelId={modelId}
+            modelId={model.id}
             name={name}
             isDeleteModalOpen={isDeleteModalOpen}
             setDeleteModalOpen={setDeleteModalOpen}
@@ -145,13 +142,15 @@ const ModelDetails = ({ projectId, modelId, modelTypes }) => {
 
 ModelDetails.propTypes = {
   projectId: PropTypes.string.isRequired,
-  modelId: PropTypes.string.isRequired,
-  modelTypes: PropTypes.arrayOf(
-    PropTypes.shape({
-      name: PropTypes.string.isRequired,
-      label: PropTypes.string.isRequired,
-    }).isRequired,
-  ).isRequired,
+  model: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired,
+    datasetId: PropTypes.string,
+    runningJobId: PropTypes.string.isRequired,
+    state: PropTypes.string.isRequired,
+  }).isRequired,
 }
 
 export default ModelDetails

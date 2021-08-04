@@ -1,6 +1,9 @@
 const model = {
   id: '621bf775-89d9-1244-9596-d6df43f1ede5',
   name: 'console_face_recognition',
+  description: '',
+  datasetId: null,
+  datasetType: 'FaceRecognition',
   type: 'ZVI_FACE_RECOGNITION',
   moduleName: 'boonai-console_face_recognition-face-recognition',
   fileId:

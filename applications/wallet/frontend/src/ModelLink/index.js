@@ -1,21 +1,10 @@
-import { useRouter } from 'next/router'
-import useSWR from 'swr'
+import PropTypes from 'prop-types'
 
 import { constants, colors } from '../Styles'
 
 import ModelLinkForm from './Form'
 
-const Model = () => {
-  const {
-    query: { projectId, modelId },
-  } = useRouter()
-
-  const { data: model } = useSWR(
-    `/api/v1/projects/${projectId}/models/${modelId}/`,
-  )
-
-  const { datasetType } = model
-
+const ModelLink = ({ model }) => {
   return (
     <div>
       <div
@@ -29,9 +18,22 @@ const Model = () => {
         testing labels in the dataset are used.
       </div>
 
-      <ModelLinkForm datasetType={datasetType} />
+      <ModelLinkForm model={model} />
     </div>
   )
 }
 
-export default Model
+ModelLink.propTypes = {
+  model: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired,
+    datasetId: PropTypes.string,
+    runningJobId: PropTypes.string.isRequired,
+    state: PropTypes.string.isRequired,
+    datasetType: PropTypes.string.isRequired,
+  }).isRequired,
+}
+
+export default ModelLink

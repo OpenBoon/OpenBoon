@@ -30,9 +30,9 @@ const INITIAL_STATE = {
 
 const reducer = (state, action) => ({ ...state, ...action })
 
-const ModelLinkForm = ({ datasetType }) => {
+const ModelLinkForm = ({ model }) => {
   const {
-    query: { projectId, modelId },
+    query: { projectId },
   } = useRouter()
 
   const [state, dispatch] = useReducer(reducer, INITIAL_STATE)
@@ -72,16 +72,14 @@ const ModelLinkForm = ({ datasetType }) => {
       {state.source === SOURCES[0].value ? (
         <ModelLinkExisting
           projectId={projectId}
-          modelId={modelId}
-          datasetType={datasetType}
+          model={model}
           state={state}
           dispatch={dispatch}
         />
       ) : (
         <ModelLinkNew
           projectId={projectId}
-          modelId={modelId}
-          datasetType={datasetType}
+          model={model}
           datasetTypes={datasetTypes}
           state={state}
           dispatch={dispatch}
@@ -92,7 +90,16 @@ const ModelLinkForm = ({ datasetType }) => {
 }
 
 ModelLinkForm.propTypes = {
-  datasetType: PropTypes.string.isRequired,
+  model: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired,
+    datasetId: PropTypes.string,
+    runningJobId: PropTypes.string.isRequired,
+    state: PropTypes.string.isRequired,
+    datasetType: PropTypes.string.isRequired,
+  }).isRequired,
 }
 
 export default ModelLinkForm

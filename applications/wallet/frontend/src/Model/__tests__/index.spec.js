@@ -1,6 +1,6 @@
 import TestRenderer from 'react-test-renderer'
 
-import modelTypes from '../../ModelTypes/__mocks__/modelTypes'
+import model from '../__mocks__/model'
 import mockUser from '../../User/__mocks__/user'
 
 import User from '../../User'
@@ -26,7 +26,7 @@ describe('<Model />', () => {
       },
     })
 
-    require('swr').__setMockUseSWRResponse({ data: modelTypes })
+    require('swr').__setMockUseSWRResponse({ data: model })
 
     const component = TestRenderer.create(
       <User initialUser={mockUser}>
@@ -47,7 +47,7 @@ describe('<Model />', () => {
       },
     })
 
-    require('swr').__setMockUseSWRResponse({ data: modelTypes })
+    require('swr').__setMockUseSWRResponse({ data: model })
 
     const component = TestRenderer.create(
       <User initialUser={mockUser}>
@@ -68,7 +68,7 @@ describe('<Model />', () => {
       },
     })
 
-    require('swr').__setMockUseSWRResponse({ data: modelTypes })
+    require('swr').__setMockUseSWRResponse({ data: model })
 
     const component = TestRenderer.create(
       <User initialUser={mockUser}>
@@ -88,7 +88,7 @@ describe('<Model />', () => {
       },
     })
 
-    require('swr').__setMockUseSWRResponse({ data: modelTypes })
+    require('swr').__setMockUseSWRResponse({ data: model })
 
     const component = TestRenderer.create(
       <User initialUser={mockUser}>
