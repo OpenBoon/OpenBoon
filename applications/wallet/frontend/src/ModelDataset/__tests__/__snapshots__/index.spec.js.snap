@@ -39,6 +39,7 @@ exports[`<ModelDataset /> should render properly with a datasetId 1`] = `
         "moduleName": "boonai-console_face_recognition-face-recognition",
         "name": "console_face_recognition",
         "runningJobId": "223fd17d-7028-1519-94a8-d2f0132bc0c8",
+        "state": "RequiresTraining",
         "timeCreated": 1594243397871,
         "timeModified": 1594243397871,
         "trainingJobName": "Train console_face_recognition / boonai-console_face_recognition-face-recognition",

@@ -58,6 +58,7 @@ describe('<ModelDetails />', () => {
       data: {
         ...model,
         datasetId: DATASET_ID,
+        runningJobId: '',
         timeLastTrained: null,
         timeLastApplied: null,
         modelTypeRestrictions: { missingLabels: 0 },
