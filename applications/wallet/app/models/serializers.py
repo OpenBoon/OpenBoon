@@ -63,6 +63,7 @@ class ModelDetailSerializer(ModelSerializer):
 class ModelUpdateSerializer(serializers.Serializer):
     name = serializers.CharField()
     datasetId = serializers.CharField(allow_null=True)
+    dependencies = serializers.ListField(child=serializers.CharField())
 
 
 class ModelTypeSerializer(serializers.Serializer):

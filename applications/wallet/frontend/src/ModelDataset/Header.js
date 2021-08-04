@@ -70,11 +70,8 @@ const ModelDatasetHeader = ({ projectId, modelId, model, setErrors }) => {
               await fetcher(
                 `/api/v1/projects/${projectId}/models/${modelId}/`,
                 {
-                  method: 'PUT',
-                  body: JSON.stringify({
-                    datasetId: null,
-                    name: model.name,
-                  }),
+                  method: 'PATCH',
+                  body: JSON.stringify({ datasetId: null }),
                 },
               )
 
