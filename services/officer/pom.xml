@@ -17,7 +17,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <kotlin.version>1.5.21</kotlin.version>
         <kotlin.comiler.jvmTarget>1.8</kotlin.comiler.jvmTarget>
-        <ktor.version>1.6.1</ktor.version>
+        <ktor.version>1.6.2</ktor.version>
     </properties>
 
     <repositories>
