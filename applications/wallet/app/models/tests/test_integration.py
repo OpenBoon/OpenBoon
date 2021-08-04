@@ -185,7 +185,8 @@ class TestModelViewSetCreate:
             return {'id': 'ebf3e4a6-458f-15d4-a6b1-aab1332fef21', 'projectId': '18e87cfe-23a0-4f62-973d-4e22f0f4b8d8', 'datasetId': 'ebf3e4a6-458f-15d4-a6b1-aab1332fef21', 'type': 'KNN_CLASSIFIER', 'name': 'Test Model', 'moduleName': 'knn', 'fileId': 'models/ebf3e4a6-458f-15d4-a6b1-aab1332fef21/__TAG__/model.zip', 'trainingJobName': 'Training model: knn - [Label Detection]', 'ready': False, 'applySearch': {'query': {'match_all': {}}}, 'trainingArgs': {}, 'timeCreated': 1619725616046, 'timeModified': 1619725616046, 'actorCreated': '9250c03e-a167-4cb9-a0fc-2198a1a00779/Admin Console Generated Key - 5f52268e-749c-4141-80b3-2fe4daa4552b - jbuhler@zorroa.com_18e87cfe-23a0-4f62-973d-4e22f0f4b8d8', 'actorModified': '9250c03e-a167-4cb9-a0fc-2198a1a00779/Admin Console Generated Key - 5f52268e-749c-4141-80b3-2fe4daa4552b - jbuhler@zorroa.com_18e87cfe-23a0-4f62-973d-4e22f0f4b8d8'}  # noqa
 
         body = {'name': 'Test Model',
-                'type': 'ZVI_KNN_CLASSIFIER'}
+                'type': 'ZVI_KNN_CLASSIFIER',
+                'description': ''}
         path = reverse('model-list', kwargs={'project_pk': project.id})
         monkeypatch.setattr(BoonClient, 'post', mock_response)
         response = api_client.post(path, body)

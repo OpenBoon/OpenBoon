@@ -34,7 +34,7 @@ class ModelSerializer(serializers.Serializer):
     dependencies = serializers.ListField(child=serializers.CharField(), default=[])
     state = serializers.CharField(required=False, default='')
     uploadable = serializers.BooleanField(required=False, default=False)
-    description = serializers.CharField(required=False, default='')
+    description = serializers.CharField(required=False, default='', allow_blank=True)
 
 
 class ModelTypeRestrictionsSerializer(serializers.Serializer):
