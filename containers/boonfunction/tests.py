@@ -29,19 +29,13 @@ def test_function(client):
 
 
 def test_custom_error(client):
-    rsp = server.custom_error('failure')
-    assert rsp.content_type == 'application/json'
-    assert rsp.status_code == 511
-
-
-def test_custom_error(client):
 
     try:
         raise RuntimeError("test")
     except RuntimeError:
         rsp = server.custom_error('failure', sys.exc_info()[2])
         assert rsp.content_type == 'application/json'
-        assert rsp.status_code == 511
+        assert rsp.status_code == 551
         msg = json.loads(rsp.data)
 
         assert 'errorId' in msg

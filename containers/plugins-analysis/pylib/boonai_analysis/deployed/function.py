@@ -12,7 +12,7 @@ class BoonFunctionProcessor(CustomModelProcessor):
     file_types = FileTypes.all
 
     timeout = 60
-    """The maximum number of seconds to wait for the boonfunc"""
+    """The maximum number of seconds to wait for the boonfunction times out"""
 
     def __init__(self):
         super(BoonFunctionProcessor, self).__init__()
@@ -66,7 +66,7 @@ class BoonFunctionProcessor(CustomModelProcessor):
 
         for k, v in result.get("custom-fields", {}).items():
             if not self.validate_name(k):
-                raise ValueError(f'The customn field name is not allowed: {k}')
+                raise ValueError(f'The custom field name is not allowed: {k}')
             asset.set_attr(f'custom.{k}', v)
 
     def get_analysis_ns(self, section):

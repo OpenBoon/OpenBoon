@@ -45,10 +45,11 @@ def endpoint():
 
 def custom_error(message, exec_traceback=None):
     err_id = str(uuid.uuid4())
+    status_code = 551
     logging.warning(f'{message} - error_id = {err_id}')
     payload = {
         'errorId': err_id,
-        'code': 551,
+        'code': status_code,
         'message': message,
         'path': '/',
         'exception': 'BoonFunctionException'
@@ -70,4 +71,4 @@ def custom_error(message, exec_traceback=None):
             })
         payload["stackTrace"] = stack_trace_for_payload
 
-    return flask.Response(to_json(payload), status=511, mimetype='application/json')
+    return flask.Response(to_json(payload), status=status_code, mimetype='application/json')
