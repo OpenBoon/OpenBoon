@@ -169,7 +169,8 @@ class TestModelViewSetUpdate:
         path = reverse('model-detail', kwargs={'project_pk': project.id,
                                                'pk': model_id})
         monkeypatch.setattr(BoonClient, 'put', mock_response)
-        response = api_client.put(path, {'datasetId': None, 'name': 'changed'})
+        response = api_client.put(path, {'datasetId': None, 'name': 'changed',
+                                         'dependencies': []})
         check_response(response)
 
         response = api_client.put(path, {'name': 'changed'})
