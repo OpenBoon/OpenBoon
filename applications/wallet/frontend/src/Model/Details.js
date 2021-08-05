@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
+import { useRouter } from 'next/router'
 import useSWR from 'swr'
 import Link from 'next/link'
 
@@ -18,12 +19,15 @@ import KebabSvg from '../Icons/kebab.svg'
 
 import ModelDeleteModal from './DeleteModal'
 import ModelTrain from './Train'
+import ModelsEdit from '../ModelsEdit'
 
 const REQUIRES_UPLOAD = 'RequiresUpload'
 
 const ModelDetails = ({ projectId, model }) => {
   const [error, setError] = useState('')
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false)
+
+  const { pathname } = useRouter()
 
   const {
     data: { results: modelTypes },
@@ -88,6 +92,21 @@ const ModelDetails = ({ projectId, model }) => {
               <div>
                 <ul>
                   <li>
+                    <Link
+                      href={`/${projectId}/models/${model.id}/edit`}
+                      passHref
+                    >
+                      <Button
+                        variant={BUTTON_VARIANTS.MENU_ITEM}
+                        onBlur={onBlur}
+                        onClick={onClick}
+                      >
+                        Edit Model
+                      </Button>
+                    </Link>
+                  </li>
+
+                  <li>
                     <Button
                       variant={BUTTON_VARIANTS.MENU_ITEM}
                       onBlur={onBlur}
@@ -125,7 +144,10 @@ const ModelDetails = ({ projectId, model }) => {
 
       <ItemSeparator />
 
-      {state === REQUIRES_UPLOAD ? (
+      {/* eslint-disable-next-line no-nested-ternary */}
+      {pathname === '/[projectId]/models/[modelId]/edit' ? (
+        <ModelsEdit projectId={projectId} model={model} />
+      ) : state === REQUIRES_UPLOAD ? (
         <div>
           <SectionTitle>Upload {label} File</SectionTitle>
 

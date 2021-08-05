@@ -16,6 +16,24 @@ jest.mock('../MatrixLink', () => 'ModelMatrixLink')
 const noop = () => () => {}
 
 describe('<ModelDetails />', () => {
+  it('should render properly for edit', async () => {
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/models/[modelId]/edit',
+      query: {
+        projectId: PROJECT_ID,
+        modelId: MODEL_ID,
+      },
+    })
+
+    require('swr').__setMockUseSWRResponse({ data: modelTypes })
+
+    const component = TestRenderer.create(
+      <ModelDetails projectId={PROJECT_ID} model={model} />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
   it('should render properly when trained and applied', async () => {
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/models/[modelId]',
@@ -30,7 +48,6 @@ describe('<ModelDetails />', () => {
     const component = TestRenderer.create(
       <ModelDetails
         projectId={PROJECT_ID}
-        modelId={MODEL_ID}
         model={{
           ...model,
           timeLastTrained: 1625774562852,
@@ -57,7 +74,6 @@ describe('<ModelDetails />', () => {
     const component = TestRenderer.create(
       <ModelDetails
         projectId={PROJECT_ID}
-        modelId={MODEL_ID}
         model={{
           ...model,
           datasetId: DATASET_ID,
@@ -86,7 +102,6 @@ describe('<ModelDetails />', () => {
     const component = TestRenderer.create(
       <ModelDetails
         projectId={PROJECT_ID}
-        modelId={MODEL_ID}
         model={{
           ...model,
           datasetId: DATASET_ID,
@@ -115,7 +130,6 @@ describe('<ModelDetails />', () => {
     const component = TestRenderer.create(
       <ModelDetails
         projectId={PROJECT_ID}
-        modelId={MODEL_ID}
         model={{
           ...model,
           datasetId: DATASET_ID,
@@ -156,7 +170,6 @@ describe('<ModelDetails />', () => {
     const component = TestRenderer.create(
       <ModelDetails
         projectId={PROJECT_ID}
-        modelId={MODEL_ID}
         model={{
           ...model,
           datasetId: DATASET_ID,
@@ -195,7 +208,6 @@ describe('<ModelDetails />', () => {
     const component = TestRenderer.create(
       <ModelDetails
         projectId={PROJECT_ID}
-        modelId={MODEL_ID}
         model={{ ...model, modelTypeRestrictions: { missingLabels: 0 } }}
       />,
     )

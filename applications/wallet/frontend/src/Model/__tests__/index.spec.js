@@ -85,6 +85,7 @@ describe('<Model />', () => {
       query: {
         projectId: PROJECT_ID,
         modelId: MODEL_ID,
+        action: 'edit-model-success',
       },
     })
 

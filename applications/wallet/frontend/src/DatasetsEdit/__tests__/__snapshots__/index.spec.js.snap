@@ -1,0 +1,1271 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<DatasetsEdit /> should render properly 1`] = `
+Array [
+  .emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 24px;
+  padding-bottom: 16px;
+}
+
+.emotion-3 {
+  color: #ffffff;
+  background-color: #d6680b;
+  border-radius: 32px;
+  font-size: 11px;
+  line-height: 15px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.2px;
+  padding: 1px;
+  padding-left: 6px;
+  padding-right: 6px;
+  margin-right: 8px;
+}
+
+.emotion-4 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+  padding-right: 4px;
+  color: #808080;
+}
+
+.emotion-4:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.emotion-5 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+  padding-right: 4px;
+  color: #808080;
+}
+
+.emotion-6 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+<div
+    className="emotion-0"
+  >
+    <div
+      className="emotion-1"
+    >
+      <div
+        className="emotion-2"
+      >
+        <span
+          className="emotion-3"
+        >
+          beta
+        </span>
+      </div>
+      <a
+        className="emotion-4"
+        href="/76917058-b147-4556-987a-0a0f11e46d9b/datasets"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+      >
+        Datasets
+      </a>
+      <span
+        className="emotion-5"
+      >
+        /
+      </span>
+    </div>
+    <h2
+      className="emotion-6"
+    >
+      Dataset Details
+    </h2>
+  </div>,
+  .emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+}
+
+.emotion-1 {
+  padding-top: 8px;
+}
+
+.emotion-2 {
+  color: #b3b3b3;
+  font-family: Roboto Condensed;
+  text-transform: uppercase;
+}
+
+.emotion-3 {
+  color: #ffffff;
+  font-weight: 500;
+  font-size: 21px;
+  line-height: 30px;
+  padding-bottom: 16px;
+}
+
+.emotion-4 {
+  position: relative;
+  height: 100%;
+}
+
+.emotion-5 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  margin-bottom: 4px;
+}
+
+.emotion-5,
+.emotion-5:hover,
+.emotion-5:visited,
+.emotion-5 .noop {
+  background-color: #808080;
+}
+
+.emotion-5:hover,
+.emotion-5 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #b3b3b3;
+}
+
+.emotion-5[aria-disabled=true],
+.emotion-5 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-6 {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  line-height: 23px;
+}
+
+.emotion-7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-8 {
+  color: #b3b3b3;
+  font-family: Roboto Condensed;
+  text-transform: uppercase;
+  padding-right: 8px;
+}
+
+<div>
+    <div
+      className="emotion-0"
+    >
+      <div
+        className="emotion-1"
+      >
+        <div
+          className="emotion-2"
+        >
+          Dataset
+           Name:
+        </div>
+        <h3
+          className="emotion-3"
+        >
+          faces
+        </h3>
+      </div>
+      <div
+        className="emotion-4"
+      >
+        <button
+          aria-label="Toggle Actions Menu"
+          className="emotion-5"
+          onBlur={[Function]}
+          onClick={[Function]}
+          type="button"
+        >
+          <svg
+            data-file-name="kebab.svg"
+            height={20}
+          />
+        </button>
+      </div>
+    </div>
+    <ul
+      className="emotion-6"
+    >
+      <li
+        className="emotion-7"
+      >
+        <div
+          className="emotion-8"
+        >
+          Dataset Type
+          :
+        </div>
+        <div
+          className="emotion-7"
+        >
+          Face Recognition
+        </div>
+      </li>
+      <li
+        className="emotion-7"
+      >
+        <div
+          className="emotion-8"
+        >
+          Description
+          :
+        </div>
+        <div
+          className="emotion-7"
+        >
+          A dataset for model training
+        </div>
+      </li>
+    </ul>
+  </div>,
+  .emotion-0 {
+  height: 16px;
+}
+
+<div
+    className="emotion-0"
+  />,
+  .emotion-0 {
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid #4a4a4a;
+}
+
+<hr
+    className="emotion-0"
+  />,
+  .emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 470px;
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+  padding: 0;
+}
+
+.emotion-1 {
+  font-size: 21px;
+  line-height: 30px;
+  font-weight: 500;
+  padding-top: 16px;
+}
+
+.emotion-2 {
+  padding-top: 8px;
+}
+
+.emotion-3 {
+  display: block;
+  padding-bottom: 8px;
+  color: #b3b3b3;
+}
+
+.emotion-4 {
+  position: relative;
+}
+
+.emotion-5 {
+  outline-offset: 0;
+  padding: 10px 12px;
+  border-radius: 2px;
+  box-shadow: inset 0 1px 3px 0 transparent;
+  width: 100%;
+  cursor: text;
+  color: #ffffff;
+  background-color: #3b3b3b;
+  border: 1px solid transparent;
+  border-width: 2px;
+}
+
+.emotion-5:focus,
+.emotion-5 .noop {
+  border: 2px solid #3A5DFF;
+  outline: #3A5DFF;
+  color: #000000;
+  background-color: #ffffff;
+}
+
+.emotion-5:hover,
+.emotion-5 .noop {
+  border: 2px solid #ffffff;
+}
+
+.emotion-6 {
+  padding-top: 8px;
+}
+
+.emotion-7 {
+  padding-top: 8px;
+}
+
+.emotion-8 {
+  display: block;
+  padding-bottom: 8px;
+  color: #b3b3b3;
+}
+
+.emotion-9 {
+  position: relative;
+}
+
+.emotion-10 {
+  outline-offset: 0;
+  padding: 10px 12px;
+  border-radius: 2px;
+  box-shadow: inset 0 1px 3px 0 transparent;
+  width: 100%;
+  font-size: 15px;
+  line-height: 19px;
+  color: #ffffff;
+  background-color: #3b3b3b;
+  border: 1px solid transparent;
+  border-width: 2px;
+}
+
+.emotion-10:focus,
+.emotion-10 .noop {
+  border: 2px solid #3A5DFF;
+  background-color: #ffffff;
+  outline: #3A5DFF;
+  color: #000000;
+}
+
+.emotion-12 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.emotion-12 button,
+.emotion-12 a {
+  margin-right: 16px;
+}
+
+.emotion-12 button:last-child,
+.emotion-12 a:last-child {
+  margin-right: 0;
+}
+
+.emotion-13 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-13,
+.emotion-13:hover,
+.emotion-13:visited,
+.emotion-13 .noop {
+  background-color: #808080;
+}
+
+.emotion-13:hover,
+.emotion-13 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #b3b3b3;
+}
+
+.emotion-13[aria-disabled=true],
+.emotion-13 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-14 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-14,
+.emotion-14:hover,
+.emotion-14:visited,
+.emotion-14 .noop {
+  background-color: #3A5DFF;
+}
+
+.emotion-14:hover,
+.emotion-14 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #6088FE;
+}
+
+.emotion-14[aria-disabled=true],
+.emotion-14 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+<form
+    action=""
+    className="emotion-0"
+    method="post"
+    onSubmit={[Function]}
+  >
+    <h3
+      className="emotion-1"
+    >
+      Dataset Name & Description
+    </h3>
+    <div
+      className="emotion-2"
+    >
+      <label
+        className="emotion-3"
+        htmlFor="name"
+      >
+        Dataset Name:
+      </label>
+      <div
+        className="emotion-4"
+      >
+        <input
+          autoComplete="off"
+          autoFocus={true}
+          className="emotion-5"
+          disabled={false}
+          id="name"
+          name="name"
+          onChange={[Function]}
+          type="text"
+          value="faces"
+        />
+      </div>
+      <div
+        className="emotion-6"
+      >
+         
+      </div>
+    </div>
+    <div
+      className="emotion-7"
+    >
+      <label
+        className="emotion-8"
+        htmlFor="description"
+      >
+        Description (optional):
+      </label>
+      <div
+        className="emotion-9"
+      >
+        <textarea
+          className="emotion-10"
+          id="description"
+          name="description"
+          onChange={[Function]}
+          rows="5"
+          value="A dataset for model training"
+        />
+      </div>
+      <div
+        className="emotion-7"
+      >
+         
+      </div>
+    </div>
+    <div
+      className="emotion-12"
+    >
+      <a
+        className="emotion-13"
+        href="/76917058-b147-4556-987a-0a0f11e46d9b/datasets/111d0534-7736-135f-8a62-d29da837913f"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+      >
+        Cancel
+      </a>
+      <button
+        className="emotion-14"
+        onClick={[Function]}
+        type="submit"
+      >
+        Save Dataset
+      </button>
+    </div>
+  </form>,
+]
+`;
+
+exports[`<DatasetsEdit /> should render properly 2`] = `
+Array [
+  .emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 24px;
+  padding-bottom: 16px;
+}
+
+.emotion-3 {
+  color: #ffffff;
+  background-color: #d6680b;
+  border-radius: 32px;
+  font-size: 11px;
+  line-height: 15px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.2px;
+  padding: 1px;
+  padding-left: 6px;
+  padding-right: 6px;
+  margin-right: 8px;
+}
+
+.emotion-4 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+  padding-right: 4px;
+  color: #808080;
+}
+
+.emotion-4:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.emotion-5 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+  padding-right: 4px;
+  color: #808080;
+}
+
+.emotion-6 {
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  padding-top: 24px;
+  padding-bottom: 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+<div
+    className="emotion-0"
+  >
+    <div
+      className="emotion-1"
+    >
+      <div
+        className="emotion-2"
+      >
+        <span
+          className="emotion-3"
+        >
+          beta
+        </span>
+      </div>
+      <a
+        className="emotion-4"
+        href="/76917058-b147-4556-987a-0a0f11e46d9b/datasets"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+      >
+        Datasets
+      </a>
+      <span
+        className="emotion-5"
+      >
+        /
+      </span>
+    </div>
+    <h2
+      className="emotion-6"
+    >
+      Dataset Details
+    </h2>
+  </div>,
+  .emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+}
+
+.emotion-1 {
+  padding-top: 8px;
+}
+
+.emotion-2 {
+  color: #b3b3b3;
+  font-family: Roboto Condensed;
+  text-transform: uppercase;
+}
+
+.emotion-3 {
+  color: #ffffff;
+  font-weight: 500;
+  font-size: 21px;
+  line-height: 30px;
+  padding-bottom: 16px;
+}
+
+.emotion-4 {
+  position: relative;
+  height: 100%;
+}
+
+.emotion-5 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  margin-bottom: 4px;
+}
+
+.emotion-5,
+.emotion-5:hover,
+.emotion-5:visited,
+.emotion-5 .noop {
+  background-color: #808080;
+}
+
+.emotion-5:hover,
+.emotion-5 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #b3b3b3;
+}
+
+.emotion-5[aria-disabled=true],
+.emotion-5 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-6 {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  line-height: 23px;
+}
+
+.emotion-7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-8 {
+  color: #b3b3b3;
+  font-family: Roboto Condensed;
+  text-transform: uppercase;
+  padding-right: 8px;
+}
+
+<div>
+    <div
+      className="emotion-0"
+    >
+      <div
+        className="emotion-1"
+      >
+        <div
+          className="emotion-2"
+        >
+          Dataset
+           Name:
+        </div>
+        <h3
+          className="emotion-3"
+        >
+          faces
+        </h3>
+      </div>
+      <div
+        className="emotion-4"
+      >
+        <button
+          aria-label="Toggle Actions Menu"
+          className="emotion-5"
+          onBlur={[Function]}
+          onClick={[Function]}
+          type="button"
+        >
+          <svg
+            data-file-name="kebab.svg"
+            height={20}
+          />
+        </button>
+      </div>
+    </div>
+    <ul
+      className="emotion-6"
+    >
+      <li
+        className="emotion-7"
+      >
+        <div
+          className="emotion-8"
+        >
+          Dataset Type
+          :
+        </div>
+        <div
+          className="emotion-7"
+        >
+          Face Recognition
+        </div>
+      </li>
+      <li
+        className="emotion-7"
+      >
+        <div
+          className="emotion-8"
+        >
+          Description
+          :
+        </div>
+        <div
+          className="emotion-7"
+        >
+          A dataset for model training
+        </div>
+      </li>
+    </ul>
+  </div>,
+  .emotion-0 {
+  height: 16px;
+}
+
+<div
+    className="emotion-0"
+  />,
+  .emotion-0 {
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid #4a4a4a;
+}
+
+<hr
+    className="emotion-0"
+  />,
+  .emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 470px;
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+  padding: 0;
+}
+
+.emotion-1 {
+  font-size: 21px;
+  line-height: 30px;
+  font-weight: 500;
+  padding-top: 16px;
+}
+
+.emotion-2 {
+  padding-top: 8px;
+}
+
+.emotion-3 {
+  display: block;
+  padding-bottom: 8px;
+  color: #b3b3b3;
+}
+
+.emotion-4 {
+  position: relative;
+}
+
+.emotion-5 {
+  outline-offset: 0;
+  padding: 10px 12px;
+  border-radius: 2px;
+  box-shadow: inset 0 1px 3px 0 transparent;
+  width: 100%;
+  cursor: text;
+  color: #ffffff;
+  background-color: #3b3b3b;
+  border: 1px solid transparent;
+  border-width: 2px;
+}
+
+.emotion-5:focus,
+.emotion-5 .noop {
+  border: 2px solid #3A5DFF;
+  outline: #3A5DFF;
+  color: #000000;
+  background-color: #ffffff;
+}
+
+.emotion-5:hover,
+.emotion-5 .noop {
+  border: 2px solid #ffffff;
+}
+
+.emotion-6 {
+  padding-top: 8px;
+}
+
+.emotion-7 {
+  padding-top: 8px;
+}
+
+.emotion-8 {
+  display: block;
+  padding-bottom: 8px;
+  color: #b3b3b3;
+}
+
+.emotion-9 {
+  position: relative;
+}
+
+.emotion-10 {
+  outline-offset: 0;
+  padding: 10px 12px;
+  border-radius: 2px;
+  box-shadow: inset 0 1px 3px 0 transparent;
+  width: 100%;
+  font-size: 15px;
+  line-height: 19px;
+  color: #ffffff;
+  background-color: #3b3b3b;
+  border: 1px solid transparent;
+  border-width: 2px;
+}
+
+.emotion-10:focus,
+.emotion-10 .noop {
+  border: 2px solid #3A5DFF;
+  background-color: #ffffff;
+  outline: #3A5DFF;
+  color: #000000;
+}
+
+.emotion-12 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.emotion-12 button,
+.emotion-12 a {
+  margin-right: 16px;
+}
+
+.emotion-12 button:last-child,
+.emotion-12 a:last-child {
+  margin-right: 0;
+}
+
+.emotion-13 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-13,
+.emotion-13:hover,
+.emotion-13:visited,
+.emotion-13 .noop {
+  background-color: #808080;
+}
+
+.emotion-13:hover,
+.emotion-13 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #b3b3b3;
+}
+
+.emotion-13[aria-disabled=true],
+.emotion-13 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-14 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-14,
+.emotion-14:hover,
+.emotion-14:visited,
+.emotion-14 .noop {
+  background-color: #3A5DFF;
+}
+
+.emotion-14:hover,
+.emotion-14 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #6088FE;
+}
+
+.emotion-14[aria-disabled=true],
+.emotion-14 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+<form
+    action=""
+    className="emotion-0"
+    method="post"
+    onSubmit={[Function]}
+  >
+    <h3
+      className="emotion-1"
+    >
+      Dataset Name & Description
+    </h3>
+    <div
+      className="emotion-2"
+    >
+      <label
+        className="emotion-3"
+        htmlFor="name"
+      >
+        Dataset Name:
+      </label>
+      <div
+        className="emotion-4"
+      >
+        <input
+          autoComplete="off"
+          autoFocus={true}
+          className="emotion-5"
+          disabled={false}
+          id="name"
+          name="name"
+          onChange={[Function]}
+          type="text"
+          value="My New Dataset"
+        />
+      </div>
+      <div
+        className="emotion-6"
+      >
+         
+      </div>
+    </div>
+    <div
+      className="emotion-7"
+    >
+      <label
+        className="emotion-8"
+        htmlFor="description"
+      >
+        Description (optional):
+      </label>
+      <div
+        className="emotion-9"
+      >
+        <textarea
+          className="emotion-10"
+          id="description"
+          name="description"
+          onChange={[Function]}
+          rows="5"
+          value="Lorem Ipsum"
+        />
+      </div>
+      <div
+        className="emotion-7"
+      >
+         
+      </div>
+    </div>
+    <div
+      className="emotion-12"
+    >
+      <a
+        className="emotion-13"
+        href="/76917058-b147-4556-987a-0a0f11e46d9b/datasets/111d0534-7736-135f-8a62-d29da837913f"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+      >
+        Cancel
+      </a>
+      <button
+        className="emotion-14"
+        onClick={[Function]}
+        type="submit"
+      >
+        Save Dataset
+      </button>
+    </div>
+  </form>,
+]
+`;

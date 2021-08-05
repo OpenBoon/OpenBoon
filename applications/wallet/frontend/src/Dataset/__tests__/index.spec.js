@@ -102,6 +102,7 @@ describe('<Dataset />', () => {
       query: {
         projectId: PROJECT_ID,
         datasetId: DATASET_ID,
+        action: 'edit-dataset-success',
       },
     })
 
