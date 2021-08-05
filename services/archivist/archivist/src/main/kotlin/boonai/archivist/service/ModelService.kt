@@ -361,6 +361,9 @@ class ModelServiceImpl(
             mapOf("modelId" to model.id, "modelName" to model.name)
         )
 
+        model.ready = true
+        model.state = ModelState.Ready
+
         if (mod != null) {
             // Set version number to change checksum
             val update = PipelineModUpdate(
@@ -381,9 +384,6 @@ class ModelServiceImpl(
                 listOf(FileType.Documents, FileType.Images, FileType.Videos),
                 ops
             )
-
-            model.ready = true
-            model.state = ModelState.Ready
             return pipelineModService.create(modspec)
         }
     }
