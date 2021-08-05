@@ -1,6 +1,6 @@
 import logging
 import os
-
+from google.cloud import logging as gc_logging
 import requests
 
 
@@ -18,6 +18,7 @@ class LogFileRotator:
         Create a new LogFileRotator
         """
         self.handler = None
+        self.gc_logs_handler = None
         self.task = None
 
     def start_task_logging(self, task):
@@ -30,12 +31,15 @@ class LogFileRotator:
         """
         self.task = task
         self.handler = logging.FileHandler(self.log_path)
+        self.gc_logs_handler = GCLogHandler(task)
+
         # The log file is intended for customer use and thus
         # is not set to debug level.  Debug gives away underlying
         # software, versions, and internal communications protocol
         # which is a security risk.
         self.handler.setLevel(logging.INFO)
         task_logger.addHandler(self.handler)
+        task_logger.addHandler(self.gc_logs_handler)
 
         logger.info(f'Set up task log for {self.task_id}')
 
@@ -52,6 +56,7 @@ class LogFileRotator:
             logger.info(f'Closing task log for {self.task_id}')
             self.handler.close()
             task_logger.removeHandler(self.handler)
+            task_logger.removeHandler(self.gc_logs_handler)
             self.upload_log_file()
         except Exception:
             logger.exception(f'Failed to publish task log for {self.task_id}')
@@ -100,3 +105,27 @@ class LogFileRotator:
         The task id.
         """
         return self.task['taskId']
+
+
+class CustomCloudLogHandler(logging.StreamHandler):
+
+    def __init__(self, topic):
+        super(CustomCloudLogHandler, self).__init__()
+        self.topic = topic
+
+    def emit(self, record):
+        msg = self.format(record)
+        self.produce(msg)
+
+    def produce(self, msg):
+        raise NotImplementedError("Not implemented")
+
+
+class GCLogHandler(CustomCloudLogHandler):
+
+    def __init__(self, topic):
+        super(GCLogHandler, self).__init__(topic)
+        self.logger = gc_logging.Client().logger(topic)
+
+    def produce(self, msg):
+        self.logger.log_text(msg)
