@@ -22,7 +22,6 @@ describe('<ModelDatasetHeader />', () => {
     const component = TestRenderer.create(
       <ModelDatasetHeader
         projectId={PROJECT_ID}
-        modelId={MODEL_ID}
         model={{ ...model, datasetId: DATASET_ID }}
         setErrors={noop}
       />,

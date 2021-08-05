@@ -37,7 +37,7 @@ const Model = () => {
         styles={{ paddingTop: spacing.base, paddingBottom: spacing.normal }}
       />
 
-      {action === 'add-model-success' && (
+      {['add-model-success', 'edit-model-success'].includes(action) && (
         <div
           css={{
             display: 'flex',
@@ -46,7 +46,7 @@ const Model = () => {
           }}
         >
           <FlashMessage variant={FLASH_VARIANTS.SUCCESS}>
-            Model created.
+            Model {action === 'add-model-success' ? 'created' : 'updated'}.
           </FlashMessage>
         </div>
       )}
