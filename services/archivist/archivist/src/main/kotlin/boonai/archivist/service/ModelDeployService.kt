@@ -41,7 +41,7 @@ interface ModelDeployService {
      */
     fun deployUploadedModel(model: Model, inputStream: InputStream): FileStorage
     fun getSignedModelUploadUrl(model: Model): Map<String, Any>
-    fun kickoffModelBuild(model: Model)
+    fun deployPreuploadedModel(model: Model)
 }
 
 @Service
@@ -72,10 +72,15 @@ class ModelDeployServiceImpl(
         )
     }
 
-    override fun kickoffModelBuild(model: Model) {
+    override fun deployPreuploadedModel(model: Model) {
         if (!model.type.uploadable) {
             throw IllegalArgumentException("This type of model cannot be uploaded")
         }
+
+        if (model.state == ModelState.Deploying) {
+            throw IllegalArgumentException("The model is already being deployed")
+        }
+
         logger.event(
             LogObject.MODEL, LogAction.DEPLOY,
             mapOf("modelId" to model.id, "modelName" to model.name, "image" to model.imageName())
@@ -88,6 +93,10 @@ class ModelDeployServiceImpl(
     override fun deployUploadedModel(model: Model, inputStream: InputStream): FileStorage {
         if (!model.type.uploadable) {
             throw IllegalArgumentException("The model type ${model.type} does not support uploads")
+        }
+
+        if (model.state == ModelState.Deploying) {
+            throw IllegalArgumentException("The model is already deploying")
         }
 
         logger.event(

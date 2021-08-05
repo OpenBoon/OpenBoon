@@ -77,7 +77,7 @@ class ModelJdbcDaoImpl : AbstractDao(), ModelJdbcDao {
                 jdbc.update(
                     "UPDATE model SET int_state=?, time_last_deployed=?," +
                         " actor_last_deployed=actor_last_uploaded WHERE pk_model=?",
-                    state.ordinal, time, actor, modelId
+                    state.ordinal, time, modelId
                 )
             }
             ModelState.Trained -> {
