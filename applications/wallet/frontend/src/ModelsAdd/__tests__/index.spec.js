@@ -55,17 +55,18 @@ describe('<ModelsAdd />', () => {
     })
 
     // Select model source
-    act(() => {
-      component.root
-        .findAllByProps({ name: 'source' })[1]
-        .props.onClick({ value: 'UPLOAD' })
-    })
+    // act(() => {
+    //   component.root
+    //     .findAllByProps({ name: 'source' })[1]
+    //     .props.onClick({ value: 'UPLOAD' })
+    // })
 
     // Select model type
     act(() => {
       component.root
         .findAllByProps({ name: 'modelType' })[0]
-        .props.onClick({ value: 'PYTORCH_MODEL_ARCHIVE' })
+        // .props.onClick({ value: 'PYTORCH_MODEL_ARCHIVE' })
+        .props.onClick({ value: 'FACE_RECOGNITION' })
     })
 
     expect(component.toJSON()).toMatchSnapshot()
@@ -119,7 +120,8 @@ describe('<ModelsAdd />', () => {
       body: JSON.stringify({
         name: 'my-new-model-really',
         description: 'A cool new description',
-        type: 'PYTORCH_MODEL_ARCHIVE',
+        // type: 'PYTORCH_MODEL_ARCHIVE',
+        type: 'FACE_RECOGNITION',
       }),
     })
 
