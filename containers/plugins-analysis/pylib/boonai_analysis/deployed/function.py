@@ -11,7 +11,7 @@ from ..custom.base import CustomModelProcessor
 class BoonFunctionProcessor(CustomModelProcessor):
     file_types = FileTypes.all
 
-    timeout = 60
+    timeout = 30*60
     """The maximum number of seconds to wait for the boonfunction times out"""
 
     def __init__(self):
