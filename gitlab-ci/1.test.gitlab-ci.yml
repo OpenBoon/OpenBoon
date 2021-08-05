@@ -220,7 +220,7 @@ plugin-container-tests:
   image: boonai/docker-buildx
   stage: test
   services:
-    - docker:19-dind
+    - docker:20-dind
   variables:
     DOCKER_TLS_CERTDIR: ""
     DOCKER_DRIVER: overlay2
@@ -283,11 +283,11 @@ boonai-services-build-artifacts:
 
 # Kotlin services - Unit tests - Step 2
 elasticsearch-push-to-local-registry:
-  image: docker:18.09.8-dind
+  image: docker:20.10.8-dind
   stage: pretest
   retry: 2
   services:
-    - docker:18.09.8-dind
+    - docker:20.10.8-dind
   script:
     - cd services/elasticsearch
     - docker login $CI_REGISTRY -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD

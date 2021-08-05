@@ -2,7 +2,7 @@
   image: boonai/docker-buildx
   stage: push
   services:
-    - docker:19-dind
+    - docker:20-dind
   variables:
     FF_USE_LEGACY_KUBERNETES_EXECUTION_STRATEGY: "false" # This feature flag fixes a bug where the job would stop and say it succeeded.
     DOCKER_TLS_CERTDIR: ""
@@ -141,7 +141,7 @@ boonai-dockerhub-push-prod:
   image: boonai/docker-buildx
   stage: push
   services:
-    - docker:19-dind
+    - docker:20-dind
   variables:
     DOCKER_TLS_CERTDIR: ""
     DOCKER_DRIVER: overlay2
