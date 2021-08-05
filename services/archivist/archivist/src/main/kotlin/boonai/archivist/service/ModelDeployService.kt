@@ -81,6 +81,7 @@ class ModelDeployServiceImpl(
             LogObject.MODEL, LogAction.DEPLOY,
             mapOf("modelId" to model.id, "modelName" to model.name, "image" to model.imageName())
         )
+
         modelService.postToModelEventTopic(buildDeployPubsubMessage(model))
     }
 
@@ -124,31 +125,11 @@ class ModelDeployServiceImpl(
 
         /**
          * Status types
-         * QUEUED, WORKING, FAILURE, SUCCESS
-         * Only handling success right now which publishes module.
+         * https://cloud.google.com/build/docs/view-build-results
          */
-        val status = event.attrs["status"]
+        val status = event.attrs.getOrDefault("status", "UNKNOWN")
         if (status == "SUCCESS") {
-            val doc = Asset(
-                Json.Mapper.readValue(event.data.toByteArray(), Json.GENERIC_MAP).toMutableMap()
-            )
-
-            val images = doc.getAttr("images", Json.LIST_OF_STRING)
-            if (images.isNullOrEmpty()) {
-                logger.warn("Model build has no images property")
-                return
-            }
-
-            val image = images[0]
-            if (!image.contains("/models/")) {
-                // The build is not for a model image.
-                return
-            }
-
-            val modelId = UUID.fromString(image.split("/").last())
-            logger.info("Deploying uploaded model $modelId")
-            val model = modelDao.getOne(modelId)
-
+            val model = getModelFromBuildEvent(event) ?: return
             val endpoint = findCloudRunEndpoint(model)
             if (endpoint != null) {
                 val auth = InternalThreadAuthentication(model.projectId)
@@ -161,7 +142,34 @@ class ModelDeployServiceImpl(
             } else {
                 logger.error("The model build ${model.id} completed but no endpoint was found.")
             }
+        } else if (status.startsWith("FAIL") || status == "TIMEOUT") {
+            val model = getModelFromBuildEvent(event) ?: return
+            model.state = ModelState.DeployError
         }
+    }
+
+    fun getModelFromBuildEvent(event: PubSubEvent): Model? {
+        val doc = Asset(
+            Json.Mapper.readValue(event.data.toByteArray(), Json.GENERIC_MAP).toMutableMap()
+        )
+
+        logger.info("-----------BUILD-----------")
+        logger.info(Json.prettyString(doc))
+
+        val images = doc.getAttr("images", Json.LIST_OF_STRING)
+        if (images.isNullOrEmpty()) {
+            logger.warn("Model build has no images property")
+            return null
+        }
+
+        val image = images[0]
+        if (!image.contains("/models/")) {
+            // The build is not for a model image.
+            return null
+        }
+
+        val modelId = UUID.fromString(image.split("/").last())
+        return modelService.getModel(modelId)
     }
 
     fun buildDeployPubsubMessage(model: Model): PubsubMessage {

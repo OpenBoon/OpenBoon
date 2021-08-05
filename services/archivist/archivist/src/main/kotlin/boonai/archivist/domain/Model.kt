@@ -22,7 +22,8 @@ enum class ModelState {
     RequiresUpload,
     Trained,
     Deploying,
-    Ready
+    Ready,
+    DeployError
 }
 
 /**
