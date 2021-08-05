@@ -361,8 +361,11 @@ class ModelServiceImpl(
             mapOf("modelId" to model.id, "modelName" to model.name)
         )
 
-        model.ready = true
-        model.state = ModelState.Ready
+        if (model.isUploadable()) {
+            modelJdbcDao.updateState(model.id, ModelState.Deployed)
+        } else {
+            modelJdbcDao.updateState(model.id, ModelState.Trained)
+        }
 
         if (mod != null) {
             // Set version number to change checksum

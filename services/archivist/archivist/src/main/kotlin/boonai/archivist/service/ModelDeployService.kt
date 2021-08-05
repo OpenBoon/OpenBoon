@@ -10,7 +10,6 @@ import boonai.archivist.domain.PubSubEvent
 import boonai.archivist.repository.ModelDao
 import boonai.archivist.repository.ModelJdbcDao
 import boonai.archivist.security.InternalThreadAuthentication
-import boonai.archivist.security.getZmlpActor
 import boonai.archivist.security.withAuth
 import boonai.archivist.storage.ProjectStorageService
 import boonai.archivist.util.loadGcpCredentials
@@ -82,7 +81,7 @@ class ModelDeployServiceImpl(
             mapOf("modelId" to model.id, "modelName" to model.name, "image" to model.imageName())
         )
 
-        model.state = ModelState.Deploying
+        modelJdbcDao.updateState(model.id, ModelState.Deploying)
         modelService.postToModelEventTopic(buildDeployPubsubMessage(model))
     }
 
@@ -96,9 +95,6 @@ class ModelDeployServiceImpl(
             mapOf("modelId" to model.id, "modelName" to model.name, "image" to model.imageName())
         )
 
-        model.actorLastUploaded = getZmlpActor().toString()
-        model.timeLastUploaded = System.currentTimeMillis()
-
         /**
          * Store the uploaded model file.
          */
@@ -108,9 +104,8 @@ class ModelDeployServiceImpl(
         )
         val fs = fileStorageService.store(modelFile)
 
-        // Emit a message to signal for the model to be deployed.
+        modelJdbcDao.updateState(model.id, ModelState.Deploying)
         modelService.postToModelEventTopic(buildDeployPubsubMessage(model))
-        model.state = ModelState.Deploying
         return fs
     }
 
@@ -136,8 +131,6 @@ class ModelDeployServiceImpl(
                 val auth = InternalThreadAuthentication(model.projectId)
                 withAuth(auth) {
                     logger.info("Setting ${model.id} endpoint to $endpoint")
-                    model.timeLastDeployed = System.currentTimeMillis()
-                    model.actorLastDeployed = model.actorLastUploaded
                     modelService.publishModel(model, ModelPublishRequest(mapOf("endpoint" to endpoint)))
                 }
             } else {
@@ -145,7 +138,7 @@ class ModelDeployServiceImpl(
             }
         } else if (status.startsWith("FAIL") || status == "TIMEOUT") {
             val model = getModelFromBuildEvent(event) ?: return
-            model.state = ModelState.DeployError
+            modelJdbcDao.updateState(model.id, ModelState.DeployError)
         }
     }
 

@@ -10,6 +10,7 @@ import boonai.archivist.domain.GenericBatchUpdateResponse
 import boonai.archivist.domain.LabelScope
 import boonai.archivist.domain.LabelSet
 import boonai.archivist.domain.ModelFilter
+import boonai.archivist.domain.ModelState
 import boonai.archivist.repository.DatasetDao
 import boonai.archivist.repository.DatasetJdbcDao
 import boonai.archivist.repository.KPagedList
@@ -371,7 +372,9 @@ class DatasetServiceImpl(
     override fun markModelsUnready(dsId: UUID): Int {
         val models = modelJdbcDao.find(ModelFilter(datasetIds = listOf(dsId)))
         models.list.forEach {
-            modelJdbcDao.markAsReady(it.id, false)
+            if (!it.isUploadable()) {
+                modelJdbcDao.updateState(it.id, ModelState.RequiresTraining)
+            }
         }
         return models.size()
     }
