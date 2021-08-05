@@ -23,13 +23,9 @@ describe('<ModelLink />', () => {
       query: { projectId: PROJECT_ID, modelId: MODEL_ID },
     })
 
-    require('swr').__setMockUseSWRResponse({
-      data: model,
-    })
-
     const component = TestRenderer.create(
       <User initialUser={mockUser}>
-        <ModelLink />
+        <ModelLink model={model} />
       </User>,
     )
 

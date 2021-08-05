@@ -82,7 +82,7 @@ const ProjectUsersAddForm = () => {
           onClick={(role) => dispatch({ roles: { ...state.roles, ...role } })}
           options={roles.map(({ name, description }) => ({
             value: name,
-            label: name.replace('_', ' '),
+            label: name.replaceAll('_', ' '),
             icon: '',
             legend: description,
             initialValue: false,

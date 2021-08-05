@@ -110,22 +110,28 @@ const ModelUploadProgress = ({ state, dispatch }) => {
       </div>
 
       <ButtonGroup>
-        <Button
-          variant={BUTTON_VARIANTS.SECONDARY}
-          onClick={() => {
-            state.request.abort()
+        {state.progress === 100 ? (
+          <Button variant={BUTTON_VARIANTS.SECONDARY} isDisabled>
+            Finishing...
+          </Button>
+        ) : (
+          <Button
+            variant={BUTTON_VARIANTS.SECONDARY}
+            onClick={() => {
+              state.request.abort()
 
-            dispatch({
-              file: undefined,
-              isConfirmed: false,
-              progress: 0,
-              hasFailed: false,
-              request: undefined,
-            })
-          }}
-        >
-          {state.hasFailed ? 'Retry' : 'Cancel'}
-        </Button>
+              dispatch({
+                file: undefined,
+                isConfirmed: false,
+                progress: 0,
+                hasFailed: false,
+                request: undefined,
+              })
+            }}
+          >
+            {state.hasFailed ? 'Retry' : 'Cancel'}
+          </Button>
+        )}
       </ButtonGroup>
     </Form>
   )

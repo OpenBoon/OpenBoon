@@ -214,18 +214,24 @@ def generate_build_file(spec, build_path):
     model_id = spec['modelId']
     model_file = spec['modelFile']
     model_type = spec['modelType']
-    boonenv = os.environ.get('BOONAI_ENV', 'prod')
+
     service_name = f'mod-{model_id}'
 
     memory = "2Gi"
     if model_type == 'BOON_FUNCTION':
-        memory = "512Mi"
+        memory = "128Mi"
+
+    build_tag = get_base_image_tag()
 
     build = {
         'steps': [
             {
                 'name': 'gcr.io/cloud-builders/docker',
-                'args': ['build', '-t', img, '--build-arg', f'MODEL_URL={model_file}', '.']
+                'args': ['build',
+                         '-t', img,
+                         '--build-arg', f'MODEL_URL={model_file}',
+                         '--build-arg', f'BASE_IMG_TAG={build_tag}',
+                         '.']
             },
             {
                 'name': 'gcr.io/cloud-builders/docker',
@@ -241,8 +247,8 @@ def generate_build_file(spec, build_path):
                          '--allow-unauthenticated',
                          '--memory', memory,
                          '--max-instances', '4',
-                         '--timeout', '30m',
-                         '--update-env-vars', f'BOONAI_ENV={boonenv},BOONFLOW_IN_FLASK=yes',
+                         '--timeout', '1m',
+                         '--update-env-vars', get_boon_env(),
                          '--service-account', os.environ.get('BOONAI_FUNC_SVC_ACCOUNT'),
                          '--labels', f'model-id={model_id}']
             }
@@ -257,6 +263,33 @@ def generate_build_file(spec, build_path):
     with open(build_file, 'w') as fp:
         yaml.dump(build, fp)
     return build_file
+
+
+def get_base_image_tag():
+    boonenv = os.environ.get('BOONAI_ENV', 'dev')
+    tag_map = {
+        'prod': 'stable',
+        'qa': 'qa',
+        'dev': 'latest'
+    }
+    return tag_map.get(boonenv)
+
+
+def get_boon_env():
+    """
+    Craft the boonfunction Env.
+
+    Returns:
+        str: a CSV string of env vars.
+    """
+    boonenv = os.environ.get('BOONAI_ENV', 'dev')
+    endpoint_map = {
+        'prod': 'https://api.boonai.app',
+        'qa': 'https://qa.api.boonai.app',
+        'dev': 'https://dev.api.boonai.app',
+    }
+    boon_server = endpoint_map.get(boonenv)
+    return f'BOONAI_SERVER={boon_server}'
 
 
 def run_cloud_build(build_file, build_path):

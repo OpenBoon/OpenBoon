@@ -22,7 +22,7 @@ const OrganizationBadge = ({ children }) => {
           letterSpacing: LETTER_SPACING,
         }}
       >
-        {children} plan
+        {children.replaceAll('_', ' ')} plan
       </div>
     </div>
   )

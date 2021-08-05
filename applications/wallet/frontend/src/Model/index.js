@@ -8,11 +8,7 @@ import Breadcrumbs from '../Breadcrumbs'
 import FlashMessageErrors from '../FlashMessage/Errors'
 import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
 import SuspenseBoundary, { ROLES } from '../SuspenseBoundary'
-import Tabs from '../Tabs'
-
-import ModelDataset from '../ModelDataset'
-import ModelDeployment from '../ModelDeployment'
-// import ModelUpload from '../ModelUpload'
+import FetchAhead from '../Fetch/Ahead'
 
 import ModelContent from './Content'
 
@@ -20,8 +16,7 @@ const Model = () => {
   const [errors, setErrors] = useState({})
 
   const {
-    pathname,
-    query: { action },
+    query: { projectId, action },
   } = useRouter()
 
   return (
@@ -42,6 +37,20 @@ const Model = () => {
         styles={{ paddingTop: spacing.base, paddingBottom: spacing.normal }}
       />
 
+      {['add-model-success', 'edit-model-success'].includes(action) && (
+        <div
+          css={{
+            display: 'flex',
+            paddingTop: spacing.base,
+            paddingBottom: spacing.normal,
+          }}
+        >
+          <FlashMessage variant={FLASH_VARIANTS.SUCCESS}>
+            Model {action === 'add-model-success' ? 'created' : 'updated'}.
+          </FlashMessage>
+        </div>
+      )}
+
       {['link-dataset-success', 'unlink-dataset-success'].includes(action) && (
         <div
           css={{
@@ -57,27 +66,13 @@ const Model = () => {
       )}
 
       <SuspenseBoundary role={ROLES.ML_Tools}>
-        <ModelContent />
-
-        {/* <ModelUpload /> */}
-
-        <Tabs
-          tabs={[
-            { title: 'Dataset', href: '/[projectId]/models/[modelId]' },
-            {
-              title: 'Deployment',
-              href: '/[projectId]/models/[modelId]/deployment',
-            },
-          ]}
+        <FetchAhead
+          url={`/api/v1/projects/${projectId}/datasets/dataset_types/`}
         />
 
-        {pathname === '/[projectId]/models/[modelId]' && (
-          <ModelDataset setErrors={setErrors} />
-        )}
+        <FetchAhead url={`/api/v1/projects/${projectId}/datasets/`} />
 
-        {pathname === '/[projectId]/models/[modelId]/deployment' && (
-          <ModelDeployment />
-        )}
+        <ModelContent setErrors={setErrors} />
       </SuspenseBoundary>
     </>
   )

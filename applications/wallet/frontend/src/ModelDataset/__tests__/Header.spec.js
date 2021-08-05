@@ -22,7 +22,6 @@ describe('<ModelDatasetHeader />', () => {
     const component = TestRenderer.create(
       <ModelDatasetHeader
         projectId={PROJECT_ID}
-        modelId={MODEL_ID}
         model={{ ...model, datasetId: DATASET_ID }}
         setErrors={noop}
       />,
@@ -73,15 +72,12 @@ describe('<ModelDatasetHeader />', () => {
     )
 
     expect(fetch.mock.calls[0][1]).toEqual({
-      method: 'PUT',
+      method: 'PATCH',
       headers: {
         'Content-Type': 'application/json;charset=UTF-8',
         'X-CSRFToken': 'CSRF_TOKEN',
       },
-      body: JSON.stringify({
-        datasetId: null,
-        name: model.name,
-      }),
+      body: JSON.stringify({ datasetId: null }),
     })
 
     expect(mockRouterPush).toHaveBeenCalledWith(

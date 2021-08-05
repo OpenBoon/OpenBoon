@@ -76,7 +76,7 @@ const ProjectUsersAddFormResponse = ({
           <ul css={{ color: colors.structure.zinc }}>
             {roles.map((role) => (
               <li css={{ fontWeight: typography.weight.bold }} key={role}>
-                {role.replace('_', ' ')}
+                {role.replaceAll('_', ' ')}
               </li>
             ))}
           </ul>

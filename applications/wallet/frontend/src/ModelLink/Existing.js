@@ -10,13 +10,7 @@ import ButtonGroup from '../Button/Group'
 
 import { onExistingLink } from './helpers'
 
-const ModelLinkExisting = ({
-  projectId,
-  modelId,
-  datasetType,
-  state,
-  dispatch,
-}) => {
+const ModelLinkExisting = ({ projectId, model, state, dispatch }) => {
   const {
     data: { results: datasets },
   } = useSWR(`/api/v1/projects/${projectId}/datasets/`)
@@ -31,7 +25,7 @@ const ModelLinkExisting = ({
         label="Dataset"
         defaultValue={state.datasetId}
         options={datasets
-          .filter(({ type }) => type === datasetType)
+          .filter(({ type }) => type === model.datasetType)
           .map(({ id, name }) => ({ value: id, label: name }))}
         onChange={({ value: datasetId }) => {
           dispatch({ datasetId })
@@ -48,7 +42,7 @@ const ModelLinkExisting = ({
           onClick={() =>
             onExistingLink({
               projectId,
-              modelId,
+              model,
               datasetId: state.datasetId,
               dispatch,
             })
@@ -64,8 +58,16 @@ const ModelLinkExisting = ({
 
 ModelLinkExisting.propTypes = {
   projectId: PropTypes.string.isRequired,
-  modelId: PropTypes.string.isRequired,
-  datasetType: PropTypes.string.isRequired,
+  model: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired,
+    datasetId: PropTypes.string,
+    runningJobId: PropTypes.string.isRequired,
+    state: PropTypes.string.isRequired,
+    datasetType: PropTypes.string.isRequired,
+  }).isRequired,
   state: PropTypes.shape({
     datasetId: PropTypes.string.isRequired,
     isLoading: PropTypes.bool.isRequired,

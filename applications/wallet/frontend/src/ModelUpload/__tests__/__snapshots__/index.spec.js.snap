@@ -9,13 +9,12 @@ exports[`<ModelUpload /> should render properly 1`] = `
 }
 
 .emotion-1 {
+  width: 470px;
   color: #6088FE;
   font-weight: 500;
   font-size: 17px;
   line-height: 20px;
   padding: 64px;
-  padding-left: 84px;
-  padding-right: 84px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -128,13 +127,12 @@ exports[`<ModelUpload /> should render properly 2`] = `
 }
 
 .emotion-1 {
+  width: 470px;
   color: #3A5DFF;
   font-weight: 500;
   font-size: 17px;
   line-height: 20px;
   padding: 64px;
-  padding-left: 84px;
-  padding-right: 84px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;

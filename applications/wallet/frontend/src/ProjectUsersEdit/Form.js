@@ -48,7 +48,7 @@ const ProjectUsersEditForm = ({ projectId, userId }) => {
         onClick={(role) => dispatch({ roles: { ...state.roles, ...role } })}
         options={roles.map(({ name, description }) => ({
           value: name,
-          label: name.replace('_', ' '),
+          label: name.replaceAll('_', ' '),
           icon: '',
           legend: description,
           initialValue: !!user.roles.includes(name),

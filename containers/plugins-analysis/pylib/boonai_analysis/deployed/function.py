@@ -11,6 +11,9 @@ from ..custom.base import CustomModelProcessor
 class BoonFunctionProcessor(CustomModelProcessor):
     file_types = FileTypes.all
 
+    timeout = 60
+    """The maximum number of seconds to wait for the boonfunction times out"""
+
     def __init__(self):
         super(BoonFunctionProcessor, self).__init__()
         self.add_arg(Argument("endpoint", "str", required=True))
@@ -31,7 +34,8 @@ class BoonFunctionProcessor(CustomModelProcessor):
             'Content-Type': 'application/json',
             'Authorization': self.app.client.sign_request()
         }
-        rsp = requests.post(self.endpoint, data=to_json(asset), headers=headers, timeout=30)
+        rsp = requests.post(self.endpoint, data=to_json(asset),
+                            headers=headers, timeout=self.timeout)
         rsp.raise_for_status()
         return rsp.json()
 
@@ -62,7 +66,7 @@ class BoonFunctionProcessor(CustomModelProcessor):
 
         for k, v in result.get("custom-fields", {}).items():
             if not self.validate_name(k):
-                raise ValueError(f'The customn field name is not allowed: {k}')
+                raise ValueError(f'The custom field name is not allowed: {k}')
             asset.set_attr(f'custom.{k}', v)
 
     def get_analysis_ns(self, section):

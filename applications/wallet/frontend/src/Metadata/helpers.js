@@ -8,7 +8,7 @@ export const formatDisplayName = ({ name }) =>
   name
     // insert a space before all caps
     .replace(/([A-Z])/g, ' $1')
-    .replace('_', ' ')
+    .replaceAll('_', ' ')
     .split(' ')
     .flatMap((word) => {
       if (word.toLowerCase() === 'url') return 'URL'

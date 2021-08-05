@@ -26,13 +26,12 @@ const ModelUploadSelection = ({ dispatch }) => {
       <div
         aria-label="Drag and Drop Zone"
         css={{
+          width: constants.form.maxWidth,
           color: colors.key.two,
           fontWeight: typography.weight.medium,
           fontSize: typography.size.medium,
           lineHeight: typography.height.medium,
           padding: spacing.colossal,
-          paddingLeft: spacing.enormous,
-          paddingRight: spacing.enormous,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
