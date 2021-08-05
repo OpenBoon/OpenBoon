@@ -19,7 +19,10 @@ RUN apt-get update && apt-get -y upgrade && apt-get -y install \
     exiftool \
     mediainfo \
     imagemagick \
-    poppler-utils
+    poppler-utils \
+    wget \
+    curl \
+    unzip
 
 RUN mkdir /build
 COPY ./ /build

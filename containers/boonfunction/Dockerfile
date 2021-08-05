@@ -11,7 +11,6 @@ WORKDIR /app
 RUN --mount=type=cache,target=/root/.cache/pip pip install -r requirements.txt
 RUN rm /app/requirements.txt
 
-ENV BOONFLOW_IN_FLASK=true
 ENV PYTHONUNBUFFERED True
 ENV APP_HOME /app
 
