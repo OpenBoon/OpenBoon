@@ -166,7 +166,7 @@ const DatasetLabelsSelection = ({
 
                 setDataSet({
                   datasetId,
-                  lastLabel: label,
+                  lastLabel: label === '#All#' ? '' : label,
                   lastScope: scope,
                   labels: {},
                 })
