@@ -82,6 +82,7 @@ class ModelDeployServiceImpl(
             mapOf("modelId" to model.id, "modelName" to model.name, "image" to model.imageName())
         )
 
+        model.state = ModelState.Deploying
         modelService.postToModelEventTopic(buildDeployPubsubMessage(model))
     }
 
@@ -169,7 +170,7 @@ class ModelDeployServiceImpl(
         }
 
         val modelId = UUID.fromString(image.split("/").last())
-        return modelService.getModel(modelId)
+        return modelDao.getOne(modelId)
     }
 
     fun buildDeployPubsubMessage(model: Model): PubsubMessage {
