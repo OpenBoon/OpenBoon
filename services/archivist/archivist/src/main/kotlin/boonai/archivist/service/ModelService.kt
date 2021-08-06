@@ -441,14 +441,12 @@ class ModelServiceImpl(
 
         postToModelEventTopic(msg)
 
-        GlobalScope.launch(Dispatchers.IO) {
-            try {
-                fileStorageService.recursiveDelete(
-                    ProjectDirLocator(ProjectStorageEntity.MODELS, model.id.toString())
-                )
-            } catch (e: Exception) {
-                logger.error("Failed to delete files associated with model: ${model.id}")
-            }
+        try {
+            fileStorageService.recursiveDelete(
+                ProjectDirLocator(ProjectStorageEntity.MODELS, model.id.toString())
+            )
+        } catch (e: Exception) {
+            logger.error("Failed to delete files associated with model: ${model.id}", e)
         }
     }
 
