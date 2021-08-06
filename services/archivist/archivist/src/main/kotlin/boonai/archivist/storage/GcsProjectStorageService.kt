@@ -14,6 +14,7 @@ import com.google.cloud.storage.CopyWriter
 import com.google.cloud.storage.HttpMethod
 import com.google.cloud.storage.Storage
 import com.google.cloud.storage.StorageOptions
+import com.google.cloud.logging.v2.LoggingClient
 import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.Profile
 import org.springframework.core.io.InputStreamResource
@@ -22,6 +23,7 @@ import org.springframework.http.CacheControl
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
+import java.lang.StringBuilder
 import java.nio.channels.Channels
 import java.util.concurrent.TimeUnit
 import javax.annotation.PostConstruct
@@ -78,6 +80,31 @@ class GcsProjectStorageService constructor(
         } catch (e: Exception) {
             ResponseEntity.noContent().build()
         }
+    }
+
+    override fun streamLogs(locator: ProjectStorageLocator): ResponseEntity<Resource> {
+
+        val blob = gcs.get(getBlobId(locator))
+
+        // Retrieve logs from file in bucket
+        if (blob.exists()) {
+            return this.stream(locator)
+        }
+
+        // Google logs
+        var logBuilder = StringBuilder()
+        var logging = LoggingClient.create()
+        var logsPagedResponse = logging.listLogs(locator.name)
+        logsPagedResponse.iterateAll().forEach {
+            logBuilder.append("$it\n")
+        }
+
+        val allLogs = logBuilder.toString()
+        return ResponseEntity.ok()
+            .contentType(MediaType.TEXT_PLAIN)
+            .contentLength(allLogs.length.toLong())
+            .cacheControl(CacheControl.maxAge(7, TimeUnit.DAYS).cachePrivate())
+            .body(InputStreamResource(allLogs.byteInputStream()))
     }
 
     override fun copy(src: String, dst: String): Long {

@@ -111,7 +111,7 @@ class TaskController @Autowired constructor(
     @Throws(ExecutionException::class, IOException::class)
     fun streamLog(@ApiParam("UUID of the Task.") @PathVariable id: UUID): ResponseEntity<Resource> {
         val task = jobService.getTask(id)
-        return projectStorageService.stream(task.getLogFileLocation())
+        return projectStorageService.streamLogs(task.getLogFileLocation())
     }
 
     @ApiOperation("Get a list of the Task's errors.")

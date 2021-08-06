@@ -152,6 +152,10 @@ class AwsProjectStorageService constructor(
         }
     }
 
+    override fun streamLogs(locator: ProjectStorageLocator): ResponseEntity<Resource> {
+        return this.stream(locator)
+    }
+
     override fun fetch(locator: ProjectStorageLocator): ByteArray {
         val path = locator.getPath()
 

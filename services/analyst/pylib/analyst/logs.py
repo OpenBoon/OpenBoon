@@ -31,7 +31,7 @@ class LogFileRotator:
         """
         self.task = task
         self.handler = logging.FileHandler(self.log_path)
-        self.gc_logs_handler = GCLogHandler(task)
+        self.gc_logs_handler = GCLogHandler(self.log_name)
 
         # The log file is intended for customer use and thus
         # is not set to debug level.  Debug gives away underlying
@@ -56,6 +56,7 @@ class LogFileRotator:
             logger.info(f'Closing task log for {self.task_id}')
             self.handler.close()
             task_logger.removeHandler(self.handler)
+            self.gc_logs_handler.close()
             task_logger.removeHandler(self.gc_logs_handler)
             self.upload_log_file()
         except Exception:
@@ -105,6 +106,13 @@ class LogFileRotator:
         The task id.
         """
         return self.task['taskId']
+
+    @property
+    def log_name(self):
+        """
+        The task log name.
+        """
+        return f'{self.task_id}.log'
 
 
 class CustomCloudLogHandler(logging.StreamHandler):

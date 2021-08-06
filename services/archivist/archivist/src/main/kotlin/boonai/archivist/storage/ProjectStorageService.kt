@@ -49,6 +49,12 @@ interface ProjectStorageService {
     fun stream(locator: ProjectStorageLocator): ResponseEntity<Resource>
 
     /**
+     * Stream the given file as a ResponseEntity.  This is used for serving
+     * the resource via the HTTP server.
+     */
+    fun streamLogs(locator: ProjectStorageLocator): ResponseEntity<Resource>
+
+    /**
      * Fetch the bytes for the given file.
      */
     fun fetch(locator: ProjectStorageLocator): ByteArray
