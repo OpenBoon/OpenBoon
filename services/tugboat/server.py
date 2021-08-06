@@ -150,6 +150,8 @@ def shutdown_service(event):
         service_name,
         '--region',
         'us-central1',
+        '--platform',
+        'managed',
         '--quiet'
     ]
     logger.info(f'Running: {cmd}')
