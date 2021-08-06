@@ -42,9 +42,6 @@ import boonai.common.service.logging.LogAction
 import boonai.common.service.logging.LogObject
 import boonai.common.service.logging.event
 import com.google.pubsub.v1.PubsubMessage
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import org.slf4j.LoggerFactory
 import org.springframework.core.env.Environment
 import org.springframework.dao.EmptyResultDataAccessException
