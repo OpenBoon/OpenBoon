@@ -1,3 +1,4 @@
+import { mutate } from 'swr'
 import Router from 'next/router'
 
 import {
@@ -9,21 +10,27 @@ import {
 
 export const onExistingLink = async ({
   projectId,
-  modelId,
   datasetId,
+  model,
   dispatch,
 }) => {
   dispatch({ isLoading: true, errors: {} })
 
   try {
-    await fetcher(`/api/v1/projects/${projectId}/models/${modelId}/`, {
+    await fetcher(`/api/v1/projects/${projectId}/models/${model.id}/`, {
       method: 'PATCH',
       body: JSON.stringify({ datasetId }),
     })
 
-    await revalidate({
-      key: `/api/v1/projects/${projectId}/models/${modelId}/`,
-    })
+    await Promise.all([
+      revalidate({
+        key: `/api/v1/projects/${projectId}/datasets/${datasetId}/`,
+      }),
+
+      revalidate({
+        key: `/api/v1/projects/${projectId}/datasets/${datasetId}/get_labels/`,
+      }),
+    ])
 
     const queryString = getQueryString({
       action: 'link-dataset-success',
@@ -31,7 +38,13 @@ export const onExistingLink = async ({
 
     Router.push(
       `/[projectId]/models/[modelId]${queryString}`,
-      `/${projectId}/models/${modelId}`,
+      `/${projectId}/models/${model.id}`,
+    )
+
+    mutate(
+      `/api/v1/projects/${projectId}/models/${model.id}/`,
+      { ...model, datasetId },
+      true,
     )
   } catch (response) {
     const errors = await parseResponse({ response })
@@ -42,7 +55,7 @@ export const onExistingLink = async ({
 
 export const onNewLink = async ({
   projectId,
-  modelId,
+  model,
   state: { name, description, type },
   dispatch,
 }) => {
@@ -61,7 +74,7 @@ export const onNewLink = async ({
       key: `/api/v1/projects/${projectId}/datasets/`,
     })
 
-    onExistingLink({ projectId, modelId, datasetId, dispatch })
+    onExistingLink({ projectId, datasetId, model, dispatch })
   } catch (response) {
     const errors = await parseResponse({ response })
 

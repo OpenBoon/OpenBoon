@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
+import { useRouter } from 'next/router'
 import useSWR from 'swr'
 import Link from 'next/link'
 
@@ -18,19 +19,19 @@ import KebabSvg from '../Icons/kebab.svg'
 
 import ModelDeleteModal from './DeleteModal'
 import ModelTrain from './Train'
+import ModelsEdit from '../ModelsEdit'
 
 const REQUIRES_UPLOAD = 'RequiresUpload'
 
-const ModelDetails = ({ projectId, modelId, modelTypes }) => {
+const ModelDetails = ({ projectId, model }) => {
   const [error, setError] = useState('')
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false)
 
-  const { data: model } = useSWR(
-    `/api/v1/projects/${projectId}/models/${modelId}/`,
-    {
-      refreshInterval: 3000,
-    },
-  )
+  const { pathname } = useRouter()
+
+  const {
+    data: { results: modelTypes },
+  } = useSWR(`/api/v1/projects/${projectId}/models/model_types/`)
 
   const { name, type, description, runningJobId, state } = model
 
@@ -91,6 +92,21 @@ const ModelDetails = ({ projectId, modelId, modelTypes }) => {
               <div>
                 <ul>
                   <li>
+                    <Link
+                      href={`/${projectId}/models/${model.id}/edit`}
+                      passHref
+                    >
+                      <Button
+                        variant={BUTTON_VARIANTS.MENU_ITEM}
+                        onBlur={onBlur}
+                        onClick={onClick}
+                      >
+                        Edit Model
+                      </Button>
+                    </Link>
+                  </li>
+
+                  <li>
                     <Button
                       variant={BUTTON_VARIANTS.MENU_ITEM}
                       onBlur={onBlur}
@@ -109,7 +125,7 @@ const ModelDetails = ({ projectId, modelId, modelTypes }) => {
 
           <ModelDeleteModal
             projectId={projectId}
-            modelId={modelId}
+            modelId={model.id}
             name={name}
             isDeleteModalOpen={isDeleteModalOpen}
             setDeleteModalOpen={setDeleteModalOpen}
@@ -128,7 +144,10 @@ const ModelDetails = ({ projectId, modelId, modelTypes }) => {
 
       <ItemSeparator />
 
-      {state === REQUIRES_UPLOAD ? (
+      {/* eslint-disable-next-line no-nested-ternary */}
+      {pathname === '/[projectId]/models/[modelId]/edit' ? (
+        <ModelsEdit projectId={projectId} model={model} />
+      ) : state === REQUIRES_UPLOAD ? (
         <div>
           <SectionTitle>Upload {label} File</SectionTitle>
 
@@ -145,13 +164,15 @@ const ModelDetails = ({ projectId, modelId, modelTypes }) => {
 
 ModelDetails.propTypes = {
   projectId: PropTypes.string.isRequired,
-  modelId: PropTypes.string.isRequired,
-  modelTypes: PropTypes.arrayOf(
-    PropTypes.shape({
-      name: PropTypes.string.isRequired,
-      label: PropTypes.string.isRequired,
-    }).isRequired,
-  ).isRequired,
+  model: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired,
+    datasetId: PropTypes.string,
+    runningJobId: PropTypes.string.isRequired,
+    state: PropTypes.string.isRequired,
+  }).isRequired,
 }
 
 export default ModelDetails

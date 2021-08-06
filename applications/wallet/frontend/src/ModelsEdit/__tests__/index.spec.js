@@ -1,72 +1,48 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
-import modelTypes from '../../ModelTypes/__mocks__/modelTypes'
+import model from '../../Model/__mocks__/model'
 import mockUser from '../../User/__mocks__/user'
 
 import User from '../../User'
 
-import ModelsAdd from '..'
+import ModelsEdit from '..'
 
 const noop = () => () => {}
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
-const MODEL_ID = '621bf775-89d9-1244-9596-d6df43f1ede5'
+const MODEL_ID = model.id
 
-describe('<ModelsAdd />', () => {
+describe('<ModelsEdit />', () => {
   it('should render properly', async () => {
     const mockFn = jest.fn()
 
     require('next/router').__setMockPushFunction(mockFn)
 
     require('next/router').__setUseRouter({
-      pathname: '/[projectId]/models/add',
-      query: { projectId: PROJECT_ID },
+      pathname: '/[projectId]/models/[modelId]/edit',
+      query: { projectId: PROJECT_ID, modelId: MODEL_ID },
     })
-
-    require('swr').__setMockUseSWRResponse({ data: modelTypes })
 
     const component = TestRenderer.create(
       <User initialUser={mockUser}>
-        <ModelsAdd />
+        <ModelsEdit projectId={PROJECT_ID} model={model} />
       </User>,
     )
 
     expect(component.toJSON()).toMatchSnapshot()
 
-    // Input invalid name
-    act(() => {
-      component.root
-        .findByProps({ id: 'name' })
-        .props.onChange({ target: { value: '' } })
-    })
-
     // Input valid name
     act(() => {
       component.root
         .findByProps({ id: 'name' })
-        .props.onChange({ target: { value: 'My New Model Really' } })
+        .props.onChange({ target: { value: 'My New Model' } })
     })
 
     // Input valid description
     act(() => {
       component.root
         .findByProps({ id: 'description' })
-        .props.onChange({ target: { value: 'A cool new description' } })
-    })
-
-    // Select model source
-    // act(() => {
-    //   component.root
-    //     .findAllByProps({ name: 'source' })[1]
-    //     .props.onClick({ value: 'UPLOAD' })
-    // })
-
-    // Select model type
-    act(() => {
-      component.root
-        .findAllByProps({ name: 'modelType' })[0]
-        // .props.onClick({ value: 'PYTORCH_MODEL_ARCHIVE' })
-        .props.onClick({ value: 'FACE_RECOGNITION' })
+        .props.onChange({ target: { value: 'Lorem Ipsum' } })
     })
 
     expect(component.toJSON()).toMatchSnapshot()
@@ -79,7 +55,7 @@ describe('<ModelsAdd />', () => {
     // Click Submit
     await act(async () => {
       component.root
-        .findByProps({ type: 'submit', children: 'Create New Model' })
+        .findByProps({ type: 'submit', children: 'Save Model' })
         .props.onClick({ preventDefault: noop })
     })
 
@@ -89,7 +65,7 @@ describe('<ModelsAdd />', () => {
     // Click Submit
     await act(async () => {
       component.root
-        .findByProps({ type: 'submit', children: 'Create New Model' })
+        .findByProps({ type: 'submit', children: 'Save Model' })
         .props.onClick({ preventDefault: noop })
     })
 
@@ -101,32 +77,30 @@ describe('<ModelsAdd />', () => {
     // Click Submit
     await act(async () => {
       component.root
-        .findByProps({ type: 'submit', children: 'Create New Model' })
+        .findByProps({ type: 'submit', children: 'Save Model' })
         .props.onClick({ preventDefault: noop })
     })
 
     expect(fetch.mock.calls.length).toEqual(5)
 
     expect(fetch.mock.calls[0][0]).toEqual(
-      `/api/v1/projects/${PROJECT_ID}/models/`,
+      `/api/v1/projects/${PROJECT_ID}/models/${MODEL_ID}/`,
     )
 
     expect(fetch.mock.calls[0][1]).toEqual({
-      method: 'POST',
+      method: 'PATCH',
       headers: {
         'Content-Type': 'application/json;charset=UTF-8',
         'X-CSRFToken': 'CSRF_TOKEN',
       },
       body: JSON.stringify({
-        name: 'my-new-model-really',
-        description: 'A cool new description',
-        // type: 'PYTORCH_MODEL_ARCHIVE',
-        type: 'FACE_RECOGNITION',
+        name: 'My New Model',
+        description: 'Lorem Ipsum',
       }),
     })
 
     expect(mockFn).toHaveBeenCalledWith(
-      `/[projectId]/models/[modelId]?action=add-model-success`,
+      `/[projectId]/models/[modelId]?action=edit-model-success`,
       `/${PROJECT_ID}/models/${MODEL_ID}`,
     )
   })

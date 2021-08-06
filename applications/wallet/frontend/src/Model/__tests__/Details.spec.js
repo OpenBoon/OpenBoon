@@ -16,6 +16,24 @@ jest.mock('../MatrixLink', () => 'ModelMatrixLink')
 const noop = () => () => {}
 
 describe('<ModelDetails />', () => {
+  it('should render properly for edit', async () => {
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/models/[modelId]/edit',
+      query: {
+        projectId: PROJECT_ID,
+        modelId: MODEL_ID,
+      },
+    })
+
+    require('swr').__setMockUseSWRResponse({ data: modelTypes })
+
+    const component = TestRenderer.create(
+      <ModelDetails projectId={PROJECT_ID} model={model} />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
   it('should render properly when trained and applied', async () => {
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/models/[modelId]',
@@ -25,20 +43,17 @@ describe('<ModelDetails />', () => {
       },
     })
 
-    require('swr').__setMockUseSWRResponse({
-      data: {
-        ...model,
-        timeLastTrained: 1625774562852,
-        timeLastApplied: 1625774664673,
-        modelTypeRestrictions: { missingLabels: 0 },
-      },
-    })
+    require('swr').__setMockUseSWRResponse({ data: modelTypes })
 
     const component = TestRenderer.create(
       <ModelDetails
         projectId={PROJECT_ID}
-        modelId={MODEL_ID}
-        modelTypes={modelTypes.results}
+        model={{
+          ...model,
+          timeLastTrained: 1625774562852,
+          timeLastApplied: 1625774664673,
+          modelTypeRestrictions: { missingLabels: 0 },
+        }}
       />,
     )
 
@@ -54,21 +69,19 @@ describe('<ModelDetails />', () => {
       },
     })
 
-    require('swr').__setMockUseSWRResponse({
-      data: {
-        ...model,
-        datasetId: DATASET_ID,
-        timeLastTrained: null,
-        timeLastApplied: null,
-        modelTypeRestrictions: { missingLabels: 0 },
-      },
-    })
+    require('swr').__setMockUseSWRResponse({ data: modelTypes })
 
     const component = TestRenderer.create(
       <ModelDetails
         projectId={PROJECT_ID}
-        modelId={MODEL_ID}
-        modelTypes={modelTypes.results}
+        model={{
+          ...model,
+          datasetId: DATASET_ID,
+          runningJobId: '',
+          timeLastTrained: null,
+          timeLastApplied: null,
+          modelTypeRestrictions: { missingLabels: 0 },
+        }}
       />,
     )
 
@@ -84,22 +97,19 @@ describe('<ModelDetails />', () => {
       },
     })
 
-    require('swr').__setMockUseSWRResponse({
-      data: {
-        ...model,
-        datasetId: DATASET_ID,
-        timeLastTrained: null,
-        timeLastApplied: null,
-        modelTypeRestrictions: { missingLabels: 0 },
-        state: 'RequiresUpload',
-      },
-    })
+    require('swr').__setMockUseSWRResponse({ data: modelTypes })
 
     const component = TestRenderer.create(
       <ModelDetails
         projectId={PROJECT_ID}
-        modelId={MODEL_ID}
-        modelTypes={modelTypes.results}
+        model={{
+          ...model,
+          datasetId: DATASET_ID,
+          timeLastTrained: null,
+          timeLastApplied: null,
+          modelTypeRestrictions: { missingLabels: 0 },
+          state: 'RequiresUpload',
+        }}
       />,
     )
 
@@ -115,28 +125,25 @@ describe('<ModelDetails />', () => {
       },
     })
 
-    require('swr').__setMockUseSWRResponse({
-      data: {
-        ...model,
-        datasetId: DATASET_ID,
-        timeLastTrained: 1625774562852,
-        timeLastApplied: 1625774664673,
-        modelTypeRestrictions: {
-          requiredLabels: 5,
-          missingLabels: 5,
-          requiredAssetsPerLabel: 5,
-          missingLabelsOnAssets: 5,
-        },
-        runningJobId: '',
-        unappliedChanges: true,
-      },
-    })
+    require('swr').__setMockUseSWRResponse({ data: modelTypes })
 
     const component = TestRenderer.create(
       <ModelDetails
         projectId={PROJECT_ID}
-        modelId={MODEL_ID}
-        modelTypes={modelTypes.results}
+        model={{
+          ...model,
+          datasetId: DATASET_ID,
+          timeLastTrained: 1625774562852,
+          timeLastApplied: 1625774664673,
+          modelTypeRestrictions: {
+            requiredLabels: 5,
+            missingLabels: 5,
+            requiredAssetsPerLabel: 5,
+            missingLabelsOnAssets: 5,
+          },
+          runningJobId: '',
+          unappliedChanges: true,
+        }}
       />,
     )
 
@@ -158,28 +165,25 @@ describe('<ModelDetails />', () => {
       },
     })
 
-    require('swr').__setMockUseSWRResponse({
-      data: {
-        ...model,
-        datasetId: DATASET_ID,
-        timeLastTrained: 1625774562852,
-        timeLastApplied: 1625774664673,
-        modelTypeRestrictions: {
-          requiredLabels: 0,
-          missingLabels: 0,
-          requiredAssetsPerLabel: 0,
-          missingLabelsOnAssets: 0,
-        },
-        runningJobId: '',
-        unappliedChanges: true,
-      },
-    })
+    require('swr').__setMockUseSWRResponse({ data: modelTypes })
 
     const component = TestRenderer.create(
       <ModelDetails
         projectId={PROJECT_ID}
-        modelId={MODEL_ID}
-        modelTypes={modelTypes.results}
+        model={{
+          ...model,
+          datasetId: DATASET_ID,
+          timeLastTrained: 1625774562852,
+          timeLastApplied: 1625774664673,
+          modelTypeRestrictions: {
+            requiredLabels: 0,
+            missingLabels: 0,
+            requiredAssetsPerLabel: 0,
+            missingLabelsOnAssets: 0,
+          },
+          runningJobId: '',
+          unappliedChanges: true,
+        }}
       />,
     )
 
@@ -199,15 +203,12 @@ describe('<ModelDetails />', () => {
       },
     })
 
-    require('swr').__setMockUseSWRResponse({
-      data: { ...model, modelTypeRestrictions: { missingLabels: 0 } },
-    })
+    require('swr').__setMockUseSWRResponse({ data: modelTypes })
 
     const component = TestRenderer.create(
       <ModelDetails
         projectId={PROJECT_ID}
-        modelId={MODEL_ID}
-        modelTypes={modelTypes.results}
+        model={{ ...model, modelTypeRestrictions: { missingLabels: 0 } }}
       />,
     )
 

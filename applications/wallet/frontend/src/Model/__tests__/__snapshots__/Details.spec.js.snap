@@ -182,6 +182,7 @@ exports[`<ModelDetails /> should render properly 1`] = `
 }
 
 .emotion-18 {
+  width: 100%;
   border: none;
   border-bottom: 1px solid #4a4a4a;
 }
@@ -560,7 +561,9 @@ exports[`<ModelDetails /> should render properly 1`] = `
         </div>
         <div
           className="emotion-11"
-        />
+        >
+          
+        </div>
       </li>
     </ul>
   </div>
@@ -712,11 +715,14 @@ exports[`<ModelDetails /> should render properly 1`] = `
           Object {
             "actorCreated": "56fb89be-f380-423f-bcf5-70b43b384a99/Admin Console Generated Key - c2825674-a1fe-4b51-8207-231bc46c1279 - danny@zorroa.com_6a72b6c1-aa96-415b-8c2d-df355ba9c8f5",
             "actorModified": "56fb89be-f380-423f-bcf5-70b43b384a99/Admin Console Generated Key - c2825674-a1fe-4b51-8207-231bc46c1279 - danny@zorroa.com_6a72b6c1-aa96-415b-8c2d-df355ba9c8f5",
+            "datasetId": null,
+            "datasetType": "FaceRecognition",
             "deploySearch": Object {
               "query": Object {
                 "matchAll": Object {},
               },
             },
+            "description": "",
             "fileId": "models/621bf775-89d9-1244-9596-d6df43f1ede5/boonai-console_face_recognition-face-recognition/boonai-console_face_recognition-face-recognition.zip",
             "id": "621bf775-89d9-1244-9596-d6df43f1ede5",
             "modelTypeRestrictions": Object {
@@ -725,6 +731,7 @@ exports[`<ModelDetails /> should render properly 1`] = `
             "moduleName": "boonai-console_face_recognition-face-recognition",
             "name": "console_face_recognition",
             "runningJobId": "223fd17d-7028-1519-94a8-d2f0132bc0c8",
+            "state": "RequiresTraining",
             "timeCreated": 1594243397871,
             "timeModified": 1594243397871,
             "trainingJobName": "Train console_face_recognition / boonai-console_face_recognition-face-recognition",
@@ -977,6 +984,7 @@ exports[`<ModelDetails /> should render properly 2`] = `
 }
 
 .emotion-21 {
+  width: 100%;
   border: none;
   border-bottom: 1px solid #4a4a4a;
 }
@@ -1373,7 +1381,9 @@ exports[`<ModelDetails /> should render properly 2`] = `
         </div>
         <div
           className="emotion-14"
-        />
+        >
+          
+        </div>
       </li>
     </ul>
   </div>
@@ -1525,11 +1535,14 @@ exports[`<ModelDetails /> should render properly 2`] = `
           Object {
             "actorCreated": "56fb89be-f380-423f-bcf5-70b43b384a99/Admin Console Generated Key - c2825674-a1fe-4b51-8207-231bc46c1279 - danny@zorroa.com_6a72b6c1-aa96-415b-8c2d-df355ba9c8f5",
             "actorModified": "56fb89be-f380-423f-bcf5-70b43b384a99/Admin Console Generated Key - c2825674-a1fe-4b51-8207-231bc46c1279 - danny@zorroa.com_6a72b6c1-aa96-415b-8c2d-df355ba9c8f5",
+            "datasetId": null,
+            "datasetType": "FaceRecognition",
             "deploySearch": Object {
               "query": Object {
                 "matchAll": Object {},
               },
             },
+            "description": "",
             "fileId": "models/621bf775-89d9-1244-9596-d6df43f1ede5/boonai-console_face_recognition-face-recognition/boonai-console_face_recognition-face-recognition.zip",
             "id": "621bf775-89d9-1244-9596-d6df43f1ede5",
             "modelTypeRestrictions": Object {
@@ -1538,6 +1551,7 @@ exports[`<ModelDetails /> should render properly 2`] = `
             "moduleName": "boonai-console_face_recognition-face-recognition",
             "name": "console_face_recognition",
             "runningJobId": "223fd17d-7028-1519-94a8-d2f0132bc0c8",
+            "state": "RequiresTraining",
             "timeCreated": 1594243397871,
             "timeModified": 1594243397871,
             "trainingJobName": "Train console_face_recognition / boonai-console_face_recognition-face-recognition",
@@ -1592,7 +1606,7 @@ exports[`<ModelDetails /> should render properly 2`] = `
 </div>
 `;
 
-exports[`<ModelDetails /> should render properly when just created 1`] = `
+exports[`<ModelDetails /> should render properly for edit 1`] = `
 @keyframes animation-0 {
   from {
     -webkit-transform: rotate(0deg);
@@ -1774,30 +1788,111 @@ exports[`<ModelDetails /> should render properly when just created 1`] = `
 }
 
 .emotion-18 {
+  width: 100%;
   border: none;
   border-bottom: 1px solid #4a4a4a;
 }
 
 .emotion-19 {
-  height: 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 470px;
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+  padding: 0;
 }
 
 .emotion-20 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  padding-bottom: 16px;
+  font-size: 21px;
+  line-height: 30px;
+  font-weight: 500;
+  padding-top: 16px;
+}
+
+.emotion-21 {
+  padding-top: 8px;
+}
+
+.emotion-22 {
+  display: block;
+  padding-bottom: 8px;
+  color: #b3b3b3;
 }
 
 .emotion-23 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  justify-content: space-between;
+  position: relative;
+}
+
+.emotion-24 {
+  outline-offset: 0;
+  padding: 10px 12px;
+  border-radius: 2px;
+  box-shadow: inset 0 1px 3px 0 transparent;
+  width: 100%;
+  cursor: text;
+  color: #ffffff;
+  background-color: #3b3b3b;
+  border: 1px solid transparent;
+  border-width: 2px;
+}
+
+.emotion-24:focus,
+.emotion-24 .noop {
+  border: 2px solid #3A5DFF;
+  outline: #3A5DFF;
+  color: #000000;
+  background-color: #ffffff;
+}
+
+.emotion-24:hover,
+.emotion-24 .noop {
+  border: 2px solid #ffffff;
+}
+
+.emotion-25 {
+  padding-top: 8px;
+}
+
+.emotion-26 {
+  padding-top: 8px;
+}
+
+.emotion-27 {
+  display: block;
+  padding-bottom: 8px;
+  color: #b3b3b3;
+}
+
+.emotion-28 {
+  position: relative;
+}
+
+.emotion-29 {
+  outline-offset: 0;
+  padding: 10px 12px;
+  border-radius: 2px;
+  box-shadow: inset 0 1px 3px 0 transparent;
+  width: 100%;
+  font-size: 15px;
+  line-height: 19px;
+  color: #ffffff;
+  background-color: #3b3b3b;
+  border: 1px solid transparent;
+  border-width: 2px;
+}
+
+.emotion-29:focus,
+.emotion-29 .noop {
+  border: 2px solid #3A5DFF;
+  background-color: #ffffff;
+  outline: #3A5DFF;
+  color: #000000;
 }
 
 .emotion-31 {
@@ -1854,14 +1949,14 @@ exports[`<ModelDetails /> should render properly when just created 1`] = `
 .emotion-32:hover,
 .emotion-32:visited,
 .emotion-32 .noop {
-  background-color: #3A5DFF;
+  background-color: #808080;
 }
 
 .emotion-32:hover,
 .emotion-32 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: #6088FE;
+  background-color: #b3b3b3;
 }
 
 .emotion-32[aria-disabled=true],
@@ -1870,11 +1965,17 @@ exports[`<ModelDetails /> should render properly when just created 1`] = `
   background-color: #808080;
 }
 
-.emotion-35 {
+.emotion-33 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -1883,174 +1984,36 @@ exports[`<ModelDetails /> should render properly when just created 1`] = `
   -ms-flex-pack: center;
   -webkit-justify-content: center;
   justify-content: center;
-}
-
-.emotion-35 div {
-  margin-left: 0;
-}
-
-.emotion-35 button {
-  margin-right: 0;
-}
-
-.emotion-36 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  position: relative;
-  margin-left: 8px;
-}
-
-.emotion-36:hover div,
-.emotion-36:focus-within div {
-  visibility: visible;
-  opacity: 1;
-  -webkit-transition: all 0.5s ease 0.25s;
-  transition: all 0.5s ease 0.25s;
-}
-
-.emotion-36:hover button,
-.emotion-36:focus-within button {
-  color: #ffffff;
-}
-
-.emotion-37 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  border: 0;
-  padding: 0;
-  background-color: transparent;
-  color: #808080;
-}
-
-.emotion-38 {
-  position: absolute;
-  left: -10px;
-  top: 28px;
-  color: #191919;
-  background-color: #ffffff;
   border-radius: 2px;
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
-  padding: 12px;
-  width: -webkit-max-content;
-  width: -moz-max-content;
-  width: max-content;
-  max-width: 400px;
-  visibility: hidden;
-  opacity: 0;
-  -webkit-transition: all 0.5s ease 0.25s;
-  transition: all 0.5s ease 0.25s;
-  z-index: 1;
-}
-
-.emotion-38:hover {
-  visibility: visible;
-  opacity: 1;
-}
-
-.emotion-39:before {
-  content: ' ';
-  position: absolute;
-  top: -6px;
-  left: 14px;
-  border-bottom: 6px solid #ffffff;
-  border-left: 6px solid transparent;
-  border-right: 6px solid transparent;
-}
-
-.emotion-40 {
+  padding: 12px 32px;
+  white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
-  padding: 8px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
 }
 
-.emotion-41 {
-  font-size: 15px;
-  line-height: 19px;
+.emotion-33,
+.emotion-33:hover,
+.emotion-33:visited,
+.emotion-33 .noop {
+  background-color: #3A5DFF;
 }
 
-.emotion-42 {
-  font-size: 15px;
-  line-height: 19px;
-  padding-top: 16px;
-}
-
-.emotion-44 {
-  padding: 16px;
-  padding-left: 0;
-  padding-right: 0;
-  -webkit-flex-shrink: 0;
-  -ms-flex-negative: 0;
-  flex-shrink: 0;
-}
-
-.emotion-45 {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  border-bottom: 1px solid #4a4a4a;
-}
-
-.emotion-46 {
-  padding-right: 16px;
-  margin-bottom: -1px;
-}
-
-.emotion-47 {
-  border: 0 #3A5DFF solid;
-  border-bottom-width: 2px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  text-transform: uppercase;
-  font-size: 17px;
-  line-height: 20px;
-  font-weight: 700;
-}
-
-.emotion-47:hover {
+.emotion-33:hover,
+.emotion-33 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
+  background-color: #6088FE;
 }
 
-.emotion-49 {
-  border: 0 #3A5DFF solid;
-  border-bottom-width: 0;
-  color: #b3b3b3;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  text-transform: uppercase;
-  font-size: 17px;
-  line-height: 20px;
-  font-weight: 700;
-}
-
-.emotion-49:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  color: #3A5DFF;
+.emotion-33[aria-disabled=true],
+.emotion-33 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 <div>
@@ -2152,7 +2115,9 @@ exports[`<ModelDetails /> should render properly when just created 1`] = `
         </div>
         <div
           className="emotion-11"
-        />
+        >
+          
+        </div>
       </li>
     </ul>
   </div>
@@ -2162,15 +2127,623 @@ exports[`<ModelDetails /> should render properly when just created 1`] = `
   <hr
     className="emotion-18"
   />
+  <form
+    action=""
+    className="emotion-19"
+    method="post"
+    onSubmit={[Function]}
+  >
+    <h3
+      className="emotion-20"
+    >
+      Model Name & Description
+    </h3>
+    <div
+      className="emotion-21"
+    >
+      <label
+        className="emotion-22"
+        htmlFor="name"
+      >
+        Model Name:
+      </label>
+      <div
+        className="emotion-23"
+      >
+        <input
+          autoComplete="off"
+          autoFocus={true}
+          className="emotion-24"
+          disabled={false}
+          id="name"
+          name="name"
+          onChange={[Function]}
+          type="text"
+          value="console_face_recognition"
+        />
+      </div>
+      <div
+        className="emotion-25"
+      >
+         
+      </div>
+    </div>
+    <div
+      className="emotion-26"
+    >
+      <label
+        className="emotion-27"
+        htmlFor="description"
+      >
+        Description (optional):
+      </label>
+      <div
+        className="emotion-28"
+      >
+        <textarea
+          className="emotion-29"
+          id="description"
+          name="description"
+          onChange={[Function]}
+          rows="5"
+          value=""
+        />
+      </div>
+      <div
+        className="emotion-26"
+      >
+         
+      </div>
+    </div>
+    <div
+      className="emotion-31"
+    >
+      <Link
+        href="/76917058-b147-4556-987a-0a0f11e46d9b/models/621bf775-89d9-1244-9596-d6df43f1ede5"
+        passHref={true}
+      >
+        <button
+          className="emotion-32"
+          onClick={[Function]}
+          type="button"
+        >
+          Cancel
+        </button>
+      </Link>
+      <button
+        className="emotion-33"
+        onClick={[Function]}
+        type="submit"
+      >
+        Save Model
+      </button>
+    </div>
+  </form>
+</div>
+`;
+
+exports[`<ModelDetails /> should render properly when just created 1`] = `
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+}
+
+.emotion-1 {
+  padding-top: 8px;
+}
+
+.emotion-2 {
+  color: #b3b3b3;
+  font-family: Roboto Condensed;
+  text-transform: uppercase;
+}
+
+.emotion-3 {
+  color: #ffffff;
+  font-weight: 500;
+  font-size: 21px;
+  line-height: 30px;
+  padding-bottom: 16px;
+}
+
+.emotion-4 {
+  position: relative;
+  height: 100%;
+}
+
+.emotion-5 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  margin-bottom: 4px;
+}
+
+.emotion-5,
+.emotion-5:hover,
+.emotion-5:visited,
+.emotion-5 .noop {
+  background-color: #808080;
+}
+
+.emotion-5:hover,
+.emotion-5 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #b3b3b3;
+}
+
+.emotion-5[aria-disabled=true],
+.emotion-5 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-6 {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  line-height: 23px;
+}
+
+.emotion-7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-8 {
+  color: #b3b3b3;
+  font-family: Roboto Condensed;
+  text-transform: uppercase;
+  padding-right: 8px;
+}
+
+.emotion-13 {
+  height: 16px;
+}
+
+.emotion-14 {
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid #4a4a4a;
+}
+
+.emotion-15 {
+  height: 16px;
+}
+
+.emotion-16 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-bottom: 16px;
+}
+
+.emotion-17 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  background-color: #dbecff;
+  border-radius: 2px;
+  padding: 12px;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.emotion-18 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding-left: 12px;
+  color: #191919;
+  font-weight: 500;
+  white-space: pre-line;
+}
+
+.emotion-18 a {
+  color: #191919;
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+  margin-left: 4px;
+}
+
+.emotion-18 a:hover {
+  color: #3A5DFF;
+}
+
+.emotion-19 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+}
+
+.emotion-27 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.emotion-27 button,
+.emotion-27 a {
+  margin-right: 16px;
+}
+
+.emotion-27 button:last-child,
+.emotion-27 a:last-child {
+  margin-right: 0;
+}
+
+.emotion-28 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-28,
+.emotion-28:hover,
+.emotion-28:visited,
+.emotion-28 .noop {
+  background-color: #3A5DFF;
+}
+
+.emotion-28:hover,
+.emotion-28 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #6088FE;
+}
+
+.emotion-28[aria-disabled=true],
+.emotion-28 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-31 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+
+.emotion-31 div {
+  margin-left: 0;
+}
+
+.emotion-31 button {
+  margin-right: 0;
+}
+
+.emotion-32 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
+  margin-left: 8px;
+}
+
+.emotion-32:hover div,
+.emotion-32:focus-within div {
+  visibility: visible;
+  opacity: 1;
+  -webkit-transition: all 0.5s ease 0.25s;
+  transition: all 0.5s ease 0.25s;
+}
+
+.emotion-32:hover button,
+.emotion-32:focus-within button {
+  color: #ffffff;
+}
+
+.emotion-33 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border: 0;
+  padding: 0;
+  background-color: transparent;
+  color: #808080;
+}
+
+.emotion-34 {
+  position: absolute;
+  left: -10px;
+  top: 28px;
+  color: #191919;
+  background-color: #ffffff;
+  border-radius: 2px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+  padding: 12px;
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  max-width: 400px;
+  visibility: hidden;
+  opacity: 0;
+  -webkit-transition: all 0.5s ease 0.25s;
+  transition: all 0.5s ease 0.25s;
+  z-index: 1;
+}
+
+.emotion-34:hover {
+  visibility: visible;
+  opacity: 1;
+}
+
+.emotion-35:before {
+  content: ' ';
+  position: absolute;
+  top: -6px;
+  left: 14px;
+  border-bottom: 6px solid #ffffff;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+}
+
+.emotion-36 {
+  font-size: 15px;
+  line-height: 19px;
+  padding: 8px;
+}
+
+.emotion-37 {
+  font-size: 15px;
+  line-height: 19px;
+}
+
+.emotion-38 {
+  font-size: 15px;
+  line-height: 19px;
+  padding-top: 16px;
+}
+
+.emotion-40 {
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+
+.emotion-41 {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border-bottom: 1px solid #4a4a4a;
+}
+
+.emotion-42 {
+  padding-right: 16px;
+  margin-bottom: -1px;
+}
+
+.emotion-43 {
+  border: 0 #3A5DFF solid;
+  border-bottom-width: 2px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-43:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.emotion-45 {
+  border: 0 #3A5DFF solid;
+  border-bottom-width: 0;
+  color: #b3b3b3;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-transform: uppercase;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.emotion-45:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #3A5DFF;
+}
+
+<div>
+  
+  
   <div>
     <div
-      className="emotion-19"
-    />
-    <div
-      className="emotion-20"
+      className="emotion-0"
     >
       <div
         className="emotion-1"
+      >
+        <div
+          className="emotion-2"
+        >
+          Model
+           Name:
+        </div>
+        <h3
+          className="emotion-3"
+        >
+          console_face_recognition
+        </h3>
+      </div>
+      <div
+        className="emotion-4"
+      >
+        <button
+          aria-label="Toggle Actions Menu"
+          className="emotion-5"
+          onBlur={[Function]}
+          onClick={[Function]}
+          type="button"
+        >
+          <svg
+            data-file-name="kebab.svg"
+            height={20}
+          />
+        </button>
+      </div>
+    </div>
+    <ul
+      className="emotion-6"
+    >
+      <li
+        className="emotion-7"
+      >
+        <div
+          className="emotion-8"
+        >
+          Model Type
+          :
+        </div>
+        <div
+          className="emotion-7"
+        >
+          ZVI_FACE_RECOGNITION
+        </div>
+      </li>
+      <li
+        className="emotion-7"
+      >
+        <div
+          className="emotion-8"
+        >
+          Description
+          :
+        </div>
+        <div
+          className="emotion-7"
+        >
+          
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div
+    className="emotion-13"
+  />
+  <hr
+    className="emotion-14"
+  />
+  <div>
+    <div
+      className="emotion-15"
+    />
+    <div
+      className="emotion-16"
+    >
+      <div
+        className="emotion-17"
       >
         <svg
           color="#0074f5"
@@ -2178,7 +2751,7 @@ exports[`<ModelDetails /> should render properly when just created 1`] = `
           height={20}
         />
         <div
-          className="emotion-3"
+          className="emotion-18"
           role="alert"
         >
           The model is ready to train.
@@ -2186,77 +2759,77 @@ exports[`<ModelDetails /> should render properly when just created 1`] = `
       </div>
     </div>
     <div
-      className="emotion-23"
+      className="emotion-19"
     >
       <div>
         <ul
-          className="emotion-10"
+          className="emotion-6"
         >
           <li
-            className="emotion-11"
+            className="emotion-7"
           >
             <div
-              className="emotion-12"
+              className="emotion-8"
             >
               Last Trained
               :
             </div>
             <div
-              className="emotion-11"
+              className="emotion-7"
             >
               Untrained
             </div>
           </li>
           <li
-            className="emotion-11"
+            className="emotion-7"
           >
             <div
-              className="emotion-12"
+              className="emotion-8"
             >
               Last Analyzed
               :
             </div>
             <div
-              className="emotion-11"
+              className="emotion-7"
             >
               Model analysis has not been run.
             </div>
           </li>
         </ul>
         <div
-          className="emotion-31"
+          className="emotion-27"
         >
           <button
-            className="emotion-32"
+            className="emotion-28"
             onClick={[Function]}
             type="button"
           >
             Train Model
           </button>
           <button
-            className="emotion-32"
+            className="emotion-28"
             onClick={[Function]}
             type="button"
           >
             Train & Test
           </button>
           <button
-            className="emotion-32"
+            className="emotion-28"
             onClick={[Function]}
             type="button"
           >
             Train & Analyze All
           </button>
           <div
-            className="emotion-35"
+            className="emotion-31"
           >
             <div
-              className="emotion-36"
+              className="emotion-32"
             >
               <button
                 aria-details="TrainingOptions"
                 aria-label="Training Options"
-                className="emotion-37"
+                className="emotion-33"
                 type="button"
               >
                 <svg
@@ -2265,30 +2838,30 @@ exports[`<ModelDetails /> should render properly when just created 1`] = `
                 />
               </button>
               <div
-                className="emotion-38"
+                className="emotion-34"
                 id="TrainingOptions"
                 role="tooltip"
               >
                 <div
-                  className="emotion-39"
+                  className="emotion-35"
                 />
                 <div
-                  className="emotion-40"
+                  className="emotion-36"
                 >
                   <h3
-                    className="emotion-41"
+                    className="emotion-37"
                   >
                     Train Model
                   </h3>
                   Train a model without running it on your assets.
                   <h3
-                    className="emotion-42"
+                    className="emotion-38"
                   >
                     Train & Test
                   </h3>
                   Train and run the model on your test set ONLY. This enables you to view the results in the matrix and assess your model’s performance. To save processing time, make adjustments to your model before running it on all of your assets.
                   <h3
-                    className="emotion-42"
+                    className="emotion-38"
                   >
                     Train & Analyze All
                   </h3>
@@ -2305,11 +2878,13 @@ exports[`<ModelDetails /> should render properly when just created 1`] = `
             "actorCreated": "56fb89be-f380-423f-bcf5-70b43b384a99/Admin Console Generated Key - c2825674-a1fe-4b51-8207-231bc46c1279 - danny@zorroa.com_6a72b6c1-aa96-415b-8c2d-df355ba9c8f5",
             "actorModified": "56fb89be-f380-423f-bcf5-70b43b384a99/Admin Console Generated Key - c2825674-a1fe-4b51-8207-231bc46c1279 - danny@zorroa.com_6a72b6c1-aa96-415b-8c2d-df355ba9c8f5",
             "datasetId": "4b0b10a8-cec1-155c-b12f-ee2bc8787e06",
+            "datasetType": "FaceRecognition",
             "deploySearch": Object {
               "query": Object {
                 "matchAll": Object {},
               },
             },
+            "description": "",
             "fileId": "models/621bf775-89d9-1244-9596-d6df43f1ede5/boonai-console_face_recognition-face-recognition/boonai-console_face_recognition-face-recognition.zip",
             "id": "621bf775-89d9-1244-9596-d6df43f1ede5",
             "modelTypeRestrictions": Object {
@@ -2317,7 +2892,8 @@ exports[`<ModelDetails /> should render properly when just created 1`] = `
             },
             "moduleName": "boonai-console_face_recognition-face-recognition",
             "name": "console_face_recognition",
-            "runningJobId": "223fd17d-7028-1519-94a8-d2f0132bc0c8",
+            "runningJobId": "",
+            "state": "RequiresTraining",
             "timeCreated": 1594243397871,
             "timeLastApplied": null,
             "timeLastTrained": null,
@@ -2331,13 +2907,13 @@ exports[`<ModelDetails /> should render properly when just created 1`] = `
       />
     </div>
     <nav
-      className="emotion-44"
+      className="emotion-40"
     >
       <ul
-        className="emotion-45"
+        className="emotion-41"
       >
         <li
-          className="emotion-46"
+          className="emotion-42"
         >
           <Link
             as="/76917058-b147-4556-987a-0a0f11e46d9b/models/621bf775-89d9-1244-9596-d6df43f1ede5"
@@ -2345,7 +2921,7 @@ exports[`<ModelDetails /> should render properly when just created 1`] = `
             passHref={true}
           >
             <a
-              className="emotion-47"
+              className="emotion-43"
               onClick={[Function]}
             >
               Dataset
@@ -2353,7 +2929,7 @@ exports[`<ModelDetails /> should render properly when just created 1`] = `
           </Link>
         </li>
         <li
-          className="emotion-46"
+          className="emotion-42"
         >
           <Link
             as="/76917058-b147-4556-987a-0a0f11e46d9b/models/621bf775-89d9-1244-9596-d6df43f1ede5/deployment"
@@ -2361,7 +2937,7 @@ exports[`<ModelDetails /> should render properly when just created 1`] = `
             passHref={true}
           >
             <a
-              className="emotion-49"
+              className="emotion-45"
               onClick={[Function]}
             >
               Deployment
@@ -2556,6 +3132,7 @@ exports[`<ModelDetails /> should render properly when requiring a file upload 1`
 }
 
 .emotion-18 {
+  width: 100%;
   border: none;
   border-bottom: 1px solid #4a4a4a;
 }
@@ -2747,7 +3324,9 @@ exports[`<ModelDetails /> should render properly when requiring a file upload 1`
         </div>
         <div
           className="emotion-11"
-        />
+        >
+          
+        </div>
       </li>
     </ul>
   </div>
@@ -2988,6 +3567,7 @@ exports[`<ModelDetails /> should render properly when trained and applied 1`] = 
 }
 
 .emotion-18 {
+  width: 100%;
   border: none;
   border-bottom: 1px solid #4a4a4a;
 }
@@ -3366,7 +3946,9 @@ exports[`<ModelDetails /> should render properly when trained and applied 1`] = 
         </div>
         <div
           className="emotion-11"
-        />
+        >
+          
+        </div>
       </li>
     </ul>
   </div>
@@ -3518,11 +4100,14 @@ exports[`<ModelDetails /> should render properly when trained and applied 1`] = 
           Object {
             "actorCreated": "56fb89be-f380-423f-bcf5-70b43b384a99/Admin Console Generated Key - c2825674-a1fe-4b51-8207-231bc46c1279 - danny@zorroa.com_6a72b6c1-aa96-415b-8c2d-df355ba9c8f5",
             "actorModified": "56fb89be-f380-423f-bcf5-70b43b384a99/Admin Console Generated Key - c2825674-a1fe-4b51-8207-231bc46c1279 - danny@zorroa.com_6a72b6c1-aa96-415b-8c2d-df355ba9c8f5",
+            "datasetId": null,
+            "datasetType": "FaceRecognition",
             "deploySearch": Object {
               "query": Object {
                 "matchAll": Object {},
               },
             },
+            "description": "",
             "fileId": "models/621bf775-89d9-1244-9596-d6df43f1ede5/boonai-console_face_recognition-face-recognition/boonai-console_face_recognition-face-recognition.zip",
             "id": "621bf775-89d9-1244-9596-d6df43f1ede5",
             "modelTypeRestrictions": Object {
@@ -3531,6 +4116,7 @@ exports[`<ModelDetails /> should render properly when trained and applied 1`] = 
             "moduleName": "boonai-console_face_recognition-face-recognition",
             "name": "console_face_recognition",
             "runningJobId": "223fd17d-7028-1519-94a8-d2f0132bc0c8",
+            "state": "RequiresTraining",
             "timeCreated": 1594243397871,
             "timeLastApplied": 1625774664673,
             "timeLastTrained": 1625774562852,
@@ -3703,6 +4289,7 @@ exports[`<ModelDetails /> should render properly with missing labels 1`] = `
 }
 
 .emotion-14 {
+  width: 100%;
   border: none;
   border-bottom: 1px solid #4a4a4a;
 }
@@ -4091,7 +4678,9 @@ exports[`<ModelDetails /> should render properly with missing labels 1`] = `
         </div>
         <div
           className="emotion-7"
-        />
+        >
+          
+        </div>
       </li>
     </ul>
   </div>
@@ -4283,11 +4872,13 @@ exports[`<ModelDetails /> should render properly with missing labels 1`] = `
             "actorCreated": "56fb89be-f380-423f-bcf5-70b43b384a99/Admin Console Generated Key - c2825674-a1fe-4b51-8207-231bc46c1279 - danny@zorroa.com_6a72b6c1-aa96-415b-8c2d-df355ba9c8f5",
             "actorModified": "56fb89be-f380-423f-bcf5-70b43b384a99/Admin Console Generated Key - c2825674-a1fe-4b51-8207-231bc46c1279 - danny@zorroa.com_6a72b6c1-aa96-415b-8c2d-df355ba9c8f5",
             "datasetId": "4b0b10a8-cec1-155c-b12f-ee2bc8787e06",
+            "datasetType": "FaceRecognition",
             "deploySearch": Object {
               "query": Object {
                 "matchAll": Object {},
               },
             },
+            "description": "",
             "fileId": "models/621bf775-89d9-1244-9596-d6df43f1ede5/boonai-console_face_recognition-face-recognition/boonai-console_face_recognition-face-recognition.zip",
             "id": "621bf775-89d9-1244-9596-d6df43f1ede5",
             "modelTypeRestrictions": Object {
@@ -4299,6 +4890,7 @@ exports[`<ModelDetails /> should render properly with missing labels 1`] = `
             "moduleName": "boonai-console_face_recognition-face-recognition",
             "name": "console_face_recognition",
             "runningJobId": "",
+            "state": "RequiresTraining",
             "timeCreated": 1594243397871,
             "timeLastApplied": 1625774664673,
             "timeLastTrained": 1625774562852,
@@ -4471,6 +5063,7 @@ exports[`<ModelDetails /> should render properly with unapplied changes 1`] = `
 }
 
 .emotion-14 {
+  width: 100%;
   border: none;
   border-bottom: 1px solid #4a4a4a;
 }
@@ -4855,7 +5448,9 @@ exports[`<ModelDetails /> should render properly with unapplied changes 1`] = `
         </div>
         <div
           className="emotion-7"
-        />
+        >
+          
+        </div>
       </li>
     </ul>
   </div>
@@ -5008,11 +5603,13 @@ exports[`<ModelDetails /> should render properly with unapplied changes 1`] = `
             "actorCreated": "56fb89be-f380-423f-bcf5-70b43b384a99/Admin Console Generated Key - c2825674-a1fe-4b51-8207-231bc46c1279 - danny@zorroa.com_6a72b6c1-aa96-415b-8c2d-df355ba9c8f5",
             "actorModified": "56fb89be-f380-423f-bcf5-70b43b384a99/Admin Console Generated Key - c2825674-a1fe-4b51-8207-231bc46c1279 - danny@zorroa.com_6a72b6c1-aa96-415b-8c2d-df355ba9c8f5",
             "datasetId": "4b0b10a8-cec1-155c-b12f-ee2bc8787e06",
+            "datasetType": "FaceRecognition",
             "deploySearch": Object {
               "query": Object {
                 "matchAll": Object {},
               },
             },
+            "description": "",
             "fileId": "models/621bf775-89d9-1244-9596-d6df43f1ede5/boonai-console_face_recognition-face-recognition/boonai-console_face_recognition-face-recognition.zip",
             "id": "621bf775-89d9-1244-9596-d6df43f1ede5",
             "modelTypeRestrictions": Object {
@@ -5024,6 +5621,7 @@ exports[`<ModelDetails /> should render properly with unapplied changes 1`] = `
             "moduleName": "boonai-console_face_recognition-face-recognition",
             "name": "console_face_recognition",
             "runningJobId": "",
+            "state": "RequiresTraining",
             "timeCreated": 1594243397871,
             "timeLastApplied": 1625774664673,
             "timeLastTrained": 1625774562852,

@@ -8,9 +8,7 @@ import Breadcrumbs from '../Breadcrumbs'
 import FlashMessageErrors from '../FlashMessage/Errors'
 import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
 import SuspenseBoundary, { ROLES } from '../SuspenseBoundary'
-
-import ModelDataset from '../ModelDataset'
-import ModelDeployment from '../ModelDeployment'
+import FetchAhead from '../Fetch/Ahead'
 
 import ModelContent from './Content'
 
@@ -18,8 +16,7 @@ const Model = () => {
   const [errors, setErrors] = useState({})
 
   const {
-    pathname,
-    query: { action },
+    query: { projectId, action },
   } = useRouter()
 
   return (
@@ -40,7 +37,7 @@ const Model = () => {
         styles={{ paddingTop: spacing.base, paddingBottom: spacing.normal }}
       />
 
-      {action === 'add-model-success' && (
+      {['add-model-success', 'edit-model-success'].includes(action) && (
         <div
           css={{
             display: 'flex',
@@ -49,7 +46,7 @@ const Model = () => {
           }}
         >
           <FlashMessage variant={FLASH_VARIANTS.SUCCESS}>
-            Model created.
+            Model {action === 'add-model-success' ? 'created' : 'updated'}.
           </FlashMessage>
         </div>
       )}
@@ -69,15 +66,13 @@ const Model = () => {
       )}
 
       <SuspenseBoundary role={ROLES.ML_Tools}>
-        <ModelContent />
+        <FetchAhead
+          url={`/api/v1/projects/${projectId}/datasets/dataset_types/`}
+        />
 
-        {pathname === '/[projectId]/models/[modelId]' && (
-          <ModelDataset setErrors={setErrors} />
-        )}
+        <FetchAhead url={`/api/v1/projects/${projectId}/datasets/`} />
 
-        {pathname === '/[projectId]/models/[modelId]/deployment' && (
-          <ModelDeployment />
-        )}
+        <ModelContent setErrors={setErrors} />
       </SuspenseBoundary>
     </>
   )

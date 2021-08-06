@@ -179,7 +179,11 @@ class ModelViewSet(ZmlpCreateMixin,
                 "datasetId": None}
 
         # Set the ready/unapplied changes status
-        response_data['unappliedChanges'] = not model.ready
+        state = model._data.get('state')
+        if state in ('Trained', 'Ready'):
+            response_data['unappliedChanges'] = False
+        else:
+            response_data['unappliedChanges'] = True
 
         serializer = ConfusionMatrixSerializer(data=response_data)
         serializer.is_valid(raise_exception=True)

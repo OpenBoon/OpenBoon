@@ -35,6 +35,8 @@ const ModelTrain = ({ projectId, model, setError }) => {
     timeLastTrained,
     timeLastApplied,
     unappliedChanges,
+    state,
+    runningJobId,
   } = model
 
   return (
@@ -50,50 +52,53 @@ const ModelTrain = ({ projectId, model, setError }) => {
         </div>
       )}
 
-      {datasetId && (!!missingLabels || !!missingLabelsOnAssets) && (
-        <div css={{ display: 'flex', paddingBottom: spacing.normal }}>
-          <FlashMessage variant={FLASH_VARIANTS.INFO}>
-            This type of model requires a larger dataset before it can be
-            trained.
-            <Link
-              href="/[projectId]/visualizer"
-              as={`/${projectId}/visualizer`}
-              passHref
-            >
-              <a
-                onClick={() => {
-                  setLeftOpeningPanel({
-                    type: ACTIONS.OPEN,
-                    payload: { openPanel: 'assetLabeling' },
-                  })
-
-                  setDataSet({ datasetId, labels: {} })
-                }}
+      {!runningJobId &&
+        datasetId &&
+        (!!missingLabels || !!missingLabelsOnAssets) && (
+          <div css={{ display: 'flex', paddingBottom: spacing.normal }}>
+            <FlashMessage variant={FLASH_VARIANTS.INFO}>
+              This type of model requires a larger dataset before it can be
+              trained.
+              <Link
+                href="/[projectId]/visualizer"
+                as={`/${projectId}/visualizer`}
+                passHref
               >
-                Add More Labels
-              </a>
-            </Link>
-            <br />
-            <ul css={{ margin: 0 }}>
-              {!!missingLabels && (
-                <li>
-                  {missingLabels} more label{missingLabels > 1 && 's'} (min. ={' '}
-                  {requiredLabels} unique{requiredLabels > 1 && 's'})
-                </li>
-              )}
-              {!!missingLabelsOnAssets && (
-                <li>
-                  {missingLabelsOnAssets} more labeled asset
-                  {missingLabelsOnAssets > 1 && 's'} (min. ={' '}
-                  {requiredAssetsPerLabel} of each label)
-                </li>
-              )}
-            </ul>
-          </FlashMessage>
-        </div>
-      )}
+                <a
+                  onClick={() => {
+                    setLeftOpeningPanel({
+                      type: ACTIONS.OPEN,
+                      payload: { openPanel: 'assetLabeling' },
+                    })
 
-      {datasetId &&
+                    setDataSet({ datasetId, labels: {} })
+                  }}
+                >
+                  Add More Labels
+                </a>
+              </Link>
+              <br />
+              <ul css={{ margin: 0 }}>
+                {!!missingLabels && (
+                  <li>
+                    {missingLabels} more label{missingLabels > 1 && 's'} (min. ={' '}
+                    {requiredLabels} unique{requiredLabels > 1 && 's'})
+                  </li>
+                )}
+                {!!missingLabelsOnAssets && (
+                  <li>
+                    {missingLabelsOnAssets} more labeled asset
+                    {missingLabelsOnAssets > 1 && 's'} (min. ={' '}
+                    {requiredAssetsPerLabel} of each label)
+                  </li>
+                )}
+              </ul>
+            </FlashMessage>
+          </div>
+        )}
+
+      {!runningJobId &&
+        datasetId &&
         !missingLabels &&
         !missingLabelsOnAssets &&
         !timeLastTrained &&
@@ -105,7 +110,8 @@ const ModelTrain = ({ projectId, model, setError }) => {
           </div>
         )}
 
-      {datasetId &&
+      {!runningJobId &&
+        datasetId &&
         !missingLabels &&
         !missingLabelsOnAssets &&
         !!timeLastTrained &&
@@ -193,7 +199,11 @@ const ModelTrain = ({ projectId, model, setError }) => {
           </ButtonGroup>
         </div>
 
-        <ModelMatrixLink projectId={projectId} model={model} />
+        <ModelMatrixLink
+          key={`${datasetId}${state}${runningJobId}`}
+          projectId={projectId}
+          model={model}
+        />
       </div>
 
       <Tabs
@@ -221,8 +231,10 @@ ModelTrain.propTypes = {
       requiredAssetsPerLabel: PropTypes.number,
     }).isRequired,
     unappliedChanges: PropTypes.bool.isRequired,
+    state: PropTypes.string.isRequired,
     timeLastTrained: PropTypes.number,
     timeLastApplied: PropTypes.number,
+    runningJobId: PropTypes.string,
   }).isRequired,
   setError: PropTypes.func.isRequired,
 }

@@ -12,14 +12,7 @@ import ButtonGroup from '../Button/Group'
 
 import { onNewLink } from './helpers'
 
-const ModelLinkNew = ({
-  projectId,
-  modelId,
-  datasetType,
-  datasetTypes,
-  state,
-  dispatch,
-}) => {
+const ModelLinkNew = ({ projectId, model, datasetTypes, state, dispatch }) => {
   return (
     <div>
       <SectionTitle>Select a Dataset Type</SectionTitle>
@@ -60,7 +53,7 @@ const ModelLinkNew = ({
       </SectionSubTitle>
 
       {datasetTypes
-        .filter(({ name }) => name === datasetType)
+        .filter(({ name }) => name === model.datasetType)
         .map(({ name, label, description }) => {
           return (
             <div key={name} css={{ paddingTop: spacing.normal }}>
@@ -84,7 +77,7 @@ const ModelLinkNew = ({
         <Button
           type="submit"
           variant={BUTTON_VARIANTS.PRIMARY}
-          onClick={() => onNewLink({ projectId, modelId, state, dispatch })}
+          onClick={() => onNewLink({ projectId, model, state, dispatch })}
           isDisabled={!state.name || !state.type || state.isLoading}
         >
           {state.isLoading ? 'Linking...' : 'Link Dataset'}
@@ -96,8 +89,16 @@ const ModelLinkNew = ({
 
 ModelLinkNew.propTypes = {
   projectId: PropTypes.string.isRequired,
-  modelId: PropTypes.string.isRequired,
-  datasetType: PropTypes.string.isRequired,
+  model: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired,
+    datasetId: PropTypes.string,
+    runningJobId: PropTypes.string.isRequired,
+    state: PropTypes.string.isRequired,
+    datasetType: PropTypes.string.isRequired,
+  }).isRequired,
   datasetTypes: PropTypes.arrayOf(
     PropTypes.shape({
       name: PropTypes.string.isRequired,
