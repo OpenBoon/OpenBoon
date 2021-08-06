@@ -198,7 +198,7 @@ class ModelController(
     @PreAuthorize("hasAuthority('ModelTraining')")
     @PostMapping(value = ["/api/v3/models/{id}/_deploy"])
     fun deployModel(@ApiParam("ModelId") @PathVariable id: UUID): Any {
-        modelDeployService.kickoffModelBuild(modelService.getModel(id))
+        modelDeployService.deployPreuploadedModel(modelService.getModel(id))
         return HttpUtils.status("Model", "deploy", true)
     }
 
