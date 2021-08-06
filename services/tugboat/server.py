@@ -169,7 +169,8 @@ def delete_images(event):
             'images',
             'delete',
             f'{image}@{digest}',
-            '--quiet'
+            '--quiet',
+            '--force-delete-tags'
         ]
         logger.info(f'Running: {cmd}')
         try:
