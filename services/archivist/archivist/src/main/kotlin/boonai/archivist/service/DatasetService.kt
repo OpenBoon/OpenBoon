@@ -372,7 +372,7 @@ class DatasetServiceImpl(
     override fun markModelsUnready(dsId: UUID): Int {
         val models = modelJdbcDao.find(ModelFilter(datasetIds = listOf(dsId)))
         models.list.forEach {
-            if (!it.isUploadable()) {
+            if (it.type.trainable) {
                 modelJdbcDao.updateState(it.id, ModelState.RequiresTraining)
             }
         }
