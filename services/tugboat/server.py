@@ -43,7 +43,7 @@ def message_poller(sub):
             elif msg_type == 'model-delete':
                 spec = dict(msg.attributes)
                 if spec.get('deployed') == 'true':
-                    shutdown_service(spec)
+                    delete_model(spec)
         except Exception as e:
             logger.error("Error handling pubsub message, ", e)
         finally:
@@ -150,6 +150,8 @@ def shutdown_service(event):
         service_name,
         '--region',
         'us-central1',
+        '--platform',
+        'managed',
         '--quiet'
     ]
     logger.info(f'Running: {cmd}')
@@ -169,7 +171,8 @@ def delete_images(event):
             'images',
             'delete',
             f'{image}@{digest}',
-            '--quiet'
+            '--quiet',
+            '--force-delete-tags'
         ]
         logger.info(f'Running: {cmd}')
         try:
@@ -247,7 +250,7 @@ def generate_build_file(spec, build_path):
                          '--allow-unauthenticated',
                          '--memory', memory,
                          '--max-instances', '4',
-                         '--timeout', '1m',
+                         '--timeout', '30m',
                          '--update-env-vars', get_boon_env(),
                          '--service-account', os.environ.get('BOONAI_FUNC_SVC_ACCOUNT'),
                          '--labels', f'model-id={model_id}']

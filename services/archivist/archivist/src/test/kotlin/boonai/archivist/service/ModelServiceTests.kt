@@ -17,6 +17,7 @@ import boonai.archivist.domain.ModelFilter
 import boonai.archivist.domain.ModelPatchRequestV2
 import boonai.archivist.domain.ModelPublishRequest
 import boonai.archivist.domain.ModelSpec
+import boonai.archivist.domain.ModelState
 import boonai.archivist.domain.ModelTrainingRequest
 import boonai.archivist.domain.ModelType
 import boonai.archivist.domain.ModelUpdateRequest
@@ -172,7 +173,7 @@ class ModelServiceTests : AbstractTest() {
         var model = modelService.findOne(ModelFilter(ids = listOf(model1.id)))
         assertNotNull(model.actorLastTrained)
         assertNotNull(model.timeLastTrained)
-        assertTrue(model.ready)
+        assertEquals(model.state, ModelState.Trained)
 
         val batchCreate = BatchCreateAssetsRequest(
             assets = listOf(AssetSpec("gs://cats/cat-movie.m4v"))
