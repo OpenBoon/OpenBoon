@@ -41,22 +41,27 @@ class BaseMetric(object):
 
     def publish(self):
         for metric_value in list(self.get_metric_values()):
-            series = monitoring_v3.types.TimeSeries()
+            series = monitoring_v3.TimeSeries()
             series.metric.type = metric_value.metric_type
             series.resource.type = 'global'
-            point = series.points.add()
             now = time.time()
-            point.interval.end_time.seconds = int(now)
-            point.interval.end_time.nanos = int((now - point.interval.end_time.seconds) * 10 ** 9)
+            end_seconds = int(now)
+            end_nanos = int((now - end_seconds) * 10 ** 9)
+            interval = monitoring_v3.TimeInterval(
+                {"end_time": {"seconds": end_seconds, "nanos": end_nanos}})
             if isinstance(metric_value.value, int):
-                point.value.int64_value = metric_value.value
+                point = monitoring_v3.Point(
+                    {"interval": interval, "value": {"int64_value": metric_value.value}})
             elif isinstance(metric_value.value, float):
-                point.value.double_value = metric_value.value
+                point = monitoring_v3.Point(
+                    {"interval": interval, "value": {"double_value": metric_value.value}})
             else:
                 raise TypeError('Metric values must be ints or floats.')
+            series.points = [point]
             print(f'Submitting Time Series: {metric_value.metric_type} = {point.value}')
-            project_path = self.monitoring_client.project_path(self.project_id)
-            self.monitoring_client.create_time_series(project_path, [series])
+            project_path = self.monitoring_client.common_project_path(self.project_id)
+            request = {'name': project_path, "time_series": [series]}
+            self.monitoring_client.create_time_series(request=request)
 
     def get_metric_values(self):
         """Returns a list of MetricValue objects to publish."""

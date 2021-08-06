@@ -9,7 +9,7 @@ verify_ssl = true
 boonsdk = {editable = true,path = "./../../client/boonsdk"}
 kubernetes = "*"
 deprecation = "*"
-google-cloud-monitoring = "==1.1.0"
+google-cloud-monitoring = "*"
 
 [requires]
 python_version = "3.8"
