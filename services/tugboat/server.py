@@ -43,7 +43,7 @@ def message_poller(sub):
             elif msg_type == 'model-delete':
                 spec = dict(msg.attributes)
                 if spec.get('deployed') == 'true':
-                    shutdown_service(spec)
+                    delete_model(spec)
         except Exception as e:
             logger.error("Error handling pubsub message, ", e)
         finally:
