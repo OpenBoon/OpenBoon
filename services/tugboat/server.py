@@ -250,7 +250,7 @@ def generate_build_file(spec, build_path):
                          '--allow-unauthenticated',
                          '--memory', memory,
                          '--max-instances', '4',
-                         '--timeout', '1m',
+                         '--timeout', '30m',
                          '--update-env-vars', get_boon_env(),
                          '--service-account', os.environ.get('BOONAI_FUNC_SVC_ACCOUNT'),
                          '--labels', f'model-id={model_id}']
