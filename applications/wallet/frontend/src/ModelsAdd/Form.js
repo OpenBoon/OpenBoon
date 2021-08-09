@@ -77,7 +77,7 @@ const ModelsAddForm = () => {
         errorMessage={state.errors.description}
       />
 
-      {/* <SectionTitle>Select Training</SectionTitle>
+      <SectionTitle>Select Training</SectionTitle>
 
       {SOURCES.map(({ value, label }) => {
         return (
@@ -101,15 +101,14 @@ const ModelsAddForm = () => {
         )
       })}
 
-      <div css={{ paddingTop: spacing.base }}>&nbsp;</div> */}
+      <div css={{ paddingTop: spacing.base }}>&nbsp;</div>
 
       <SectionTitle>Select Model Type</SectionTitle>
 
       <div css={{ marginRight: -130, paddingBottom: spacing.normal }}>
         {modelTypes
           .filter(({ uploadable }) => {
-            // return state.source === SOURCES[0].value ? !uploadable : uploadable
-            return !uploadable
+            return state.source === SOURCES[0].value ? !uploadable : uploadable
           })
           .map(({ name, label, description }) => {
             return (

@@ -18,6 +18,7 @@ import org.springframework.mock.web.MockHttpServletRequest
 import org.springframework.web.context.request.RequestContextHolder
 import org.springframework.web.context.request.ServletRequestAttributes
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 class IndexRoutingServiceTests : AbstractTest() {
@@ -205,6 +206,13 @@ class IndexRoutingServiceTests : AbstractTest() {
 
         val state = indexRoutingService.getEsIndexState(route)
         assertEquals("close", state["status"])
+    }
+
+    @Test
+    fun testCloseDeletedIndex() {
+        var route = indexRouteDao.getProjectRoute()
+        assertTrue(indexRoutingService.closeAndDeleteIndex(route))
+        assertFalse(indexRoutingService.closeIndex(route))
     }
 
     @Test
