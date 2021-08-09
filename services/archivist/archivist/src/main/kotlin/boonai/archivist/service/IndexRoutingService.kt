@@ -541,7 +541,7 @@ constructor(
                     )
                 )
             }
-            return rsp.isAcknowledged
+            rsp.isAcknowledged
         } catch (e: ElasticsearchStatusException) {
             logger.warn("Failed to close index: ${route.indexUrl}", e)
             false
