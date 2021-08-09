@@ -25,7 +25,6 @@ import org.springframework.http.CacheControl
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
-import java.lang.StringBuilder
 import java.nio.channels.Channels
 import java.util.concurrent.TimeUnit
 import javax.annotation.PostConstruct
@@ -96,13 +95,11 @@ class GcsProjectStorageService constructor(
         }
 
         // Google logs
-        var logBuilder = StringBuilder()
         var logsPagedResponse = loggingService.listLogEntries(Logging.EntryListOption.filter(locator.name))
-        logsPagedResponse.iterateAll().forEach {
-            logBuilder.append("${it.getPayload<Payload.StringPayload>().data}\n")
+        val allLogs = logsPagedResponse.iterateAll().joinToString(separator = "\n") {
+            it.getPayload<Payload.StringPayload>().data
         }
 
-        val allLogs = logBuilder.toString()
         return ResponseEntity.ok()
             .contentType(MediaType.TEXT_PLAIN)
             .contentLength(allLogs.length.toLong())

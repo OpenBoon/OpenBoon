@@ -13,7 +13,6 @@ import com.google.cloud.logging.Payload
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.whenever
-import org.junit.Ignore
 import org.junit.Test
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mock
@@ -22,7 +21,6 @@ import org.springframework.http.CacheControl
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import java.io.BufferedReader
-import java.lang.StringBuilder
 import java.util.UUID
 import java.util.concurrent.TimeUnit
 import kotlin.test.assertEquals
@@ -96,7 +94,6 @@ class GcsProjectStorageServiceTests : AbstractTest() {
     }
 
     @Test
-    @Ignore
     fun streamLogsFunctionalTest() {
         // Log something with custom names before executing
         val fromStream: GoogleCredentials? = null
@@ -107,13 +104,12 @@ class GcsProjectStorageServiceTests : AbstractTest() {
         val logging = build.service
 
         val logger_name = "testing_custom_logs1"
-        var logBuilder = StringBuilder()
         var logsPagedResponse = logging.listLogEntries(Logging.EntryListOption.filter(logger_name))
-        logsPagedResponse.iterateAll().forEach {
-            logBuilder.append("${it.getPayload<Payload.StringPayload>().data}\n")
+
+        val allLogs = logsPagedResponse.iterateAll().joinToString(separator = "\n") {
+            it.getPayload<Payload.StringPayload>().data
         }
 
-        val logString = logBuilder.toString()
-        assertNotEquals(0, logString.length)
+        assertNotEquals(0, allLogs.length)
     }
 }
