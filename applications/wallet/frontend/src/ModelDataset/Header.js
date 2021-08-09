@@ -12,7 +12,7 @@ import ButtonGroup from '../Button/Group'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 import Modal from '../Modal'
 
-const ModelDatasetHeader = ({ projectId, modelId, model, setErrors }) => {
+const ModelDatasetHeader = ({ projectId, model, setErrors }) => {
   const [isUnlinkModalOpen, setUnlinkModalOpen] = useState(false)
   const [isUnlinking, setIsUnlinking] = useState(false)
 
@@ -56,8 +56,8 @@ const ModelDatasetHeader = ({ projectId, modelId, model, setErrors }) => {
       {isUnlinkModalOpen && (
         <Modal
           title="Unlink Dataset"
-          message="Unlinking this dataset cannot be undone."
-          action={isUnlinking ? 'Unlinking...' : 'Unlink Permanently'}
+          message={`Are you sure you want to unlink the "${name}" dataset?`}
+          action={isUnlinking ? 'Unlinking...' : 'Unlink'}
           onCancel={() => {
             setUnlinkModalOpen(false)
           }}
@@ -65,26 +65,21 @@ const ModelDatasetHeader = ({ projectId, modelId, model, setErrors }) => {
             try {
               setIsUnlinking(true)
 
-              // TODO: switch to `PATCH` and remove `name`
-
               await fetcher(
-                `/api/v1/projects/${projectId}/models/${modelId}/`,
+                `/api/v1/projects/${projectId}/models/${model.id}/`,
                 {
-                  method: 'PUT',
-                  body: JSON.stringify({
-                    datasetId: null,
-                    name: model.name,
-                  }),
+                  method: 'PATCH',
+                  body: JSON.stringify({ datasetId: null }),
                 },
               )
 
               Router.push(
                 `/[projectId]/models/[modelId]?action=unlink-dataset-success`,
-                `/${projectId}/models/${modelId}`,
+                `/${projectId}/models/${model.id}`,
               )
 
               mutate(
-                `/api/v1/projects/${projectId}/models/${modelId}/`,
+                `/api/v1/projects/${projectId}/models/${model.id}/`,
                 { ...model, datasetId: null },
                 false,
               )
@@ -104,8 +99,8 @@ const ModelDatasetHeader = ({ projectId, modelId, model, setErrors }) => {
 
 ModelDatasetHeader.propTypes = {
   projectId: PropTypes.string.isRequired,
-  modelId: PropTypes.string.isRequired,
   model: PropTypes.shape({
+    id: PropTypes.string.isRequired,
     datasetId: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,

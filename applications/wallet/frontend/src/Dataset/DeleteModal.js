@@ -9,6 +9,7 @@ import { fetcher, revalidate } from '../Fetch/helpers'
 const DatasetDeleteModal = ({
   projectId,
   datasetId,
+  name,
   isDeleteModalOpen,
   setDeleteModalOpen,
   setDatasetFields,
@@ -20,7 +21,7 @@ const DatasetDeleteModal = ({
   return (
     <Modal
       title="Delete Dataset"
-      message="Are you sure you want to delete this dataset? Deleting will remove it from all linked models. Any labels that have been added by the model will remain."
+      message={`Are you sure you want to delete the "${name}" dataset? This will remove it from all linked models and cannot be undone.`}
       action={isDeleting ? 'Deleting...' : 'Delete Permanently'}
       onCancel={() => {
         setDeleteModalOpen(false)
@@ -50,6 +51,7 @@ const DatasetDeleteModal = ({
 DatasetDeleteModal.propTypes = {
   projectId: PropTypes.string.isRequired,
   datasetId: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
   isDeleteModalOpen: PropTypes.bool.isRequired,
   setDeleteModalOpen: PropTypes.func.isRequired,
   setDatasetFields: PropTypes.func.isRequired,

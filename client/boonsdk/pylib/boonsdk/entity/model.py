@@ -8,8 +8,32 @@ __all__ = [
     'Model',
     'ModelType',
     'ModelTypeInfo',
-    'PostTrainAction'
+    'PostTrainAction',
+    'ModelState'
 ]
+
+
+class ModelState(Enum):
+    """
+    The states a model can be in.
+    """
+    RequiresTraining = 0
+    """The model requires training"""
+
+    RequiresUpload = 1
+    """The model requires an upload"""
+
+    Trained = 2
+    """The model is trained and ready for use"""
+
+    Deploying = 3
+    """The model is deploying"""
+
+    Deployed = 4
+    """The model is deployed and ready for use."""
+
+    DeployError = 5
+    """There was an error deploying the model."""
 
 
 class ModelType(Enum):
@@ -44,7 +68,7 @@ class ModelType(Enum):
     TORCH_MAR_TEXT_CLASSIFIER = 8
     """Provide your own Torch Model Archive using an text classifier handler"""
 
-    BOONAI_FUNCTION = 9
+    BOON_FUNCTION = 9
     """Provide your own Python function to do inference or set custom fields."""
 
 
@@ -92,6 +116,11 @@ class Model(BaseEntity):
     def type(self):
         """The type of model"""
         return ModelType[self._data['type']]
+
+    @property
+    def state(self):
+        """The type of model"""
+        return ModelState[self._data['state']]
 
     @property
     def uploadable(self):

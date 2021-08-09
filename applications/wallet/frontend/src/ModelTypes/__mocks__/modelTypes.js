@@ -10,6 +10,7 @@ const modelTypes = {
       deployOnTrainingSet: true,
       minConcepts: 0,
       minExamples: 0,
+      uploadable: false,
     },
     {
       name: 'TF_CLASSIFIER',
@@ -21,6 +22,7 @@ const modelTypes = {
       deployOnTrainingSet: false,
       minConcepts: 2,
       minExamples: 10,
+      uploadable: false,
     },
     {
       name: 'FACE_RECOGNITION',
@@ -32,6 +34,7 @@ const modelTypes = {
       deployOnTrainingSet: true,
       minConcepts: 1,
       minExamples: 1,
+      uploadable: false,
     },
     {
       name: 'PYTORCH_MODEL_ARCHIVE',
@@ -43,6 +46,7 @@ const modelTypes = {
       deployOnTrainingSet: true,
       minConcepts: 0,
       minExamples: 0,
+      uploadable: true,
     },
   ],
 }

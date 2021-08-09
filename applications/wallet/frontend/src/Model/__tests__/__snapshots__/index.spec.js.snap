@@ -1,5 +1,160 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<Model /> should render properly after creation 1`] = `
+Array [
+  <Breadcrumbs
+    crumbs={
+      Array [
+        Object {
+          "href": "/[projectId]/models",
+          "isBeta": true,
+          "title": "Custom Models",
+        },
+        Object {
+          "href": false,
+          "title": "Model Details",
+        },
+      ]
+    }
+  />,
+  .emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 8px;
+  padding-bottom: 16px;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  background-color: #e3f7e8;
+  border-radius: 2px;
+  padding: 12px;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.emotion-2 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding-left: 12px;
+  color: #191919;
+  font-weight: 500;
+  white-space: pre-line;
+}
+
+.emotion-2 a {
+  color: #191919;
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+  margin-left: 4px;
+}
+
+.emotion-2 a:hover {
+  color: #3A5DFF;
+}
+
+<div
+    className="emotion-0"
+  >
+    <div
+      className="emotion-1"
+    >
+      <svg
+        color="#009f22"
+        data-file-name="checkmark.svg"
+        height={20}
+      />
+      <div
+        className="emotion-2"
+        role="alert"
+      >
+        Model 
+        created
+        .
+      </div>
+    </div>
+  </div>,
+  <ModelDetails
+    model={
+      Object {
+        "actorCreated": "56fb89be-f380-423f-bcf5-70b43b384a99/Admin Console Generated Key - c2825674-a1fe-4b51-8207-231bc46c1279 - danny@zorroa.com_6a72b6c1-aa96-415b-8c2d-df355ba9c8f5",
+        "actorModified": "56fb89be-f380-423f-bcf5-70b43b384a99/Admin Console Generated Key - c2825674-a1fe-4b51-8207-231bc46c1279 - danny@zorroa.com_6a72b6c1-aa96-415b-8c2d-df355ba9c8f5",
+        "datasetId": null,
+        "datasetType": "FaceRecognition",
+        "deploySearch": Object {
+          "query": Object {
+            "matchAll": Object {},
+          },
+        },
+        "description": "",
+        "fileId": "models/621bf775-89d9-1244-9596-d6df43f1ede5/boonai-console_face_recognition-face-recognition/boonai-console_face_recognition-face-recognition.zip",
+        "id": "621bf775-89d9-1244-9596-d6df43f1ede5",
+        "modelTypeRestrictions": Object {
+          "missingLabels": 1,
+          "missingLabelsOnAssets": 15,
+          "requiredAssetsPerLabel": 10,
+          "requiredLabels": 2,
+        },
+        "moduleName": "boonai-console_face_recognition-face-recognition",
+        "name": "console_face_recognition",
+        "runningJobId": "223fd17d-7028-1519-94a8-d2f0132bc0c8",
+        "state": "RequiresTraining",
+        "timeCreated": 1594243397871,
+        "timeModified": 1594243397871,
+        "trainingJobName": "Train console_face_recognition / boonai-console_face_recognition-face-recognition",
+        "type": "ZVI_FACE_RECOGNITION",
+        "unappliedChanges": true,
+      }
+    }
+    projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+  />,
+  <ModelDataset
+    model={
+      Object {
+        "actorCreated": "56fb89be-f380-423f-bcf5-70b43b384a99/Admin Console Generated Key - c2825674-a1fe-4b51-8207-231bc46c1279 - danny@zorroa.com_6a72b6c1-aa96-415b-8c2d-df355ba9c8f5",
+        "actorModified": "56fb89be-f380-423f-bcf5-70b43b384a99/Admin Console Generated Key - c2825674-a1fe-4b51-8207-231bc46c1279 - danny@zorroa.com_6a72b6c1-aa96-415b-8c2d-df355ba9c8f5",
+        "datasetId": null,
+        "datasetType": "FaceRecognition",
+        "deploySearch": Object {
+          "query": Object {
+            "matchAll": Object {},
+          },
+        },
+        "description": "",
+        "fileId": "models/621bf775-89d9-1244-9596-d6df43f1ede5/boonai-console_face_recognition-face-recognition/boonai-console_face_recognition-face-recognition.zip",
+        "id": "621bf775-89d9-1244-9596-d6df43f1ede5",
+        "modelTypeRestrictions": Object {
+          "missingLabels": 1,
+          "missingLabelsOnAssets": 15,
+          "requiredAssetsPerLabel": 10,
+          "requiredLabels": 2,
+        },
+        "moduleName": "boonai-console_face_recognition-face-recognition",
+        "name": "console_face_recognition",
+        "runningJobId": "223fd17d-7028-1519-94a8-d2f0132bc0c8",
+        "state": "RequiresTraining",
+        "timeCreated": 1594243397871,
+        "timeModified": 1594243397871,
+        "trainingJobName": "Train console_face_recognition / boonai-console_face_recognition-face-recognition",
+        "type": "ZVI_FACE_RECOGNITION",
+        "unappliedChanges": true,
+      }
+    }
+    setErrors={[Function]}
+  />,
+]
+`;
+
 exports[`<Model /> should render properly after linking 1`] = `
 Array [
   <Breadcrumbs
@@ -85,123 +240,71 @@ Array [
     </div>
   </div>,
   <ModelDetails
-    modelId="621bf775-89d9-1244-9596-d6df43f1ede5"
-    modelTypes={
-      Array [
-        Object {
-          "deployOnTrainingSet": true,
-          "description": "Classify images, documents and video clips using a KNN classifier.  This type of model can work great with just a single labeled example.If no labels are provided, the model automatically generates numbered groups of similar assets. These groups can be renamed and edited in subsequent training passes.",
-          "label": "K-Nearest Neighbors Classifier",
-          "minConcepts": 0,
-          "minExamples": 0,
-          "name": "KNN_CLASSIFIER",
-          "objective": "Label Detection",
-          "provider": "Boon AI",
+    model={
+      Object {
+        "actorCreated": "56fb89be-f380-423f-bcf5-70b43b384a99/Admin Console Generated Key - c2825674-a1fe-4b51-8207-231bc46c1279 - danny@zorroa.com_6a72b6c1-aa96-415b-8c2d-df355ba9c8f5",
+        "actorModified": "56fb89be-f380-423f-bcf5-70b43b384a99/Admin Console Generated Key - c2825674-a1fe-4b51-8207-231bc46c1279 - danny@zorroa.com_6a72b6c1-aa96-415b-8c2d-df355ba9c8f5",
+        "datasetId": null,
+        "datasetType": "FaceRecognition",
+        "deploySearch": Object {
+          "query": Object {
+            "matchAll": Object {},
+          },
         },
-        Object {
-          "deployOnTrainingSet": false,
-          "description": "Classify images or documents using a custom strained CNN deep learning algorithm.  This type of modelgenerates multiple predictions and can be trained to identify very specific features. The label detection classifier requires at least 2 concepts with 10 labeled images each.",
-          "label": "Tensorflow Transfer Learning Classifier",
-          "minConcepts": 2,
-          "minExamples": 10,
-          "name": "TF_CLASSIFIER",
-          "objective": "Label Detection",
-          "provider": "Boon AI",
+        "description": "",
+        "fileId": "models/621bf775-89d9-1244-9596-d6df43f1ede5/boonai-console_face_recognition-face-recognition/boonai-console_face_recognition-face-recognition.zip",
+        "id": "621bf775-89d9-1244-9596-d6df43f1ede5",
+        "modelTypeRestrictions": Object {
+          "missingLabels": 1,
+          "missingLabelsOnAssets": 15,
+          "requiredAssetsPerLabel": 10,
+          "requiredLabels": 2,
         },
-        Object {
-          "deployOnTrainingSet": true,
-          "description": "Label faces detected by the boonai-face-detection module, and classify them with a KNN model.",
-          "label": "Face Recognition",
-          "minConcepts": 1,
-          "minExamples": 1,
-          "name": "FACE_RECOGNITION",
-          "objective": "Face Recognition",
-          "provider": "Boon AI",
-        },
-        Object {
-          "deployOnTrainingSet": true,
-          "description": "Upload a pre-trained Pytorch Model Archive",
-          "label": "A Pytorch Model Archive. image_classifier, image_segmenter, object_detector, or text_classifier.",
-          "minConcepts": 0,
-          "minExamples": 0,
-          "name": "PYTORCH_MODEL_ARCHIVE",
-          "objective": "Label Detection",
-          "provider": "Boon AI",
-        },
-      ]
+        "moduleName": "boonai-console_face_recognition-face-recognition",
+        "name": "console_face_recognition",
+        "runningJobId": "223fd17d-7028-1519-94a8-d2f0132bc0c8",
+        "state": "RequiresTraining",
+        "timeCreated": 1594243397871,
+        "timeModified": 1594243397871,
+        "trainingJobName": "Train console_face_recognition / boonai-console_face_recognition-face-recognition",
+        "type": "ZVI_FACE_RECOGNITION",
+        "unappliedChanges": true,
+      }
     }
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
   />,
-  .emotion-0 {
-  padding: 16px;
-  padding-left: 0;
-  padding-right: 0;
-  -webkit-flex-shrink: 0;
-  -ms-flex-negative: 0;
-  flex-shrink: 0;
-}
-
-.emotion-1 {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  border-bottom: 1px solid #4a4a4a;
-}
-
-.emotion-2 {
-  padding-right: 16px;
-  margin-bottom: -1px;
-}
-
-.emotion-3 {
-  border: 0 #3A5DFF solid;
-  border-bottom-width: 2px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  text-transform: uppercase;
-  font-size: 17px;
-  line-height: 20px;
-  font-weight: 700;
-}
-
-.emotion-3:hover {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-<nav
-    className="emotion-0"
-  >
-    <ul
-      className="emotion-1"
-    >
-      <li
-        className="emotion-2"
-      >
-        <a
-          className="emotion-3"
-          href="/76917058-b147-4556-987a-0a0f11e46d9b/models/621bf775-89d9-1244-9596-d6df43f1ede5"
-          onClick={[Function]}
-          onMouseEnter={[Function]}
-        >
-          Dataset
-        </a>
-      </li>
-    </ul>
-  </nav>,
   <ModelDataset
+    model={
+      Object {
+        "actorCreated": "56fb89be-f380-423f-bcf5-70b43b384a99/Admin Console Generated Key - c2825674-a1fe-4b51-8207-231bc46c1279 - danny@zorroa.com_6a72b6c1-aa96-415b-8c2d-df355ba9c8f5",
+        "actorModified": "56fb89be-f380-423f-bcf5-70b43b384a99/Admin Console Generated Key - c2825674-a1fe-4b51-8207-231bc46c1279 - danny@zorroa.com_6a72b6c1-aa96-415b-8c2d-df355ba9c8f5",
+        "datasetId": null,
+        "datasetType": "FaceRecognition",
+        "deploySearch": Object {
+          "query": Object {
+            "matchAll": Object {},
+          },
+        },
+        "description": "",
+        "fileId": "models/621bf775-89d9-1244-9596-d6df43f1ede5/boonai-console_face_recognition-face-recognition/boonai-console_face_recognition-face-recognition.zip",
+        "id": "621bf775-89d9-1244-9596-d6df43f1ede5",
+        "modelTypeRestrictions": Object {
+          "missingLabels": 1,
+          "missingLabelsOnAssets": 15,
+          "requiredAssetsPerLabel": 10,
+          "requiredLabels": 2,
+        },
+        "moduleName": "boonai-console_face_recognition-face-recognition",
+        "name": "console_face_recognition",
+        "runningJobId": "223fd17d-7028-1519-94a8-d2f0132bc0c8",
+        "state": "RequiresTraining",
+        "timeCreated": 1594243397871,
+        "timeModified": 1594243397871,
+        "trainingJobName": "Train console_face_recognition / boonai-console_face_recognition-face-recognition",
+        "type": "ZVI_FACE_RECOGNITION",
+        "unappliedChanges": true,
+      }
+    }
     setErrors={[Function]}
   />,
 ]
@@ -292,81 +395,232 @@ Array [
     </div>
   </div>,
   <ModelDetails
-    modelId="621bf775-89d9-1244-9596-d6df43f1ede5"
-    modelTypes={
-      Array [
-        Object {
-          "deployOnTrainingSet": true,
-          "description": "Classify images, documents and video clips using a KNN classifier.  This type of model can work great with just a single labeled example.If no labels are provided, the model automatically generates numbered groups of similar assets. These groups can be renamed and edited in subsequent training passes.",
-          "label": "K-Nearest Neighbors Classifier",
-          "minConcepts": 0,
-          "minExamples": 0,
-          "name": "KNN_CLASSIFIER",
-          "objective": "Label Detection",
-          "provider": "Boon AI",
+    model={
+      Object {
+        "actorCreated": "56fb89be-f380-423f-bcf5-70b43b384a99/Admin Console Generated Key - c2825674-a1fe-4b51-8207-231bc46c1279 - danny@zorroa.com_6a72b6c1-aa96-415b-8c2d-df355ba9c8f5",
+        "actorModified": "56fb89be-f380-423f-bcf5-70b43b384a99/Admin Console Generated Key - c2825674-a1fe-4b51-8207-231bc46c1279 - danny@zorroa.com_6a72b6c1-aa96-415b-8c2d-df355ba9c8f5",
+        "datasetId": null,
+        "datasetType": "FaceRecognition",
+        "deploySearch": Object {
+          "query": Object {
+            "matchAll": Object {},
+          },
         },
-        Object {
-          "deployOnTrainingSet": false,
-          "description": "Classify images or documents using a custom strained CNN deep learning algorithm.  This type of modelgenerates multiple predictions and can be trained to identify very specific features. The label detection classifier requires at least 2 concepts with 10 labeled images each.",
-          "label": "Tensorflow Transfer Learning Classifier",
-          "minConcepts": 2,
-          "minExamples": 10,
-          "name": "TF_CLASSIFIER",
-          "objective": "Label Detection",
-          "provider": "Boon AI",
+        "description": "",
+        "fileId": "models/621bf775-89d9-1244-9596-d6df43f1ede5/boonai-console_face_recognition-face-recognition/boonai-console_face_recognition-face-recognition.zip",
+        "id": "621bf775-89d9-1244-9596-d6df43f1ede5",
+        "modelTypeRestrictions": Object {
+          "missingLabels": 1,
+          "missingLabelsOnAssets": 15,
+          "requiredAssetsPerLabel": 10,
+          "requiredLabels": 2,
         },
-        Object {
-          "deployOnTrainingSet": true,
-          "description": "Label faces detected by the boonai-face-detection module, and classify them with a KNN model.",
-          "label": "Face Recognition",
-          "minConcepts": 1,
-          "minExamples": 1,
-          "name": "FACE_RECOGNITION",
-          "objective": "Face Recognition",
-          "provider": "Boon AI",
-        },
-        Object {
-          "deployOnTrainingSet": true,
-          "description": "Upload a pre-trained Pytorch Model Archive",
-          "label": "A Pytorch Model Archive. image_classifier, image_segmenter, object_detector, or text_classifier.",
-          "minConcepts": 0,
-          "minExamples": 0,
-          "name": "PYTORCH_MODEL_ARCHIVE",
-          "objective": "Label Detection",
-          "provider": "Boon AI",
-        },
-      ]
+        "moduleName": "boonai-console_face_recognition-face-recognition",
+        "name": "console_face_recognition",
+        "runningJobId": "223fd17d-7028-1519-94a8-d2f0132bc0c8",
+        "state": "RequiresTraining",
+        "timeCreated": 1594243397871,
+        "timeModified": 1594243397871,
+        "trainingJobName": "Train console_face_recognition / boonai-console_face_recognition-face-recognition",
+        "type": "ZVI_FACE_RECOGNITION",
+        "unappliedChanges": true,
+      }
     }
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
   />,
-  .emotion-0 {
-  padding: 16px;
-  padding-left: 0;
-  padding-right: 0;
-  -webkit-flex-shrink: 0;
-  -ms-flex-negative: 0;
-  flex-shrink: 0;
-}
+  <ModelDataset
+    model={
+      Object {
+        "actorCreated": "56fb89be-f380-423f-bcf5-70b43b384a99/Admin Console Generated Key - c2825674-a1fe-4b51-8207-231bc46c1279 - danny@zorroa.com_6a72b6c1-aa96-415b-8c2d-df355ba9c8f5",
+        "actorModified": "56fb89be-f380-423f-bcf5-70b43b384a99/Admin Console Generated Key - c2825674-a1fe-4b51-8207-231bc46c1279 - danny@zorroa.com_6a72b6c1-aa96-415b-8c2d-df355ba9c8f5",
+        "datasetId": null,
+        "datasetType": "FaceRecognition",
+        "deploySearch": Object {
+          "query": Object {
+            "matchAll": Object {},
+          },
+        },
+        "description": "",
+        "fileId": "models/621bf775-89d9-1244-9596-d6df43f1ede5/boonai-console_face_recognition-face-recognition/boonai-console_face_recognition-face-recognition.zip",
+        "id": "621bf775-89d9-1244-9596-d6df43f1ede5",
+        "modelTypeRestrictions": Object {
+          "missingLabels": 1,
+          "missingLabelsOnAssets": 15,
+          "requiredAssetsPerLabel": 10,
+          "requiredLabels": 2,
+        },
+        "moduleName": "boonai-console_face_recognition-face-recognition",
+        "name": "console_face_recognition",
+        "runningJobId": "223fd17d-7028-1519-94a8-d2f0132bc0c8",
+        "state": "RequiresTraining",
+        "timeCreated": 1594243397871,
+        "timeModified": 1594243397871,
+        "trainingJobName": "Train console_face_recognition / boonai-console_face_recognition-face-recognition",
+        "type": "ZVI_FACE_RECOGNITION",
+        "unappliedChanges": true,
+      }
+    }
+    setErrors={[Function]}
+  />,
+]
+`;
 
-.emotion-1 {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
+exports[`<Model /> should render properly for deployment 1`] = `
+Array [
+  <Breadcrumbs
+    crumbs={
+      Array [
+        Object {
+          "href": "/[projectId]/models",
+          "isBeta": true,
+          "title": "Custom Models",
+        },
+        Object {
+          "href": false,
+          "title": "Model Details",
+        },
+      ]
+    }
+  />,
+  .emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  border-bottom: 1px solid #4a4a4a;
+  padding-top: 8px;
+  padding-bottom: 16px;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  background-color: #e3f7e8;
+  border-radius: 2px;
+  padding: 12px;
+  padding-left: 16px;
+  padding-right: 16px;
 }
 
 .emotion-2 {
-  padding-right: 16px;
-  margin-bottom: -1px;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding-left: 12px;
+  color: #191919;
+  font-weight: 500;
+  white-space: pre-line;
+}
+
+.emotion-2 a {
+  color: #191919;
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+  margin-left: 4px;
+}
+
+.emotion-2 a:hover {
+  color: #3A5DFF;
+}
+
+<div
+    className="emotion-0"
+  >
+    <div
+      className="emotion-1"
+    >
+      <svg
+        color="#009f22"
+        data-file-name="checkmark.svg"
+        height={20}
+      />
+      <div
+        className="emotion-2"
+        role="alert"
+      >
+        Model 
+        updated
+        .
+      </div>
+    </div>
+  </div>,
+  <ModelDetails
+    model={
+      Object {
+        "actorCreated": "56fb89be-f380-423f-bcf5-70b43b384a99/Admin Console Generated Key - c2825674-a1fe-4b51-8207-231bc46c1279 - danny@zorroa.com_6a72b6c1-aa96-415b-8c2d-df355ba9c8f5",
+        "actorModified": "56fb89be-f380-423f-bcf5-70b43b384a99/Admin Console Generated Key - c2825674-a1fe-4b51-8207-231bc46c1279 - danny@zorroa.com_6a72b6c1-aa96-415b-8c2d-df355ba9c8f5",
+        "datasetId": null,
+        "datasetType": "FaceRecognition",
+        "deploySearch": Object {
+          "query": Object {
+            "matchAll": Object {},
+          },
+        },
+        "description": "",
+        "fileId": "models/621bf775-89d9-1244-9596-d6df43f1ede5/boonai-console_face_recognition-face-recognition/boonai-console_face_recognition-face-recognition.zip",
+        "id": "621bf775-89d9-1244-9596-d6df43f1ede5",
+        "modelTypeRestrictions": Object {
+          "missingLabels": 1,
+          "missingLabelsOnAssets": 15,
+          "requiredAssetsPerLabel": 10,
+          "requiredLabels": 2,
+        },
+        "moduleName": "boonai-console_face_recognition-face-recognition",
+        "name": "console_face_recognition",
+        "runningJobId": "223fd17d-7028-1519-94a8-d2f0132bc0c8",
+        "state": "RequiresTraining",
+        "timeCreated": 1594243397871,
+        "timeModified": 1594243397871,
+        "trainingJobName": "Train console_face_recognition / boonai-console_face_recognition-face-recognition",
+        "type": "ZVI_FACE_RECOGNITION",
+        "unappliedChanges": true,
+      }
+    }
+    projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+  />,
+  .emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.emotion-1 {
+  font-size: 21px;
+  line-height: 30px;
+  font-weight: 500;
+  padding-top: 16px;
+}
+
+.emotion-2 {
+  color: #b3b3b3;
+  padding-top: 16px;
+  padding-bottom: 16px;
 }
 
 .emotion-3 {
-  border: 0 #3A5DFF solid;
-  border-bottom-width: 2px;
+  color: #6088FE;
+}
+
+.emotion-4 {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  line-height: 23px;
+}
+
+.emotion-5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -375,41 +629,134 @@ Array [
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  text-transform: uppercase;
-  font-size: 17px;
-  line-height: 20px;
-  font-weight: 700;
 }
 
-.emotion-3:hover {
+.emotion-6 {
+  color: #b3b3b3;
+  font-family: Roboto Condensed;
+  text-transform: uppercase;
+  padding-right: 8px;
+}
+
+.emotion-8 {
+  padding-left: 4px;
+}
+
+.emotion-9 {
+  position: relative;
+}
+
+.emotion-10 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 8px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #808080;
+  background-color: transparent;
+}
+
+.emotion-10:hover,
+.emotion-10.focus-visible:focus,
+.emotion-10 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
+  color: #ffffff;
 }
 
-<nav
+.emotion-10:hover svg,
+.emotion-10.focus-visible:focus svg,
+.emotion-10 .noop svg {
+  opacity: 1;
+}
+
+.emotion-10[aria-disabled=true],
+.emotion-10 .noop {
+  color: #808080;
+}
+
+<div
     className="emotion-0"
   >
-    <ul
+    <h3
       className="emotion-1"
     >
-      <li
-        className="emotion-2"
+      Model REST API
+    </h3>
+    <div
+      className="emotion-2"
+    >
+      This model is deployed as an easy to use REST API for integration into software projects.
+       
+      <a
+        className="emotion-3"
+        href="https://docs.boonai.app/boonsdk/solutions"
+        rel="noopener noreferrer"
+        target="_blank"
       >
-        <a
-          className="emotion-3"
-          href="/76917058-b147-4556-987a-0a0f11e46d9b/models/621bf775-89d9-1244-9596-d6df43f1ede5"
-          onClick={[Function]}
-          onMouseEnter={[Function]}
+        See Documentation
+      </a>
+    </div>
+    <ul
+      className="emotion-4"
+    >
+      <li
+        className="emotion-5"
+      >
+        <div
+          className="emotion-6"
         >
-          Dataset
-        </a>
+          Model Endpoint
+          :
+        </div>
+        <div
+          className="emotion-5"
+        >
+          https://api.boonai.app/ap1/v1/analyze-file?modules=console_face_recognition
+          <div
+            className="emotion-8"
+          >
+            <div
+              className="emotion-9"
+            >
+              <button
+                aria-label="Copy URL to Clipboard"
+                className="emotion-10"
+                onClick={[Function]}
+                title="Copy URL to Clipboard"
+                type="button"
+              >
+                <svg
+                  data-file-name="copy.svg"
+                  height={20}
+                />
+              </button>
+            </div>
+          </div>
+        </div>
       </li>
     </ul>
-  </nav>,
-  <ModelDataset
-    setErrors={[Function]}
-  />,
+  </div>,
 ]
 `;

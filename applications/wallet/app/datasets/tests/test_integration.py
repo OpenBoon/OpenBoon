@@ -234,7 +234,14 @@ class TestDatasetsViewsets:
     def test_dataset_types(self, login, project, api_client, monkeypatch):
 
         def mock_response(*args, **kwargs):
-            return [{'name': 'Classifier', 'label': 'Classifier', 'description': 'Used to classify assets.'}]  # noqa
+            return [
+                {'name': 'Classifier',
+                 'label': 'Classifier',
+                 'description': 'Used to classify assets.'},
+                {'name': 'Detection',
+                 'label': 'Detection',
+                 'description': 'Used to detect objects.'}
+            ]
 
         path = reverse('dataset-dataset-types', kwargs={'project_pk': project.id})
         monkeypatch.setattr(BoonClient, 'get', mock_response)

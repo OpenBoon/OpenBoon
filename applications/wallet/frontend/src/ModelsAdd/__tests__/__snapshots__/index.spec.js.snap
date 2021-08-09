@@ -307,7 +307,7 @@ Array [
 }
 
 .emotion-19 {
-  padding-left: 12px;
+  padding-left: 8px;
 }
 
 .emotion-20 {
@@ -893,7 +893,7 @@ Array [
   border-radius: 16px;
   width: 16px;
   height: 16px;
-  border: 1px solid #ffffff;
+  border: 1px solid #808080;
 }
 
 .emotion-18 {
@@ -902,11 +902,11 @@ Array [
   height: 8px;
   opacity: 100;
   border-radius: 16px;
-  background-color: #3A5DFF;
+  background-color: none;
 }
 
 .emotion-19 {
-  padding-left: 12px;
+  padding-left: 8px;
 }
 
 .emotion-20 {
@@ -918,22 +918,22 @@ Array [
   color: #b3b3b3;
 }
 
-.emotion-25 {
+.emotion-33 {
   padding: 0;
   -webkit-appearance: none;
   border-radius: 16px;
   width: 16px;
   height: 16px;
-  border: 1px solid #808080;
+  border: 1px solid #ffffff;
 }
 
-.emotion-26 {
+.emotion-34 {
   position: absolute;
   width: 8px;
   height: 8px;
   opacity: 100;
   border-radius: 16px;
-  background-color: none;
+  background-color: #3A5DFF;
 }
 
 .emotion-38 {
@@ -1094,7 +1094,7 @@ Array [
             >
               <input
                 className="emotion-17"
-                defaultChecked={true}
+                defaultChecked={false}
                 name="modelType"
                 onClick={[Function]}
                 type="radio"
@@ -1132,7 +1132,7 @@ Array [
               className="emotion-16"
             >
               <input
-                className="emotion-25"
+                className="emotion-17"
                 defaultChecked={false}
                 name="modelType"
                 onClick={[Function]}
@@ -1140,7 +1140,7 @@ Array [
                 value="TF_CLASSIFIER"
               />
               <div
-                className="emotion-26"
+                className="emotion-18"
               />
             </div>
             <div
@@ -1171,15 +1171,15 @@ Array [
               className="emotion-16"
             >
               <input
-                className="emotion-25"
-                defaultChecked={false}
+                className="emotion-33"
+                defaultChecked={true}
                 name="modelType"
                 onClick={[Function]}
                 type="radio"
                 value="FACE_RECOGNITION"
               />
               <div
-                className="emotion-26"
+                className="emotion-34"
               />
             </div>
             <div

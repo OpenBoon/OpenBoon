@@ -6,10 +6,6 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked --mount=type=cache,t
     apt-get update && apt-get -y upgrade && apt-get --no-install-recommends -y install \
     python3 \
     python3-pip \
-    libmagic-dev \
-    wget \
-    curl \
-    unzip \
      --no-install-recommends
 
 # Auto-updating pip sometimes causes issues.

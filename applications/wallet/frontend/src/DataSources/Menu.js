@@ -10,7 +10,7 @@ import Button, { VARIANTS } from '../Button'
 import ButtonActions from '../Button/Actions'
 import Modal from '../Modal'
 
-const DataSourcesMenu = ({ projectId, dataSourceId, revalidate }) => {
+const DataSourcesMenu = ({ projectId, dataSourceId, name, revalidate }) => {
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
 
@@ -27,9 +27,7 @@ const DataSourcesMenu = ({ projectId, dataSourceId, revalidate }) => {
                   onClick={async () => {
                     onClick()
 
-                    const {
-                      jobId,
-                    } = await fetcher(
+                    const { jobId } = await fetcher(
                       `/api/v1/projects/${projectId}/data_sources/${dataSourceId}/scan/`,
                       { method: 'POST' },
                     )
@@ -79,10 +77,11 @@ const DataSourcesMenu = ({ projectId, dataSourceId, revalidate }) => {
           </div>
         )}
       </Menu>
+
       {isDeleteModalOpen && (
         <Modal
           title="Delete Data Source"
-          message="Deleting this data source cannot be undone."
+          message={`Are you sure you want to delete the "${name}" data source? This cannot be undone.`}
           action={isDeleting ? 'Deleting...' : 'Delete Permanently'}
           onCancel={() => {
             setDeleteModalOpen(false)
@@ -111,6 +110,7 @@ const DataSourcesMenu = ({ projectId, dataSourceId, revalidate }) => {
 DataSourcesMenu.propTypes = {
   projectId: PropTypes.string.isRequired,
   dataSourceId: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
   revalidate: PropTypes.func.isRequired,
 }
 

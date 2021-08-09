@@ -1,5 +1,6 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
+import model from '../../Model/__mocks__/model'
 import datasets from '../../Datasets/__mocks__/datasets'
 import datasetTypes from '../../DatasetTypes/__mocks__/datasetTypes'
 
@@ -8,7 +9,7 @@ import ModelLinkForm from '../Form'
 const noop = () => () => {}
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
-const MODEL_ID = '621bf774-89d9-1244-9596-d6df43f1ede5'
+const MODEL_ID = model.id
 const DATASET_ID = datasets.results[0].id
 
 describe('<ModelLinkForm />', () => {
@@ -25,7 +26,7 @@ describe('<ModelLinkForm />', () => {
     require('swr').__setMockUseSWRResponse({ data: datasets })
 
     const component = TestRenderer.create(
-      <ModelLinkForm datasetType="FaceRecognition" />,
+      <ModelLinkForm model={{ ...model, datasetType: 'FaceRecognition' }} />,
     )
 
     expect(component.toJSON()).toMatchSnapshot()
@@ -68,7 +69,7 @@ describe('<ModelLinkForm />', () => {
         .props.onClick({ preventDefault: noop })
     })
 
-    expect(fetch.mock.calls.length).toEqual(3)
+    expect(fetch.mock.calls.length).toEqual(4)
 
     expect(fetch.mock.calls[0][0]).toEqual(
       `/api/v1/projects/${PROJECT_ID}/models/${MODEL_ID}/`,
@@ -111,7 +112,7 @@ describe('<ModelLinkForm />', () => {
     })
 
     const component = TestRenderer.create(
-      <ModelLinkForm datasetType="Classification" />,
+      <ModelLinkForm model={{ ...model, datasetType: 'Classification' }} />,
     )
 
     // Select source
@@ -178,7 +179,7 @@ describe('<ModelLinkForm />', () => {
         .props.onClick({ preventDefault: noop })
     })
 
-    expect(fetch.mock.calls.length).toEqual(6)
+    expect(fetch.mock.calls.length).toEqual(7)
 
     expect(fetch.mock.calls[0][0]).toEqual(
       `/api/v1/projects/${PROJECT_ID}/datasets/`,

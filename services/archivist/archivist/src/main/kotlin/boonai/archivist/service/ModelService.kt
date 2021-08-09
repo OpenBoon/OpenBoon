@@ -15,6 +15,7 @@ import boonai.archivist.domain.ModelFilter
 import boonai.archivist.domain.ModelPatchRequestV2
 import boonai.archivist.domain.ModelPublishRequest
 import boonai.archivist.domain.ModelSpec
+import boonai.archivist.domain.ModelState
 import boonai.archivist.domain.ModelTrainingRequest
 import boonai.archivist.domain.ModelType
 import boonai.archivist.domain.ModelUpdateRequest
@@ -31,6 +32,7 @@ import boonai.archivist.domain.StandardContainers
 import boonai.archivist.repository.KPagedList
 import boonai.archivist.repository.ModelDao
 import boonai.archivist.repository.ModelJdbcDao
+import boonai.archivist.repository.PipelineModDao
 import boonai.archivist.repository.UUIDGen
 import boonai.archivist.security.getProjectId
 import boonai.archivist.security.getZmlpActor
@@ -40,9 +42,6 @@ import boonai.common.service.logging.LogAction
 import boonai.common.service.logging.LogObject
 import boonai.common.service.logging.event
 import com.google.pubsub.v1.PubsubMessage
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import org.slf4j.LoggerFactory
 import org.springframework.core.env.Environment
 import org.springframework.dao.EmptyResultDataAccessException
@@ -80,6 +79,7 @@ class ModelServiceImpl(
     val jobLaunchService: JobLaunchService,
     val jobService: JobService,
     val pipelineModService: PipelineModService,
+    val pipelineModDao: PipelineModDao,
     val indexRoutingService: IndexRoutingService,
     val assetSearchService: AssetSearchService,
     val fileStorageService: ProjectStorageService,
@@ -126,10 +126,17 @@ class ModelServiceImpl(
 
         argValidationService.validateArgsUnknownOnly("training/${spec.type.name}", spec.trainingArgs)
 
+        val state = if (spec.type.uploadable) {
+            ModelState.RequiresUpload
+        } else {
+            ModelState.RequiresTraining
+        }
+
         val model = Model(
             id,
             getProjectId(),
             spec.datasetId,
+            state,
             spec.type,
             spec.name,
             moduleName,
@@ -139,11 +146,12 @@ class ModelServiceImpl(
             false,
             spec.applySearch, // VALIDATE THIS PARSES.
             spec.trainingArgs,
+            spec.dependsOn.minus(moduleName),
             time,
             time,
             actor.toString(),
             actor.toString(),
-            null, null, null, null, null, null
+            null, null, null, null, null, null, null, null, null, null
         )
 
         logger.event(
@@ -165,8 +173,15 @@ class ModelServiceImpl(
 
         model.name = update.name
         model.datasetId = update.datasetId
+        model.dependencies = update.dependencies
         model.timeModified = System.currentTimeMillis()
         model.actorModified = getZmlpActor().toString()
+
+        val mod = pipelineModDao.findByNameIn(listOf(model.name))
+        if (mod.isNotEmpty()) {
+            publishModel(model, ModelPublishRequest())
+        }
+
         return model
     }
 
@@ -181,11 +196,21 @@ class ModelServiceImpl(
         }
 
         if (update.isFieldSet("name")) {
-            update.name?.let { model.name }
+            update.name?.let { model.name = it }
+        }
+
+        if (update.isFieldSet("dependencies")) {
+            update.dependencies?.let { model.dependencies = it }
         }
 
         model.timeModified = System.currentTimeMillis()
         model.actorModified = getZmlpActor().toString()
+
+        val mod = pipelineModDao.findByNameIn(listOf(model.name))
+        if (mod.isNotEmpty()) {
+            publishModel(model, ModelPublishRequest())
+        }
+
         return model
     }
 
@@ -328,6 +353,17 @@ class ModelServiceImpl(
         val version = versionUp(model)
         val ops = buildModuleOps(model, req, version)
 
+        logger.event(
+            LogObject.MODEL, LogAction.DEPLOY,
+            mapOf("modelId" to model.id, "modelName" to model.name)
+        )
+
+        if (model.isUploadable()) {
+            modelJdbcDao.updateState(model.id, ModelState.Deployed)
+        } else {
+            modelJdbcDao.updateState(model.id, ModelState.Trained)
+        }
+
         if (mod != null) {
             // Set version number to change checksum
             val update = PipelineModUpdate(
@@ -348,8 +384,6 @@ class ModelServiceImpl(
                 listOf(FileType.Documents, FileType.Images, FileType.Videos),
                 ops
             )
-
-            model.ready = true
             return pipelineModService.create(modspec)
         }
     }
@@ -383,30 +417,47 @@ class ModelServiceImpl(
     }
 
     override fun deleteModel(model: Model) {
+        logger.event(
+            LogObject.MODEL, LogAction.DELETE,
+            mapOf("modelId" to model.id, "modelName" to model.name)
+        )
+
         modelJdbcDao.delete(model)
 
         pipelineModService.findByName(model.moduleName, false)?.let {
             pipelineModService.delete(it.id)
         }
 
-        GlobalScope.launch(Dispatchers.IO) {
-            try {
-                fileStorageService.recursiveDelete(
-                    ProjectDirLocator(ProjectStorageEntity.MODELS, model.id.toString())
-                )
-            } catch (e: Exception) {
-                logger.error("Failed to delete files associated with model: ${model.id}")
-            }
+        val msg = PubsubMessage.newBuilder()
+            .putAttributes("type", "model-delete")
+            .putAttributes("modelId", model.id.toString())
+            .putAttributes("deployed", model.type.uploadable.toString())
+            .putAttributes("projectId", model.projectId.toString())
+            .putAttributes("image", model.imageName())
+            .build()
+
+        postToModelEventTopic(msg)
+
+        try {
+            fileStorageService.recursiveDelete(
+                ProjectDirLocator(ProjectStorageEntity.MODELS, model.id.toString())
+            )
+        } catch (e: Exception) {
+            logger.error("Failed to delete files associated with model: ${model.id}", e)
         }
     }
 
     fun buildModuleOps(model: Model, req: ModelPublishRequest, version: String): List<ModOp> {
         val ops = mutableListOf<ModOp>()
 
+        // I don't know what this does but might be duplicate
+        // of what the pipeline resolver is doing.
+        /*
         for (depend in model.type.dependencies) {
             val mod = pipelineModService.findByName(depend, true)
             ops.addAll(mod?.ops ?: emptyList())
         }
+         */
 
         // Add the dependency before.
         if (model.type.dependencies.isNotEmpty()) {
@@ -418,15 +469,19 @@ class ModelServiceImpl(
             )
         }
 
-        val opType = if (model.type.classifyProcessor == ModelType.BOON_FUNCTION.classifyProcessor) {
-            ModOpType.LAST
-        } else {
-            ModOpType.APPEND
+        val validModules = pipelineModDao.findByNameIn(model.dependencies)
+        if (validModules.isNotEmpty()) {
+            ops.add(
+                ModOp(
+                    ModOpType.DEPEND,
+                    validModules.map { it.name }
+                )
+            )
         }
 
         ops.add(
             ModOp(
-                opType,
+                ModOpType.APPEND,
                 listOf(
                     ProcessorRef(
                         model.type.classifyProcessor,

@@ -5,13 +5,15 @@ import tempfile
 import numpy as np
 from sklearn.neighbors import KNeighborsClassifier
 
-from boonflow import ModelTrainer, file_storage
+from boonflow import ModelTrainer, file_storage, ProcessorException
 
 
 class KnnFaceRecognitionTrainer(ModelTrainer):
     file_types = None
 
     max_detections = 100
+
+    label_reqs = ['label', 'simhash']
 
     def __init__(self):
         super(KnnFaceRecognitionTrainer, self).__init__()
@@ -44,12 +46,15 @@ class KnnFaceRecognitionTrainer(ModelTrainer):
         face_model = []
         for asset in self.app.assets.scroll_search(query):
             for label in asset['labels']:
-                if label['datasetId'] == self.app_model.dataset_id:
-                    face_model.append({'simhash': label['simhash'], 'label': label['label']})
+                # It's possible to still get other datasets, so skip ones
+                # that are not in this dataset.
+                if label['datasetId'] != self.app_model.dataset_id:
+                    continue
+                self.check_valid_label(asset, label)
+                face_model.append({'simhash': label['simhash'], 'label': label['label']})
 
         if not face_model:
-            self.logger.warning("No labeled faces")
-            return
+            raise ProcessorException("No labeled faces")
 
         status = "Training face model {} with {} faces".format(
             self.app_model.name, len(face_model))
@@ -60,6 +65,19 @@ class KnnFaceRecognitionTrainer(ModelTrainer):
             n_neighbors=1, p=1, weights='distance', metric='manhattan')
         classifier.fit(x_train, y_train)
         self.publish_model(classifier)
+
+    def check_valid_label(self, asset, label):
+        """
+        Checks to see if our label has the right properties.  Throws if it does not.
+
+        Args:
+            asset (Asset): The Asset.
+            label (dict): The label
+        """
+        for prop in self.label_reqs:
+            if prop not in label:
+                raise ProcessorException(f'Invalid label on {asset.id}, '
+                                         f'missing a property: {prop}')
 
     @staticmethod
     def num_hashes(hashes):

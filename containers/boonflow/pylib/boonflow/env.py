@@ -1,8 +1,11 @@
 import os
+import logging
 
 from flask import request
 
 from boonsdk import BoonClient, BoonApp, app_from_env
+
+logger = logging.getLogger("boonflow.env")
 
 
 def app_instance():
@@ -27,12 +30,27 @@ class FlaskBoonClient(BoonClient):
     A BoonAI client that automatically uses an Authorization header
     from a Flask request to make additional requests.
     """
+    endpoint_map = {
+        'prod': 'https://api.boonai.app',
+        'qa': 'https://qa.api.boonai.app',
+        'dev': 'https://dev.api.boonai.app',
+    }
 
     def __init__(self, client):
-        super(FlaskBoonClient, self).__init__(None, client.server)
+        super(FlaskBoonClient, self).__init__(None, None)
+
+    def get_server(self):
+        if os.environ.get("BOONAI_SERVER"):
+            return os.environ.get("BOONAI_SERVER")
+        else:
+            env_name = os.environ.get("BOONAI_ENV") or 'prod'
+            endpoint = self.endpoint_map.get(env_name)
+            logger.info(f'Selected BoonAI endpoint {endpoint} / env: {env_name}')
+            return endpoint
 
     def sign_request(self):
-        return request.headers.get("Authorization")
+        token = request.headers.get("Authorization")
+        return token
 
     def headers(self, content_type="application/json"):
         headers = super().headers()

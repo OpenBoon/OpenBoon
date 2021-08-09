@@ -128,7 +128,7 @@ backend-py-lint:
   allow_failure: false
   script:
     - python -m pip install flake8
-    - flake8 --config .flake8.cfg client/boonczar client/boonsdk client/boonlab containers/boonflow containers/py3-base containers/boondocks containers/plugins-core containers/plugins-analysis containers/plugins-train services/analyst services/mlbbq services/swivel services/tugboat deployment/datasets
+    - flake8 --config .flake8.cfg client/boonczar client/boonsdk client/boonlab containers/boonflow containers/py3-base containers/boondocks containers/plugins-core containers/plugins-analysis containers/plugins-train services/analyst services/mlbbq services/swivel services/tugboat deployment/datasets containers/boonfunction
   rules:
     # Scheduled Pipelines
     - if: '$CI_PIPELINE_SOURCE == "schedule"'
@@ -190,6 +190,9 @@ sdk-unit-tests:
     - cd ../boondocks
     - pip install .
     - pytest
+    - cd ../boonfunction
+    - pip install -r requirements.txt
+    - pytest tests.py
     - cd ../../services/swivel
     - pip install -r requirements.txt
     - pytest tests.py
@@ -227,10 +230,11 @@ plugin-container-tests:
     - apk add docker-compose
     - docker login -u "$DOCKERHUB_USER" -p "$DOCKERHUB_PASS"
   script:
-    - ./buildx --plugins
+    - ./buildx --plugins ml-bbq
     - docker run -v ${PWD}/test-data:/test-data boonai/plugins-core:latest pytest -s /boonai/pylib
     - docker run -v ${PWD}/test-data:/test-data boonai/plugins-analysis:latest pytest -s /boonai/pylib
     - docker run -v ${PWD}/test-data:/test-data boonai/plugins-train:latest pytest -s /boonai/pylib
+    - docker run -v ${PWD}/test-data:/test-data --entrypoint pytest boonai/ml-bbq:latest -s /app/pylib
   rules:
     # Scheduled Pipelines
     - if: '$CI_PIPELINE_SOURCE == "schedule"'
@@ -240,6 +244,7 @@ plugin-container-tests:
       changes:
         - "client/boonsdk/**/*"
         - "containers/**/*"
+        - "services/mlbbq/**/*"
     # MR to QA with any change
     - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"
 

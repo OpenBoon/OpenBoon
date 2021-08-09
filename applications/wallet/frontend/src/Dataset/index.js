@@ -41,6 +41,7 @@ const Dataset = () => {
       {!!action && (
         <div css={{ display: 'flex', paddingBottom: spacing.normal }}>
           <FlashMessage variant={FLASH_VARIANTS.SUCCESS}>
+            {action === 'edit-dataset-success' && 'Dataset updated.'}
             {action === 'edit-concept-success' && 'Concept updated.'}
             {action === 'delete-concept-success' && 'Concept deleted.'}
             {action === 'remove-asset-success' &&
@@ -64,7 +65,7 @@ const Dataset = () => {
               isSelected: edit ? false : undefined,
             },
             {
-              title: 'Labels',
+              title: 'Labeled Assets',
               href: '/[projectId]/datasets/[datasetId]/labels',
               isSelected: edit ? false : undefined,
             },

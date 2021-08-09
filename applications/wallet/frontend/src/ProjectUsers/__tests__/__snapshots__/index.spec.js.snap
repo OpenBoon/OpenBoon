@@ -286,7 +286,7 @@ Array [
 }
 
 .emotion-6 td {
-  max-width: calc(100vw / 2);
+  max-width: calc(100vw / 4);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -320,7 +320,7 @@ Array [
   width: auto;
 }
 
-.emotion-7:nth-of-type(2) {
+.emotion-7:nth-of-type(0) {
   width: 100%;
 }
 
@@ -332,7 +332,7 @@ Array [
   padding: 12px 16px;
 }
 
-.emotion-11 {
+.emotion-15 {
   text-align: left;
   white-space: pre-line;
   vertical-align: bottom;
@@ -346,15 +346,15 @@ Array [
   width: 1px;
 }
 
-.emotion-11:nth-of-type(2) {
+.emotion-15:nth-of-type(0) {
   width: 100%;
 }
 
-.emotion-11:not(:last-child) {
+.emotion-15:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-12 {
+.emotion-16 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -362,7 +362,7 @@ Array [
   padding: 12px 16px;
 }
 
-.emotion-13 {
+.emotion-17 {
   display: inline-block;
   color: #191919;
   background-color: #b3b3b3;
@@ -417,14 +417,32 @@ Array [
                   <div
                     className="emotion-8"
                   >
+                    First Name
+                  </div>
+                </th>
+                <th
+                  className="emotion-7"
+                >
+                  <div
+                    className="emotion-8"
+                  >
+                    Last Name
+                  </div>
+                </th>
+                <th
+                  className="emotion-7"
+                >
+                  <div
+                    className="emotion-8"
+                  >
                     Roles
                   </div>
                 </th>
                 <th
-                  className="emotion-11"
+                  className="emotion-15"
                 >
                   <div
-                    className="emotion-12"
+                    className="emotion-16"
                   >
                     <svg
                       data-file-name="kebab.svg"
@@ -440,13 +458,19 @@ Array [
                   jane@zorroa.com
                 </td>
                 <td>
+                  Jane
+                </td>
+                <td>
+                  Doe
+                </td>
+                <td>
                   <span
-                    className="emotion-13"
+                    className="emotion-17"
                   >
                     ML Tools
                   </span>
                   <span
-                    className="emotion-13"
+                    className="emotion-17"
                   >
                     API Keys
                   </span>
@@ -674,31 +698,8 @@ Array [
   background-color: #2e2e2e;
 }
 
-.emotion-6 tr:hover {
-  background-color: #4a4a4a;
-  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
-}
-
-.emotion-6 tr:hover .actions {
-  color: #b3b3b3;
-}
-
-.emotion-6 tr:hover td {
-  border: 1px solid #808080;
-  border-left: 0;
-  border-right: 0;
-}
-
-.emotion-6 tr:hover td:first-of-type {
-  border-left: 1px solid #808080;
-}
-
-.emotion-6 tr:hover td:last-of-type {
-  border-right: 1px solid #808080;
-}
-
 .emotion-6 td {
-  max-width: calc(100vw / 2);
+  max-width: calc(100vw / 4);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -732,7 +733,7 @@ Array [
   width: auto;
 }
 
-.emotion-7:nth-of-type(2) {
+.emotion-7:nth-of-type(0) {
   width: 100%;
 }
 
@@ -744,7 +745,7 @@ Array [
   padding: 12px 16px;
 }
 
-.emotion-11 {
+.emotion-15 {
   text-align: left;
   white-space: pre-line;
   vertical-align: bottom;
@@ -758,15 +759,15 @@ Array [
   width: 1px;
 }
 
-.emotion-11:nth-of-type(2) {
+.emotion-15:nth-of-type(0) {
   width: 100%;
 }
 
-.emotion-11:not(:last-child) {
+.emotion-15:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-12 {
+.emotion-16 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -774,12 +775,11 @@ Array [
   padding: 12px 16px;
 }
 
-.emotion-13 {
+.emotion-17 {
   height: 100%;
-  pointer-events: none;
 }
 
-.emotion-14 {
+.emotion-18 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -801,7 +801,7 @@ Array [
   line-height: 19px;
 }
 
-.emotion-15 {
+.emotion-19 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -860,14 +860,32 @@ Array [
                   <div
                     className="emotion-8"
                   >
+                    First Name
+                  </div>
+                </th>
+                <th
+                  className="emotion-7"
+                >
+                  <div
+                    className="emotion-8"
+                  >
+                    Last Name
+                  </div>
+                </th>
+                <th
+                  className="emotion-7"
+                >
+                  <div
+                    className="emotion-8"
+                  >
                     Roles
                   </div>
                 </th>
                 <th
-                  className="emotion-11"
+                  className="emotion-15"
                 >
                   <div
-                    className="emotion-12"
+                    className="emotion-16"
                   >
                     <svg
                       data-file-name="kebab.svg"
@@ -879,16 +897,16 @@ Array [
             </thead>
             <tbody>
               <tr
-                className="emotion-13"
+                className="emotion-17"
               >
                 <td
-                  colSpan={3}
+                  colSpan={5}
                 >
                   <div
-                    className="emotion-14"
+                    className="emotion-18"
                   >
                     <div
-                      className="emotion-15"
+                      className="emotion-19"
                     >
                       <svg
                         data-file-name="noJobs.svg"
@@ -1194,7 +1212,7 @@ Array [
 }
 
 .emotion-6 td {
-  max-width: calc(100vw / 2);
+  max-width: calc(100vw / 4);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -1228,7 +1246,7 @@ Array [
   width: auto;
 }
 
-.emotion-7:nth-of-type(2) {
+.emotion-7:nth-of-type(0) {
   width: 100%;
 }
 
@@ -1240,7 +1258,7 @@ Array [
   padding: 12px 16px;
 }
 
-.emotion-11 {
+.emotion-15 {
   text-align: left;
   white-space: pre-line;
   vertical-align: bottom;
@@ -1254,15 +1272,15 @@ Array [
   width: 1px;
 }
 
-.emotion-11:nth-of-type(2) {
+.emotion-15:nth-of-type(0) {
   width: 100%;
 }
 
-.emotion-11:not(:last-child) {
+.emotion-15:not(:last-child) {
   border-right: 1px solid #2e2e2e;
 }
 
-.emotion-12 {
+.emotion-16 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1270,7 +1288,7 @@ Array [
   padding: 12px 16px;
 }
 
-.emotion-13 {
+.emotion-17 {
   display: inline-block;
   color: #191919;
   background-color: #b3b3b3;
@@ -1282,12 +1300,12 @@ Array [
   font-family: Roboto Condensed;
 }
 
-.emotion-15 {
+.emotion-19 {
   position: relative;
   height: 100%;
 }
 
-.emotion-16 {
+.emotion-20 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1319,8 +1337,8 @@ Array [
   margin: -6px;
 }
 
-.emotion-16:hover,
-.emotion-16.focus-visible:focus {
+.emotion-20:hover,
+.emotion-20.focus-visible:focus {
   color: #ffffff!important;
 }
 
@@ -1367,14 +1385,32 @@ Array [
                   <div
                     className="emotion-8"
                   >
+                    First Name
+                  </div>
+                </th>
+                <th
+                  className="emotion-7"
+                >
+                  <div
+                    className="emotion-8"
+                  >
+                    Last Name
+                  </div>
+                </th>
+                <th
+                  className="emotion-7"
+                >
+                  <div
+                    className="emotion-8"
+                  >
                     Roles
                   </div>
                 </th>
                 <th
-                  className="emotion-11"
+                  className="emotion-15"
                 >
                   <div
-                    className="emotion-12"
+                    className="emotion-16"
                   >
                     <svg
                       data-file-name="kebab.svg"
@@ -1390,24 +1426,30 @@ Array [
                   jane@zorroa.com
                 </td>
                 <td>
+                  Jane
+                </td>
+                <td>
+                  Doe
+                </td>
+                <td>
                   <span
-                    className="emotion-13"
+                    className="emotion-17"
                   >
                     ML Tools
                   </span>
                   <span
-                    className="emotion-13"
+                    className="emotion-17"
                   >
                     API Keys
                   </span>
                 </td>
                 <td>
                   <div
-                    className="emotion-15"
+                    className="emotion-19"
                   >
                     <button
                       aria-label="Toggle Actions Menu"
-                      className="actions emotion-16"
+                      className="actions emotion-20"
                       onBlur={[Function]}
                       onClick={[Function]}
                       type="button"

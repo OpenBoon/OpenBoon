@@ -54,11 +54,19 @@ describe('<ModelsAdd />', () => {
         .props.onChange({ target: { value: 'A cool new description' } })
     })
 
+    // Select model source
+    // act(() => {
+    //   component.root
+    //     .findAllByProps({ name: 'source' })[1]
+    //     .props.onClick({ value: 'UPLOAD' })
+    // })
+
     // Select model type
     act(() => {
       component.root
         .findAllByProps({ name: 'modelType' })[0]
-        .props.onClick({ value: 'KNN_CLASSIFIER' })
+        // .props.onClick({ value: 'PYTORCH_MODEL_ARCHIVE' })
+        .props.onClick({ value: 'FACE_RECOGNITION' })
     })
 
     expect(component.toJSON()).toMatchSnapshot()
@@ -112,13 +120,14 @@ describe('<ModelsAdd />', () => {
       body: JSON.stringify({
         name: 'my-new-model-really',
         description: 'A cool new description',
-        type: 'KNN_CLASSIFIER',
+        // type: 'PYTORCH_MODEL_ARCHIVE',
+        type: 'FACE_RECOGNITION',
       }),
     })
 
     expect(mockFn).toHaveBeenCalledWith(
-      `/[projectId]/models?action=add-model-success&modelId=${MODEL_ID}`,
-      `/${PROJECT_ID}/models`,
+      `/[projectId]/models/[modelId]?action=add-model-success`,
+      `/${PROJECT_ID}/models/${MODEL_ID}`,
     )
   })
 })

@@ -6,7 +6,7 @@ import Button, { VARIANTS } from '../Button'
 import ButtonActions from '../Button/Actions'
 import DatasetDeleteModal from '../Dataset/DeleteModal'
 
-const DatasetsMenu = ({ projectId, datasetId, setDatasetFields }) => {
+const DatasetsMenu = ({ projectId, datasetId, name, setDatasetFields }) => {
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false)
 
   return (
@@ -35,6 +35,7 @@ const DatasetsMenu = ({ projectId, datasetId, setDatasetFields }) => {
       <DatasetDeleteModal
         projectId={projectId}
         datasetId={datasetId}
+        name={name}
         isDeleteModalOpen={isDeleteModalOpen}
         setDeleteModalOpen={setDeleteModalOpen}
         setDatasetFields={setDatasetFields}
@@ -46,6 +47,7 @@ const DatasetsMenu = ({ projectId, datasetId, setDatasetFields }) => {
 DatasetsMenu.propTypes = {
   projectId: PropTypes.string.isRequired,
   datasetId: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
   setDatasetFields: PropTypes.func.isRequired,
 }
 

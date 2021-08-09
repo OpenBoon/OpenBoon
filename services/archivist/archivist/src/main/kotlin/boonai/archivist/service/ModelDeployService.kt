@@ -4,6 +4,7 @@ import boonai.archivist.domain.Asset
 import boonai.archivist.domain.FileStorage
 import boonai.archivist.domain.Model
 import boonai.archivist.domain.ModelPublishRequest
+import boonai.archivist.domain.ModelState
 import boonai.archivist.domain.ProjectStorageSpec
 import boonai.archivist.domain.PubSubEvent
 import boonai.archivist.repository.ModelDao
@@ -39,6 +40,8 @@ interface ModelDeployService {
      * to cloud storage.
      */
     fun deployUploadedModel(model: Model, inputStream: InputStream): FileStorage
+    fun getSignedModelUploadUrl(model: Model): Map<String, Any>
+    fun deployPreuploadedModel(model: Model)
 }
 
 @Service
@@ -55,9 +58,45 @@ class ModelDeployServiceImpl(
         eventBus.register(this)
     }
 
+    override fun getSignedModelUploadUrl(model: Model): Map<String, Any> {
+        if (!model.type.uploadable) {
+            throw IllegalArgumentException("This type of model cannot be uploaded")
+        }
+        logger.event(
+            LogObject.MODEL, LogAction.SIGN_FOR_WRITE,
+            mapOf("modelId" to model.id, "modelName" to model.name, "image" to model.imageName())
+        )
+
+        return fileStorageService.getSignedUrl(
+            model.getModelStorageLocator("latest"), true, 30L, TimeUnit.MINUTES
+        )
+    }
+
+    override fun deployPreuploadedModel(model: Model) {
+        if (!model.type.uploadable) {
+            throw IllegalArgumentException("This type of model cannot be uploaded")
+        }
+
+        if (model.state == ModelState.Deploying) {
+            throw IllegalArgumentException("The model is already being deployed")
+        }
+
+        logger.event(
+            LogObject.MODEL, LogAction.DEPLOY,
+            mapOf("modelId" to model.id, "modelName" to model.name, "image" to model.imageName())
+        )
+
+        modelJdbcDao.updateState(model.id, ModelState.Deploying)
+        modelService.postToModelEventTopic(buildDeployPubsubMessage(model))
+    }
+
     override fun deployUploadedModel(model: Model, inputStream: InputStream): FileStorage {
         if (!model.type.uploadable) {
             throw IllegalArgumentException("The model type ${model.type} does not support uploads")
+        }
+
+        if (model.state == ModelState.Deploying) {
+            throw IllegalArgumentException("The model is already deploying")
         }
 
         logger.event(
@@ -74,9 +113,8 @@ class ModelDeployServiceImpl(
         )
         val fs = fileStorageService.store(modelFile)
 
-        // Emit a message to signal for the model to be deployed.
+        modelJdbcDao.updateState(model.id, ModelState.Deploying)
         modelService.postToModelEventTopic(buildDeployPubsubMessage(model))
-
         return fs
     }
 
@@ -92,43 +130,49 @@ class ModelDeployServiceImpl(
 
         /**
          * Status types
-         * QUEUED, WORKING, FAILURE, SUCCESS
-         * Only handling success right now which publishes module.
+         * https://cloud.google.com/build/docs/view-build-results
          */
-        val status = event.attrs["status"]
+        val status = event.attrs.getOrDefault("status", "UNKNOWN")
         if (status == "SUCCESS") {
-            val doc = Asset(
-                Json.Mapper.readValue(event.data.toByteArray(), Json.GENERIC_MAP).toMutableMap()
-            )
-
-            val images = doc.getAttr("images", Json.LIST_OF_STRING)
-            if (images.isNullOrEmpty()) {
-                logger.warn("Model build has no images property")
-                return
-            }
-
-            val image = images[0]
-            if (!image.contains("/models/")) {
-                // The build is not for a model image.
-                return
-            }
-
-            val modelId = UUID.fromString(image.split("/").last())
-            logger.info("Deploying uploaded model $modelId")
-            val model = modelDao.getOne(modelId)
-
+            val model = getModelFromBuildEvent(event) ?: return
             val endpoint = findCloudRunEndpoint(model)
             if (endpoint != null) {
                 val auth = InternalThreadAuthentication(model.projectId)
                 withAuth(auth) {
                     logger.info("Setting ${model.id} endpoint to $endpoint")
-                    modelJdbcDao.setEndpoint(model.id, endpoint)
                     modelService.publishModel(model, ModelPublishRequest(mapOf("endpoint" to endpoint)))
                 }
             } else {
                 logger.error("The model build ${model.id} completed but no endpoint was found.")
             }
+        } else if (status.startsWith("FAIL") || status == "TIMEOUT") {
+            val model = getModelFromBuildEvent(event) ?: return
+            modelJdbcDao.updateState(model.id, ModelState.DeployError)
         }
+    }
+
+    fun getModelFromBuildEvent(event: PubSubEvent): Model? {
+        val doc = Asset(
+            Json.Mapper.readValue(event.data.toByteArray(), Json.GENERIC_MAP).toMutableMap()
+        )
+
+        logger.info("-----------BUILD-----------")
+        logger.info(Json.prettyString(doc))
+
+        val images = doc.getAttr("images", Json.LIST_OF_STRING)
+        if (images.isNullOrEmpty()) {
+            logger.warn("Model build has no images property")
+            return null
+        }
+
+        val image = images[0]
+        if (!image.contains("/models/")) {
+            // The build is not for a model image.
+            return null
+        }
+
+        val modelId = UUID.fromString(image.split("/").last())
+        return modelDao.getOne(modelId)
     }
 
     fun buildDeployPubsubMessage(model: Model): PubsubMessage {

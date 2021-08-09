@@ -25,15 +25,15 @@ class BoonFunctionTests(PluginUnitTestCase):
         model_patch.return_value = Model(
             {
                 'id': self.model_id,
-                'type': 'BOONAI_FUNCTION',
+                'type': 'BOON_FUNCTION',
                 'fileId': 'models/{}/foo/bar'.format(self.model_id),
                 'name': 'foo',
                 'moduleName': 'foo'
             }
         )
         predict_patch.return_value = {
-            'analysis': [
-                {
+            'analysis': {
+                "__MAIN__": {
                     'type': 'labels',
                     'predictions': [
                         {
@@ -42,12 +42,12 @@ class BoonFunctionTests(PluginUnitTestCase):
                         }
                     ]
                 },
-                {
+                "caption": {
                     'section': 'caption',
                     'type': 'content',
                     'content': 'I can has cheeseburger'
                 }
-            ],
+            },
             'custom-fields': {
                 'test': '12345',
                 'cat_name': 'snowball'

@@ -16,16 +16,25 @@ class ModelSerializer(serializers.Serializer):
     moduleName = serializers.CharField(required=False)
     fileId = serializers.CharField(required=False)
     trainingJobName = serializers.CharField(required=False)
+    trainingArgs = serializers.JSONField(required=False)
     unappliedChanges = serializers.BooleanField(required=False)
     applySearch = serializers.JSONField(required=False)
     timeCreated = serializers.IntegerField(required=False)
     timeModified = serializers.IntegerField(required=False)
-    actorCreated = serializers.CharField(required=False)
-    actorModified = serializers.CharField(required=False)
+    timeLastTested = serializers.IntegerField(required=False)
+    timeLastTrained = serializers.IntegerField(required=False)
+    actorCreated = serializers.CharField(required=False, default='')
+    actorModified = serializers.CharField(required=False, default='')
+    actorLastTested = serializers.CharField(required=False, default='')
+    actorLastTrained = serializers.CharField(required=False, default='')
     link = serializers.CharField(required=False)
     projectId = serializers.CharField(required=False)
     ready = serializers.BooleanField(required=False)
     datasetId = serializers.CharField(required=False, allow_null=True)
+    dependencies = serializers.ListField(child=serializers.CharField(), default=[])
+    state = serializers.CharField(required=False, default='')
+    uploadable = serializers.BooleanField(required=False, default=False)
+    description = serializers.CharField(required=False, default='', allow_blank=True)
 
 
 class ModelTypeRestrictionsSerializer(serializers.Serializer):
@@ -54,6 +63,7 @@ class ModelDetailSerializer(ModelSerializer):
 class ModelUpdateSerializer(serializers.Serializer):
     name = serializers.CharField()
     datasetId = serializers.CharField(allow_null=True)
+    dependencies = serializers.ListField(child=serializers.CharField())
 
 
 class ModelTypeSerializer(serializers.Serializer):
@@ -65,6 +75,7 @@ class ModelTypeSerializer(serializers.Serializer):
     deployOnTrainingSet = serializers.BooleanField()
     minConcepts = serializers.IntegerField()
     minExamples = serializers.IntegerField()
+    uploadable = serializers.BooleanField(required=False, default=False)
     datasetType = serializers.CharField()
 
 

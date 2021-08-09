@@ -17,6 +17,33 @@ import javax.persistence.Entity
 import javax.persistence.Id
 import javax.persistence.Table
 
+enum class ModelState {
+    /**
+     * The initial state of trainable models.
+     */
+    RequiresTraining,
+    /**
+     * The initial state of uploadable models.
+     */
+    RequiresUpload,
+    /**
+     * A trainable model is trained
+     */
+    Trained,
+    /**
+     * A deployable model is deploying
+     */
+    Deploying,
+    /**
+     * A deployable model is Deployed
+     */
+    Deployed,
+    /**
+     * There was an error deploying a model.
+     */
+    DeployError
+}
+
 /**
  * Type of models that can be trained.
  */
@@ -222,7 +249,7 @@ enum class ModelType(
     BOON_FUNCTION(
         "Boon Function",
         "None",
-        "boonai_analysis.deployed.script.BoonScriptProcessor",
+        "boonai_analysis.deployed.function.BoonFunctionProcessor",
         null,
         "Use a Boon AI Script to perform custom logic.",
         ModelObjective.LABEL_DETECTION,
@@ -269,12 +296,7 @@ enum class PostTrainAction {
     /**
      * Run on test labels only.
      */
-    TEST,
-
-    /**
-     * Deploy
-     */
-    DEPLOY
+    TEST
 }
 
 @ApiModel("ModelTrainingArgs", description = "Arguments set to the training processor.")
@@ -326,7 +348,10 @@ class ModelSpec(
     val applySearch: Map<String, Any> = ModelSearch.MATCH_ALL,
 
     @ApiModelProperty("Training arguments")
-    val trainingArgs: Map<String, Any> = emptyMap()
+    val trainingArgs: Map<String, Any> = emptyMap(),
+
+    @ApiModelProperty("Module dependencies")
+    val dependsOn: List<String> = emptyList()
 )
 
 class ModelUpdateRequest(
@@ -335,7 +360,10 @@ class ModelUpdateRequest(
     val name: String,
 
     @ApiModelProperty("The Dataset the model points to.")
-    val datasetId: UUID?
+    val datasetId: UUID?,
+
+    @ApiModelProperty("Module dependencies")
+    val dependencies: List<String>
 )
 
 @JsonInclude(JsonInclude.Include.ALWAYS)
@@ -346,6 +374,9 @@ class ModelPatchRequestV2 {
 
     @ApiModelProperty("The Dataset the model points to.")
     internal var datasetId: UUID? = null
+
+    @ApiModelProperty("The models dependencies.")
+    internal var dependencies: List<String>? = null
 
     val isSet = mutableSetOf<String>()
 
@@ -359,6 +390,11 @@ class ModelPatchRequestV2 {
         isSet.add("datasetId")
     }
 
+    fun setDependencies(value: List<String>?) {
+        this.dependencies = value
+        isSet.add("dependencies")
+    }
+
     fun isFieldSet(name: String): Boolean {
         return name in isSet
     }
@@ -370,7 +406,10 @@ class ModelPatchRequest(
     val name: String? = null,
 
     @ApiModelProperty("The Dataset the model points to.")
-    val datasetId: UUID? = null
+    val datasetId: UUID? = null,
+
+    @ApiModelProperty("Module dependencies")
+    val dependsOn: List<String>? = null
 )
 
 @Entity
@@ -389,6 +428,9 @@ class Model(
 
     @Column(name = "pk_dataset", nullable = true)
     var datasetId: UUID?,
+
+    @Column(name = "int_state", nullable = false)
+    var state: ModelState,
 
     @Column(name = "int_type")
     val type: ModelType,
@@ -423,6 +465,10 @@ class Model(
     @Column(name = "json_train_args", columnDefinition = "JSON")
     var trainingArgs: Map<String, Any>,
 
+    @Type(type = "jsonb")
+    @Column(name = "json_depends", columnDefinition = "JSON")
+    var dependencies: List<String>,
+
     @Column(name = "time_created")
     @ApiModelProperty("The time the Model was created.")
     val timeCreated: Long,
@@ -455,7 +501,19 @@ class Model(
     var timeLastTested: Long?,
 
     @Column(name = "actor_last_tested")
-    var actorLastTested: String?
+    var actorLastTested: String?,
+
+    @Column(name = "time_last_uploaded")
+    var timeLastUploaded: Long?,
+
+    @Column(name = "actor_last_uploaded")
+    var actorLastUploaded: String?,
+
+    @Column(name = "time_last_deployed")
+    var timeLastDeployed: Long?,
+
+    @Column(name = "actor_last_deployed")
+    var actorLastDeployed: String?
 
 ) : LabelSet {
 

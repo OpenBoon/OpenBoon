@@ -23,7 +23,7 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
   -ms-flex-align: center;
   align-items: center;
   background-color: #2e2e2e;
-  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
   z-index: 100;
   padding-left: 16px;
   padding-right: 16px;
@@ -670,7 +670,7 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
         By accepting and clicking the "Continue" button you confirm
         that you have read and agree with Boon AI's 
         <a
-          href="/policies/20210211/terms-of-use.pdf"
+          href="/policies/20210726/terms-of-use.pdf"
           rel="noopener noreferrer"
           target="_blank"
         >
@@ -678,7 +678,7 @@ exports[`<CreateAccount /> should render properly when the activation link is ex
         </a>
          and 
         <a
-          href="/policies/20210211/privacy-policy.pdf"
+          href="/policies/20210726/privacy-policy.pdf"
           rel="noopener noreferrer"
           target="_blank"
         >
@@ -773,7 +773,7 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
   -ms-flex-align: center;
   align-items: center;
   background-color: #2e2e2e;
-  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
   z-index: 100;
   padding-left: 16px;
   padding-right: 16px;
@@ -1377,7 +1377,7 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
         By accepting and clicking the "Continue" button you confirm
         that you have read and agree with Boon AI's 
         <a
-          href="/policies/20210211/terms-of-use.pdf"
+          href="/policies/20210726/terms-of-use.pdf"
           rel="noopener noreferrer"
           target="_blank"
         >
@@ -1385,7 +1385,7 @@ exports[`<CreateAccount /> should render properly when there is no token 1`] = `
         </a>
          and 
         <a
-          href="/policies/20210211/privacy-policy.pdf"
+          href="/policies/20210726/privacy-policy.pdf"
           rel="noopener noreferrer"
           target="_blank"
         >
@@ -1478,7 +1478,7 @@ exports[`<CreateAccount /> should render properly when there is no token 2`] = `
   -ms-flex-align: center;
   align-items: center;
   background-color: #2e2e2e;
-  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
   z-index: 100;
   padding-left: 16px;
   padding-right: 16px;
@@ -2128,7 +2128,7 @@ This password is entirely numeric.
         By accepting and clicking the "Continue" button you confirm
         that you have read and agree with Boon AI's 
         <a
-          href="/policies/20210211/terms-of-use.pdf"
+          href="/policies/20210726/terms-of-use.pdf"
           rel="noopener noreferrer"
           target="_blank"
         >
@@ -2136,7 +2136,7 @@ This password is entirely numeric.
         </a>
          and 
         <a
-          href="/policies/20210211/privacy-policy.pdf"
+          href="/policies/20210726/privacy-policy.pdf"
           rel="noopener noreferrer"
           target="_blank"
         >

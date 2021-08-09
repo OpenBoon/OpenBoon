@@ -7,6 +7,7 @@ import OrganizationUsersMenu from './Menu'
 
 const OrganizationUsersRow = ({
   organizationId,
+  user,
   user: { id: userId, email, firstName, lastName, projectCount },
   revalidate,
 }) => {
@@ -33,7 +34,7 @@ const OrganizationUsersRow = ({
       <td>
         <OrganizationUsersMenu
           organizationId={organizationId}
-          userId={userId}
+          user={user}
           revalidate={revalidate}
         />
       </td>

@@ -3,12 +3,13 @@ import hashlib
 import logging
 import os
 import shutil
+import subprocess
 import tempfile
 import time
 import urllib
 import uuid
 import zipfile
-import subprocess
+import flask
 from pathlib import Path
 from urllib.parse import urlparse
 
@@ -17,10 +18,9 @@ import requests
 
 from boonsdk import Asset, StoredFile, AnalysisModule, \
     BoonSdkException, util
-from .env import BoonEnv, app_instance
 from .cloud import get_cached_google_storage_client, \
     get_cached_aws_client, get_cached_azure_storage_client
-
+from .env import BoonEnv, app_instance
 
 __all__ = [
     'file_storage',
@@ -635,13 +635,27 @@ class FileCache:
         self.__init_root()
         sha = hashlib.sha1()
         # Set during processing.
-        project_id = BoonEnv.get_project_id()
-        if project_id:
-            sha.update(project_id.encode('utf-8'))
+
+        # Not that during analyst execution the cache directory has the task id
+        # in in the root path, so there is no chance of a collision.
+        #
+        # In MLBBQ or Boon Function operations we're going to put the
+        # access key into the cache path.
+
+        request_id = None
+        if os.environ.get('BOONFLOW_IN_FLASK'):
+            request_id = flask.g.request_id
+
         sha.update(key.encode('utf-8'))
         sha.update(suffix.encode('utf-8'))
         filename = sha.hexdigest()
-        return os.path.join(self.root, filename + suffix)
+
+        if request_id:
+            parts = [self.root, request_id, filename + suffix]
+        else:
+            parts = [self.root, filename + suffix]
+
+        return os.path.join(*parts)
 
     def clear(self):
         """
@@ -654,6 +668,25 @@ class FileCache:
         files = glob.glob('{}/*'.format(self.root))
         for f in files:
             os.remove(f)
+
+    def clear_request_cache(self):
+        """
+        If Boonflow is running in flask mode then
+
+        Returns:
+
+        """
+        if not os.environ.get('BOONFLOW_IN_FLASK'):
+            return
+        if not self.root:
+            return
+
+        path = os.path.join(self.root, flask.g.request_id)
+
+        def run_on_error(func, path, excinfo):
+            logger.warning("Failed too delete cache path {}".format(path))
+
+        shutil.rmtree(path, onerror=run_on_error)
 
     def close(self):
         """

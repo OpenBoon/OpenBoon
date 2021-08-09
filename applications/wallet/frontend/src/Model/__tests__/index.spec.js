@@ -1,6 +1,6 @@
 import TestRenderer from 'react-test-renderer'
 
-import modelTypes from '../../ModelTypes/__mocks__/modelTypes'
+import model from '../__mocks__/model'
 import mockUser from '../../User/__mocks__/user'
 
 import User from '../../User'
@@ -26,7 +26,7 @@ describe('<Model />', () => {
       },
     })
 
-    require('swr').__setMockUseSWRResponse({ data: modelTypes })
+    require('swr').__setMockUseSWRResponse({ data: model })
 
     const component = TestRenderer.create(
       <User initialUser={mockUser}>
@@ -47,7 +47,49 @@ describe('<Model />', () => {
       },
     })
 
-    require('swr').__setMockUseSWRResponse({ data: modelTypes })
+    require('swr').__setMockUseSWRResponse({ data: model })
+
+    const component = TestRenderer.create(
+      <User initialUser={mockUser}>
+        <Model />
+      </User>,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  it('should render properly after creation', () => {
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/models/[modelId]',
+      query: {
+        projectId: PROJECT_ID,
+        modelId: MODEL_ID,
+        action: 'add-model-success',
+      },
+    })
+
+    require('swr').__setMockUseSWRResponse({ data: model })
+
+    const component = TestRenderer.create(
+      <User initialUser={mockUser}>
+        <Model />
+      </User>,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  it('should render properly for deployment', () => {
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/models/[modelId]/deployment',
+      query: {
+        projectId: PROJECT_ID,
+        modelId: MODEL_ID,
+        action: 'edit-model-success',
+      },
+    })
+
+    require('swr').__setMockUseSWRResponse({ data: model })
 
     const component = TestRenderer.create(
       <User initialUser={mockUser}>

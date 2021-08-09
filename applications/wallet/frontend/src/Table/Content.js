@@ -7,6 +7,7 @@ import { colors, constants, spacing, typography } from '../Styles'
 import NoJobsSvg from '../Icons/noJobs.svg'
 
 import { getQueryString } from '../Fetch/helpers'
+import { decode } from '../Filters/helpers'
 
 import FetchAhead from '../Fetch/Ahead'
 import Pagination from '../Pagination'
@@ -29,15 +30,26 @@ const TableContent = ({
   options,
 }) => {
   const {
-    query: { page = 1, sort, search = '' },
+    query: { page = 1, sort, search = '', filters: query },
   } = useRouter()
+
+  const filters = decode({ query })
+  const filterParams = Object.entries(filters).reduce((acc, [key, value]) => {
+    return { ...acc, [key]: value.join(',') }
+  }, {})
 
   const parsedPage = parseInt(page, 10)
   const from = parsedPage * SIZE - SIZE
   const queryParam =
     page > 1
-      ? getQueryString({ from, size: SIZE, ordering: sort, search })
-      : getQueryString({ ordering: sort, search })
+      ? getQueryString({
+          from,
+          size: SIZE,
+          ordering: sort,
+          search,
+          ...filterParams,
+        })
+      : getQueryString({ ordering: sort, search, ...filterParams })
 
   const {
     data: { count = 0, results, previous, next },
@@ -93,24 +105,27 @@ const TableContent = ({
                 '&:nth-of-type(2n)': {
                   backgroundColor: colors.structure.mattGrey,
                 },
-                ':hover': {
-                  backgroundColor: colors.structure.iron,
-                  boxShadow: constants.boxShadows.tableRow,
-                  '.actions': {
-                    color: colors.structure.zinc,
-                  },
-                  td: {
-                    border: constants.borders.regular.steel,
-                    borderLeft: '0',
-                    borderRight: '0',
-                    '&:first-of-type': {
-                      borderLeft: constants.borders.regular.steel,
-                    },
-                    '&:last-of-type': {
-                      borderRight: constants.borders.regular.steel,
-                    },
-                  },
-                },
+                ':hover':
+                  count === 0
+                    ? {}
+                    : {
+                        backgroundColor: colors.structure.iron,
+                        boxShadow: constants.boxShadows.tableRow,
+                        '.actions': {
+                          color: colors.structure.zinc,
+                        },
+                        td: {
+                          border: constants.borders.regular.steel,
+                          borderLeft: '0',
+                          borderRight: '0',
+                          '&:first-of-type': {
+                            borderLeft: constants.borders.regular.steel,
+                          },
+                          '&:last-of-type': {
+                            borderRight: constants.borders.regular.steel,
+                          },
+                        },
+                      },
               },
               td: {
                 maxWidth: `calc(100vw / ${columns.length - 1})`,

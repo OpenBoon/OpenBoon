@@ -6,6 +6,7 @@ import shutil
 import subprocess
 import tempfile
 import time
+import json
 
 import urllib3
 import yaml
@@ -35,9 +36,14 @@ def message_poller(sub):
     """
     def callback(msg):
         try:
-            if msg.attributes['type'] == "model-upload":
+            msg_type = msg.attributes['type']
+            if msg_type == 'model-upload':
                 spec = dict(msg.attributes)
                 build_and_deploy(spec)
+            elif msg_type == 'model-delete':
+                spec = dict(msg.attributes)
+                if spec.get('deployed') == 'true':
+                    delete_model(spec)
         except Exception as e:
             logger.error("Error handling pubsub message, ", e)
         finally:
@@ -96,6 +102,7 @@ def copy_template(spec, build_dir):
 
     logger.info(f'copying {tmpl} template to dir {build_dir}')
     shutil.copytree(tmpl, build_dir)
+    return True
 
 
 def submit_build(spec, build_path):
@@ -110,6 +117,88 @@ def submit_build(spec, build_path):
     """
     build_file = generate_build_file(spec, build_path)
     run_cloud_build(build_file, build_path)
+
+
+def delete_model(event):
+    """
+    Delete a model.
+
+    Args:
+        event (dict): The pubsub event.
+    """
+    shutdown_service(event)
+    delete_images(event)
+
+
+def shutdown_service(event):
+    """
+    Shut down the model service for the given spec.
+
+    Args:
+        event (dict): A model event.
+    """
+    model_id = event['modelId']
+    service_name = f'mod-{model_id}'
+
+    logger.info(f'shutting down service: {service_name}')
+
+    cmd = [
+        'gcloud',
+        'run',
+        'services',
+        'delete',
+        service_name,
+        '--region',
+        'us-central1',
+        '--platform',
+        'managed',
+        '--quiet'
+    ]
+    logger.info(f'Running: {cmd}')
+    subprocess.call(cmd)
+
+
+def delete_images(event):
+    image = event['image']
+    logger.info(f'deleting images: {image}')
+
+    tags = get_image_tags(image)
+    for tag in tags:
+        digest = tag['digest']
+        cmd = [
+            'gcloud',
+            'container',
+            'images',
+            'delete',
+            f'{image}@{digest}',
+            '--quiet',
+            '--force-delete-tags'
+        ]
+        logger.info(f'Running: {cmd}')
+        try:
+            subprocess.check_call(cmd, shell=False)
+        except subprocess.CalledProcessError:
+            logger.exception(f'Failed to delete tag: {image}')
+
+
+def get_image_tags(image):
+
+    cmd = [
+        'gcloud',
+        'container',
+        'images',
+        'list-tags',
+        image,
+        '--format', 'json'
+    ]
+
+    logger.info(f'Running: {cmd}')
+    proc = subprocess.Popen(
+        cmd,
+        shell=False,
+        stdout=subprocess.PIPE)
+    jstr, _ = proc.communicate()
+    return json.loads(jstr)
 
 
 def generate_build_file(spec, build_path):
@@ -127,12 +216,25 @@ def generate_build_file(spec, build_path):
     img = spec['image']
     model_id = spec['modelId']
     model_file = spec['modelFile']
+    model_type = spec['modelType']
+
+    service_name = f'mod-{model_id}'
+
+    memory = "2Gi"
+    if model_type == 'BOON_FUNCTION':
+        memory = "128Mi"
+
+    build_tag = get_base_image_tag()
 
     build = {
         'steps': [
             {
                 'name': 'gcr.io/cloud-builders/docker',
-                'args': ['build', '-t', img, '--build-arg', f'MODEL_URL={model_file}', '.']
+                'args': ['build',
+                         '-t', img,
+                         '--build-arg', f'MODEL_URL={model_file}',
+                         '--build-arg', f'BASE_IMG_TAG={build_tag}',
+                         '.']
             },
             {
                 'name': 'gcr.io/cloud-builders/docker',
@@ -141,14 +243,16 @@ def generate_build_file(spec, build_path):
             {
                 'name': 'gcr.io/google.com/cloudsdktool/cloud-sdk',
                 'entrypoint': 'gcloud',
-                'args': ['run', 'deploy', f'mod-{model_id}', '--image', img,
+                'args': ['run', 'deploy', service_name, '--image', img,
                          '--region', 'us-central1',
                          '--platform', 'managed',
                          '--ingress', 'internal',
-                         '--clear-vpc-connector',
                          '--allow-unauthenticated',
-                         '--memory=2Gi',
+                         '--memory', memory,
                          '--max-instances', '4',
+                         '--timeout', '30m',
+                         '--update-env-vars', get_boon_env(),
+                         '--service-account', os.environ.get('BOONAI_FUNC_SVC_ACCOUNT'),
                          '--labels', f'model-id={model_id}']
             }
         ],
@@ -162,6 +266,33 @@ def generate_build_file(spec, build_path):
     with open(build_file, 'w') as fp:
         yaml.dump(build, fp)
     return build_file
+
+
+def get_base_image_tag():
+    boonenv = os.environ.get('BOONAI_ENV', 'dev')
+    tag_map = {
+        'prod': 'stable',
+        'qa': 'qa',
+        'dev': 'latest'
+    }
+    return tag_map.get(boonenv)
+
+
+def get_boon_env():
+    """
+    Craft the boonfunction Env.
+
+    Returns:
+        str: a CSV string of env vars.
+    """
+    boonenv = os.environ.get('BOONAI_ENV', 'dev')
+    endpoint_map = {
+        'prod': 'https://api.boonai.app',
+        'qa': 'https://qa.api.boonai.app',
+        'dev': 'https://dev.api.boonai.app',
+    }
+    boon_server = endpoint_map.get(boonenv)
+    return f'BOONAI_SERVER={boon_server}'
 
 
 def run_cloud_build(build_file, build_path):

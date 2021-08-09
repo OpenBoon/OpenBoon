@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
 import useSWR from 'swr'
+import Link from 'next/link'
 
 import { spacing, constants } from '../Styles'
 
@@ -52,6 +53,21 @@ const DatasetDetails = ({ projectId, datasetId }) => {
             <div>
               <ul>
                 <li>
+                  <Link
+                    href={`/${projectId}/datasets/${datasetId}/edit`}
+                    passHref
+                  >
+                    <Button
+                      variant={BUTTON_VARIANTS.MENU_ITEM}
+                      onBlur={onBlur}
+                      onClick={onClick}
+                    >
+                      Edit Dataset
+                    </Button>
+                  </Link>
+                </li>
+
+                <li>
                   <Button
                     variant={BUTTON_VARIANTS.MENU_ITEM}
                     onBlur={onBlur}
@@ -71,6 +87,7 @@ const DatasetDetails = ({ projectId, datasetId }) => {
         <DatasetDeleteModal
           projectId={projectId}
           datasetId={datasetId}
+          name={name}
           isDeleteModalOpen={isDeleteModalOpen}
           setDeleteModalOpen={setDeleteModalOpen}
           setDatasetFields={setDatasetFields}

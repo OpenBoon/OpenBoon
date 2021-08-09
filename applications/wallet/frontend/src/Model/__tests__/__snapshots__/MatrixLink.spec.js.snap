@@ -10,7 +10,7 @@ exports[`<ModelMatrixLink /> should render properly when a dataset has not yet b
 
 .emotion-1 {
   width: 130px;
-  padding-right: 16px;
+  margin-right: 16px;
 }
 
 .emotion-2 {
@@ -18,7 +18,6 @@ exports[`<ModelMatrixLink /> should render properly when a dataset has not yet b
   border: 4px solid #808080;
   padding: 1px;
   border-radius: 2px;
-  margin-bottom: 8px;
   display: grid;
   grid-template: repeat(4, 1fr)/repeat(4, 1fr);
 }
@@ -56,6 +55,7 @@ exports[`<ModelMatrixLink /> should render properly when a dataset has not yet b
 }
 
 .emotion-21 li {
+  line-height: 24px;
   list-style-type: none;
   display: -webkit-box;
   display: -webkit-flex;
@@ -74,6 +74,12 @@ exports[`<ModelMatrixLink /> should render properly when a dataset has not yet b
 
 .emotion-22 {
   color: #b3b3b3;
+}
+
+.emotion-23 {
+  padding: 4px;
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
 <div
@@ -151,7 +157,9 @@ exports[`<ModelMatrixLink /> should render properly when a dataset has not yet b
         <li
           className="emotion-22"
         >
-          <span>
+          <span
+            className="emotion-23"
+          >
             —
           </span>
           add a dataset
@@ -159,7 +167,9 @@ exports[`<ModelMatrixLink /> should render properly when a dataset has not yet b
         <li
           className="emotion-22"
         >
-          <span>
+          <span
+            className="emotion-23"
+          >
             —
           </span>
           add test labels to dataset
@@ -167,7 +177,9 @@ exports[`<ModelMatrixLink /> should render properly when a dataset has not yet b
         <li
           className="emotion-22"
         >
-          <span>
+          <span
+            className="emotion-23"
+          >
             —
           </span>
           run "test" or "analyze all"
@@ -188,7 +200,7 @@ exports[`<ModelMatrixLink /> should render properly when a matrix exists 1`] = `
 
 .emotion-1 {
   width: 130px;
-  padding-right: 16px;
+  margin-right: 16px;
 }
 
 .emotion-2 {
@@ -197,7 +209,7 @@ exports[`<ModelMatrixLink /> should render properly when a matrix exists 1`] = `
   border: 4px solid #808080;
   padding: 1px;
   border-radius: 2px;
-  margin-bottom: 8px;
+  margin-bottom: 0;
   display: grid;
   grid-template: repeat(3, 1fr)/repeat(3, 1fr);
 }
@@ -414,7 +426,7 @@ exports[`<ModelMatrixLink /> should render properly when a matrix is out of date
 
 .emotion-1 {
   width: 130px;
-  padding-right: 16px;
+  margin-right: 16px;
 }
 
 .emotion-2 {
@@ -423,7 +435,7 @@ exports[`<ModelMatrixLink /> should render properly when a matrix is out of date
   border: 4px solid #808080;
   padding: 1px;
   border-radius: 2px;
-  margin-bottom: 8px;
+  margin-bottom: 0;
   display: grid;
   grid-template: repeat(3, 1fr)/repeat(3, 1fr);
 }
@@ -647,7 +659,6 @@ exports[`<ModelMatrixLink /> should render properly when a matrix will never exi
   border: 4px solid #3b3b3b;
   padding: 1px;
   border-radius: 2px;
-  margin-bottom: 8px;
   display: grid;
   grid-template: repeat(4, 1fr)/repeat(4, 1fr);
 }
@@ -748,7 +759,7 @@ exports[`<ModelMatrixLink /> should render properly when the dataset is missing 
 
 .emotion-1 {
   width: 130px;
-  padding-right: 16px;
+  margin-right: 16px;
 }
 
 .emotion-2 {
@@ -756,7 +767,6 @@ exports[`<ModelMatrixLink /> should render properly when the dataset is missing 
   border: 4px solid #808080;
   padding: 1px;
   border-radius: 2px;
-  margin-bottom: 8px;
   display: grid;
   grid-template: repeat(4, 1fr)/repeat(4, 1fr);
 }
@@ -794,6 +804,7 @@ exports[`<ModelMatrixLink /> should render properly when the dataset is missing 
 }
 
 .emotion-21 li {
+  line-height: 24px;
   list-style-type: none;
   display: -webkit-box;
   display: -webkit-flex;
@@ -818,6 +829,12 @@ exports[`<ModelMatrixLink /> should render properly when the dataset is missing 
   color: #b3b3b3;
 }
 
+.emotion-24 {
+  padding: 4px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
 <div
   className="emotion-0"
 >
@@ -896,14 +913,16 @@ exports[`<ModelMatrixLink /> should render properly when the dataset is missing 
           <svg
             color="#009f22"
             data-file-name="checkmark.svg"
-            height={14}
+            height={20}
           />
           add a dataset
         </li>
         <li
           className="emotion-23"
         >
-          <span>
+          <span
+            className="emotion-24"
+          >
             —
           </span>
           add test labels to dataset
@@ -911,7 +930,9 @@ exports[`<ModelMatrixLink /> should render properly when the dataset is missing 
         <li
           className="emotion-23"
         >
-          <span>
+          <span
+            className="emotion-24"
+          >
             —
           </span>
           run "test" or "analyze all"
@@ -932,7 +953,7 @@ exports[`<ModelMatrixLink /> should render properly when the model has been appl
 
 .emotion-1 {
   width: 130px;
-  padding-right: 16px;
+  margin-right: 16px;
 }
 
 .emotion-2 {
@@ -940,7 +961,6 @@ exports[`<ModelMatrixLink /> should render properly when the model has been appl
   border: 4px solid #808080;
   padding: 1px;
   border-radius: 2px;
-  margin-bottom: 8px;
   display: grid;
   grid-template: repeat(4, 1fr)/repeat(4, 1fr);
 }
@@ -978,6 +998,7 @@ exports[`<ModelMatrixLink /> should render properly when the model has been appl
 }
 
 .emotion-21 li {
+  line-height: 24px;
   list-style-type: none;
   display: -webkit-box;
   display: -webkit-flex;
@@ -1076,7 +1097,7 @@ exports[`<ModelMatrixLink /> should render properly when the model has been appl
           <svg
             color="#009f22"
             data-file-name="checkmark.svg"
-            height={14}
+            height={20}
           />
           add a dataset
         </li>
@@ -1086,7 +1107,7 @@ exports[`<ModelMatrixLink /> should render properly when the model has been appl
           <svg
             color="#009f22"
             data-file-name="checkmark.svg"
-            height={14}
+            height={20}
           />
           add test labels to dataset
         </li>
@@ -1096,7 +1117,7 @@ exports[`<ModelMatrixLink /> should render properly when the model has been appl
           <svg
             color="#009f22"
             data-file-name="checkmark.svg"
-            height={14}
+            height={20}
           />
           run "test" or "analyze all"
         </li>
@@ -1116,7 +1137,7 @@ exports[`<ModelMatrixLink /> should render properly when the model has not yet b
 
 .emotion-1 {
   width: 130px;
-  padding-right: 16px;
+  margin-right: 16px;
 }
 
 .emotion-2 {
@@ -1124,7 +1145,6 @@ exports[`<ModelMatrixLink /> should render properly when the model has not yet b
   border: 4px solid #808080;
   padding: 1px;
   border-radius: 2px;
-  margin-bottom: 8px;
   display: grid;
   grid-template: repeat(4, 1fr)/repeat(4, 1fr);
 }
@@ -1162,6 +1182,7 @@ exports[`<ModelMatrixLink /> should render properly when the model has not yet b
 }
 
 .emotion-21 li {
+  line-height: 24px;
   list-style-type: none;
   display: -webkit-box;
   display: -webkit-flex;
@@ -1186,6 +1207,12 @@ exports[`<ModelMatrixLink /> should render properly when the model has not yet b
   color: #b3b3b3;
 }
 
+.emotion-25 {
+  padding: 4px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
 <div
   className="emotion-0"
 >
@@ -1264,7 +1291,7 @@ exports[`<ModelMatrixLink /> should render properly when the model has not yet b
           <svg
             color="#009f22"
             data-file-name="checkmark.svg"
-            height={14}
+            height={20}
           />
           add a dataset
         </li>
@@ -1274,14 +1301,16 @@ exports[`<ModelMatrixLink /> should render properly when the model has not yet b
           <svg
             color="#009f22"
             data-file-name="checkmark.svg"
-            height={14}
+            height={20}
           />
           add test labels to dataset
         </li>
         <li
           className="emotion-24"
         >
-          <span>
+          <span
+            className="emotion-25"
+          >
             —
           </span>
           run "test" or "analyze all"

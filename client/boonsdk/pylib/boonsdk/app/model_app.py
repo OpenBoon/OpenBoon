@@ -1,6 +1,8 @@
 import logging
+import os
+import requests
 
-from ..entity import Model, Job, ModelType, ModelTypeInfo, PostTrainAction, StoredFile
+from ..entity import Model, Job, ModelType, ModelTypeInfo, PostTrainAction
 from ..util import as_collection, as_id, \
     is_valid_uuid, as_name_collection, as_id_collection, enum_name
 
@@ -146,6 +148,19 @@ class ModelApp:
         mid = as_id(model)
         return Job(self.app.client.post(f'/api/v3/models/{mid}/_test', {}))
 
+    def delete_model(self, model):
+        """
+        Delete the given model.
+
+        Args:
+            model (Model): A Model instance or a model unique Id.
+
+        Returns:
+            dict: status dict
+        """
+        mid = as_id(model)
+        return self.app.client.delete(f'/api/v3/models/{mid}')
+
     def upload_pretrained_model(self, model, model_path):
         """
         Upload a trained model directory to Boon AI.  The model is not ready to use
@@ -166,7 +181,17 @@ class ModelApp:
         if not model.uploadable:
             raise ValueError(f'The model type {model.type} is not uploadable.')
 
-        return StoredFile(self.app.client.send_file(f'/api/v3/models/{mid}/_upload', model_path))
+        signed = self.app.client.get(f'/api/v3/models/{mid}/_get_upload_url')
+        with open(model_path, 'rb') as fp:
+            response = requests.put(signed["uri"],
+                                    headers={
+                                        "Content-Type": signed["mediaType"],
+                                        "Content-Length": str(os.path.getsize(model_path))
+                                    },
+                                    data=fp)
+            response.raise_for_status()
+
+        return self.app.client.post(f'/api/v3/models/{mid}/_deploy')
 
     def export_trained_model(self, model, dst_file, tag='latest'):
         """

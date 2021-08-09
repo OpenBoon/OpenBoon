@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types'
 
-import { typography, colors } from '../Styles'
+import { typography, colors, spacing } from '../Styles'
+
+import ButtonCopy from '../Button/Copy'
 
 const LINE_HEIGHT = '23px'
 
@@ -14,19 +16,33 @@ const ItemList = ({ attributes }) => {
         lineHeight: LINE_HEIGHT,
       }}
     >
-      {attributes.map(([label, value]) => {
+      {attributes.map(([label, value, copyButtonTitle]) => {
         return (
-          <li key={label}>
-            <span
+          <li key={label} css={{ display: 'flex', alignItems: 'center' }}>
+            <div
               css={{
                 color: colors.structure.zinc,
                 fontFamily: typography.family.condensed,
                 textTransform: 'uppercase',
+                paddingRight: spacing.base,
               }}
             >
               {label}:
-            </span>{' '}
-            {value}
+            </div>
+
+            <div css={{ display: 'flex', alignItems: 'center' }}>
+              {value}
+
+              {!!copyButtonTitle && (
+                <div css={{ paddingLeft: spacing.small }}>
+                  <ButtonCopy
+                    title={copyButtonTitle}
+                    value={value}
+                    offset={50}
+                  />
+                </div>
+              )}
+            </div>
           </li>
         )
       })}

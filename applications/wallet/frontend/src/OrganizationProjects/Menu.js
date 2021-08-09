@@ -14,6 +14,7 @@ import Modal from '../Modal'
 const OrganizationProjectsMenu = ({
   organizationId,
   projectId,
+  name,
   revalidate,
 }) => {
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false)
@@ -82,7 +83,7 @@ const OrganizationProjectsMenu = ({
       {isDeleteModalOpen && (
         <Modal
           title="Delete Project"
-          message="Deleting this project will remove it and all its content from the system. Deletion will be permanent and irreversible after 30 days."
+          message={`Are you sure you want to delete the "${name}" project and remove all its content from the system? Deletion will be permanent and irreversible after 30 days.`}
           action={isDeleting ? 'Deleting...' : 'Delete Permanently'}
           onCancel={() => {
             setDeleteModalOpen(false)
@@ -116,6 +117,7 @@ const OrganizationProjectsMenu = ({
 OrganizationProjectsMenu.propTypes = {
   organizationId: PropTypes.string.isRequired,
   projectId: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
   revalidate: PropTypes.func.isRequired,
 }
 

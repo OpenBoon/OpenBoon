@@ -16,6 +16,7 @@ describe('<DatasetsMenu />', () => {
       <DatasetsMenu
         projectId={PROJECT_ID}
         datasetId={DATASET_ID}
+        name="My Amazing Dataset"
         setDatasetFields={mockDispatch}
       />,
     )

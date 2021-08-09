@@ -31,7 +31,7 @@ const JobDetails = () => {
   return (
     <div>
       {!!action && (
-        <div css={{ display: 'flex', paddingBottom: spacing.normal }}>
+        <div css={{ display: 'flex', paddingBottom: spacing.base }}>
           <FlashMessage variant={FLASH_VARIANTS.INFO}>{action}</FlashMessage>
         </div>
       )}

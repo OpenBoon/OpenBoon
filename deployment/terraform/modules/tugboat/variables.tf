@@ -1,6 +1,9 @@
 variable "project" {
 }
 
+variable "environment" {
+}
+
 variable "project-number" {
 }
 

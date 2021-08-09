@@ -26,7 +26,8 @@ requirements = [
     "xmltodict",
     "youtube-dl",
     "flask",
-    "numpy"
+    "numpy",
+    "deprecation"
 ]
 
 setup(

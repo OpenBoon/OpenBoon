@@ -21,9 +21,9 @@ describe('<ModelDataset />', () => {
       query: { projectId: PROJECT_ID, modelId: MODEL_ID },
     })
 
-    require('swr').__setMockUseSWRResponse({ data: {} })
-
-    const component = TestRenderer.create(<ModelDataset setErrors={noop} />)
+    const component = TestRenderer.create(
+      <ModelDataset model={model} setErrors={noop} />,
+    )
 
     expect(component.toJSON()).toMatchSnapshot()
   })
@@ -34,12 +34,29 @@ describe('<ModelDataset />', () => {
       query: { projectId: PROJECT_ID, modelId: MODEL_ID },
     })
 
-    require('swr').__setMockUseSWRResponse({
-      data: { ...model, datasetId: DATASET_ID },
-    })
-
-    const component = TestRenderer.create(<ModelDataset setErrors={noop} />)
+    const component = TestRenderer.create(
+      <ModelDataset
+        model={{ ...model, datasetId: DATASET_ID }}
+        setErrors={noop}
+      />,
+    )
 
     expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  it('should not render when model requires a file upload', async () => {
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/models/[modelId]',
+      query: { projectId: PROJECT_ID, modelId: MODEL_ID },
+    })
+
+    const component = TestRenderer.create(
+      <ModelDataset
+        model={{ ...model, datasetId: DATASET_ID, state: 'RequiresUpload' }}
+        setErrors={noop}
+      />,
+    )
+
+    expect(component.toJSON()).toEqual(null)
   })
 })

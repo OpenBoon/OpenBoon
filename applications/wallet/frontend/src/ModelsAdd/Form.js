@@ -15,11 +15,9 @@ import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 
 import { onSubmit, slugify } from './helpers'
 
-const PRE_TRAINED_MODEL_TYPE = 'PYTORCH_MODEL_ARCHIVE'
-
 const SOURCES = [
   { value: 'CREATE', label: 'Train in Boon AI' },
-  // { value: 'UPLOAD', label: 'Upload Pre-Trained Model' },
+  { value: 'UPLOAD', label: 'Upload Pre-Trained Model' },
 ]
 
 const INITIAL_STATE = {
@@ -79,8 +77,7 @@ const ModelsAddForm = () => {
         errorMessage={state.errors.description}
       />
 
-      {/**
-      <SectionTitle>Select Training</SectionTitle>
+      {/* <SectionTitle>Select Training</SectionTitle>
 
       {SOURCES.map(({ value, label }) => {
         return (
@@ -96,37 +93,40 @@ const ModelsAddForm = () => {
               onClick={({ value: source }) =>
                 dispatch({
                   source,
-                  type:
-                    source === SOURCES[1].value ? PRE_TRAINED_MODEL_TYPE : '',
+                  type: '',
                 })
               }
             />
           </div>
         )
       })}
-      */}
+
+      <div css={{ paddingTop: spacing.base }}>&nbsp;</div> */}
 
       <SectionTitle>Select Model Type</SectionTitle>
 
       <div css={{ marginRight: -130, paddingBottom: spacing.normal }}>
-        {modelTypes.map(({ name, label, description }) => {
-          if (name === PRE_TRAINED_MODEL_TYPE) return null
-
-          return (
-            <div key={name} css={{ paddingTop: spacing.normal }}>
-              <Radio
-                name="modelType"
-                option={{
-                  value: name,
-                  label,
-                  legend: description,
-                  initialValue: state.type === name,
-                }}
-                onClick={({ value }) => dispatch({ type: value })}
-              />
-            </div>
-          )
-        })}
+        {modelTypes
+          .filter(({ uploadable }) => {
+            // return state.source === SOURCES[0].value ? !uploadable : uploadable
+            return !uploadable
+          })
+          .map(({ name, label, description }) => {
+            return (
+              <div key={name} css={{ paddingTop: spacing.normal }}>
+                <Radio
+                  name="modelType"
+                  option={{
+                    value: name,
+                    label,
+                    legend: description,
+                    initialValue: state.type === name,
+                  }}
+                  onClick={({ value }) => dispatch({ type: value })}
+                />
+              </div>
+            )
+          })}
       </div>
 
       <ButtonGroup>

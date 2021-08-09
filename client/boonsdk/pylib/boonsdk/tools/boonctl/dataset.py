@@ -25,13 +25,15 @@ def add_subparser(subparsers):
     import_cmd.add_argument('type', metavar='TYPE', help='The Dataset type: %s' % ds_types,
                             choices=ds_types)
     import_cmd.add_argument('path', metavar='PATH', help='The path to the dataset files')
-
     import_cmd.add_argument('-d', '--descr', metavar='DESCRIPTION', help='A description')
     import_cmd.add_argument('-n', '--name', metavar='NAME', help='Override name of dataset')
     import_cmd.add_argument('-c', '--count', type=int, default=0,
                             help='The number of assets to import per label. Default all.')
     import_cmd.add_argument('-r', '--test-ratio', type=float,
                             default=0.1, help='The percentage of assets to label as test.')
+    import_cmd.add_argument('-q', '--quiet', action="store_true",
+                            default=False, help='Don\'t ask questions')
+    import_cmd.add_argument('-l', '--label', action='append', help='Adds label to allowed labels')
     import_cmd.set_defaults(func=import_ds)
 
     info_cmd = commands.add_parser('info', help='Get Info about a Dataset')
@@ -131,7 +133,9 @@ def import_classification(args):
     print(f'Detected Name: {ds_name} (exists: {ds_exists})')
     print(f'Detected Labels: {labels}')
     print("Ok? (ctr-c to abort)")
-    _ = input()
+
+    if not args.quiet:
+        _ = input()
 
     if not ds_exists:
         dataset = app.datasets.create_dataset(ds_name, args.type)
@@ -139,6 +143,10 @@ def import_classification(args):
         dataset = app.datasets.find_one_dataset(name=ds_name)
 
     for label in labels:
+
+        if args.label and label not in args.label:
+            continue
+
         lpath = os.path.join(args.path, label)
         files = [name for name in os.listdir(lpath) if boonsdk.FileTypes.supported(name)]
 

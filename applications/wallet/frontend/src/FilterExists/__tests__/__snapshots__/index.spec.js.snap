@@ -58,8 +58,7 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
   white-space: nowrap;
   margin-top: -2px;
   padding-left: 8px;
-  font-family: Roboto Mono;
-  font-size: 14px;
+  font-weight: 700;
   line-height: 18px;
   padding-right: 4px;
 }
@@ -524,8 +523,7 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
   white-space: nowrap;
   margin-top: -2px;
   padding-left: 8px;
-  font-family: Roboto Mono;
-  font-size: 14px;
+  font-weight: 700;
   line-height: 18px;
   padding-right: 4px;
 }

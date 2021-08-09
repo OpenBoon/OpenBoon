@@ -126,7 +126,49 @@ describe('<DatasetLabelsContent />', () => {
       <DatasetLabelsContent
         projectId={PROJECT_ID}
         datasetId={DATASET_ID}
-        query=""
+        query={btoa(JSON.stringify({ scope: 'TEST', label: 'cat' }))}
+        page={1}
+        datasetName="cats"
+      />,
+    )
+
+    // eslint-disable-next-line no-proto
+    const spy = jest.spyOn(localStorage.__proto__, 'setItem')
+
+    await act(async () => {
+      component.root
+        .findByProps({ 'aria-label': 'Add More Labels' })
+        .props.onClick({ preventDefault: noop, stopPropagation: noop })
+    })
+
+    expect(spy).toHaveBeenCalledWith(
+      'leftOpeningPanelSettings',
+      JSON.stringify({
+        size: PANEL_MIN_WIDTH,
+        isOpen: true,
+        openPanel: 'assetLabeling',
+      }),
+    )
+
+    expect(spy).toHaveBeenLastCalledWith(
+      `AssetLabelingContent.${PROJECT_ID}`,
+      `{"datasetId":"${DATASET_ID}","lastLabel":"cat","lastScope":"TEST","labels":{},"isLoading":false,"errors":{}}`,
+    )
+  })
+
+  it('should handle Add More Labels properly with #All# selected', async () => {
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/models/[datasetId]',
+      query: { projectId: PROJECT_ID, datasetId: DATASET_ID },
+    })
+
+    require('swr').__setMockUseSWRResponse({ data: datasetConcepts })
+
+    const component = TestRenderer.create(
+      <DatasetLabelsContent
+        projectId={PROJECT_ID}
+        datasetId={DATASET_ID}
+        query={btoa(JSON.stringify({ scope: 'TRAIN', label: '#All#' }))}
         page={1}
         datasetName="cats"
       />,
