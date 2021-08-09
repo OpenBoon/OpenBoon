@@ -123,7 +123,6 @@ class ModelServiceTests : AbstractTest() {
         val mspec = ModelSpec(
             "faces",
             ModelType.FACE_RECOGNITION,
-            moduleName = "foo",
             applySearch = Json.Mapper.readValue(testSearch, Json.GENERIC_MAP)
         )
         val model = modelService.createModel(mspec)
@@ -410,11 +409,5 @@ class ModelServiceTests : AbstractTest() {
         assertEquals("test", model.moduleName)
         assertTrue(model.fileId.endsWith("model.zip"))
         assertFalse(model.ready)
-    }
-
-    @Test
-    fun testGenerateModelName() {
-        val spec = ModelSpec("myModel\n   foo", ModelType.KNN_CLASSIFIER)
-        assertEquals("mymodel-foo", modelService.generateModuleName(spec))
     }
 }
