@@ -28,6 +28,7 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import com.google.common.cache.CacheBuilder
 import com.google.common.cache.CacheLoader
 import org.apache.http.HttpHost
+import org.elasticsearch.ElasticsearchStatusException
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest
 import org.elasticsearch.action.admin.indices.open.OpenIndexRequest
 import org.elasticsearch.action.admin.indices.settings.put.UpdateSettingsRequest
@@ -525,20 +526,26 @@ constructor(
     }
 
     override fun closeIndex(route: IndexRoute): Boolean {
-        val rsp = getClusterRestClient(route).client.indices()
-            .close(CloseIndexRequest(route.indexName), RequestOptions.DEFAULT)
-        if (rsp.isAcknowledged) {
-            indexRouteDao.setState(route, IndexRouteState.CLOSED)
-            logger.event(
-                LogObject.INDEX_ROUTE, LogAction.STATE_CHANGE,
-                mapOf(
-                    "indexRouteId" to route.id,
-                    "indexRouteName" to route.indexName,
-                    "indexRouteState" to IndexRouteState.CLOSED.name
+        return try {
+            val rsp = getClusterRestClient(route).client.indices()
+                .close(CloseIndexRequest(route.indexName), RequestOptions.DEFAULT)
+
+            if (rsp.isAcknowledged) {
+                indexRouteDao.setState(route, IndexRouteState.CLOSED)
+                logger.event(
+                    LogObject.INDEX_ROUTE, LogAction.STATE_CHANGE,
+                    mapOf(
+                        "indexRouteId" to route.id,
+                        "indexRouteName" to route.indexName,
+                        "indexRouteState" to IndexRouteState.CLOSED.name
+                    )
                 )
-            )
+            }
+            return rsp.isAcknowledged
+        } catch (e: ElasticsearchStatusException) {
+            logger.warn("Failed to close index: ${route.indexUrl}", e)
+            false
         }
-        return rsp.isAcknowledged
     }
 
     override fun batchCloseIndex(routes: List<IndexRoute>) {
