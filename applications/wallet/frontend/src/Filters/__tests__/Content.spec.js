@@ -11,7 +11,7 @@ import FiltersContent from '../Content'
 const noop = () => () => {}
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
-const MODEL_ID = '621bf774-89d9-1244-9596-d6df43f1ede5'
+const DATASET_ID = '4b0b10a8-cec1-155c-b12f-ee2bc8787e06'
 const ASSET_ID = asset.id
 
 jest.mock('../../Filter/Reset', () => 'FilterReset')
@@ -56,7 +56,7 @@ describe('<FiltersContent />', () => {
       {
         type: 'label',
         attribute: 'labels.console',
-        modelId: MODEL_ID,
+        datasetId: DATASET_ID,
         values: {},
       },
     ]

@@ -300,7 +300,7 @@ ROLES = [
     {'name': 'ML_Tools',
      'description': 'Provides access to the Job Queue, Data Sources, and Visualizer.',
      'permissions': ['AssetsRead', 'AssetsImport', 'AssetsDelete', 'DataSourceManage',
-                     'DataQueueManage']},
+                     'DataQueueManage', 'ModelTraining']},
     {'name': 'API_Keys',
      'description': 'Provides access to API Key provisioning.',
      'permissions': ['ProjectManage']},

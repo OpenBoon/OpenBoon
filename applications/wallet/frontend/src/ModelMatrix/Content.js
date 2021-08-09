@@ -18,6 +18,8 @@ const ModelMatrixContent = () => {
     overallAccuracy: 0,
     labels: [],
     moduleName: '',
+    datasetId: '',
+    unappliedChanges: false,
   })
 
   return (

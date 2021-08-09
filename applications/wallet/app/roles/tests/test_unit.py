@@ -35,7 +35,7 @@ class TestRoleSerializer():
         roles = ['ML_Tools', 'User_Admin']
         permissions = get_permissions_for_roles(roles)
         expected = ['AssetsRead', 'AssetsImport', 'AssetsDelete', 'ProjectManage',
-                    'DataSourceManage', 'DataQueueManage']
+                    'DataSourceManage', 'DataQueueManage', 'ModelTraining']
         assert set(permissions) == set(expected)
         permissions = get_permissions_for_roles(['User_Admin'])
         assert permissions == ['ProjectManage']

@@ -7,15 +7,13 @@ import Panel from '../Panel'
 import Assets from '../Assets'
 import Filters from '../Filters'
 import Metadata from '../Metadata'
-import FaceLabeling from '../FaceLabeling'
 import AssetDelete from '../AssetDelete'
 import FiltersIcon from '../Filters/Icon'
 import AssetLabeling from '../AssetLabeling'
 
 import InformationSvg from '../Icons/information.svg'
-import FaceDetectionSvg from '../Icons/faceDetection.svg'
 import TrashSvg from '../Icons/trash.svg'
-import PenSvg from '../Icons/pen.svg'
+import TagsSvg from '../Icons/tags.svg'
 
 let reloadKey = 0
 
@@ -44,7 +42,7 @@ const VisualizerContent = () => {
     >
       <div css={{ display: 'flex', height: '100%', overflowY: 'hidden' }}>
         <FetchAhead url={`/api/v1/projects/${projectId}/searches/fields/`} />
-        <FetchAhead url={`/api/v1/projects/${projectId}/models/all/`} />
+        <FetchAhead url={`/api/v1/projects/${projectId}/datasets/all/`} />
 
         <Panel openToThe="right">
           {{
@@ -65,14 +63,9 @@ const VisualizerContent = () => {
               icon: <InformationSvg height={constants.icons.regular} />,
               content: <Metadata />,
             },
-            faceLabeling: {
-              title: 'Face Recognition Training',
-              icon: <FaceDetectionSvg height={constants.icons.regular} />,
-              content: <FaceLabeling />,
-            },
             assetLabeling: {
-              title: 'Add Labels To Model',
-              icon: <PenSvg height={constants.icons.regular} />,
+              title: 'Dataset Labels',
+              icon: <TagsSvg height={constants.icons.regular} />,
               content: <AssetLabeling />,
               isBeta: true,
             },

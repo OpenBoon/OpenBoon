@@ -56,7 +56,6 @@ const boxShadows = {
   default: `0 2px 4px 0 rgba(0, 0, 0, ${opacity.half})`,
   input: `inset 0 1px 3px 0 transparent`,
   menu: `0 4px 7px 0 ${colors.structure.black}`,
-  navBar: `0 0 4px 0 rgba(0, 0, 0, ${opacity.half})`,
   dropdown: `0 2px 6px 0 ${colors.structure.black}`,
   tableRow: `0 0 5px 0 rgba(0, 0, 0, ${opacity.half})`,
   modal: `0 0 8px 5px rgba(0, 0, 0, ${opacity.half})`,
@@ -97,6 +96,7 @@ const constants = {
   timeline: {
     rulerRowHeight: 44,
   },
+  bbox: 56,
 }
 
 export default constants

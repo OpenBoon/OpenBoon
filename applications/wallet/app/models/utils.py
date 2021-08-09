@@ -148,7 +148,8 @@ class ConfusionMatrix(object):
                 'maxScore': self.max_score,
                 'testSetOnly': self.test_set_only,
                 "matrix": self.get_matrix(normalize_matrix).tolist(),
-                "isMatrixApplicable": True}
+                "isMatrixApplicable": True,
+                "datasetId": self.model.dataset_id}
 
     def show(self):
         """Display the Confusion Matrix. For interactive use only."""

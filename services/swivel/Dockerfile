@@ -1,5 +1,5 @@
 # syntax = docker/dockerfile:experimental
-FROM boonai/py3-base:latest
+FROM boonai/boonsdk:latest
 RUN apt-get install ca-certificates -y
 
 RUN mkdir /app

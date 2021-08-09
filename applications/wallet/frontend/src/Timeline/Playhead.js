@@ -40,8 +40,11 @@ const TimelinePlayhead = ({ videoRef, rulerRef, zoom, followPlayhead }) => {
       const animate = () => {
         if (!video) return
 
-        const { scrollWidth = 0, scrollLeft = 0, clientWidth = 0 } =
-          rulerRef.current || {}
+        const {
+          scrollWidth = 0,
+          scrollLeft = 0,
+          clientWidth = 0,
+        } = rulerRef.current || {}
 
         const hiddenToTheRight = scrollWidth - scrollLeft - clientWidth > 0
 
@@ -102,7 +105,9 @@ const TimelinePlayhead = ({ videoRef, rulerRef, zoom, followPlayhead }) => {
 
     const newCurrentTime = (newPosition / maxPosition) * video.duration
 
-    video.currentTime = newCurrentTime
+    if (Number.isFinite(newCurrentTime)) {
+      video.currentTime = newCurrentTime
+    }
   }
 
   /* istanbul ignore next */

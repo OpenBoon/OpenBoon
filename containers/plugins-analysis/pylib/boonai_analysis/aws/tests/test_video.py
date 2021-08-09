@@ -2,6 +2,8 @@ import logging
 import os
 from unittest.mock import patch
 
+import pytest
+
 from boonai_analysis.aws import video
 from boonai_analysis.aws.tests.conftest import MockS3Client, \
     MockRekClient, mock_clients, MockAwsCloudResources
@@ -26,6 +28,27 @@ class RekognitionVideoDetectionProcessorTests(PluginUnitTestCase):
     def setUp(self, s3_patch):
         os.environ['BOONAI_PROJECT_ID'] = '00000000-0000-0000-0000-000000000001'
         os.environ['BOONAI_AWS_BUCKET'] = 'boonai-unit-tests'
+
+    @patch(s3_patch_path, side_effect=MockS3Client)
+    @patch(rek_patch_path, side_effect=MockRekClient)
+    @patch('boonai_analysis.aws.video.AwsCloudResources', autospec=True)
+    @patch('boonai_analysis.aws.video.proxy.get_video_proxy')
+    @patch.object(video.RekognitionLabelDetection, 'start_detection_analysis')
+    def test_non_quota_exception(self, detection_patch, get_prx_patch, aws_patch, _, __):
+
+        def throw_type_error(*args, **kwargs):
+            raise TypeError
+
+        detection_patch.side_effect = throw_type_error
+        video_path = test_path(VID_MP4)
+        get_prx_patch.return_value = test_path(VID_MP4)
+        aws_patch.return_value = MockAwsCloudResources()
+
+        processor = self.init_processor(video.RekognitionLabelDetection())
+        asset = TestAsset(video_path)
+        asset.set_attr('media.length', MEDIA_LENGTH)
+        with pytest.raises(TypeError):
+            processor.preprocess([asset])
 
     @patch(general_patch_path, side_effect=mock_clients)
     @patch(s3_patch_path, side_effect=MockS3Client)

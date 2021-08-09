@@ -1,11 +1,13 @@
 package boonai.archivist.rest
 
-import boonai.archivist.domain.ProjectFileLocator
+import boonai.archivist.domain.ProjectDirLocator
 import boonai.archivist.domain.ProjectStorageEntity
 import boonai.archivist.domain.ProjectStorageRequest
 import boonai.archivist.domain.ProjectStorageSpec
+import boonai.archivist.domain.ProjectFileLocator
 import boonai.archivist.service.AssetService
 import boonai.archivist.service.ModelService
+import boonai.archivist.storage.BoonLibStorageService
 import boonai.archivist.storage.ProjectStorageService
 import boonai.archivist.util.FileUtils
 import io.swagger.annotations.ApiOperation
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RequestPart
 import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.bind.annotation.RestController
@@ -27,6 +30,7 @@ import java.util.concurrent.TimeUnit
 @RestController
 class FileStorageController(
     val projectStorageService: ProjectStorageService,
+    val boonLibStorageService: BoonLibStorageService,
     val assetService: AssetService,
     val modelService: ModelService
 ) {
@@ -61,8 +65,13 @@ class FileStorageController(
         } else {
             category
         }
-        val locator = getValidLocator(entityType, entityId, cat, name)
-        return projectStorageService.stream(locator)
+
+        return if (entityType == "boonlib") {
+            boonLibStorageService.stream("boonlib/$entityId/$category/$name")
+        } else {
+            val locator = getValidLocator(entityType, entityId, cat, name)
+            projectStorageService.stream(locator)
+        }
     }
 
     @ApiOperation("Stream a file associated with any entity.")
@@ -73,10 +82,11 @@ class FileStorageController(
         @PathVariable entityType: String,
         @PathVariable entityId: String,
         @PathVariable category: String,
-        @PathVariable name: String
+        @PathVariable name: String,
+        @RequestParam(required = false) minutes: String?
     ): Map <String, Any> {
         val locator = getValidLocator(entityType, entityId, category, name)
-        return projectStorageService.getSignedUrl(locator, false, 60, TimeUnit.MINUTES)
+        return projectStorageService.getSignedUrl(locator, false, minutes?.toLong() ?: 60, TimeUnit.MINUTES)
     }
 
     @ApiOperation("Get get underlying file location.", hidden = true)
@@ -95,6 +105,19 @@ class FileStorageController(
             "uri" to projectStorageService.getNativeUri(locator),
             "mediaType" to FileUtils.getMediaType(name)
         )
+    }
+
+    @ApiOperation("Get folder location in cloud.", hidden = true)
+    // Only job runners can get this.
+    @PreAuthorize("hasAuthority('SystemProjectDecrypt')")
+    @GetMapping(value = ["/api/v3/files/_locate/{entity}/{entityId}"])
+    @ResponseBody
+    fun getCloudStorageLocation(
+        @PathVariable entity: String,
+        @PathVariable entityId: String,
+    ): Any {
+        val locator = ProjectDirLocator(ProjectStorageEntity.find(entity), entityId)
+        return projectStorageService.getNativeUri(locator)
     }
 
     @ApiOperation("Sign a storage entity for write.")

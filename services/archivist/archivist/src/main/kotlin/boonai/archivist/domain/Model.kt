@@ -1,22 +1,48 @@
 package boonai.archivist.domain
 
-import com.fasterxml.jackson.annotation.JsonIgnore
-import com.fasterxml.jackson.core.type.TypeReference
-import com.vladmihalcea.hibernate.type.json.JsonBinaryType
 import boonai.archivist.repository.KDaoFilter
 import boonai.archivist.security.getProjectId
 import boonai.archivist.util.JdbcUtils
-import boonai.common.util.Json
+import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.annotation.JsonInclude
+import com.google.cloud.ServiceOptions
+import com.vladmihalcea.hibernate.type.json.JsonBinaryType
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 import org.hibernate.annotations.Type
 import org.hibernate.annotations.TypeDef
-import java.math.BigDecimal
 import java.util.UUID
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.Id
 import javax.persistence.Table
+
+enum class ModelState {
+    /**
+     * The initial state of trainable models.
+     */
+    RequiresTraining,
+    /**
+     * The initial state of uploadable models.
+     */
+    RequiresUpload,
+    /**
+     * A trainable model is trained
+     */
+    Trained,
+    /**
+     * A deployable model is deploying
+     */
+    Deploying,
+    /**
+     * A deployable model is Deployed
+     */
+    Deployed,
+    /**
+     * There was an error deploying a model.
+     */
+    DeployError
+}
 
 /**
  * Type of models that can be trained.
@@ -34,7 +60,10 @@ enum class ModelType(
     val minExamples: Int,
     val dependencies: List<String>,
     val trainable: Boolean,
-    val uploadable: Boolean
+    val uploadable: Boolean,
+    val enabled: Boolean,
+    val datasetType: DatasetType?,
+    val fileName: String = "model.zip",
 ) {
     KNN_CLASSIFIER(
         "K-Nearest Neighbors Classifier",
@@ -53,6 +82,8 @@ enum class ModelType(
         listOf(),
         true,
         false,
+        true,
+        DatasetType.Classification
     ),
     TF_CLASSIFIER(
         "Tensorflow Transfer Learning Classifier",
@@ -70,6 +101,8 @@ enum class ModelType(
         listOf(),
         true,
         false,
+        true,
+        DatasetType.Classification
     ),
     FACE_RECOGNITION(
         "Face Recognition",
@@ -84,7 +117,9 @@ enum class ModelType(
         1,
         listOf("boonai-face-detection"),
         true,
-        false
+        false,
+        true,
+        DatasetType.FaceRecognition
     ),
     GCP_AUTOML_CLASSIFIER(
         "Google AutoML Classifier",
@@ -99,9 +134,11 @@ enum class ModelType(
         10,
         listOf(),
         true,
-        false
+        false,
+        false,
+        DatasetType.Classification
     ),
-    TF_UPLOADED_CLASSIFIER(
+    TF_SAVED_MODEL(
         "Imported Tensorflow Image Classifier",
         "None",
         "boonai_analysis.custom.TensorflowImageClassifier",
@@ -114,7 +151,9 @@ enum class ModelType(
         0,
         listOf(),
         false,
-        true
+        true,
+        false,
+        DatasetType.Classification
     ),
     PYTORCH_CLASSIFIER(
         "Pytorch Transfer Learning Classifier",
@@ -131,14 +170,16 @@ enum class ModelType(
         10,
         listOf(),
         true,
-        false
+        false,
+        false,
+        DatasetType.Classification
     ),
-    PYTORCH_UPLOADED_CLASSIFIER(
-        "Imported Pytorch Image Classifier",
+    TORCH_MAR_CLASSIFIER(
+        "Torch Model Archive Image Classifier",
         "None",
-        "boonai_analysis.custom.PytorchImageClassifier",
+        "boonai_analysis.deployed.mar.TorchModelArchiveClassifier",
         null,
-        "Upload a pre-inained Pytorch model to use for image classification.",
+        "Upload a pre-trained Pytorch Model Archive",
         ModelObjective.LABEL_DETECTION,
         Provider.BOONAI,
         true,
@@ -146,10 +187,67 @@ enum class ModelType(
         0,
         listOf(),
         false,
-        true
+        true,
+        true,
+        DatasetType.Classification,
+        "model.mar"
+    ),
+    TORCH_MAR_DETECTOR(
+        "Torch Model Archive Object Detector",
+        "None",
+        "boonai_analysis.custom.TorchModelArchiveDetector",
+        null,
+        "Upload a pre-trained Pytorch Model Archive",
+        ModelObjective.OBJECT_DETECTION,
+        Provider.BOONAI,
+        true,
+        0,
+        0,
+        listOf(),
+        false,
+        true,
+        false,
+        DatasetType.Detection,
+        "model.mar"
+    ),
+    TORCH_MAR_TEXT_CLASSIFIER(
+        "Torch Model Archive Text Classifier",
+        "None",
+        "boonai_analysis.custom.TorchModelArchiveDetector",
+        null,
+        "Upload a pre-trained Pytorch Model Archive",
+        ModelObjective.LABEL_DETECTION,
+        Provider.BOONAI,
+        true,
+        0,
+        0,
+        listOf(),
+        false,
+        true,
+        false,
+        null,
+        "model.mar"
+    ),
+    BOON_FUNCTION(
+        "Boon Function",
+        "None",
+        "boonai_analysis.deployed.function.BoonFunctionProcessor",
+        null,
+        "Use a Boon AI Script to perform custom logic.",
+        ModelObjective.LABEL_DETECTION,
+        Provider.BOONAI,
+        true,
+        0,
+        0,
+        listOf(),
+        false,
+        true,
+        true,
+        DatasetType.Classification,
+        "model.zip"
     );
 
-    fun asMap(): Map<String, Any> {
+    fun asMap(): Map<String, Any?> {
         return mapOf(
             "name" to name,
             "description" to description,
@@ -159,7 +257,9 @@ enum class ModelType(
             "minConcepts" to minConcepts,
             "minExamples" to minExamples,
             "dependencies" to dependencies,
-            "label" to label
+            "label" to label,
+            "datasetType" to datasetType?.name,
+            "uploadable" to uploadable
         )
     }
 }
@@ -178,19 +278,17 @@ enum class PostTrainAction {
     /**
      * Run on test labels only.
      */
-    TEST,
-
-    /**
-     * Deploy
-     */
-    DEPLOY
+    TEST
 }
 
 @ApiModel("ModelTrainingArgs", description = "Arguments set to the training processor.")
 class ModelTrainingRequest(
 
     @ApiModelProperty("The action to take after training.")
-    var postAction: PostTrainAction = PostTrainAction.NONE
+    var postAction: PostTrainAction = PostTrainAction.NONE,
+
+    @ApiModelProperty("Override the default model training arguments.")
+    var trainArgs: Map<String, Any>? = null
 )
 
 @ApiModel("ModelApplyRequest", description = "Arguments for applying a model to data.")
@@ -222,6 +320,9 @@ class ModelSpec(
     @ApiModelProperty("The type of mode")
     val type: ModelType,
 
+    @ApiModelProperty("An associated Dataset")
+    val datasetId: UUID? = null,
+
     @ApiModelProperty("A model tag used to generate a PipelineMod name.")
     val moduleName: String? = null,
 
@@ -229,7 +330,68 @@ class ModelSpec(
     val applySearch: Map<String, Any> = ModelSearch.MATCH_ALL,
 
     @ApiModelProperty("Training arguments")
-    val trainingArgs: Map<String, Any> = emptyMap()
+    val trainingArgs: Map<String, Any> = emptyMap(),
+
+    @ApiModelProperty("Module dependencies")
+    val dependsOn: List<String> = emptyList()
+)
+
+class ModelUpdateRequest(
+
+    @ApiModelProperty("Name of the model")
+    val name: String,
+
+    @ApiModelProperty("The Dataset the model points to.")
+    val datasetId: UUID?,
+
+    @ApiModelProperty("Module dependencies")
+    val dependencies: List<String>
+)
+
+@JsonInclude(JsonInclude.Include.ALWAYS)
+class ModelPatchRequestV2 {
+
+    @ApiModelProperty("Name of the model")
+    internal var name: String? = null
+
+    @ApiModelProperty("The Dataset the model points to.")
+    internal var datasetId: UUID? = null
+
+    @ApiModelProperty("The models dependencies.")
+    internal var dependencies: List<String>? = null
+
+    val isSet = mutableSetOf<String>()
+
+    fun setName(name: String) {
+        this.name = name
+        isSet.add("name")
+    }
+
+    fun setDatasetId(ds: UUID?) {
+        this.datasetId = ds
+        isSet.add("datasetId")
+    }
+
+    fun setDependencies(value: List<String>?) {
+        this.dependencies = value
+        isSet.add("dependencies")
+    }
+
+    fun isFieldSet(name: String): Boolean {
+        return name in isSet
+    }
+}
+
+class ModelPatchRequest(
+
+    @ApiModelProperty("Name of the model")
+    val name: String? = null,
+
+    @ApiModelProperty("The Dataset the model points to.")
+    val datasetId: UUID? = null,
+
+    @ApiModelProperty("Module dependencies")
+    val dependsOn: List<String>? = null
 )
 
 @Entity
@@ -246,16 +408,26 @@ class Model(
     @Column(name = "pk_project")
     val projectId: UUID,
 
+    @Column(name = "pk_dataset", nullable = true)
+    var datasetId: UUID?,
+
+    @Column(name = "int_state", nullable = false)
+    var state: ModelState,
+
     @Column(name = "int_type")
     val type: ModelType,
 
     @Column(name = "str_name")
     @ApiModelProperty("A name for the model, like 'bob's tree classifier'.")
-    val name: String,
+    var name: String,
 
     @Column(name = "str_module")
     @ApiModelProperty("The name of the pipeline module and analysis namespace.")
     val moduleName: String,
+
+    @JsonIgnore
+    @Column(name = "str_endpoint")
+    val endpoint: String?,
 
     @Column(name = "str_file_id")
     val fileId: String,
@@ -264,8 +436,8 @@ class Model(
     val trainingJobName: String,
 
     @Column(name = "bool_trained")
-    @ApiModelProperty("True if the model is trained.")
-    val ready: Boolean,
+    @ApiModelProperty("True if the model is trained with latest labels.")
+    var ready: Boolean,
 
     @Type(type = "jsonb")
     @Column(name = "json_apply_search", columnDefinition = "JSON")
@@ -275,13 +447,17 @@ class Model(
     @Column(name = "json_train_args", columnDefinition = "JSON")
     var trainingArgs: Map<String, Any>,
 
+    @Type(type = "jsonb")
+    @Column(name = "json_depends", columnDefinition = "JSON")
+    var dependencies: List<String>,
+
     @Column(name = "time_created")
     @ApiModelProperty("The time the Model was created.")
     val timeCreated: Long,
 
     @Column(name = "time_modified")
     @ApiModelProperty("The last time the Model was modified.")
-    val timeModified: Long,
+    var timeModified: Long,
 
     @Column(name = "actor_created")
     @ApiModelProperty("The key which created this Model")
@@ -289,12 +465,48 @@ class Model(
 
     @Column(name = "actor_modified")
     @ApiModelProperty("The key that last made the last modification to this Model")
-    val actorModified: String
+    var actorModified: String,
 
-) {
+    @Column(name = "time_last_trained")
+    var timeLastTrained: Long?,
+
+    @Column(name = "actor_last_trained")
+    var actorLastTrained: String?,
+
+    @Column(name = "time_last_applied")
+    var timeLastApplied: Long?,
+
+    @Column(name = "actor_last_applied")
+    var actorLastApplied: String?,
+
+    @Column(name = "time_last_tested")
+    var timeLastTested: Long?,
+
+    @Column(name = "actor_last_tested")
+    var actorLastTested: String?,
+
+    @Column(name = "time_last_uploaded")
+    var timeLastUploaded: Long?,
+
+    @Column(name = "actor_last_uploaded")
+    var actorLastUploaded: String?,
+
+    @Column(name = "time_last_deployed")
+    var timeLastDeployed: Long?,
+
+    @Column(name = "actor_last_deployed")
+    var actorLastDeployed: String?
+
+) : LabelSet {
+
     @JsonIgnore
-    fun getLabel(label: String, bbox: List<BigDecimal>? = null): Label {
-        return Label(id, label, bbox = bbox)
+    override fun datasetId(): UUID? {
+        return datasetId
+    }
+
+    @JsonIgnore
+    fun imageName(): String {
+        return "gcr.io/$GCP_PROJECT/models/$id"
     }
 
     fun getModelFileLocator(tag: String, name: String): ProjectFileLocator {
@@ -303,7 +515,7 @@ class Model(
         )
     }
     fun getModelStorageLocator(tag: String): ProjectFileLocator {
-        return getModelFileLocator(tag, "model.zip")
+        return getModelFileLocator(tag, type.fileName)
     }
 
     fun getModelVersionStorageLocator(tag: String): ProjectFileLocator {
@@ -317,6 +529,10 @@ class Model(
         } else {
             "$moduleName:$tag"
         }
+    }
+
+    fun isUploadable(): Boolean {
+        return type.uploadable
     }
 
     override fun equals(other: Any?): Boolean {
@@ -334,6 +550,9 @@ class Model(
 
     companion object {
         val matchAllSearch = mapOf<String, Any>("query" to mapOf("match_all" to emptyMap<String, Any>()))
+
+        // Need this fo cloud container registry
+        val GCP_PROJECT = ServiceOptions.getDefaultProjectId() ?: "localdev"
     }
 }
 
@@ -347,7 +566,10 @@ class ModelFilter(
     val names: List<String>? = null,
 
     @ApiModelProperty("The Model types to match")
-    val types: List<ModelType>? = null
+    val types: List<ModelType>? = null,
+
+    @ApiModelProperty("The Datasets assigned to model")
+    val datasetIds: List<UUID>? = null
 
 ) : KDaoFilter() {
     @JsonIgnore
@@ -375,6 +597,11 @@ class ModelFilter(
             addToValues(it)
         }
 
+        datasetIds?.let {
+            addToWhere(JdbcUtils.inClause("model.pk_dataset", it.size))
+            addToValues(it)
+        }
+
         names?.let {
             addToWhere(JdbcUtils.inClause("model.str_name", it.size))
             addToValues(it)
@@ -387,78 +614,9 @@ class ModelFilter(
     }
 }
 
-enum class LabelScope {
-    TRAIN,
-    TEST
-}
-
 object ModelSearch {
 
     val MATCH_ALL = mapOf<String, Any>("query" to mapOf("match_all" to emptyMap<String, Any>()))
-
-    fun getTestSearch(model: Model): Map<String, Any> {
-        return Json.Mapper.readValue(
-            """
-            {
-                "bool": {
-                    "filter": {
-                        "nested" : {
-                            "path": "labels",
-                            "query" : {
-                                "term": { 
-                                    "labels.scope": "${LabelScope.TEST.name}" ,
-                                    "labels.modelId": "${model.id}"
-                                 }
-                            }
-                        }
-                    }
-                }
-            }
-        """,
-            Json.GENERIC_MAP
-        )
-    }
-}
-
-@ApiModel("Label", description = "A Label which denotes a ground truth classification.")
-class Label(
-    @ApiModelProperty("The ID of the Model")
-    val modelId: UUID,
-    @ApiModelProperty("The label for the Asset")
-    val label: String,
-    @ApiModelProperty("The scope of the label.")
-    val scope: LabelScope = LabelScope.TRAIN,
-    bbox: List<BigDecimal>? = null,
-    @ApiModelProperty("An an optional simhash for the label")
-    val simhash: String? = null
-
-) {
-
-    @ApiModelProperty("An optional bounding box")
-    val bbox: List<BigDecimal>? = bbox?.map { it.setScale(3, java.math.RoundingMode.HALF_UP) }
-
-    companion object {
-        val SET_OF: TypeReference<MutableSet<Label>> = object :
-            TypeReference<MutableSet<Label>>() {}
-
-        val LIST_OF: TypeReference<List<Label>> = object :
-            TypeReference<List<Label>>() {}
-    }
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other !is Label) return false
-
-        if (modelId != other.modelId) return false
-        if (bbox != other.bbox) return false
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = modelId.hashCode()
-        result = 31 * result + (bbox?.hashCode() ?: 0)
-        return result
-    }
 }
 
 @ApiModel("ModelApplyResponse", description = "The response to applying a model, either for testing or productions")
@@ -469,16 +627,6 @@ class ModelApplyResponse(
 
     @ApiModelProperty("The ID of the job that is processing Assets.")
     val job: Job? = null
-)
-
-@ApiModel("Update Label Request", description = "Update or remove a given label.")
-class UpdateLabelRequest(
-
-    @ApiModelProperty("The name of the old label")
-    val label: String,
-
-    @ApiModelProperty("The name of the new label or null/empty string if the label should be removed.")
-    val newLabel: String? = null
 )
 
 @ApiModel("ModelCopyRequest", description = "Request to copy a model from 1 tag to another.")

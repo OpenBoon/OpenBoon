@@ -1,0 +1,240 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ConceptEdit /> should render properly 1`] = `
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 470px;
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.emotion-1 {
+  padding-top: 8px;
+}
+
+.emotion-2 {
+  display: block;
+  padding-bottom: 8px;
+  color: #b3b3b3;
+}
+
+.emotion-3 {
+  position: relative;
+}
+
+.emotion-4 {
+  outline-offset: 0;
+  padding: 10px 12px;
+  border-radius: 2px;
+  box-shadow: inset 0 1px 3px 0 transparent;
+  width: 100%;
+  cursor: text;
+  color: #ffffff;
+  background-color: #3b3b3b;
+  border: 1px solid transparent;
+  border-width: 2px;
+}
+
+.emotion-4:focus,
+.emotion-4 .noop {
+  border: 2px solid #3A5DFF;
+  outline: #3A5DFF;
+  color: #000000;
+  background-color: #ffffff;
+}
+
+.emotion-4:hover,
+.emotion-4 .noop {
+  border: 2px solid #ffffff;
+}
+
+.emotion-5 {
+  padding-top: 8px;
+}
+
+.emotion-6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.emotion-6 button,
+.emotion-6 a {
+  margin-right: 16px;
+}
+
+.emotion-6 button:last-child,
+.emotion-6 a:last-child {
+  margin-right: 0;
+}
+
+.emotion-7 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-7,
+.emotion-7:hover,
+.emotion-7:visited,
+.emotion-7 .noop {
+  background-color: #808080;
+}
+
+.emotion-7:hover,
+.emotion-7 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #b3b3b3;
+}
+
+.emotion-7[aria-disabled=true],
+.emotion-7 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-8 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: not-allowed;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-8,
+.emotion-8:hover,
+.emotion-8:visited,
+.emotion-8 .noop {
+  background-color: #3A5DFF;
+}
+
+.emotion-8:hover,
+.emotion-8 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #6088FE;
+}
+
+.emotion-8[aria-disabled=true],
+.emotion-8 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+<form
+  action=""
+  className="emotion-0"
+  method="post"
+  onSubmit={[Function]}
+>
+  <div
+    className="emotion-1"
+  >
+    <label
+      className="emotion-2"
+      htmlFor="newLabel"
+    >
+      Concept
+    </label>
+    <div
+      className="emotion-3"
+    >
+      <input
+        autoComplete="off"
+        autoFocus={true}
+        className="emotion-4"
+        disabled={false}
+        id="newLabel"
+        name="newLabel"
+        onChange={[Function]}
+        type="text"
+        value="cat"
+      />
+    </div>
+    <div
+      className="emotion-5"
+    >
+       
+    </div>
+  </div>
+  <div
+    className="emotion-6"
+  >
+    <a
+      className="emotion-7"
+      href="/76917058-b147-4556-987a-0a0f11e46d9b/datasets/4b0b10a8-cec1-155c-b12f-ee2bc8787e06"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+    >
+      Cancel
+    </a>
+    <button
+      aria-disabled={true}
+      className="emotion-8"
+      onClick={[Function]}
+      type="submit"
+    >
+      Save Concept Changes
+    </button>
+  </div>
+</form>
+`;

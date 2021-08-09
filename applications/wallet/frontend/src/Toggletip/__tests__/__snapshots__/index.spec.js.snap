@@ -1,5 +1,101 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<Toggletip /> should open properly to the left 1`] = `
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
+  margin-left: 8px;
+}
+
+.emotion-0:hover div,
+.emotion-0:focus-within div {
+  visibility: visible;
+  opacity: 1;
+  -webkit-transition: all 0.5s ease 0.25s;
+  transition: all 0.5s ease 0.25s;
+}
+
+.emotion-0:hover button,
+.emotion-0:focus-within button {
+  color: #ffffff;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border: 0;
+  padding: 0;
+  background-color: transparent;
+  color: #808080;
+}
+
+.emotion-2 {
+  position: absolute;
+  right: -10px;
+  top: 28px;
+  color: #191919;
+  background-color: #ffffff;
+  border-radius: 2px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+  padding: 12px;
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  max-width: 400px;
+  visibility: hidden;
+  opacity: 0;
+  -webkit-transition: all 0.5s ease 0.25s;
+  transition: all 0.5s ease 0.25s;
+  z-index: 1;
+}
+
+.emotion-2:hover {
+  visibility: visible;
+  opacity: 1;
+}
+
+.emotion-3:before {
+  content: ' ';
+  position: absolute;
+  top: -6px;
+  right: 14px;
+  border-bottom: 6px solid #ffffff;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+}
+
+<div
+  className="emotion-0"
+>
+  <button
+    aria-details="LabelString"
+    aria-label="Label String"
+    className="emotion-1"
+    type="button"
+  >
+    <svg
+      data-file-name="help.svg"
+      height={20}
+    />
+  </button>
+  <div
+    className="emotion-2"
+    id="LabelString"
+    role="tooltip"
+  >
+    <div
+      className="emotion-3"
+    />
+    Toggle Tip
+  </div>
+</div>
+`;
+
 exports[`<Toggletip /> should open properly to the right 1`] = `
 .emotion-0 {
   display: -webkit-box;

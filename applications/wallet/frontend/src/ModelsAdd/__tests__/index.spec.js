@@ -1,6 +1,5 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
-import models from '../../Models/__mocks__/models'
 import modelTypes from '../../ModelTypes/__mocks__/modelTypes'
 import mockUser from '../../User/__mocks__/user'
 
@@ -11,7 +10,7 @@ import ModelsAdd from '..'
 const noop = () => () => {}
 
 const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
-const MODEL_ID = models.results[0].id
+const MODEL_ID = '621bf775-89d9-1244-9596-d6df43f1ede5'
 
 describe('<ModelsAdd />', () => {
   it('should render properly', async () => {
@@ -41,32 +40,33 @@ describe('<ModelsAdd />', () => {
         .props.onChange({ target: { value: '' } })
     })
 
-    // Select valid type
-    act(() => {
-      component.root
-        .findByProps({ label: 'Model Type' })
-        .props.onChange({ value: 'GCP_LABEL_DETECTION' })
-    })
-
-    // Input valid name
-    act(() => {
-      component.root
-        .findByProps({ id: 'name' })
-        .props.onChange({ target: { value: 'My New Model' } })
-    })
-
-    // Input valid module name
-    act(() => {
-      component.root
-        .findByProps({ id: 'moduleName' })
-        .props.onChange({ target: { value: 'my-module-name' } })
-    })
-
     // Input valid name
     act(() => {
       component.root
         .findByProps({ id: 'name' })
         .props.onChange({ target: { value: 'My New Model Really' } })
+    })
+
+    // Input valid description
+    act(() => {
+      component.root
+        .findByProps({ id: 'description' })
+        .props.onChange({ target: { value: 'A cool new description' } })
+    })
+
+    // Select model source
+    // act(() => {
+    //   component.root
+    //     .findAllByProps({ name: 'source' })[1]
+    //     .props.onClick({ value: 'UPLOAD' })
+    // })
+
+    // Select model type
+    act(() => {
+      component.root
+        .findAllByProps({ name: 'modelType' })[0]
+        // .props.onClick({ value: 'PYTORCH_MODEL_ARCHIVE' })
+        .props.onClick({ value: 'FACE_RECOGNITION' })
     })
 
     expect(component.toJSON()).toMatchSnapshot()
@@ -118,15 +118,16 @@ describe('<ModelsAdd />', () => {
         'X-CSRFToken': 'CSRF_TOKEN',
       },
       body: JSON.stringify({
-        type: 'GCP_LABEL_DETECTION',
-        name: 'My New Model Really',
-        moduleName: 'my-module-name',
+        name: 'my-new-model-really',
+        description: 'A cool new description',
+        // type: 'PYTORCH_MODEL_ARCHIVE',
+        type: 'FACE_RECOGNITION',
       }),
     })
 
     expect(mockFn).toHaveBeenCalledWith(
-      `/[projectId]/models?action=add-model-success&modelId=${MODEL_ID}`,
-      `/${PROJECT_ID}/models`,
+      `/[projectId]/models/[modelId]?action=add-model-success`,
+      `/${PROJECT_ID}/models/${MODEL_ID}`,
     )
   })
 })

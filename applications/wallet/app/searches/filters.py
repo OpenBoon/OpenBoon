@@ -498,13 +498,13 @@ class SimilarityFilter(BaseFilter):
 class LabelFilter(BaseFilter):
 
     type = 'label'
-    required_agg_keys = ['modelId']
+    required_agg_keys = ['datasetId']
     required_query_keys = ['labels']
     optional_keys = ['order', 'minimumCount']
     agg_prefix = ''
 
     def get_es_agg(self):
-        modelId = self.data['modelId']
+        dataset_id = self.data['datasetId']
         order = self.data.get('order')
         minimumCount = self.data.get('minimumCount')
         agg = {
@@ -515,7 +515,7 @@ class LabelFilter(BaseFilter):
                     "query": {
                         "bool": {
                             "filter": [
-                                {"term": {"labels.modelId": modelId}}]
+                                {"term": {"labels.datasetId": dataset_id}}]
                         }
                     }
                 }
@@ -526,10 +526,10 @@ class LabelFilter(BaseFilter):
                         "path": "labels"
                     },
                     "aggs": {
-                        "modelId": {
+                        "datasetId": {
                             "filter": {
                                 "term": {
-                                    "labels.modelId": modelId
+                                    "labels.datasetId": dataset_id
                                 }
                             },
                             "aggs": {
@@ -545,13 +545,13 @@ class LabelFilter(BaseFilter):
                 }
             }}
         if order:
-            agg['aggs'][self.name]['aggs']['modelId']['aggs'][f'nested_{self.name}']['terms']['order'] = {'_count': order}  # noqa
+            agg['aggs'][self.name]['aggs']['datasetId']['aggs'][f'nested_{self.name}']['terms']['order'] = {'_count': order}  # noqa
         if minimumCount:
-            agg['aggs'][self.name]['aggs']['modelId']['aggs'][f'nested_{self.name}']['terms']['min_doc_count'] = minimumCount  # noqa
+            agg['aggs'][self.name]['aggs']['datasetId']['aggs'][f'nested_{self.name}']['terms']['min_doc_count'] = minimumCount  # noqa
         return agg
 
     def get_es_query(self):
-        modelId = self.data['modelId']
+        dataset_id = self.data['datasetId']
         labels = self.data['values']['labels']
         # Cheat, in case they forget the scope look for all of them
         scope = self.data['values'].get('scope', 'all')
@@ -569,7 +569,7 @@ class LabelFilter(BaseFilter):
                             "query": {
                                 "bool": {
                                     "filter": [
-                                        {"terms": {"labels.modelId": [modelId]}},
+                                        {"terms": {"labels.datasetId": [dataset_id]}},
                                         {"terms": {'labels.label': labels}},
                                         {"terms": {'labels.scope': scope}}
                                     ]
@@ -587,7 +587,7 @@ class LabelFilter(BaseFilter):
         count = response['hits']['total']['value']
         nested_agg_name = f'nested#{self.name}'
         terms_agg_name = f'sterms#nested_{self.name}'
-        data = response['aggregations'][nested_agg_name]['filter#modelId'][terms_agg_name]
+        data = response['aggregations'][nested_agg_name]['filter#datasetId'][terms_agg_name]
         return {'count': count, 'results': data}
 
 

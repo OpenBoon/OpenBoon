@@ -7,7 +7,8 @@ from botocore.exceptions import ClientError
 
 from boonai_analysis.aws.util import TranscribeCompleteWaiter, AwsEnv
 from boonai_analysis.utils.prechecks import Prechecks
-from boonflow import file_storage, FileTypes, Argument, AssetProcessor, BoonEnv
+from boonflow import file_storage, FileTypes, Argument, AssetProcessor
+from boonflow.env import BoonEnv
 from boonflow.analysis import ContentDetectionAnalysis
 from boonflow.audio import has_audio_channel
 from boonflow.proxy import get_audio_proxy, get_video_proxy

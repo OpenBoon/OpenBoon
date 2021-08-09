@@ -1,17 +1,21 @@
 import logging
-import tempfile
 import unittest
 import uuid
 from unittest.mock import patch
 
 import pytest
 
-from boonsdk import BoonClient, ModelType, Model
+from boonsdk import BoonClient, ModelType, Model, DatasetType
 from boonsdk.app import ModelApp
 from .util import get_boon_app
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
+
+
+class FakeResponse:
+    def raise_for_status(self):
+        pass
 
 
 class ModelAppTests(unittest.TestCase):
@@ -23,7 +27,7 @@ class ModelAppTests(unittest.TestCase):
         self.model_data = {
             'id': 'A5BAFAAA-42FD-45BE-9FA2-92670AB4DA80',
             'name': 'test',
-            'type': 'TF_UPLOADED_CLASSIFIER',
+            'type': 'TF_SAVED_MODEL',
             'fileId': '/abc/123/345/foo.zip'
         }
 
@@ -43,6 +47,18 @@ class ModelAppTests(unittest.TestCase):
         model = self.app.models.get_model(str(uuid.uuid4()))
         self.assert_model(model)
 
+    @patch.object(BoonClient, 'delete')
+    def test_delete_model(self, del_patch):
+        del_patch.return_value = {'success': True}
+        model = Model({
+            'id': '12345',
+            'type': 'TF_CLASSIFIER',
+            'name': 'foo',
+            'uploadable': False
+        })
+        rsp = self.app.models.delete_model(model)
+        assert rsp.get('success')
+
     @patch.object(BoonClient, 'post')
     def test_get_model_by_name(self, get_patch):
         get_patch.return_value = self.model_data
@@ -54,73 +70,33 @@ class ModelAppTests(unittest.TestCase):
         model_patch.return_value = Model({
             'id': '12345',
             'type': 'TF_CLASSIFIER',
-            'name': 'foo'
+            'name': 'foo',
+            'uploadable': False
         })
 
-        tmp_dir = tempfile.mkdtemp()
         pytest.raises(ValueError,
-                      self.app.models.upload_trained_model,
-                      '12345', tmp_dir, ["dog", "cat"])
+                      self.app.models.upload_pretrained_model, '12345', "/foo/model.mar")
 
     @patch.object(ModelApp, 'find_one_model')
-    @patch.object(BoonClient, 'send_file')
-    def test_upload_trained_model_existing_labels(self, upload_patch, model_patch):
-        upload_patch.return_value = {'category': 'LabelDetection'}
+    @patch.object(BoonClient, 'get')
+    @patch('requests.put')
+    @patch.object(BoonClient, 'post')
+    def test_upload_pretrained_model(self, post_patch, put_patch, get_patch, model_patch):
         model_patch.return_value = Model({
             'id': '12345',
-            'type': 'TF_UPLOADED_CLASSIFIER',
-            'name': 'foo'
+            'type': 'TORCH_MAR_CLASSIFIER',
+            'name': 'foo',
+            'uploadable': True
         })
+        get_patch.return_value = {
+            "uri": "http://foo/bar",
+            "mediaType": "application/zip"
+        }
+        post_patch.return_value = {"success": True}
 
-        tmp_dir = tempfile.mkdtemp()
-        with open(f'{tmp_dir}/labels.txt', "w") as fp:
-            fp.write("cat\n")
-            fp.write("dog\n")
-
-        module = self.app.models.upload_trained_model('12345', tmp_dir, None)
-        assert module.category == 'LabelDetection'
-
-    @patch.object(ModelApp, 'find_one_model')
-    @patch.object(BoonClient, 'send_file')
-    def test_upload_trained_model(self, upload_patch, model_patch):
-        upload_patch.return_value = {'category': 'LabelDetection'}
-        model_patch.return_value = Model({
-            'id': '12345',
-            'type': 'TF_UPLOADED_CLASSIFIER',
-            'name': 'foo'
-        })
-
-        tmp_dir = tempfile.mkdtemp()
-        module = self.app.models.upload_trained_model('12345', tmp_dir, ["dog", "cat"])
-        assert module.category == 'LabelDetection'
-
-    @patch.object(ModelApp, 'find_one_model')
-    @patch.object(BoonClient, 'send_file')
-    def test_upload_trained_model_directory_tf(self, post_patch, model_patch):
-        post_patch.return_value = {'category': 'LabelDetection'}
-        model_patch.return_value = Model({
-            'id': '12345',
-            'type': 'TF_UPLOADED_CLASSIFIER',
-            'name': 'foo'
-        })
-
-        tmp_dir = tempfile.mkdtemp()
-        module = self.app.models.upload_trained_model("12345", tmp_dir, ["dog", "cat"])
-        assert module.category == 'LabelDetection'
-
-    @patch.object(ModelApp, 'find_one_model')
-    @patch.object(BoonClient, 'send_file')
-    def test_upload_trained_model_directory_pth(self, post_patch, model_patch):
-        post_patch.return_value = {'category': 'LabelDetection'}
-        model_patch.return_value = Model({
-            'id': '12345',
-            'type': 'PYTORCH_UPLOADED_CLASSIFIER',
-            'name': 'foo'
-        })
-
-        tmp_dir = tempfile.mkdtemp()
-        module = self.app.models.upload_trained_model("12345", tmp_dir, ["dog", "cat"])
-        assert module.category == 'LabelDetection'
+        put_patch.return_value = FakeResponse()
+        res = self.app.models.upload_pretrained_model('12345', __file__)
+        assert res['success'] is True
 
     @patch.object(BoonClient, 'post')
     def test_find_one_model(self, post_patch):
@@ -183,50 +159,6 @@ class ModelAppTests(unittest.TestCase):
         assert job_data['id'] == mod.id
         assert job_data['name'] == mod.name
 
-    def assert_model(self, model):
-        assert self.model_data['id'] == model.id
-        assert self.model_data['name'] == model.name
-        assert self.model_data['type'] == model.type.name
-        assert self.model_data['fileId'] == model.file_id
-
-    @patch.object(BoonClient, 'get')
-    def test_get_label_counts(self, get_patch):
-        value = {
-            'dog': 1,
-            'cat': 2
-        }
-        get_patch.return_value = value
-        rsp = self.app.models.get_label_counts(Model({'id': 'foo'}))
-        assert value == rsp
-
-    @patch.object(BoonClient, 'put')
-    def test_rename_label(self, put_patch):
-        value = {
-            'updated': 1
-        }
-        put_patch.return_value = value
-        rsp = self.app.models.rename_label(Model({'id': 'foo'}), 'dog', 'cat')
-        assert value == rsp
-
-    @patch.object(BoonClient, 'delete')
-    def test_delete_label(self, put_patch):
-        value = {
-            'updated': 1
-        }
-        put_patch.return_value = value
-        rsp = self.app.models.delete_label(Model({'id': 'foo'}), 'dog')
-        assert value == rsp
-
-    @patch.object(BoonClient, 'get')
-    def test_download_labeled_images(self, get_patch):
-        mid = str(uuid.uuid4())
-        raw = {'id': mid, 'type': 'TF_CLASSIFIER'}
-        model = Model(raw)
-        get_patch.return_value = raw
-        dl = self.app.models.download_labeled_images(model, 'objects_coco', '/tmp/dstest')
-        assert '/tmp/dstest' == dl.dst_dir
-        assert mid == dl.model.id
-
     @patch.object(BoonClient, 'get')
     def test_get_model_type_info(self, get_patch):
         raw = {
@@ -255,7 +187,8 @@ class ModelAppTests(unittest.TestCase):
             'objective': 'label detection',
             'provider': 'boonai',
             'minConcepts': 1,
-            'minExamples': 1
+            'minExamples': 1,
+            'datasetType': 'Classification'
         }
         get_patch.return_value = [raw]
 
@@ -266,6 +199,7 @@ class ModelAppTests(unittest.TestCase):
         assert props.provider == 'boonai'
         assert props.min_concepts == 1
         assert props.min_examples == 1
+        assert props.dataset_type == DatasetType.Classification
 
     @patch.object(BoonClient, 'get')
     def test_export_trained_model(self, get_patch):
@@ -313,3 +247,9 @@ class ModelAppTests(unittest.TestCase):
         model = Model({'id': '12345', 'type': 'TF_CLASSIFIER'})
         rsp = self.app.models.set_training_args(model, {"n_clusters": 5})
         assert rsp == {"n_clusters": 5}
+
+    def assert_model(self, model):
+        assert self.model_data['id'] == model.id
+        assert self.model_data['name'] == model.name
+        assert self.model_data['type'] == model.type.name
+        assert self.model_data['fileId'] == model.file_id

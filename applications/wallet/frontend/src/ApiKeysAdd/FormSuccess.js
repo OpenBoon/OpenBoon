@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react'
+import { useEffect } from 'react'
 import PropTypes from 'prop-types'
 import Link from 'next/link'
 
@@ -6,10 +6,10 @@ import { spacing, colors, constants, typography } from '../Styles'
 
 import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
 import Button, { VARIANTS } from '../Button'
+import ButtonCopy from '../Button/Copy'
 import ButtonGroup from '../Button/Group'
 import SectionTitle from '../SectionTitle'
 
-import { onCopy } from '../Copy/helpers'
 import { slugify } from '../ModelsAdd/helpers'
 
 const ApiKeysAddFormSuccess = ({
@@ -19,11 +19,17 @@ const ApiKeysAddFormSuccess = ({
   name,
   onReset,
 }) => {
-  const copyRef = useRef()
-
   useEffect(() => {
-    onCopy({ copyRef })
-  }, [])
+    const copy = async () => {
+      try {
+        await navigator.clipboard.writeText(JSON.stringify(apikey))
+      } catch (e) {
+        // ignore
+      }
+    }
+
+    copy()
+  }, [apikey])
 
   return (
     <div>
@@ -54,13 +60,12 @@ const ApiKeysAddFormSuccess = ({
       <div
         css={{
           display: 'flex',
-          alignItems: 'center',
+          alignItems: 'flex-start',
           paddingTop: spacing.normal,
           paddingBottom: spacing.normal,
         }}
       >
         <textarea
-          ref={copyRef}
           defaultValue={JSON.stringify(apikey)}
           rows="5"
           css={{
@@ -83,23 +88,18 @@ const ApiKeysAddFormSuccess = ({
             paddingRight: spacing.small,
           }}
         >
-          <Button
-            variant={VARIANTS.LINK}
-            style={{
-              '&:active': {
-                opacity: 0,
-                transition: 'opacity .3s ease',
-              },
-            }}
-            onClick={() => onCopy({ copyRef })}
-          >
-            Copy Key
-          </Button>
+          <ButtonCopy
+            title="API Key"
+            value={JSON.stringify(apikey)}
+            offset={50}
+          />
+
           <span css={{ padding: spacing.small, color: colors.structure.steel }}>
             |
           </span>
+
           <Button
-            variant={VARIANTS.LINK}
+            variant={VARIANTS.ICON}
             download={`${slugify({ value: name })}.json`}
             href={`data:application/octet-stream;charset=utf-8;base64,${window.btoa(
               JSON.stringify(apikey),

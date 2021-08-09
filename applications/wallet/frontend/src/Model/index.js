@@ -1,20 +1,22 @@
+import { useState } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 
 import { spacing } from '../Styles'
 
 import Breadcrumbs from '../Breadcrumbs'
+import FlashMessageErrors from '../FlashMessage/Errors'
 import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
 import SuspenseBoundary, { ROLES } from '../SuspenseBoundary'
+import FetchAhead from '../Fetch/Ahead'
 
-import LabelEdit from '../LabelEdit'
-
-import ModelDetails from './Details'
+import ModelContent from './Content'
 
 const Model = () => {
+  const [errors, setErrors] = useState({})
+
   const {
-    pathname,
-    query: { projectId, modelId, edit = '', action },
+    query: { projectId, action },
   } = useRouter()
 
   return (
@@ -30,23 +32,47 @@ const Model = () => {
         ]}
       />
 
-      {!!action && (
-        <div css={{ display: 'flex', paddingBottom: spacing.normal }}>
+      <FlashMessageErrors
+        errors={errors}
+        styles={{ paddingTop: spacing.base, paddingBottom: spacing.normal }}
+      />
+
+      {['add-model-success', 'edit-model-success'].includes(action) && (
+        <div
+          css={{
+            display: 'flex',
+            paddingTop: spacing.base,
+            paddingBottom: spacing.normal,
+          }}
+        >
           <FlashMessage variant={FLASH_VARIANTS.SUCCESS}>
-            {action === 'edit-label-success' && 'Label updated.'}
-            {action === 'delete-label-success' && 'Label deleted.'}
-            {action === 'remove-asset-success' &&
-              'Asset has been removed from set.'}
+            Model {action === 'add-model-success' ? 'created' : 'updated'}.
+          </FlashMessage>
+        </div>
+      )}
+
+      {['link-dataset-success', 'unlink-dataset-success'].includes(action) && (
+        <div
+          css={{
+            display: 'flex',
+            paddingTop: spacing.base,
+            paddingBottom: spacing.normal,
+          }}
+        >
+          <FlashMessage variant={FLASH_VARIANTS.SUCCESS}>
+            Dataset {action === 'link-dataset-success' ? 'linked' : 'unlinked'}.
           </FlashMessage>
         </div>
       )}
 
       <SuspenseBoundary role={ROLES.ML_Tools}>
-        <ModelDetails key={pathname} />
+        <FetchAhead
+          url={`/api/v1/projects/${projectId}/datasets/dataset_types/`}
+        />
 
-        {pathname === '/[projectId]/models/[modelId]' && edit && (
-          <LabelEdit projectId={projectId} modelId={modelId} label={edit} />
-        )}
+        <FetchAhead url={`/api/v1/projects/${projectId}/datasets/`} />
+
+        <ModelContent setErrors={setErrors} />
       </SuspenseBoundary>
     </>
   )

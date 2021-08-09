@@ -39,20 +39,20 @@ class TrainingSetDownloader:
     SET_VALIDATION = "validate"
     """Directory name for test images"""
 
-    def __init__(self, app,  model, style, dst_dir, validation_split=0.2):
+    def __init__(self, app, dataset, style, dst_dir, validation_split=0.2):
         """
         Create a new TrainingImageDownloader.
 
         Args:
             app: (BoonApp): A BoonApp instance.
-            model: (Model): A Model or unique Model ID.
+            dataset: (DataSet): A DataSet or unique Dataset ID.
             style: (str): The output style: labels_std, objects_keras, objects_coco
             dst_dir (str): A destination directory to write the files into.
             validation_split (float): The number of images in the training
                 set for every image in the validation set.
         """
         self.app = app
-        self.model = app.models.get_model(model)
+        self.dataset = app.datasets.get_dataset(dataset)
         self.style = style
         self.dst_dir = dst_dir
         self.validation_split = validation_split
@@ -69,7 +69,7 @@ class TrainingSetDownloader:
                     'query': {
                         'bool': {
                             'must': [
-                                {'term': {'labels.modelId': self.model.id}},
+                                {'term': {'labels.datasetId': self.dataset.id}},
                                 {'term': {'labels.scope': 'TRAIN'}}
                             ]
                         }
@@ -82,7 +82,7 @@ class TrainingSetDownloader:
 
     def build(self, pool=None):
         """
-        Downloads the files labeled for training a Model to local disk.
+        Downloads the files labeled for training a Dataset to local disk.
 
         Args:
             labels_std, objects_keras, objects_coco
@@ -288,7 +288,7 @@ class TrainingSetDownloader:
             train/<label>/<img file>
             validate/<label>/<img file>
         """
-        self.labels = self.app.models.get_label_counts(self.model)
+        self.labels = self.app.datasets.get_label_counts(self.dataset)
 
         # This is layout #1, we need to add darknet layout for object detection.
         dirs = (self.SET_TRAIN, self.SET_VALIDATION)
@@ -336,7 +336,7 @@ class TrainingSetDownloader:
 
     def _get_labels(self, asset):
         """
-        Get the current model label for the given asset.
+        Get the current label for the given asset.
 
         Args:
             asset (Asset): The asset to check.
@@ -350,7 +350,7 @@ class TrainingSetDownloader:
             return []
         result = []
         for ds_label in ds_labels:
-            if ds_label.get('modelId') == self.model.id:
+            if ds_label.get('datasetId') == self.dataset.id:
                 result.append(ds_label)
         return result
 

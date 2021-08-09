@@ -2,7 +2,7 @@ version: "3.6"
 services:
   # Postgres instance used for local development servers.
   postgres:
-    image: "postgres:9.6.21"
+    image: "postgres:9.6.22"
     ports:
       - "5432:5432"
     volumes:
@@ -64,6 +64,19 @@ services:
       PUBSUB_EMULATOR_HOST: pubsub:8085
       GCLOUD_PROJECT: localdev
       SWIVEL_SUBSCRIPTION: webhooks
+    depends_on:
+      - pubsub
+
+  tugboat:
+    image: boonai/tugboat:latest
+    ports:
+      - "9393:9393"
+    build:
+      context: services/tugboat
+    environment:
+      PUBSUB_EMULATOR_HOST: pubsub:8085
+      GCLOUD_PROJECT: localdev
+      PORT: 9393
     depends_on:
       - pubsub
 
@@ -274,6 +287,14 @@ services:
       - boonsdk
     build:
       context: containers/boonflow
+    command: echo
+
+  boonfunction:
+    image: boonai/boonfunction:latest
+    depends_on:
+      - boonflow
+    build:
+      context: containers/boonfunction
     command: echo
 
   boondocks:

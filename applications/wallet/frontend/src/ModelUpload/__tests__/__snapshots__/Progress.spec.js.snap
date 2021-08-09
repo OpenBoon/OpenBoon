@@ -1,0 +1,453 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ModelUploadProgress /> should render properly when it has failed 1`] = `
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 470px;
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.emotion-1 {
+  color: #b3b3b3;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 16px;
+  padding-bottom: 24px;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  padding-left: 16px;
+}
+
+.emotion-4 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  font-size: 17px;
+  line-height: 20px;
+  padding-bottom: 4px;
+}
+
+.emotion-5 {
+  color: #808080;
+  font-family: Roboto Condensed;
+}
+
+.emotion-6 {
+  padding-bottom: 16px;
+}
+
+.emotion-7 {
+  width: 500px;
+  height: 16px;
+  border-radius: 14px;
+  background-color: #4a4a4a;
+  overflow: hidden;
+}
+
+.emotion-8 {
+  width: 250px;
+  height: 16px;
+  background-color: #c92300;
+}
+
+.emotion-9 {
+  color: #c92300;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  font-family: Roboto Condensed;
+  padding-top: 8px;
+}
+
+.emotion-10 {
+  padding-left: 8px;
+}
+
+.emotion-11 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.emotion-11 button,
+.emotion-11 a {
+  margin-right: 16px;
+}
+
+.emotion-11 button:last-child,
+.emotion-11 a:last-child {
+  margin-right: 0;
+}
+
+.emotion-12 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-12,
+.emotion-12:hover,
+.emotion-12:visited,
+.emotion-12 .noop {
+  background-color: #808080;
+}
+
+.emotion-12:hover,
+.emotion-12 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #b3b3b3;
+}
+
+.emotion-12[aria-disabled=true],
+.emotion-12 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+<form
+  action=""
+  className="emotion-0"
+  method="post"
+  onSubmit={[Function]}
+>
+  <div
+    className="emotion-1"
+  >
+    Uploading:
+  </div>
+  <div
+    className="emotion-2"
+  >
+    <svg
+      data-file-name="file.svg"
+      height={33}
+    />
+    <div
+      className="emotion-3"
+    >
+      <div
+        className="emotion-4"
+      >
+        model.zip
+      </div>
+      <div
+        className="emotion-5"
+      >
+        117.7 MB
+      </div>
+    </div>
+  </div>
+  <div
+    className="emotion-6"
+  >
+    <div
+      className="emotion-7"
+    >
+      <div
+        className="emotion-8"
+      />
+    </div>
+    <div
+      className="emotion-9"
+    >
+      <svg
+        data-file-name="warning.svg"
+        height={18}
+      />
+      <div
+        className="emotion-10"
+      >
+        Upload Failed
+      </div>
+    </div>
+  </div>
+  <div
+    className="emotion-11"
+  >
+    <button
+      className="emotion-12"
+      onClick={[Function]}
+      type="button"
+    >
+      Retry
+    </button>
+  </div>
+</form>
+`;
+
+exports[`<ModelUploadProgress /> should render properly when it has succeeded 1`] = `
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 470px;
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.emotion-1 {
+  color: #b3b3b3;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 16px;
+  padding-bottom: 24px;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  padding-left: 16px;
+}
+
+.emotion-4 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  font-size: 17px;
+  line-height: 20px;
+  padding-bottom: 4px;
+}
+
+.emotion-5 {
+  color: #808080;
+  font-family: Roboto Condensed;
+}
+
+.emotion-6 {
+  padding-bottom: 16px;
+}
+
+.emotion-7 {
+  width: 500px;
+  height: 16px;
+  border-radius: 14px;
+  background-color: #4a4a4a;
+  overflow: hidden;
+}
+
+.emotion-8 {
+  width: 500px;
+  height: 16px;
+  background-color: #009f22;
+  -webkit-transition: width 1s;
+  transition: width 1s;
+}
+
+.emotion-9 {
+  color: #009f22;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  font-family: Roboto Condensed;
+  padding-top: 8px;
+}
+
+.emotion-10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.emotion-10 button,
+.emotion-10 a {
+  margin-right: 16px;
+}
+
+.emotion-10 button:last-child,
+.emotion-10 a:last-child {
+  margin-right: 0;
+}
+
+.emotion-11 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: not-allowed;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-11,
+.emotion-11:hover,
+.emotion-11:visited,
+.emotion-11 .noop {
+  background-color: #808080;
+}
+
+.emotion-11:hover,
+.emotion-11 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #b3b3b3;
+}
+
+.emotion-11[aria-disabled=true],
+.emotion-11 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+<form
+  action=""
+  className="emotion-0"
+  method="post"
+  onSubmit={[Function]}
+>
+  <div
+    className="emotion-1"
+  >
+    Uploading:
+  </div>
+  <div
+    className="emotion-2"
+  >
+    <svg
+      data-file-name="file.svg"
+      height={33}
+    />
+    <div
+      className="emotion-3"
+    >
+      <div
+        className="emotion-4"
+      >
+        model.zip
+      </div>
+      <div
+        className="emotion-5"
+      >
+        117.7 MB
+      </div>
+    </div>
+  </div>
+  <div
+    className="emotion-6"
+  >
+    <div
+      className="emotion-7"
+    >
+      <div
+        className="emotion-8"
+      />
+    </div>
+    <div
+      className="emotion-9"
+    >
+      100
+      % Complete
+    </div>
+  </div>
+  <div
+    className="emotion-10"
+  >
+    <button
+      aria-disabled={true}
+      className="emotion-11"
+      onClick={[Function]}
+      type="button"
+    >
+      Finishing...
+    </button>
+  </div>
+</form>
+`;

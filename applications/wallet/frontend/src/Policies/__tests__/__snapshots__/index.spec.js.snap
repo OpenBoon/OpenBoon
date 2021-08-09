@@ -179,7 +179,8 @@ exports[`<Policies /> should render properly 1`] = `
 .emotion-14 path {
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
-  opacity: 100;
+  opacity: 1;
+  fill: #ffffff;
 }
 
 .emotion-15 {
@@ -309,7 +310,7 @@ exports[`<Policies /> should render properly 1`] = `
         By accepting and clicking the "Continue" button you confirm
         that you have read and agree with Boon AI's 
         <a
-          href="/policies/20210211/terms-of-use.pdf"
+          href="/policies/20210726/terms-of-use.pdf"
           rel="noopener noreferrer"
           target="_blank"
         >
@@ -317,7 +318,7 @@ exports[`<Policies /> should render properly 1`] = `
         </a>
          and 
         <a
-          href="/policies/20210211/privacy-policy.pdf"
+          href="/policies/20210726/privacy-policy.pdf"
           rel="noopener noreferrer"
           target="_blank"
         >

@@ -4,7 +4,7 @@ import string
 
 from botocore.exceptions import ClientError
 
-from boonflow.base import BoonEnv
+from boonflow.env import BoonEnv
 from boonai_analysis.aws.util import AwsEnv
 
 logger = logging.getLogger(__name__)

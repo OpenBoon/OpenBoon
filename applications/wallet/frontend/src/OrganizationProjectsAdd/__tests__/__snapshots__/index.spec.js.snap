@@ -92,6 +92,11 @@ Array [
   margin-right: 16px;
 }
 
+.emotion-7 button:last-child,
+.emotion-7 a:last-child {
+  margin-right: 0;
+}
+
 .emotion-8 {
   -webkit-flex: 0;
   -ms-flex: 0;

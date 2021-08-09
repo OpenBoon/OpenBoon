@@ -23,6 +23,16 @@ export const COLORS = [
   colors.signal.grass.base,
 ]
 
+let ignore = false
+
+export const getIgnore = () => {
+  return ignore
+}
+
+export const setIgnore = ({ value }) => {
+  ignore = value
+}
+
 export const formatPaddedSeconds = ({ seconds: s }) => {
   const seconds = Number.isFinite(s) ? s : 0
 
@@ -110,11 +120,13 @@ export const getRulerLayout = ({ length, width }) => {
   return { halfSeconds, majorStep }
 }
 
-export const gotoCurrentTime = ({ videoRef, start }) => () => {
-  videoRef.current.pause()
-  // eslint-disable-next-line no-param-reassign
-  videoRef.current.currentTime = start
-}
+export const gotoCurrentTime =
+  ({ videoRef, start }) =>
+  () => {
+    videoRef.current.pause()
+    // eslint-disable-next-line no-param-reassign
+    videoRef.current.currentTime = start
+  }
 
 const getAdjacentHits = ({ currentTime, timelines, settings }) => {
   const sortedHits = filterTimelines({ timelines, settings })
@@ -143,57 +155,45 @@ const getAdjacentHits = ({ currentTime, timelines, settings }) => {
   }
 }
 
-export const gotoPreviousHit = ({ videoRef, timelines, settings }) => () => {
-  videoRef.current.pause()
+export const gotoPreviousHit =
+  ({ videoRef, timelines, settings }) =>
+  () => {
+    videoRef.current.pause()
 
-  const { currentTime } = videoRef.current
+    const { currentTime } = videoRef.current
 
-  const { previousHit } = getAdjacentHits({ currentTime, timelines, settings })
+    const { previousHit } = getAdjacentHits({
+      currentTime,
+      timelines,
+      settings,
+    })
 
-  // eslint-disable-next-line no-param-reassign
-  videoRef.current.currentTime = previousHit || 0
-}
+    // eslint-disable-next-line no-param-reassign
+    videoRef.current.currentTime = previousHit || 0
+  }
 
-export const gotoNextHit = ({ videoRef, timelines, settings }) => () => {
-  videoRef.current.pause()
+export const gotoNextHit =
+  ({ videoRef, timelines, settings }) =>
+  () => {
+    videoRef.current.pause()
 
-  const { currentTime, duration } = videoRef.current
+    const { currentTime, duration } = videoRef.current
 
-  const { nextHit } = getAdjacentHits({ currentTime, timelines, settings })
+    const { nextHit } = getAdjacentHits({ currentTime, timelines, settings })
 
-  // eslint-disable-next-line no-param-reassign
-  videoRef.current.currentTime = nextHit || duration
-}
+    // eslint-disable-next-line no-param-reassign
+    videoRef.current.currentTime = nextHit || duration
+  }
 
-export const getNextScrollLeft = ({ videoRef, rulerRef, zoom, nextZoom }) => {
-  const { currentTime = 0, duration = 0 } = videoRef.current || {}
-  const { scrollWidth = 0, scrollLeft = 0, offsetWidth = 0 } =
-    rulerRef.current || {}
-
-  const playheadLeftOffset = (currentTime / duration) * scrollWidth - scrollLeft
-
-  const isPlayheadOutOfView =
-    playheadLeftOffset < 0 || playheadLeftOffset > offsetWidth
-
-  const centeredPoint = (scrollLeft + offsetWidth / 2) / scrollWidth
-
-  const nextScrollWidth = (scrollWidth / zoom) * nextZoom + GUIDE_WIDTH / 2
-
-  const nextScrollLeft = isPlayheadOutOfView
-    ? centeredPoint * nextScrollWidth - offsetWidth / 2
-    : (currentTime / duration) * nextScrollWidth - playheadLeftOffset
-
-  return nextScrollLeft
-}
-
-export const getScrollbarScrollableWidth = ({ scrollbarRef, zoom }) => {
+export const getScrollbarScrollableWidth = ({
+  scrollbarRef,
+  scrollbarTrackRef,
+}) => {
   const { width: scrollbarWidth = 0 } =
     scrollbarRef.current?.getBoundingClientRect() || {}
 
-  const scrollbarTrackWidth = scrollbarWidth * (zoom / 100)
+  const { width: trackWidth = 0 } =
+    scrollbarTrackRef.current?.getBoundingClientRect() || {}
 
-  // the max number of pixels the scrollbar thumb can travel
-  const scrollbarScrollableWidth = scrollbarTrackWidth - scrollbarWidth
-
-  return scrollbarScrollableWidth
+  return trackWidth - scrollbarWidth
 }

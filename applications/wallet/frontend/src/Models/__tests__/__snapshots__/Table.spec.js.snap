@@ -305,7 +305,7 @@ exports[`<ModelsTable /> should render properly with models 1`] = `
                 </a>
               </td>
               <td>
-                ZVI_FACE_RECOGNITION
+                Face Recognition
               </td>
               <td>
                 boonai-console_face_recognition-face-recognition
@@ -383,7 +383,7 @@ exports[`<ModelsTable /> should render properly with models 1`] = `
                 </a>
               </td>
               <td>
-                Tensorflow CNN Classifier
+                K-Nearest Neighbors Classifier
               </td>
               <td>
                 Gundam
@@ -422,7 +422,7 @@ exports[`<ModelsTable /> should render properly with models 1`] = `
                 </a>
               </td>
               <td>
-                Tensorflow CNN Classifier
+                Tensorflow Transfer Learning Classifier
               </td>
               <td>
                 Location
@@ -537,29 +537,6 @@ exports[`<ModelsTable /> should render properly without models 1`] = `
   background-color: #2e2e2e;
 }
 
-.emotion-6 tr:hover {
-  background-color: #4a4a4a;
-  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
-}
-
-.emotion-6 tr:hover .actions {
-  color: #b3b3b3;
-}
-
-.emotion-6 tr:hover td {
-  border: 1px solid #808080;
-  border-left: 0;
-  border-right: 0;
-}
-
-.emotion-6 tr:hover td:first-of-type {
-  border-left: 1px solid #808080;
-}
-
-.emotion-6 tr:hover td:last-of-type {
-  border-right: 1px solid #808080;
-}
-
 .emotion-6 td {
   max-width: calc(100vw / 3);
   overflow: hidden;
@@ -639,7 +616,6 @@ exports[`<ModelsTable /> should render properly without models 1`] = `
 
 .emotion-15 {
   height: 100%;
-  pointer-events: none;
 }
 
 .emotion-16 {

@@ -79,14 +79,13 @@ class FieldUtility(object):
     def _get_labels_field_types(self, property_name, child_properties, client=None):
         """Adds labels to the field type map and sets the field type for each."""
         if not client:
-            logger.warning('No Client provided. Unable to retrieve models.')
+            logger.warning('No Client provided. Unable to retrieve datasets.')
             return {'labels': {}}
-        model_key_names = self._get_all_model_ids(client)
-        model_ids = {}
-        for model_id in model_key_names:
-            model_ids[model_id] = {'fieldType': 'label'}
-
-        return {'labels': model_ids}
+        dataset_key_names = self._get_all_dataset_ids(client)
+        dataset_ids = {}
+        for dataset_id in dataset_key_names:
+            dataset_ids[dataset_id] = {'fieldType': 'label'}
+        return {'labels': dataset_ids}
 
     def _get_analysis_schema(self, property_name, child_properties):
         """Return the special schema for a ZMLP Analysis Schema"""
@@ -97,13 +96,12 @@ class FieldUtility(object):
 
         return None
 
-    def _get_all_model_ids(self, client):
-        """Returns the model IDs for all models on the current project."""
-        path = '/api/v3/models/_search'
+    def _get_all_dataset_ids(self, client):
+        path = '/api/v3/datasets/_search'
         response = client.post(path, {})
         names = []
-        for model in response.get('list', []):
-            names.append(model['id'])
+        for dataset in response.get('list', []):
+            names.append(dataset['id'])
         return names
 
     def get_attribute_field_type(self, attribute, client):

@@ -35,10 +35,10 @@ Array [
 }
 
 .emotion-3 {
-  font-family: Roboto Mono;
-  font-size: 14px;
-  line-height: 18px;
-  color: #ffffff;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 19px;
+  color: #6088FE;
   padding-bottom: 16px;
 }
 

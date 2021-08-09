@@ -39,6 +39,7 @@ const OrganizationProjectsRow = ({
         <OrganizationProjectsMenu
           organizationId={organizationId}
           projectId={id}
+          name={name}
           revalidate={revalidate}
         />
       </td>

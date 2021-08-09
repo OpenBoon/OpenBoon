@@ -20,6 +20,7 @@ import boonai.archivist.domain.ProjectStorageLocator
 import boonai.archivist.domain.ProjectStorageSpec
 import boonai.archivist.service.IndexRoutingService
 import boonai.archivist.util.FileUtils
+import boonai.archivist.util.randomString
 import boonai.common.service.logging.LogAction
 import boonai.common.service.logging.LogObject
 import boonai.common.service.logging.warnEvent
@@ -39,6 +40,9 @@ import java.util.concurrent.TimeUnit
 import javax.annotation.PostConstruct
 import com.amazonaws.services.s3.model.CopyObjectRequest
 import com.amazonaws.services.s3.model.CopyObjectResult
+import java.io.FileInputStream
+import java.nio.file.Files
+import java.nio.file.StandardCopyOption
 
 @Configuration
 @Profile("aws")
@@ -93,15 +97,33 @@ class AwsProjectStorageService constructor(
         val path = spec.locator.getPath()
         val metadata = ObjectMetadata()
         metadata.contentType = spec.mimetype
-        metadata.contentLength = spec.size.toLong()
         metadata.userMetadata = mapOf("attrs" to Json.serializeToString(spec.attrs))
 
-        s3Client.putObject(
-            PutObjectRequest(
-                properties.bucket, path,
-                spec.stream, metadata
+        if (spec.stream is FileInputStream) {
+            metadata.contentLength = spec.stream.channel.size()
+            s3Client.putObject(
+                PutObjectRequest(
+                    properties.bucket, path,
+                    spec.stream, metadata
+                )
             )
-        )
+        } else {
+            // Need to do for large files
+            val tmpFile = Files.createTempFile(randomString(32), "data")
+            try {
+                Files.copy(spec.stream, tmpFile, StandardCopyOption.REPLACE_EXISTING)
+                metadata.contentLength = Files.size(tmpFile)
+
+                s3Client.putObject(
+                    PutObjectRequest(
+                        properties.bucket, path,
+                        FileInputStream(tmpFile.toFile()), metadata
+                    )
+                )
+            } finally {
+                Files.delete(tmpFile)
+            }
+        }
 
         logStoreEvent(spec)
 
@@ -144,7 +166,6 @@ class AwsProjectStorageService constructor(
     }
 
     override fun copy(src: String, dst: String): Long {
-        logger.info("Copying $src to $dst")
         val req = CopyObjectRequest(properties.bucket, src, properties.bucket, dst)
         val res: CopyObjectResult = s3Client.copyObject(req)
         return res.lastModifiedDate.time

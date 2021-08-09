@@ -2,7 +2,7 @@ from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from boonsdk import ModelType
+from boonsdk import ModelType, DatasetType, Model
 from boonsdk.client import BoonSdkNotFoundException
 
 from assets.utils import AssetBoxImager
@@ -238,7 +238,8 @@ class FaceViewSet(CamelCaseRendererMixin, BaseProjectViewSet):
         """Gives the list of labels for the face recognition  model and their usage count."""
         app = request.app
         model = self._get_model(app)
-        label_counts = app.models.get_label_counts(model)
+        dataset = app.datasets.get_dataset(model.dataset_id)
+        label_counts = app.datasets.get_label_counts(dataset)
         possible_labels = []
         for label in label_counts:
             possible_labels.append({'label': label,
@@ -252,5 +253,9 @@ class FaceViewSet(CamelCaseRendererMixin, BaseProjectViewSet):
         try:
             model = app.models.find_one_model(name=self.model_name)
         except BoonSdkNotFoundException:
-            model = app.models.create_model(self.model_name, ModelType.FACE_RECOGNITION)
+            dataset = app.datasets.create_dataset(self.model_name, DatasetType.FaceRecognition)
+            body = {'name': self.model_name,
+                    'type': ModelType.FACE_RECOGNITION,
+                    'datasetId': dataset.id}
+            model = Model(app.client.post("/api/v3/models", body))
         return model

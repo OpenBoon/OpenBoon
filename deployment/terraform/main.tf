@@ -371,6 +371,7 @@ module "reporter" {
 
 module "metrics" {
   source                       = "./modules/metrics"
+  project                      = var.project
   sql-instance-name            = module.postgres.instance-name
   sql-connection-name          = module.postgres.connection-name
   sql-service-account-key-date = module.postgres.sql-service-account-key-date
@@ -386,6 +387,7 @@ module "metrics" {
   django-log-level             = var.metrics-django-log-level
   log-requests                 = var.metrics-log-requests
   redis-host                   = module.redis.ip-address
+  metrics-pub-sub-topic        = module.archivist.pubsub-topic-name-metrics
 }
 
 module "swivel" {
@@ -394,6 +396,18 @@ module "swivel" {
   image-pull-secret = kubernetes_secret.dockerhub.metadata[0].name
   container-tag     = var.container-tag
 }
+
+module "tugboat" {
+  source                 = "./modules/tugboat"
+  container-cluster-name = module.gke-cluster.name
+  project                = var.project
+  image-pull-secret      = kubernetes_secret.dockerhub.metadata[0].name
+  container-tag          = var.container-tag
+  project-number         = var.project-number
+  pubsub-topic           = module.archivist.pubsub-topic-name-models
+  environment            = var.environment
+}
+
 
 module "project-reaper" {
   source                       = "./modules/project-reaper"

@@ -1,6 +1,6 @@
 package boonai.archivist.rest
 
-import boonai.archivist.domain.ApplyModulesToAssetRequest
+import boonai.archivist.domain.BuildZpsScriptRequest
 import boonai.archivist.domain.Pipeline
 import boonai.archivist.domain.PipelineFilter
 import boonai.archivist.domain.PipelineSpec
@@ -86,9 +86,10 @@ class PipelineController @Autowired constructor(
         return HttpUtils.deleted("pipelines", id, pipelineService.delete(id))
     }
 
+    @PreAuthorize("hasAuthority('AssetsImport')")
     @ApiOperation("Build a pipeline script to apply the given modules.")
-    @PostMapping(value = ["/api/v3/pipelines/resolver/_apply_modules_to_asset"])
-    fun resolveApplyModulesScript(@RequestBody req: ApplyModulesToAssetRequest): ZpsScript {
-        return zpsBuilderService.buildApplyModulesToAssetScript(req)
+    @PostMapping(value = ["/api/v3/pipelines/resolver/_build_script"])
+    fun resolveApplyModulesScript(@RequestBody req: BuildZpsScriptRequest): ZpsScript {
+        return zpsBuilderService.buildZpsScript(req)
     }
 }

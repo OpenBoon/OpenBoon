@@ -1,12 +1,14 @@
 import base64
 import binascii
 import datetime
+import io
 import json
 import logging
 import os
 import random
 import sys
 import time
+import re
 from io import IOBase, BytesIO
 from urllib.parse import urljoin
 
@@ -20,6 +22,21 @@ from .util import to_json
 logger = logging.getLogger(__name__)
 
 DEFAULT_SERVER = 'https://api.boonai.app'
+
+__all__ = [
+    'BoonClient',
+    'FileInputStream',
+    'to_json',
+    'BoonSdkConnectionException',
+    'BoonSdkException',
+    'BoonSdkRequestException',
+    'BoonSdkWriteException',
+    'BoonSdkSecurityException',
+    'BoonSdkInvalidRequestException',
+    'BoonSdkDuplicateException',
+    'BoonSdkNotFoundException',
+    'BoonClientException'
+]
 
 
 class BoonClient:
@@ -107,6 +124,26 @@ class BoonClient:
                 self.get_url(path), headers=self.headers(content_type=""),
                 data=f), True)
 
+    def send_data(self, path, data, size=None):
+        """
+        Send a BytesIO or StringIO to the given URI.  Optionally provide
+        the size which is passed on via the content-length header, otheriwse
+        the size will be auto-detected.
+
+        Args:
+            path (path): The URI fragment for the request.
+            data (io.BytesIO): The bytes to send.s
+
+        Returns:
+            dict: A dictionary which can be used to fetch the file.
+        """
+        reader = InputReader(data)
+        headers = self.headers(content_type="")
+        headers['Content-Length'] = str(size or sys.getsizeof(data))
+
+        return self.__handle_rsp(requests.post(
+            self.get_url(path), headers=headers, data=reader.read()), True)
+
     def upload_file(self, path, file, body={}, json_rsp=True):
         """
         Upload a single file and a request to the given endpoint path.
@@ -121,7 +158,7 @@ class BoonClient:
             dict: The response body of the request.
         """
         try:
-            post_files = [("file", (os.path.basename(file), open(file, 'rb')))]
+            post_files = [("file", (os.path.basename(file), FileInputStream(file, 'rb')))]
             if body is not None:
                 post_files.append(
                     ["body", (None, to_json(body), 'application/json')])
@@ -154,7 +191,7 @@ class BoonClient:
                         ("files", (os.path.basename(f.name), f)))
                 else:
                     post_files.append(
-                        ("files", (os.path.basename(f), open(f, 'rb'))))
+                        ("files", (os.path.basename(f), FileInputStream(f, 'rb'))))
 
             if body is not None:
                 post_files.append(
@@ -393,10 +430,20 @@ class BoonClient:
         """
         Returns the full URL including the configured server part.
         """
-        url = urljoin(self.server, path)
+        url = urljoin(self.get_server(), path)
         if logger.getEffectiveLevel() == logging.DEBUG:
             logger.debug("url: '%s' path: '%s' body: '%s'" % (url, path, body))
         return url
+
+    def get_server(self):
+        """
+        Return the server address.  This is here to be overriden by subclasses.  The
+        public 'server' propertly has been left in for backwards compat for now.
+
+        Returns:
+            str: The server URL
+        """
+        return self.server
 
     def headers(self, content_type="application/json"):
         """
@@ -440,7 +487,7 @@ class BoonClient:
         if not self.apikey:
             raise RuntimeError('Unable to make request, no ApiKey has been specified.')
         claims = {
-            'aud': self.server,
+            'aud': self.get_server(),
             'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=60),
             'accessKey': self.apikey['accessKey'],
         }
@@ -503,7 +550,7 @@ class BoonSdkRequestException(BoonClientException):
 
     @property
     def cause(self):
-        return self.__data["cause"]
+        return self.__data.get("cause")
 
     @property
     def endpoint(self):
@@ -514,7 +561,39 @@ class BoonSdkRequestException(BoonClientException):
         return self.__data["status"]
 
     def __str__(self):
-        return "<BoonSdkRequestException msg=%s>" % self.__data["message"]
+        return "<BoonSdkRequestException msg=%s>" % self.__data.get("message", "Unknown message")
+
+
+class FileInputStream:
+    """
+    A partially implemented File object which just supports reading the
+    entire file and then closing the file handle.
+    """
+    def __init__(self, filename, mode='rb'):
+        self.filename = filename
+        self.mode = mode
+
+    def read(self):
+        with open(self.filename, self.mode) as f:
+            return f.read()
+
+
+class InputReader:
+    """
+    Reads input from a file path, url, or file handle.
+    """
+    def __init__(self, obj):
+        self.obj = obj
+
+    def read(self):
+        if isinstance(self.obj, str):
+            if re.match('http[s]?://', self.obj):
+                with requests.get(self.obj, stream=True) as rsp:
+                    return io.BytesIO(rsp.content).read()
+            else:
+                return FileInputStream(self.obj).read()
+        else:
+            return self.obj.read()
 
 
 class BoonSdkConnectionException(BoonClientException):
@@ -573,6 +652,19 @@ class BoonSdkInvalidRequestException(BoonSdkRequestException):
         super(BoonSdkInvalidRequestException, self).__init__(data)
 
 
+class BoonFunctionException(BoonSdkRequestException):
+    """
+    This exception is thrown from Boon Functions which contain information about
+    the error that occured.
+    """
+
+    def __init__(self, data):
+        super(BoonFunctionException, self).__init__(data)
+
+    def stacktrace(self):
+        return self._data['stackTrace']
+
+
 """
 A map of HTTP response codes to local exception types.
 """
@@ -582,7 +674,8 @@ EXCEPTION_MAP = {
     500: BoonSdkInvalidRequestException,
     400: BoonSdkInvalidRequestException,
     401: BoonSdkSecurityException,
-    403: BoonSdkSecurityException
+    403: BoonSdkSecurityException,
+    551: BoonFunctionException
 }
 
 

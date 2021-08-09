@@ -16,14 +16,15 @@ exports[`<TimelineSearchHits /> should render properly 1`] = `
   width: 200px;
   padding: 8px;
   padding-left: 16px;
+  background-color: #212121;
+  z-index: 20;
 }
 
 .emotion-2 {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
-  overflow-y: hidden;
-  overflow-x: overlay;
+  overflow: hidden;
 }
 
 .emotion-3 {

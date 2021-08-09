@@ -16,13 +16,13 @@ const FiltersMenuSection = ({
   onClick,
 }) => {
   const {
-    data: { results: models },
-  } = useSWR(`/api/v1/projects/${projectId}/models/all/`)
+    data: { results: datasets },
+  } = useSWR(`/api/v1/projects/${projectId}/datasets/all/`)
 
-  const { moduleName: label } =
+  const { name: label } =
     path === 'labels'
-      ? models.find(({ id }) => id === attribute) || {}
-      : { moduleName: attribute }
+      ? datasets.find(({ id }) => id === attribute) || {}
+      : { name: attribute }
 
   const fullPath = `${path}.${label}`
 
@@ -40,7 +40,7 @@ const FiltersMenuSection = ({
         onClick={onClick({
           type: value[0],
           attribute: fullPath,
-          ...(path === 'labels' ? { modelId: attribute } : {}),
+          ...(path === 'labels' ? { datasetId: attribute } : {}),
         })}
       />
     )
@@ -67,8 +67,7 @@ const FiltersMenuSection = ({
     >
       <h4
         css={{
-          fontFamily: typography.family.mono,
-          fontWeight: typography.weight.regular,
+          fontWeight: typography.weight.bold,
         }}
       >
         {attribute}

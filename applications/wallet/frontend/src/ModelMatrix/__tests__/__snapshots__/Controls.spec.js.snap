@@ -29,15 +29,15 @@ exports[`<ModelMatrixControls should not crash when min equals max 1`] = `
   display: -ms-flexbox;
   display: flex;
   padding: 0;
-  padding-right: 16px;
+  padding-right: 12px;
   float: left;
-  font-size: 17px;
-  line-height: 20px;
+  font-size: 15px;
+  line-height: 19px;
   font-weight: 500;
 }
 
 .emotion-3 {
-  padding-right: 24px;
+  padding-right: 12px;
 }
 
 .emotion-4 {
@@ -45,6 +45,10 @@ exports[`<ModelMatrixControls should not crash when min equals max 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 
 .emotion-5 {
@@ -60,6 +64,8 @@ exports[`<ModelMatrixControls should not crash when min equals max 1`] = `
   -ms-flex-pack: center;
   -webkit-justify-content: center;
   justify-content: center;
+  position: relative;
+  padding-top: 1px;
 }
 
 .emotion-6 {
@@ -82,15 +88,18 @@ exports[`<ModelMatrixControls should not crash when min equals max 1`] = `
 
 .emotion-8 {
   padding-left: 8px;
+}
+
+.emotion-9 {
   font-weight: 400;
   color: #ffffff;
 }
 
-.emotion-9 {
-  padding-left: 24px;
+.emotion-10 {
+  color: #b3b3b3;
 }
 
-.emotion-13 {
+.emotion-14 {
   padding: 0;
   -webkit-appearance: none;
   border-radius: 16px;
@@ -99,7 +108,7 @@ exports[`<ModelMatrixControls should not crash when min equals max 1`] = `
   border: 1px solid #808080;
 }
 
-.emotion-14 {
+.emotion-15 {
   position: absolute;
   width: 8px;
   height: 8px;
@@ -108,13 +117,7 @@ exports[`<ModelMatrixControls should not crash when min equals max 1`] = `
   background-color: none;
 }
 
-.emotion-15 {
-  padding-left: 8px;
-  font-weight: 400;
-  color: #808080;
-}
-
-.emotion-17 {
+.emotion-19 {
   width: -webkit-max-content;
   width: -moz-max-content;
   width: max-content;
@@ -130,17 +133,17 @@ exports[`<ModelMatrixControls should not crash when min equals max 1`] = `
   padding-left: 32px;
 }
 
-.emotion-18 {
+.emotion-20 {
   color: #ffffff;
   font-weight: 700;
   padding-right: 16px;
 }
 
-.emotion-19 {
+.emotion-21 {
   padding-right: 24px;
 }
 
-.emotion-20 {
+.emotion-22 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -151,7 +154,7 @@ exports[`<ModelMatrixControls should not crash when min equals max 1`] = `
   align-items: center;
 }
 
-.emotion-21 {
+.emotion-23 {
   text-align: center;
   border-radius: 2px;
   background-color: #252525;
@@ -161,14 +164,14 @@ exports[`<ModelMatrixControls should not crash when min equals max 1`] = `
   width: 52px;
 }
 
-.emotion-21:focus {
+.emotion-23:focus {
   outline: 1px solid transparent;
   border: 1px solid #3A5DFF;
   color: #191919;
   background-color: #ffffff;
 }
 
-.emotion-21:hover {
+.emotion-23:hover {
   border: 1px solid #ffffff;
 }
 
@@ -198,7 +201,7 @@ exports[`<ModelMatrixControls should not crash when min equals max 1`] = `
             <input
               className="emotion-6"
               defaultChecked={true}
-              id="normalized"
+              name="View"
               onClick={[Function]}
               type="radio"
               value="normalized"
@@ -210,14 +213,18 @@ exports[`<ModelMatrixControls should not crash when min equals max 1`] = `
           <div
             className="emotion-8"
           >
-            Normalized
+            <div
+              className="emotion-9"
+            >
+              Normalized
+            </div>
+            <div
+              className="emotion-10"
+            >
+              
+            </div>
           </div>
         </label>
-        <div
-          className="emotion-9"
-        >
-          
-        </div>
       </div>
     </div>
     <div
@@ -231,49 +238,53 @@ exports[`<ModelMatrixControls should not crash when min equals max 1`] = `
             className="emotion-5"
           >
             <input
-              className="emotion-13"
+              className="emotion-14"
               defaultChecked={false}
-              id="absolute"
+              name="View"
               onClick={[Function]}
               type="radio"
               value="absolute"
             />
             <div
-              className="emotion-14"
+              className="emotion-15"
             />
           </div>
           <div
-            className="emotion-15"
+            className="emotion-8"
           >
-            Absolute
+            <div
+              className="emotion-9"
+            >
+              Absolute
+            </div>
+            <div
+              className="emotion-10"
+            >
+              
+            </div>
           </div>
         </label>
-        <div
-          className="emotion-9"
-        >
-          
-        </div>
       </div>
     </div>
   </fieldset>
   <div
-    className="emotion-17"
+    className="emotion-19"
   >
     <span
-      className="emotion-18"
+      className="emotion-20"
     >
       Confidence:
     </span>
     <div
-      className="emotion-19"
+      className="emotion-21"
     >
       <label
-        className="emotion-20"
+        className="emotion-22"
       >
         MIN
           
         <input
-          className="emotion-21"
+          className="emotion-23"
           onBlur={[Function]}
           onChange={[Function]}
           onKeyPress={[Function]}
@@ -283,12 +294,12 @@ exports[`<ModelMatrixControls should not crash when min equals max 1`] = `
       </label>
     </div>
     <label
-      className="emotion-20"
+      className="emotion-22"
     >
       MAX
         
       <input
-        className="emotion-21"
+        className="emotion-23"
         onBlur={[Function]}
         onChange={[Function]}
         onKeyPress={[Function]}
@@ -329,15 +340,15 @@ exports[`<ModelMatrixControls should render properly 1`] = `
   display: -ms-flexbox;
   display: flex;
   padding: 0;
-  padding-right: 16px;
+  padding-right: 12px;
   float: left;
-  font-size: 17px;
-  line-height: 20px;
+  font-size: 15px;
+  line-height: 19px;
   font-weight: 500;
 }
 
 .emotion-3 {
-  padding-right: 24px;
+  padding-right: 12px;
 }
 
 .emotion-4 {
@@ -345,6 +356,10 @@ exports[`<ModelMatrixControls should render properly 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 
 .emotion-5 {
@@ -360,6 +375,8 @@ exports[`<ModelMatrixControls should render properly 1`] = `
   -ms-flex-pack: center;
   -webkit-justify-content: center;
   justify-content: center;
+  position: relative;
+  padding-top: 1px;
 }
 
 .emotion-6 {
@@ -382,15 +399,18 @@ exports[`<ModelMatrixControls should render properly 1`] = `
 
 .emotion-8 {
   padding-left: 8px;
+}
+
+.emotion-9 {
   font-weight: 400;
   color: #ffffff;
 }
 
-.emotion-9 {
-  padding-left: 24px;
+.emotion-10 {
+  color: #b3b3b3;
 }
 
-.emotion-13 {
+.emotion-14 {
   padding: 0;
   -webkit-appearance: none;
   border-radius: 16px;
@@ -399,7 +419,7 @@ exports[`<ModelMatrixControls should render properly 1`] = `
   border: 1px solid #808080;
 }
 
-.emotion-14 {
+.emotion-15 {
   position: absolute;
   width: 8px;
   height: 8px;
@@ -408,13 +428,7 @@ exports[`<ModelMatrixControls should render properly 1`] = `
   background-color: none;
 }
 
-.emotion-15 {
-  padding-left: 8px;
-  font-weight: 400;
-  color: #808080;
-}
-
-.emotion-17 {
+.emotion-19 {
   width: -webkit-max-content;
   width: -moz-max-content;
   width: max-content;
@@ -430,17 +444,17 @@ exports[`<ModelMatrixControls should render properly 1`] = `
   padding-left: 32px;
 }
 
-.emotion-18 {
+.emotion-20 {
   color: #ffffff;
   font-weight: 700;
   padding-right: 16px;
 }
 
-.emotion-19 {
+.emotion-21 {
   padding-right: 24px;
 }
 
-.emotion-20 {
+.emotion-22 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -451,7 +465,7 @@ exports[`<ModelMatrixControls should render properly 1`] = `
   align-items: center;
 }
 
-.emotion-21 {
+.emotion-23 {
   text-align: center;
   border-radius: 2px;
   background-color: #252525;
@@ -461,14 +475,14 @@ exports[`<ModelMatrixControls should render properly 1`] = `
   width: 52px;
 }
 
-.emotion-21:focus {
+.emotion-23:focus {
   outline: 1px solid transparent;
   border: 1px solid #3A5DFF;
   color: #191919;
   background-color: #ffffff;
 }
 
-.emotion-21:hover {
+.emotion-23:hover {
   border: 1px solid #ffffff;
 }
 
@@ -498,7 +512,7 @@ exports[`<ModelMatrixControls should render properly 1`] = `
             <input
               className="emotion-6"
               defaultChecked={true}
-              id="normalized"
+              name="View"
               onClick={[Function]}
               type="radio"
               value="normalized"
@@ -510,14 +524,18 @@ exports[`<ModelMatrixControls should render properly 1`] = `
           <div
             className="emotion-8"
           >
-            Normalized
+            <div
+              className="emotion-9"
+            >
+              Normalized
+            </div>
+            <div
+              className="emotion-10"
+            >
+              
+            </div>
           </div>
         </label>
-        <div
-          className="emotion-9"
-        >
-          
-        </div>
       </div>
     </div>
     <div
@@ -531,49 +549,53 @@ exports[`<ModelMatrixControls should render properly 1`] = `
             className="emotion-5"
           >
             <input
-              className="emotion-13"
+              className="emotion-14"
               defaultChecked={false}
-              id="absolute"
+              name="View"
               onClick={[Function]}
               type="radio"
               value="absolute"
             />
             <div
-              className="emotion-14"
+              className="emotion-15"
             />
           </div>
           <div
-            className="emotion-15"
+            className="emotion-8"
           >
-            Absolute
+            <div
+              className="emotion-9"
+            >
+              Absolute
+            </div>
+            <div
+              className="emotion-10"
+            >
+              
+            </div>
           </div>
         </label>
-        <div
-          className="emotion-9"
-        >
-          
-        </div>
       </div>
     </div>
   </fieldset>
   <div
-    className="emotion-17"
+    className="emotion-19"
   >
     <span
-      className="emotion-18"
+      className="emotion-20"
     >
       Confidence:
     </span>
     <div
-      className="emotion-19"
+      className="emotion-21"
     >
       <label
-        className="emotion-20"
+        className="emotion-22"
       >
         MIN
           
         <input
-          className="emotion-21"
+          className="emotion-23"
           onBlur={[Function]}
           onChange={[Function]}
           onKeyPress={[Function]}
@@ -583,12 +605,12 @@ exports[`<ModelMatrixControls should render properly 1`] = `
       </label>
     </div>
     <label
-      className="emotion-20"
+      className="emotion-22"
     >
       MAX
         
       <input
-        className="emotion-21"
+        className="emotion-23"
         onBlur={[Function]}
         onChange={[Function]}
         onKeyPress={[Function]}

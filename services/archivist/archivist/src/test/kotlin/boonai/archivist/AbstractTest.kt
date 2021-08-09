@@ -275,7 +275,11 @@ abstract class AbstractTest {
         return Paths.get("/tmp/images/$subdir")
     }
 
-    fun getTestAssets(subdir: String, analysis: Map<String, Any>? = null): List<AssetSpec> {
+    fun getTestAssets(
+        subdir: String,
+        analysis: Map<String, Any>? = null,
+        labels: List<Map<String, Any>>? = null
+    ): List<AssetSpec> {
 
         val formats = setOf("jpg", "pdf", "m4v", "gif", "tif", "mov")
         val imagePaths = Json.Mapper.readValue<List<String>>(
@@ -295,7 +299,8 @@ abstract class AbstractTest {
                 )
                 asset.attrs = mapOf(
                     "media" to media,
-                    "analysis" to (analysis ?: mapOf())
+                    "analysis" to (analysis ?: mapOf()),
+                    "labels" to (labels ?: listOf())
                 )
 
                 if (indexRoutingService.getProjectRestClient().route.majorVersion == 4) {
@@ -312,8 +317,8 @@ abstract class AbstractTest {
         }
     }
 
-    fun addTestAssets(subdir: String, analysis: Map<String, Any>? = null) {
-        addTestAssets(getTestAssets(subdir, analysis))
+    fun addTestAssets(subdir: String, analysis: Map<String, Any>? = null, labels: List<Map<String, Any>>? = null) {
+        addTestAssets(getTestAssets(subdir, analysis, labels))
     }
 
     fun addTestAssets(assets: List<AssetSpec>) {

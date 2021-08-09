@@ -1,17 +1,39 @@
 from enum import Enum
 
 from .base import BaseEntity
-from ..util import as_id
+from .dataset import DatasetType
 from ..filters import TrainingSetFilter
 
 __all__ = [
     'Model',
     'ModelType',
-    'Label',
-    'LabelScope',
     'ModelTypeInfo',
-    'PostTrainAction'
+    'PostTrainAction',
+    'ModelState'
 ]
+
+
+class ModelState(Enum):
+    """
+    The states a model can be in.
+    """
+    RequiresTraining = 0
+    """The model requires training"""
+
+    RequiresUpload = 1
+    """The model requires an upload"""
+
+    Trained = 2
+    """The model is trained and ready for use"""
+
+    Deploying = 3
+    """The model is deploying"""
+
+    Deployed = 4
+    """The model is deployed and ready for use."""
+
+    DeployError = 5
+    """There was an error deploying the model."""
 
 
 class ModelType(Enum):
@@ -31,25 +53,23 @@ class ModelType(Enum):
     GCP_AUTOML_CLASSIFIER = 3
     """Train a Google AutoML vision model."""
 
-    TF_UPLOADED_CLASSIFIER = 4
+    TF_SAVED_MODEL = 4
     """Provide your own custom Tensorflow2/Keras model"""
 
     PYTORCH_CLASSIFIER = 5
     """Retrain ResNet50 with your own labels, using Pytorch."""
 
-    PYTORCH_UPLOADED_CLASSIFIER = 6
-    """Provide your own custom Pytorch model"""
+    TORCH_MAR_CLASSIFIER = 6
+    """Provide your own Torch Model Archive using an image classifier handler"""
 
+    TORCH_MAR_DETECTOR = 7
+    """Provide your own Torch Model Archive using an object detector handler"""
 
-class LabelScope(Enum):
-    """
-    Types of label scopes
-    """
-    TRAIN = 1
-    """The label marks the Asset as part of the Training set."""
+    TORCH_MAR_TEXT_CLASSIFIER = 8
+    """Provide your own Torch Model Archive using an text classifier handler"""
 
-    TEST = 2
-    """The label marks the Asset as part of the Test set."""
+    BOON_FUNCTION = 9
+    """Provide your own Python function to do inference or set custom fields."""
 
 
 class PostTrainAction(Enum):
@@ -78,6 +98,11 @@ class Model(BaseEntity):
         return self._data['name']
 
     @property
+    def dataset_id(self):
+        """The Dataset unique ID"""
+        return self._data.get('datasetId')
+
+    @property
     def module_name(self):
         """The name of the Pipeline Module"""
         return self._data['moduleName']
@@ -91,6 +116,16 @@ class Model(BaseEntity):
     def type(self):
         """The type of model"""
         return ModelType[self._data['type']]
+
+    @property
+    def state(self):
+        """The type of model"""
+        return ModelState[self._data['state']]
+
+    @property
+    def uploadable(self):
+        """True of the model should be uploaded"""
+        return self._data['uploadable']
 
     @property
     def file_id(self):
@@ -112,76 +147,6 @@ class Model(BaseEntity):
         """
         return self._data['trainingArgs']
 
-    def make_label(self, label, bbox=None, simhash=None, scope=None):
-        """
-        Make an instance of a Label which can be used to label assets.
-
-        Args:
-            label (str): The label name.
-            bbox (list[float]): A open bounding box.
-            simhash (str): An associated simhash, if any.
-            scope (LabelScope): The scope of the image, can be TEST or TRAIN.
-                Defaults to TRAIN.
-        Returns:
-            Label: The new label.
-        """
-        return Label(self, label, bbox=bbox, simhash=simhash, scope=scope)
-
-    def make_label_from_prediction(self, label, prediction, scope=None):
-        """
-        Make a label from a prediction.  This will copy the bbox
-        and simhash from the prediction, if any.
-
-        Args:
-            label (str): A name for the prediction.
-            prediction (dict): A prediction from an analysis namespace.s
-            scope (LabelScope): The scope of the image, can be TEST or TRAIN.
-                Defaults to TRAIN.
-        Returns:
-            Label: A new label
-        """
-        return Label(self, label,
-                     bbox=prediction.get('bbox'),
-                     simhash=prediction.get('simhash'),
-                     scope=scope)
-
-    def get_label_search(self, scope=None):
-        """
-        Return a search that can be used to query all assets
-        with labels.
-
-        Args:
-            scope (LabelScope): An optional label scope to filter by.
-
-        Returns:
-            dict: A search to pass to an asset search.
-        """
-        search = {
-            'size': 64,
-            'sort': [
-                '_doc'
-            ],
-            '_source': ['labels', 'files'],
-            'query': {
-                'nested': {
-                    'path': 'labels',
-                    'query': {
-                        'bool': {
-                            'must': [
-                                {'term': {'labels.modelId': self.id}}
-                            ]
-                        }
-                    }
-                }
-            }
-        }
-
-        if scope:
-            must = search['query']['nested']['query']['bool']['must']
-            must.append({'term': {'labels.scope': scope.name}})
-
-        return search
-
     def get_confusion_matrix_search(self, min_score=0.0, max_score=1.0, test_set_only=True):
         """
         Returns a search query with aggregations that can be used to create a confusion
@@ -192,10 +157,15 @@ class Model(BaseEntity):
             max_score (float): Maximum confidence score to return results for.
             test_set_only (bool): If True only assets with TEST labels will be evaluated.
 
+        Raises:
+            ValueError: If there is no linked Dataset to build the query with.
+
         Returns:
             dict: A search to pass to an asset search.
 
         """
+        if not self.dataset_id:
+            raise ValueError('This model does not have an attached Dataset.')
         search_query = {
             "size": 0,
             "query": {
@@ -217,7 +187,7 @@ class Model(BaseEntity):
                                     "must": [
                                         {
                                             "term": {
-                                                "labels.modelId": self.id
+                                                "labels.datasetId": self.dataset_id
                                             }
                                         }
                                     ]
@@ -262,16 +232,22 @@ class Model(BaseEntity):
 
     def asset_search_filter(self, scopes=None, labels=None):
         """
-        Create and return a TrainingSetFilter for filtering Assets by this particular label.
+        Create and return a TrainingSetFilter for filtering Assets by the Dataset assigned
+        to this model.
 
         Args:
             scopes (list): A optional list of LabelScopes to filter by.
             labels (list): A optional list of labels to filter by.
 
+        Raises:
+            ValueError: If the model does not have a linked dataset.
+
         Returns:
             TrainingSetFilter: A preconfigured TrainingSetFilter
         """
-        return TrainingSetFilter(self.id, scopes=scopes, labels=labels)
+        if not self.dataset_id:
+            raise ValueError('This model does not have an attached Dataset.')
+        return TrainingSetFilter(self.dataset_id, scopes=scopes, labels=labels)
 
 
 class ModelTypeInfo:
@@ -314,53 +290,12 @@ class ModelTypeInfo:
         """
         return self._data['minExamples']
 
+    @property
+    def dataset_type(self):
+        """The type of Dataset this model needs to operate."""
+        return DatasetType[self._data['datasetType']]
 
-class Label:
-    """
-    A Label that can be added to an Asset either at import time
-    or once the Asset has been imported.
-    """
-
-    def __init__(self, model, label, bbox=None, simhash=None, scope=None):
-        """
-        Create a new label.
-
-        Args:
-            model: (Model): The model the label is for.
-            label (str): The label itself.
-            bbox (list): A optional list of floats for a bounding box.
-            simhash (str): An optional similatity hash.
-            scope (LabelScope): The scope of the image, can be TEST or TRAIN.
-                Defaults to TRAIN.
-        """
-        self.model_id = as_id(model)
-        self.label = label
-        self.bbox = bbox
-        self.simhash = simhash
-        self.scope = scope or LabelScope.TRAIN
-
-    def for_json(self):
-        """Returns a dictionary suitable for JSON encoding.
-
-        The ZpsJsonEncoder will call this method automatically.
-
-        Returns:
-            :obj:`dict`: A JSON serializable version of this Document.
-
-        """
-        return {
-            'modelId': self.model_id,
-            'label': self.label,
-            'bbox': self.bbox,
-            'simhash': self.simhash,
-            'scope': self.scope.name
-        }
-
-    def asset_search_filter(self):
-        """
-        Create and return a TrainingSetFilter for filtering Assts by this particular label.
-
-        Returns:
-            TrainingSetFilter: A preconfigured TrainingSetFilter
-        """
-        return TrainingSetFilter(self.model_id, scopes=[self.scope], labels=[self.label])
+    @property
+    def uploadable(self):
+        """True if the model file must be uploaded"""
+        return self._data['uploadable']

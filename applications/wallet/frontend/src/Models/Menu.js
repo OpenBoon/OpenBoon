@@ -6,7 +6,7 @@ import Button, { VARIANTS } from '../Button'
 import ButtonActions from '../Button/Actions'
 import ModelDeleteModal from '../Model/DeleteModal'
 
-const ModelsMenu = ({ projectId, modelId }) => {
+const ModelsMenu = ({ projectId, modelId, name }) => {
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false)
 
   return (
@@ -31,9 +31,11 @@ const ModelsMenu = ({ projectId, modelId }) => {
           </div>
         )}
       </Menu>
+
       <ModelDeleteModal
         projectId={projectId}
         modelId={modelId}
+        name={name}
         isDeleteModalOpen={isDeleteModalOpen}
         setDeleteModalOpen={setDeleteModalOpen}
       />
@@ -44,6 +46,7 @@ const ModelsMenu = ({ projectId, modelId }) => {
 ModelsMenu.propTypes = {
   projectId: PropTypes.string.isRequired,
   modelId: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
 }
 
 export default ModelsMenu

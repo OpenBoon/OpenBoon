@@ -189,6 +189,10 @@ Array [
 }
 
 .emotion-5 {
+  position: relative;
+}
+
+.emotion-6 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -208,34 +212,34 @@ Array [
   -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 4px;
+  padding: 8px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
-  font-weight: 400;
+  font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
+  color: #808080;
   background-color: transparent;
 }
 
-.emotion-5,
-.emotion-5:hover,
-.emotion-5:visited,
-.emotion-5 .noop {
-  color: #6088FE;
+.emotion-6:hover,
+.emotion-6.focus-visible:focus,
+.emotion-6 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
 }
 
-.emotion-5:hover,
-.emotion-5 .noop {
-  -webkit-text-decoration: underline;
-  text-decoration: underline;
+.emotion-6:hover svg,
+.emotion-6.focus-visible:focus svg,
+.emotion-6 .noop svg {
+  opacity: 1;
 }
 
-.emotion-5:active {
-  opacity: 0;
-  -webkit-transition: opacity .3s ease;
-  transition: opacity .3s ease;
+.emotion-6[aria-disabled=true],
+.emotion-6 .noop {
+  color: #808080;
 }
 
 <div
@@ -260,13 +264,22 @@ Array [
       <div
         className="emotion-4"
       >
-        <button
+        <div
           className="emotion-5"
-          onClick={[Function]}
-          type="button"
         >
-          Copy Link
-        </button>
+          <button
+            aria-label="Copy Link to Clipboard"
+            className="emotion-6"
+            onClick={[Function]}
+            title="Copy Link to Clipboard"
+            type="button"
+          >
+            <svg
+              data-file-name="copy.svg"
+              height={20}
+            />
+          </button>
+        </div>
       </div>
     </div>
   </div>,
@@ -410,6 +423,7 @@ Array [
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
   opacity: 0;
+  fill: #ffffff;
 }
 
 .emotion-14 {
@@ -447,6 +461,11 @@ Array [
 .emotion-33 button,
 .emotion-33 a {
   margin-right: 16px;
+}
+
+.emotion-33 button:last-child,
+.emotion-33 a:last-child {
+  margin-right: 0;
 }
 
 .emotion-34 {
@@ -868,6 +887,10 @@ Array [
 }
 
 .emotion-5 {
+  position: relative;
+}
+
+.emotion-6 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -887,34 +910,34 @@ Array [
   -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 4px;
+  padding: 8px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
-  font-weight: 400;
+  font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
+  color: #808080;
   background-color: transparent;
 }
 
-.emotion-5,
-.emotion-5:hover,
-.emotion-5:visited,
-.emotion-5 .noop {
-  color: #6088FE;
+.emotion-6:hover,
+.emotion-6.focus-visible:focus,
+.emotion-6 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
 }
 
-.emotion-5:hover,
-.emotion-5 .noop {
-  -webkit-text-decoration: underline;
-  text-decoration: underline;
+.emotion-6:hover svg,
+.emotion-6.focus-visible:focus svg,
+.emotion-6 .noop svg {
+  opacity: 1;
 }
 
-.emotion-5:active {
-  opacity: 0;
-  -webkit-transition: opacity .3s ease;
-  transition: opacity .3s ease;
+.emotion-6[aria-disabled=true],
+.emotion-6 .noop {
+  color: #808080;
 }
 
 <div
@@ -939,13 +962,22 @@ Array [
       <div
         className="emotion-4"
       >
-        <button
+        <div
           className="emotion-5"
-          onClick={[Function]}
-          type="button"
         >
-          Copy Link
-        </button>
+          <button
+            aria-label="Copy Link to Clipboard"
+            className="emotion-6"
+            onClick={[Function]}
+            title="Copy Link to Clipboard"
+            type="button"
+          >
+            <svg
+              data-file-name="copy.svg"
+              height={20}
+            />
+          </button>
+        </div>
       </div>
     </div>
   </div>,
@@ -1088,7 +1120,8 @@ Array [
 .emotion-13 path {
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
-  opacity: 100;
+  opacity: 1;
+  fill: #ffffff;
 }
 
 .emotion-14 {
@@ -1129,6 +1162,7 @@ Array [
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
   opacity: 0;
+  fill: #ffffff;
 }
 
 .emotion-33 {
@@ -1143,6 +1177,11 @@ Array [
 .emotion-33 button,
 .emotion-33 a {
   margin-right: 16px;
+}
+
+.emotion-33 button:last-child,
+.emotion-33 a:last-child {
+  margin-right: 0;
 }
 
 .emotion-34 {
@@ -1610,6 +1649,10 @@ Array [
 }
 
 .emotion-10 {
+  position: relative;
+}
+
+.emotion-11 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -1629,37 +1672,37 @@ Array [
   -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 4px;
+  padding: 8px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
-  font-weight: 400;
+  font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
+  color: #808080;
   background-color: transparent;
 }
 
-.emotion-10,
-.emotion-10:hover,
-.emotion-10:visited,
-.emotion-10 .noop {
-  color: #6088FE;
+.emotion-11:hover,
+.emotion-11.focus-visible:focus,
+.emotion-11 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
 }
 
-.emotion-10:hover,
-.emotion-10 .noop {
-  -webkit-text-decoration: underline;
-  text-decoration: underline;
+.emotion-11:hover svg,
+.emotion-11.focus-visible:focus svg,
+.emotion-11 .noop svg {
+  opacity: 1;
 }
 
-.emotion-10:active {
-  opacity: 0;
-  -webkit-transition: opacity .3s ease;
-  transition: opacity .3s ease;
+.emotion-11[aria-disabled=true],
+.emotion-11 .noop {
+  color: #808080;
 }
 
-.emotion-12 {
+.emotion-13 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1675,20 +1718,20 @@ Array [
   padding-right: 16px;
 }
 
-.emotion-15 {
+.emotion-16 {
   padding-top: 12px;
   color: #808080;
 }
 
-.emotion-17 {
+.emotion-18 {
   color: #b3b3b3;
 }
 
-.emotion-18 {
+.emotion-19 {
   font-weight: 700;
 }
 
-.emotion-19 {
+.emotion-20 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1697,60 +1740,14 @@ Array [
   padding-bottom: 16px;
 }
 
-.emotion-19 button,
-.emotion-19 a {
+.emotion-20 button,
+.emotion-20 a {
   margin-right: 16px;
 }
 
-.emotion-20 {
-  -webkit-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  border-radius: 2px;
-  padding: 12px 32px;
-  white-space: nowrap;
-  font-size: 15px;
-  line-height: 19px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  background-color: transparent;
-}
-
-.emotion-20,
-.emotion-20:hover,
-.emotion-20:visited,
-.emotion-20 .noop {
-  background-color: #808080;
-}
-
-.emotion-20:hover,
-.emotion-20 .noop {
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  background-color: #b3b3b3;
-}
-
-.emotion-20[aria-disabled=true],
-.emotion-20 .noop {
-  color: #2e2e2e;
-  background-color: #808080;
+.emotion-20 button:last-child,
+.emotion-20 a:last-child {
+  margin-right: 0;
 }
 
 .emotion-21 {
@@ -1788,18 +1785,69 @@ Array [
 .emotion-21:hover,
 .emotion-21:visited,
 .emotion-21 .noop {
-  background-color: #3A5DFF;
+  background-color: #808080;
 }
 
 .emotion-21:hover,
 .emotion-21 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
-  background-color: #6088FE;
+  background-color: #b3b3b3;
 }
 
 .emotion-21[aria-disabled=true],
 .emotion-21 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-22 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-22,
+.emotion-22:hover,
+.emotion-22:visited,
+.emotion-22 .noop {
+  background-color: #3A5DFF;
+}
+
+.emotion-22:hover,
+.emotion-22 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #6088FE;
+}
+
+.emotion-22[aria-disabled=true],
+.emotion-22 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -1856,13 +1904,22 @@ Array [
         <div
           className="emotion-9"
         >
-          <button
+          <div
             className="emotion-10"
-            onClick={[Function]}
-            type="button"
           >
-            Copy Link
-          </button>
+            <button
+              aria-label="Copy Link to Clipboard"
+              className="emotion-11"
+              onClick={[Function]}
+              title="Copy Link to Clipboard"
+              type="button"
+            >
+              <svg
+                data-file-name="copy.svg"
+                height={20}
+              />
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -1870,7 +1927,7 @@ Array [
       className="emotion-0"
     >
       <div
-        className="emotion-12"
+        className="emotion-13"
       >
         <svg
           color="#009f22"
@@ -1891,7 +1948,7 @@ Array [
       Users Added
     </h3>
     <div
-      className="emotion-15"
+      className="emotion-16"
     >
       tester@fake.com
     </div>
@@ -1901,26 +1958,26 @@ Array [
       Roles
     </h3>
     <ul
-      className="emotion-17"
+      className="emotion-18"
     >
       <li
-        className="emotion-18"
+        className="emotion-19"
       >
         ML Tools
       </li>
     </ul>
     <div
-      className="emotion-19"
+      className="emotion-20"
     >
       <button
-        className="emotion-20"
+        className="emotion-21"
         onClick={[Function]}
         type="button"
       >
         Add Another User
       </button>
       <a
-        className="emotion-21"
+        className="emotion-22"
         href="/76917058-b147-4556-987a-0a0f11e46d9b/users"
         onClick={[Function]}
         onMouseEnter={[Function]}
@@ -2121,6 +2178,10 @@ Array [
 }
 
 .emotion-5 {
+  position: relative;
+}
+
+.emotion-6 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -2140,34 +2201,34 @@ Array [
   -webkit-justify-content: center;
   justify-content: center;
   border-radius: 2px;
-  padding: 4px;
+  padding: 8px;
   white-space: nowrap;
   font-size: 15px;
   line-height: 19px;
-  font-weight: 400;
+  font-weight: 500;
   border: none;
   cursor: pointer;
-  color: #ffffff;
+  color: #808080;
   background-color: transparent;
 }
 
-.emotion-5,
-.emotion-5:hover,
-.emotion-5:visited,
-.emotion-5 .noop {
-  color: #6088FE;
+.emotion-6:hover,
+.emotion-6.focus-visible:focus,
+.emotion-6 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
 }
 
-.emotion-5:hover,
-.emotion-5 .noop {
-  -webkit-text-decoration: underline;
-  text-decoration: underline;
+.emotion-6:hover svg,
+.emotion-6.focus-visible:focus svg,
+.emotion-6 .noop svg {
+  opacity: 1;
 }
 
-.emotion-5:active {
-  opacity: 0;
-  -webkit-transition: opacity .3s ease;
-  transition: opacity .3s ease;
+.emotion-6[aria-disabled=true],
+.emotion-6 .noop {
+  color: #808080;
 }
 
 <div
@@ -2192,13 +2253,22 @@ Array [
       <div
         className="emotion-4"
       >
-        <button
+        <div
           className="emotion-5"
-          onClick={[Function]}
-          type="button"
         >
-          Copy Link
-        </button>
+          <button
+            aria-label="Copy Link to Clipboard"
+            className="emotion-6"
+            onClick={[Function]}
+            title="Copy Link to Clipboard"
+            type="button"
+          >
+            <svg
+              data-file-name="copy.svg"
+              height={20}
+            />
+          </button>
+        </div>
       </div>
     </div>
   </div>,
@@ -2342,6 +2412,7 @@ Array [
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
   opacity: 0;
+  fill: #ffffff;
 }
 
 .emotion-14 {
@@ -2379,6 +2450,11 @@ Array [
 .emotion-33 button,
 .emotion-33 a {
   margin-right: 16px;
+}
+
+.emotion-33 button:last-child,
+.emotion-33 a:last-child {
+  margin-right: 0;
 }
 
 .emotion-34 {

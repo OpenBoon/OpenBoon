@@ -20,7 +20,7 @@ boonai-deploy-development:
   variables:
     PROJECT: zvi-dev
     SA_JSON: ${DEV_SA_JSON}
-    DEPLOYMENTS: analyst api-gateway archivist auth-server officer ml-bbq reporter swivel
+    DEPLOYMENTS: analyst api-gateway archivist auth-server officer ml-bbq reporter swivel tugboat
     STATEFUL_SETS: elasticsearch-master elasticsearch-data
   environment:
     name: dev
@@ -76,16 +76,13 @@ metrics-deploy-development:
       changes:
         - "services/metrics/**/*"
 
-
 deploy-qa:
   extends: .deploy
-  image: google/cloud-sdk
   variables:
     PROJECT: zvi-qa
     SA_JSON: ${QA_SA_JSON}
-    DEPLOYMENTS: analyst api-gateway archivist auth-server metrics ml-bbq officer reporter wallet swivel project-reaper
+    DEPLOYMENTS: analyst api-gateway archivist auth-server metrics ml-bbq officer reporter wallet swivel project-reaper tugboat
     STATEFUL_SETS: elasticsearch-master elasticsearch-data
-  stage: deploy
   environment:
     name: qa
     url: https://qa.boonai.app/
@@ -94,14 +91,55 @@ deploy-qa:
 
 deploy-prod:
   extends: deploy-qa
-  image: google/cloud-sdk
   variables:
     PROJECT: zvi-prod
     SA_JSON: ${PROD_SA_JSON}
-  stage: deploy
   environment:
     name: prod
     url: https://boonai.app/
   rules:
     - if: $CI_COMMIT_BRANCH == "master"
       when: manual
+  after_script:
+    - >-
+      curl -X POST \
+      https://hooks.slack.com/services/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 \
+      -H 'Content-Type: application/json' \
+      -H 'Postman-Token: 54229103-b659-4b88-973f-af547266e9d5' \
+      -H 'cache-control: no-cache' \
+      -d "{\"text\": \"Deployed commit <https://gitlab.com/zorroa-zvi/zmlp/-/commits/$CI_COMMIT_SHA|$CI_COMMIT_SHORT_SHA> to Production. Review the deploy job <$CI_JOB_URL|here>.\"}"
+
+# Build and deploy the BoonSDK python docs.
+.deploy-boonsdk-docs:
+  image: google/cloud-sdk
+  stage: deploy
+  before_script:
+    - cd client/boonsdk
+    - python3 setup.py install
+    - pip3 install sphinx
+    - cd docs
+    - gcloud auth activate-service-account boonsdk-docs-admin@zorroa-deploy.iam.gserviceaccount.com --key-file=$BOONSDK_DOCS_SA_KEY
+  script:
+    - make html
+    - gsutil cp -r ./build/html/* gs://${BUCKET}/
+
+  rules:
+    - if: $CI_COMMIT_BRANCH == $BRANCH
+
+deploy-boonsdk-docs-dev:
+  extends: .deploy-boonsdk-docs
+  variables:
+    BUCKET: boonai-python-docs-site-dev
+    BRANCH: dev
+
+deploy-boonsdk-docs-qa:
+  extends: .deploy-boonsdk-docs
+  variables:
+    BUCKET: boonai-python-docs-site-qa
+    BRANCH: qa
+
+deploy-boonsdk-docs-prod:
+  extends: .deploy-boonsdk-docs
+  variables:
+    BUCKET: boonai-python-docs-site-prod
+    BRANCH: master

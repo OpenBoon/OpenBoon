@@ -22,7 +22,7 @@ const ProjectSwitcher = ({ projectId }) => {
   const { data: { results: projects = [] } = {} } = useSWR('/api/v1/projects/')
 
   const [sortBy] = useLocalStorage({
-    key: 'AccountContent.sortBy',
+    key: 'AllProjectsContent.sortBy',
     initialState: 'name',
   })
 

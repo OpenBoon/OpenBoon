@@ -6,6 +6,7 @@ import boonai.archivist.domain.Asset
 import boonai.archivist.domain.AssetIdBuilder
 import boonai.archivist.domain.AssetIterator
 import boonai.archivist.domain.AssetMetrics
+import boonai.archivist.domain.AssetMetricsEvent
 import boonai.archivist.domain.AssetSpec
 import boonai.archivist.domain.AssetState
 import boonai.archivist.domain.BatchCreateAssetsRequest
@@ -29,14 +30,13 @@ import boonai.archivist.domain.ProjectStorageCategory
 import boonai.archivist.domain.ProjectStorageEntity
 import boonai.archivist.domain.ProjectStorageSpec
 import boonai.archivist.domain.ResolvedPipeline
-import boonai.archivist.domain.Task
 import boonai.archivist.domain.TriggerType
 import boonai.archivist.domain.UpdateAssetLabelsRequest
+import boonai.archivist.domain.UpdateAssetLabelsRequestV4
 import boonai.archivist.domain.UpdateAssetRequest
 import boonai.archivist.domain.UpdateAssetsByQueryRequest
 import boonai.archivist.domain.ZpsScript
-import boonai.archivist.repository.ModelDao
-import boonai.archivist.repository.ModelJdbcDao
+import boonai.archivist.repository.DatasetDao
 import boonai.archivist.security.CoroutineAuthentication
 import boonai.archivist.security.getProjectId
 import boonai.archivist.storage.ProjectStorageException
@@ -47,10 +47,11 @@ import boonai.common.service.logging.LogAction
 import boonai.common.service.logging.LogObject
 import boonai.common.service.logging.event
 import boonai.common.service.logging.warnEvent
-import boonai.common.service.security.getZmlpActor
 import boonai.common.util.Json
 import com.google.common.cache.CacheBuilder
 import com.google.common.cache.CacheLoader
+import com.google.protobuf.ByteString
+import com.google.pubsub.v1.PubsubMessage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -148,7 +149,8 @@ interface AssetService {
     fun batchIndex(
         docs: Map<String, MutableMap<String, Any>>,
         setAnalyzed: Boolean = false,
-        refresh: Boolean = false
+        refresh: Boolean = false,
+        create: Boolean = false
     ): BatchIndexResponse
 
     /**
@@ -202,12 +204,13 @@ interface AssetService {
         parentTask: InternalTask,
         createdAssetIds: Collection<String>,
         existingAssetIds: Collection<String>
-    ): Task?
+    ): List<UUID>
 
     /**
      * Update the Assets contained in the [UpdateAssetLabelsRequest] with provided [Model] labels.
      */
     fun updateLabels(req: UpdateAssetLabelsRequest): BulkResponse
+    fun updateLabelsV4(req: UpdateAssetLabelsRequestV4): BulkResponse
 }
 
 @Service
@@ -235,16 +238,19 @@ class AssetServiceImpl : AssetService {
     lateinit var jobLaunchService: JobLaunchService
 
     @Autowired
-    lateinit var modelDao: ModelDao
-
-    @Autowired
-    lateinit var modelJdbcDao: ModelJdbcDao
+    lateinit var datasetDao: DatasetDao
 
     @Autowired
     lateinit var clipService: ClipService
 
     @Autowired
     lateinit var webHookPublisher: WebHookPublisherService
+
+    @Autowired
+    lateinit var datasetService: DatasetService
+
+    @Autowired
+    lateinit var publisherService: PublisherService
 
     override fun getAsset(id: String): Asset {
         val rest = indexRoutingService.getProjectRestClient()
@@ -253,6 +259,24 @@ class AssetServiceImpl : AssetService {
             throw EmptyResultDataAccessException("The asset '$id' does not exist.", 1)
         }
         return Asset(rsp.id, rsp.sourceAsMap)
+    }
+
+    fun getVideoAssetIds(ids: Collection<String>): Set<String> {
+        val rest = indexRoutingService.getProjectRestClient()
+        val req = rest.newSearchRequest()
+        val query = QueryBuilders.boolQuery()
+            .filter(QueryBuilders.termsQuery("_id", ids))
+            .filter(QueryBuilders.prefixQuery("source.mimetype", "video/"))
+        req.source().size(ids.size)
+        req.source().query(query)
+        req.source().fetchSource(false)
+
+        val result = mutableSetOf<String>()
+        val r = rest.client.search(req, RequestOptions.DEFAULT)
+        r.hits.forEach {
+            result.add(it.id)
+        }
+        return result
     }
 
     override fun getValidAssetIds(ids: Collection<String>): Set<String> {
@@ -382,7 +406,7 @@ class AssetServiceImpl : AssetService {
             assets.add(asset)
         }
 
-        return bulkIndexAndAnalyzePendingAssets(assets, existingAssetIds, pipeline, req.credentials)
+        return bulkIndexAndAnalyzePendingAssets(assets, existingAssetIds, pipeline, req.credentials, req.jobName)
     }
 
     override fun batchCreate(request: BatchCreateAssetsRequest): BatchCreateAssetsResponse {
@@ -411,7 +435,7 @@ class AssetServiceImpl : AssetService {
             asset
         }
 
-        return bulkIndexAndAnalyzePendingAssets(assets, existingAssetIds, pipeline, request.credentials)
+        return bulkIndexAndAnalyzePendingAssets(assets, existingAssetIds, pipeline, request.credentials, null)
     }
 
     override fun update(assetId: String, req: UpdateAssetRequest): Response {
@@ -500,7 +524,8 @@ class AssetServiceImpl : AssetService {
     override fun batchIndex(
         docs: Map<String, MutableMap<String, Any>>,
         setAnalyzed: Boolean,
-        refresh: Boolean
+        refresh: Boolean,
+        create: Boolean
     ): BatchIndexResponse {
         if (docs.isEmpty()) {
             throw IllegalArgumentException("Nothing to batch index.")
@@ -508,7 +533,7 @@ class AssetServiceImpl : AssetService {
 
         val validAssetIds = getValidAssetIds(docs.keys)
         val notFound = docs.keys.minus(validAssetIds)
-        if (notFound.isNotEmpty()) {
+        if (!create && notFound.isNotEmpty()) {
             throw IllegalArgumentException("The asset IDs '$notFound' were not found")
         }
 
@@ -523,10 +548,31 @@ class AssetServiceImpl : AssetService {
         val failedAssets = mutableListOf<BatchIndexFailure>()
         val postTimelines = mutableMapOf<String, List<String>>()
         val tempAssets = mutableListOf<String>()
+        val assetMetrics = mutableMapOf<String, AssetMetricsEvent>()
 
         docs.forEach { (id, doc) ->
             val asset = Asset(id, doc)
+
             try {
+
+                val modules = asset.getAttr("tmp.produced_analysis", Json.SET_OF_STRING)
+                if (!modules.isNullOrEmpty()) {
+
+                    val type = asset.getAttr("media.type", String::class.java) ?: "image"
+                    val length = if (type == "video") {
+                        asset.getAttr("media.length", Double::class.java) ?: 1.0
+                    } else {
+                        1.0
+                    }
+
+                    assetMetrics[asset.id] = AssetMetricsEvent(
+                        asset.id,
+                        asset.getAttr("source.path"),
+                        asset.getAttr("media.type"),
+                        modules,
+                        length
+                    )
+                }
 
                 val timelines = asset.getAttr("tmp.timelines", Json.LIST_OF_STRING)
                 timelines?.let {
@@ -549,6 +595,7 @@ class AssetServiceImpl : AssetService {
                 } else {
                     bulk.add(
                         rest.newIndexRequest(id)
+                            .create(id in notFound)
                             .source(doc)
                             .opType(DocWriteRequest.OpType.INDEX)
                     )
@@ -566,6 +613,7 @@ class AssetServiceImpl : AssetService {
                     )
                 )
             }
+
             logger.event(
                 LogObject.ASSET, LogAction.BATCH_INDEX, mapOf("assetsIndexed" to bulk.numberOfActions())
             )
@@ -595,6 +643,10 @@ class AssetServiceImpl : AssetService {
                 }
             }
 
+            // Emit metrics
+            failedAssets.forEach { assetMetrics.remove(it.assetId) }
+            emitMetrics(assetMetrics.values)
+
             for (assetId in indexedIds) {
                 if (assetId in stateChangedIds) {
                     webHookPublisher.handleAssetTriggers(
@@ -612,26 +664,39 @@ class AssetServiceImpl : AssetService {
                 incrementProjectIngestCounters(stateChangedIds.intersect(indexedIds), docs)
             }
 
-            logger.info("Post processing ${postTimelines.size} assets for deep video search.")
-            if (postTimelines.isNotEmpty() and properties.getBoolean("archivist.deep-video-analysis.enabled")) {
-                val jobId = getZmlpActor().getAttr("jobId")
-                if (jobId == null) {
-                    logger.warn("There was post timelines to process but not jobId was found.")
-                } else {
-                    logger.info("Launching deep video analysis on ${postTimelines.size} assets.")
-                    jobLaunchService.addMultipleTimelineAnalysisTask(
-                        UUID.fromString(jobId), postTimelines
-                    )
-                }
-            }
+            /**
+             logger.info("Post processing ${postTimelines.size} assets for deep video search.")
+             if (postTimelines.isNotEmpty() and properties.getBoolean("archivist.deep-video-analysis.enabled")) {
+             val jobId = getZmlpActor().getAttr("jobId")
+             if (jobId == null) {
+             logger.warn("There was post timelines to process but not jobId was found.")
+             } else {
+             logger.info("Launching deep video analysis on ${postTimelines.size} assets.")
+             jobLaunchService.addMultipleTimelineAnalysisTask(
+             UUID.fromString(jobId), postTimelines
+             )
+             }
+             }
+             **/
 
-            // Delete assocated files with the transient assets.
+            // Delete associated files with the transient assets.
             deleteAssociatedFiles(tempAssets)
 
             BatchIndexResponse(indexedIds, failedAssets, tempAssets)
         } else {
             BatchIndexResponse(emptyList(), failedAssets, emptyList())
         }
+    }
+
+    fun emitMetrics(metrics: Collection<AssetMetricsEvent>) {
+        val projectId = getProjectId().toString()
+        val msg = PubsubMessage.newBuilder()
+            .putAttributes("project_id", projectId)
+            .putAttributes("type", "assets-indexed")
+            .setData(ByteString.copyFromUtf8(Json.serializeToString(metrics)))
+            .build()
+
+        publisherService.publish("metrics", msg)
     }
 
     private fun deleteTemporaryAssets(
@@ -712,7 +777,8 @@ class AssetServiceImpl : AssetService {
         createdAssetIds: Collection<String>,
         existingAssetIds: Collection<String>,
         pipeline: ResolvedPipeline,
-        creds: Set<String>?
+        creds: Set<String>?,
+        jobName: String?
     ): Job? {
 
         // Validate the assets need reprocessing
@@ -726,9 +792,16 @@ class AssetServiceImpl : AssetService {
         return if (finalAssetList.isEmpty()) {
             null
         } else {
+            val merge = jobName != null
             val name = "Analyze ${createdAssetIds.size} created assets, $reprocessAssetCount existing files."
+
             jobLaunchService.launchJob(
-                name, finalAssetList, pipeline, creds = creds, settings = mapOf("index" to true)
+                jobName ?: name,
+                finalAssetList,
+                pipeline,
+                merge = merge,
+                creds = creds,
+                settings = mapOf("index" to true)
             )
         }
     }
@@ -737,39 +810,65 @@ class AssetServiceImpl : AssetService {
         parentTask: InternalTask,
         createdAssetIds: Collection<String>,
         existingAssetIds: Collection<String>
-    ): Task? {
+    ): List<UUID> {
 
         val parentScript = jobService.getZpsScript(parentTask.taskId)
         val procCount = parentScript?.execute?.size ?: 0
 
-        // Check what assets need reprocessing at all.
         val assetIds = getAll(existingAssetIds).filter {
             assetNeedsReprocessing(it, parentScript.execute ?: listOf())
         }.map { it.id }.plus(createdAssetIds)
 
         return if (assetIds.isEmpty()) {
-            null
+            return emptyList()
         } else {
 
-            val name = "Expand with ${assetIds.size} assets, $procCount processors."
-            val parentScript = jobService.getZpsScript(parentTask.taskId)
-            val newScript = ZpsScript(name, null, null, parentScript.execute, assetIds = assetIds)
+            val result = mutableListOf<UUID>()
+            val videos = getVideoAssetIds(assetIds)
+            for (videoAsset in videos) {
+                val name = "Processing 1 video assets with $procCount processors."
+                val parentScript = jobService.getZpsScript(parentTask.taskId)
+                val newScript = ZpsScript(name, null, null, parentScript.execute, assetIds = listOf(videoAsset))
+                newScript.globalArgs = parentScript.globalArgs
+                newScript.settings = parentScript.settings
+                val newTask = jobService.createTask(parentTask, newScript)
+                result.add(newTask.id)
 
-            newScript.globalArgs = parentScript.globalArgs
-            newScript.settings = parentScript.settings
-
-            val newTask = jobService.createTask(parentTask, newScript)
-
-            logger.event(
-                LogObject.JOB, LogAction.EXPAND,
-                mapOf(
-                    "assetCount" to assetIds.size,
-                    "parentTaskId" to parentTask.taskId,
-                    "taskId" to newTask.id,
-                    "jobId" to newTask.jobId
+                logger.event(
+                    LogObject.JOB, LogAction.EXPAND,
+                    mapOf(
+                        "assetCount" to assetIds.size,
+                        "parentTaskId" to parentTask.taskId,
+                        "taskId" to newTask.id,
+                        "jobId" to newTask.jobId
+                    )
                 )
-            )
-            return newTask
+            }
+
+            val otherTypes = assetIds.minus(videos)
+            if (otherTypes.isNotEmpty()) {
+
+                val name = "Processing ${otherTypes.size} assets with $procCount processors."
+                val parentScript = jobService.getZpsScript(parentTask.taskId)
+                val newScript = ZpsScript(name, null, null, parentScript.execute, assetIds = otherTypes)
+
+                newScript.globalArgs = parentScript.globalArgs
+                newScript.settings = parentScript.settings
+                val newTask = jobService.createTask(parentTask, newScript)
+                result.add(newTask.id)
+
+                logger.event(
+                    LogObject.JOB, LogAction.EXPAND,
+                    mapOf(
+                        "assetCount" to assetIds.size,
+                        "parentTaskId" to parentTask.taskId,
+                        "taskId" to newTask.id,
+                        "jobId" to newTask.jobId
+                    )
+                )
+            }
+
+            return result
         }
     }
 
@@ -838,7 +937,8 @@ class AssetServiceImpl : AssetService {
         newAssets: List<Asset>,
         existingAssetIds: Collection<String>,
         pipeline: ResolvedPipeline?,
-        creds: Set<String>?
+        creds: Set<String>?,
+        jobName: String?,
     ): BatchCreateAssetsResponse {
 
         val rest = indexRoutingService.getProjectRestClient()
@@ -884,7 +984,7 @@ class AssetServiceImpl : AssetService {
 
         // Launch analysis job.
         val jobId = if (pipeline != null) {
-            createAnalysisJob(created, existingAssetIds, pipeline, creds)?.id
+            createAnalysisJob(created, existingAssetIds, pipeline, creds, jobName)?.id
         } else {
             null
         }
@@ -928,9 +1028,9 @@ class AssetServiceImpl : AssetService {
             derivePage(asset, spec)
 
             if (spec.label != null) {
-                if (!modelDao.existsByProjectIdAndId(projectId, spec.label.modelId)) {
+                if (!datasetDao.existsByProjectIdAndId(projectId, spec.label.datasetId)) {
                     throw java.lang.IllegalArgumentException(
-                        "The Model Id ${spec.label.modelId} does not exist."
+                        "The Dataset ${spec.label.datasetId} does not exist."
                     )
                 }
                 asset.addLabels(listOf(spec.label))
@@ -1057,20 +1157,19 @@ class AssetServiceImpl : AssetService {
         val allAssetIds = (req.add?.keys ?: setOf()) + (req.remove?.keys ?: setOf())
         val addLabels = mutableSetOf<UUID>()
         req.add?.values?.forEach { labels ->
-            addLabels.addAll(labels.map { it.modelId })
+            addLabels.addAll(labels.map { it.datasetId })
         }
 
         // Validate the models we're adding are legit.
         val projectId = getProjectId()
-        val models = mutableSetOf<UUID>()
+        val datasets = mutableSetOf<UUID>()
         addLabels.forEach {
-            if (!modelDao.existsByProjectIdAndId(projectId, it)) {
-                throw IllegalArgumentException("ModelId $it not found")
+            if (!datasetDao.existsByProjectIdAndId(projectId, it)) {
+                throw IllegalArgumentException("Dataset $it not found")
             } else {
-                models.add(it)
+                datasets.add(it)
             }
         }
-        models.forEach { modelJdbcDao.markAsReady(it, false) }
 
         // Build a search for assets.
         val rest = indexRoutingService.getProjectRestClient()
@@ -1111,6 +1210,91 @@ class AssetServiceImpl : AssetService {
                 }
             }
         }
+        datasets.forEach {
+            datasetService.markModelsUnready(it)
+        }
+        return result
+    }
+
+    override fun updateLabelsV4(req: UpdateAssetLabelsRequestV4): BulkResponse {
+        val bulkSize = 100
+        val maxAssets = 1000L
+        if (req.add?.size ?: 0 > maxAssets) {
+            throw IllegalArgumentException(
+                "Cannot add labels to more than $maxAssets assets at a time."
+            )
+        }
+
+        if (req.remove?.size ?: 0 > maxAssets) {
+            throw IllegalArgumentException(
+                "Cannot remove labels from more than $maxAssets assets at a time."
+            )
+        }
+
+        // Gather up unique Assets and Model
+        val allAssetIds = (req.add?.keys ?: setOf()) + (req.remove?.keys ?: setOf())
+        val allDataSets = mutableSetOf<UUID>()
+        req.add?.values?.forEach { label ->
+            allDataSets.add(label.datasetId)
+        }
+        req.remove?.values?.forEach { label ->
+            allDataSets.add(label.datasetId)
+        }
+
+        // Validate the datasets we're adding are legit.
+        val projectId = getProjectId()
+        allDataSets.forEach {
+            if (!datasetDao.existsByProjectIdAndId(projectId, it)) {
+                throw IllegalArgumentException("Dataset $it not found")
+            }
+        }
+
+        // Build a search for assets.
+        val rest = indexRoutingService.getProjectRestClient()
+        val builder = rest.newSearchBuilder()
+
+        builder.source.query(QueryBuilders.termsQuery("_id", allAssetIds))
+        builder.source.sort(FieldSortBuilder.DOC_FIELD_NAME, SortOrder.ASC)
+        builder.source.size(bulkSize)
+        builder.request.scroll(TimeValue(60000))
+        builder.source.fetchSource("labels", null)
+
+        // Build a bulk update.
+        val rsp = rest.client.search(builder.request, RequestOptions.DEFAULT)
+        val bulk = BulkRequest()
+
+        // Need an IMMEDIATE refresh policy or else we could end
+        // up losing labels with subsequent calls.
+        bulk.refreshPolicy = WriteRequest.RefreshPolicy.IMMEDIATE
+
+        for (asset in AssetIterator(rest.client, rsp, maxAssets)) {
+            val removeLabels = req.remove?.get(asset.id)
+            removeLabels?.let {
+                asset.removeLabel(it)
+            }
+
+            val addLabels = req.add?.get(asset.id)
+            addLabels?.let {
+                asset.addLabel(it)
+            }
+
+            bulk.add(rest.newUpdateRequest(asset.id).doc(asset.document))
+        }
+
+        val result = rest.client.bulk(bulk, RequestOptions.DEFAULT)
+        if (result.hasFailures()) {
+            logger.warn("Some failures occurred during asset labeling operation {}")
+            for (f in result.items) {
+                if (f.isFailed) {
+                    logger.warn("Asset ${f.id} failed to update label ${f.failureMessage}")
+                }
+            }
+        }
+
+        allDataSets.forEach {
+            datasetService.markModelsUnready(it)
+        }
+
         return result
     }
 

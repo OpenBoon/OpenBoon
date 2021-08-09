@@ -4,13 +4,13 @@ import tempfile
 from unittest import TestCase
 from unittest.mock import patch
 
+import flask
 import pytest
 
-import boonsdk
-from boonsdk import StoredFile, BoonClient, AnalysisModule, Job, Model
-from boonsdk.app import ModelApp
 from boonflow import storage
 from boonflow.testing import test_data, TestAsset
+from boonsdk import StoredFile, BoonClient, AnalysisModule, Job, Model, app_from_env
+from boonsdk.app import ModelApp
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -19,7 +19,7 @@ class FileCacheTests(TestCase):
 
     def setUp(self):
         os.environ['BOONAI_STORAGE_PIPELINE_URL'] = 'http://localhost:9000'
-        self.lfc = storage.FileCache(boonsdk.app_from_env())
+        self.lfc = storage.FileCache(app_from_env())
 
     def tearDown(self):
         self.lfc.clear()
@@ -27,7 +27,7 @@ class FileCacheTests(TestCase):
     def test_init_with_task_id(self):
         os.environ['BOONAI_TASK_ID'] = '1234abcd5678'
         try:
-            cache = storage.FileCache(boonsdk.app_from_env())
+            cache = storage.FileCache(app_from_env())
             path = cache.localize_uri('https://i.imgur.com/WkomVeG.jpg')
             assert os.environ['BOONAI_TASK_ID'] in path
         finally:
@@ -61,7 +61,7 @@ class FileCacheTests(TestCase):
         os.environ['BOONAI_PROJECT_ID'] = 'abc123'
         try:
             path = self.lfc.get_path('spock', '.kirk')
-            filename = 'c85be874d0f9c380a790f583c2bec6633109386e.kirk'
+            filename = '1a569625e9949f82ab1be5257ab2cab1f7524c6d.kirk'
             assert path.endswith(filename)
         finally:
             del os.environ['BOONAI_PROJECT_ID']
@@ -71,6 +71,22 @@ class FileCacheTests(TestCase):
         assert os.path.exists(path)
         self.lfc.clear()
         assert not os.path.exists(path)
+
+    @patch.object(BoonClient, 'sign_request')
+    def test_clear_request_cache(self, sign_patch):
+        os.environ['BOONFLOW_IN_FLASK'] = 'yes'
+
+        try:
+            app = flask.Flask("test")
+            with app.app_context():
+                flask.g.request_id = "hamburger"
+                lfc = storage.FileCache(app_from_env())
+                path = lfc.get_path('https://i.imgur.com/WkomVeG.jpg')
+                assert "/hamburger/" in path
+                lfc.clear_request_cache()
+                assert not os.path.exists(os.path.dirname(path))
+        finally:
+            del os.environ['BOONFLOW_IN_FLASK']
 
     def test_close(self):
         self.lfc.localize_uri('https://i.imgur.com/WkomVeG.jpg')
@@ -227,6 +243,25 @@ class TestAssetStorage(TestCase):
         uri = self.fs.assets.get_native_uri(pfile)
         assert 'gs://hulk-hogan' == uri
 
+    @patch.object(BoonClient, 'get')
+    def test_get_file_native_uri(self, get_patch):
+        uri = "https://cloud/bucket/project/project_id/entity/12345/category/filename.zip"
+        media_type = "application/zip"
+        get_patch.return_value = {"uri": uri,
+                                  "mediaType": media_type}
+
+        rsp = self.fs.projects.get_file_native_uri("entity", "12345", "category", "filename.zip")
+        assert rsp["uri"] == uri
+        assert rsp['mediaType'] == media_type
+
+    @patch.object(BoonClient, 'get')
+    def test_get_folder_location(self, get_patch):
+        uri = "https://cloud/bucket/project/0000000/models/123321"
+        get_patch.return_value = {uri}
+
+        rsp = self.fs.projects.get_directory_location('models', '123321')
+        assert rsp == {uri}
+
 
 class TestProjectStorage(TestCase):
 
@@ -344,6 +379,21 @@ class TestProjectStorage(TestCase):
         })
         uri = self.fs.projects.get_native_uri(pfile)
         assert 'gs://hulk-hogan' == uri
+
+    @patch.object(BoonClient, 'get')
+    def test_get_signed_native_uri(self, get_patch):
+        get_patch.return_value = {'uri': 'gs://hulk-hogan'}
+        pfile = StoredFile({
+            'name': 'cat.jpg',
+            'category': 'proxy',
+            'attrs': {},
+            'id': 'assets/123456/proxy/cat.jpg'
+        })
+        uri = self.fs.projects.get_signed_native_uri(pfile, 20)
+        assert 'gs://hulk-hogan' == uri
+
+        endpoint = get_patch.call_args[0][0]
+        assert endpoint.endswith("?minutes=20")
 
 
 class ModelStorageTests(TestCase):

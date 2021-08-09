@@ -1,6 +1,7 @@
 package boonai.archivist.domain
 
 import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.annotation.JsonInclude
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 import org.springframework.web.multipart.MultipartFile
@@ -8,8 +9,8 @@ import java.util.UUID
 
 @ApiModel("TrainingSetQuery", description = "A simple query for a training set.")
 class TrainingSetQuery(
-    @ApiModelProperty("The model Id")
-    val modelId: UUID,
+    @ApiModelProperty("The Dataset Id")
+    val datasetId: UUID,
     @ApiModelProperty("LabelScopes to filer by.")
     val scopes: List<LabelScope>?,
     @ApiModelProperty("Labels to filter by.")
@@ -27,6 +28,7 @@ class UpdateAssetsByQueryRequest(
 )
 
 @ApiModel("Update Asset Request", description = "Request structure to update an Asset.")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 class UpdateAssetRequest(
 
     @ApiModelProperty("Key/value pairs to be updated.")
@@ -55,7 +57,10 @@ class BatchUploadAssetsRequest(
     val modules: List<String>? = null,
 
     @ApiModelProperty("A list of available credentials for the analysis job.")
-    val credentials: Set<String>? = null
+    val credentials: Set<String>? = null,
+
+    @ApiModelProperty("Name of job to process uploadss")
+    val jobName: String? = null
 
 ) {
 
@@ -170,11 +175,24 @@ class ReprocessAssetSearchResponse(
 )
 class UpdateAssetLabelsRequest(
 
-    @ApiModelProperty("The labels to add.  Supplying a new label for an existing Model overwrites it.")
+    @ApiModelProperty("The labels to add.  Supplying a new label for an existing Dataset overwrites it.")
     val add: Map<String, List<Label>>? = null,
 
     @ApiModelProperty("The labels to remove.")
     val remove: Map<String, List<Label>>? = null
+)
+
+@ApiModel(
+    "UpdateAssetLabelsRequest",
+    description = "Request to add /remove labels"
+)
+class UpdateAssetLabelsRequestV4(
+
+    @ApiModelProperty("The labels to add.  Supplying a new label for an existing Dataset overwrites it.")
+    val add: Map<String, Label>? = null,
+
+    @ApiModelProperty("The labels to remove.")
+    val remove: Map<String, Label>? = null
 )
 
 @ApiModel(

@@ -4,9 +4,10 @@ import boonai.archivist.AbstractTest
 import boonai.archivist.domain.AssetSpec
 import boonai.archivist.domain.AssetState
 import boonai.archivist.domain.BatchCreateAssetsRequest
-import boonai.archivist.domain.ModelSpec
-import boonai.archivist.domain.ModelType
+import boonai.archivist.domain.DatasetSpec
+import boonai.archivist.domain.DatasetType
 import boonai.common.util.Json
+import org.apache.http.util.EntityUtils
 import org.elasticsearch.index.query.QueryBuilders
 import org.elasticsearch.search.builder.SearchSourceBuilder
 import org.junit.Before
@@ -15,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
-import org.apache.http.util.EntityUtils
 
 class AssetSearchServiceTests : AbstractTest() {
 
@@ -23,7 +23,7 @@ class AssetSearchServiceTests : AbstractTest() {
     lateinit var assetSearchService: AssetSearchService
 
     @Autowired
-    lateinit var modelService: ModelService
+    lateinit var datasetService: DatasetService
 
     @Before
     fun setUp() {
@@ -293,21 +293,21 @@ class AssetSearchServiceTests : AbstractTest() {
 
     @Test
     fun textExcludeTrainingSetsFilter() {
-        val mspec = ModelSpec(
+        val mspec = DatasetSpec(
             "animals",
-            ModelType.KNN_CLASSIFIER
+            DatasetType.Classification
         )
 
-        val model = modelService.createModel(mspec)
-        val dataSet = listOf(
-            AssetSpec("https://i.imgur.com/12abc.jpg", label = model.getLabel("horse")),
-            AssetSpec("https://i.imgur.com/abc123.jpg", label = model.getLabel("horse")),
-            AssetSpec("https://i.imgur.com/horse.jpg", label = model.getLabel("horse")),
-            AssetSpec("https://i.imgur.com/zani.jpg", label = model.getLabel("zanzibar"))
+        val ds = datasetService.createDataset(mspec)
+        val dataset = listOf(
+            AssetSpec("https://i.imgur.com/12abc.jpg", label = ds.makeLabel("horse")),
+            AssetSpec("https://i.imgur.com/abc123.jpg", label = ds.makeLabel("horse")),
+            AssetSpec("https://i.imgur.com/horse.jpg", label = ds.makeLabel("horse")),
+            AssetSpec("https://i.imgur.com/zani.jpg", label = ds.makeLabel("zanzibar"))
         )
 
         assetService.batchCreate(
-            BatchCreateAssetsRequest(dataSet, state = AssetState.Analyzed)
+            BatchCreateAssetsRequest(dataset, state = AssetState.Analyzed)
         )
         refreshElastic()
 
@@ -322,21 +322,21 @@ class AssetSearchServiceTests : AbstractTest() {
 
     @Test
     fun textTrainingSetFilter() {
-        val mspec = ModelSpec(
+        val mspec = DatasetSpec(
             "animals",
-            ModelType.KNN_CLASSIFIER
+            DatasetType.Classification
         )
 
-        val model = modelService.createModel(mspec)
-        val dataSet = listOf(
-            AssetSpec("https://i.imgur.com/12abc.jpg", label = model.getLabel("cat")),
-            AssetSpec("https://i.imgur.com/abc123.jpg", label = model.getLabel("horse")),
-            AssetSpec("https://i.imgur.com/horse.jpg", label = model.getLabel("horse")),
-            AssetSpec("https://i.imgur.com/zani.jpg", label = model.getLabel("zanzibar"))
+        val ds = datasetService.createDataset(mspec)
+        val dataset = listOf(
+            AssetSpec("https://i.imgur.com/12abc.jpg", label = ds.makeLabel("cat")),
+            AssetSpec("https://i.imgur.com/abc123.jpg", label = ds.makeLabel("horse")),
+            AssetSpec("https://i.imgur.com/horse.jpg", label = ds.makeLabel("horse")),
+            AssetSpec("https://i.imgur.com/zani.jpg", label = ds.makeLabel("zanzibar"))
         )
 
         assetService.batchCreate(
-            BatchCreateAssetsRequest(dataSet, state = AssetState.Analyzed)
+            BatchCreateAssetsRequest(dataset, state = AssetState.Analyzed)
         )
         refreshElastic()
 
@@ -345,7 +345,7 @@ class AssetSearchServiceTests : AbstractTest() {
                 "size" to 10,
                 "query" to mapOf("match_all" to mapOf<String, Any>()),
                 "training_set" to mapOf(
-                    "modelId" to model.id.toString(),
+                    "datasetId" to ds.id.toString(),
                     "labels" to listOf("horse"),
                     "scopes" to listOf("TRAIN")
                 )

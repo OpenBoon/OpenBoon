@@ -12,7 +12,11 @@ describe('<ModelsMenu />', () => {
     require('next/router').__setMockPushFunction(mockRouterPush)
 
     const component = TestRenderer.create(
-      <ModelsMenu projectId={PROJECT_ID} modelId={MODEL_ID} />,
+      <ModelsMenu
+        projectId={PROJECT_ID}
+        modelId={MODEL_ID}
+        name="My Fantastic Model"
+      />,
     )
 
     expect(component.toJSON()).toMatchSnapshot()

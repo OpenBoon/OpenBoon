@@ -61,8 +61,8 @@ const CheckboxIcon = ({
         css={{
           path: {
             transition: 'all .3s ease',
-            opacity: isChecked ? 100 : 0,
-            fill: isDisabled ? colors.key.one : colors.white,
+            opacity: isChecked ? 1 : 0,
+            fill: isDisabled ? colors.key.one : colors.structure.white,
           },
         }}
       />

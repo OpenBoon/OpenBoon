@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 
 import { colors, constants, spacing, typography } from '../Styles'
 
-import ButtonCopy, { COPY_SIZE } from '../Button/Copy'
+import ButtonCopy from '../Button/Copy'
 
 import { formatDisplayName, formatDisplayValue } from '../Metadata/helpers'
 
@@ -29,22 +29,21 @@ const MetadataPrettyRow = ({ name, value, path }) => {
     <div
       css={{
         display: 'flex',
+        color: colors.structure.steel,
+        svg: { opacity: 0 },
         '&:not(:first-of-type)': {
           borderTop: constants.borders.regular.smoke,
         },
         ':hover': {
           backgroundColor: `${colors.signal.sky.base}${constants.opacity.hex22Pct}`,
-          div: {
-            color: colors.structure.white,
-            svg: { opacity: 1 },
-          },
+          color: colors.structure.white,
+          svg: { opacity: 1 },
         },
       }}
     >
       <div
         css={{
           fontFamily: typography.family.condensed,
-          color: colors.structure.steel,
           padding: spacing.moderate,
           paddingLeft: spacing.normal,
           paddingRight: spacing.base,
@@ -73,13 +72,12 @@ const MetadataPrettyRow = ({ name, value, path }) => {
 
       <div
         css={{
-          width: COPY_SIZE + spacing.normal,
-          paddingTop: spacing.moderate,
-          paddingLeft: spacing.base,
-          paddingRight: spacing.normal,
+          display: 'flex',
+          alignItems: 'center',
+          paddingRight: spacing.base,
         }}
       >
-        <ButtonCopy value={value} />
+        <ButtonCopy title="Value" value={value} offset={100} />
       </div>
     </div>
   )

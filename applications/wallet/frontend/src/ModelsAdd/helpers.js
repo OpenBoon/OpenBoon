@@ -14,16 +14,16 @@ export const slugify = ({ value }) => {
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
     .toLowerCase()
-    .trim()
     .replace(/\s+/g, '-')
-    .replace(/[^\w-]+/g, '')
+    .replace(/[^a-z0-9-]/g, '')
     .replace(/--+/g, '-')
+    .trim()
 }
 
 export const onSubmit = async ({
   dispatch,
   projectId,
-  state: { type, name, moduleName },
+  state: { name, description, type },
 }) => {
   dispatch({ isLoading: true, errors: {} })
 
@@ -32,7 +32,7 @@ export const onSubmit = async ({
       `/api/v1/projects/${projectId}/models/`,
       {
         method: 'POST',
-        body: JSON.stringify({ type, name, moduleName }),
+        body: JSON.stringify({ name, description, type }),
       },
     )
 
@@ -44,12 +44,12 @@ export const onSubmit = async ({
       key: `/api/v1/projects/${projectId}/models/all/`,
     })
 
-    const queryString = getQueryString({
-      action: 'add-model-success',
-      modelId,
-    })
+    const queryString = getQueryString({ action: 'add-model-success' })
 
-    Router.push(`/[projectId]/models${queryString}`, `/${projectId}/models`)
+    Router.push(
+      `/[projectId]/models/[modelId]${queryString}`,
+      `/${projectId}/models/${modelId}`,
+    )
   } catch (response) {
     const errors = await parseResponse({ response })
 

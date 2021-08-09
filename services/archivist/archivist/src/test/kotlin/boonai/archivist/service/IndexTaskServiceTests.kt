@@ -1,10 +1,10 @@
 package boonai.archivist.service
 
 import boonai.archivist.AbstractTest
-import boonai.archivist.domain.IndexToIndexMigrationSpec
 import boonai.archivist.domain.IndexRouteSpec
 import boonai.archivist.domain.IndexTaskState
 import boonai.archivist.domain.IndexTaskType
+import boonai.archivist.domain.IndexToIndexMigrationSpec
 import boonai.archivist.domain.ProjectIndexMigrationSpec
 import boonai.archivist.domain.ProjectSize
 import boonai.archivist.repository.IndexRouteDao
@@ -170,5 +170,42 @@ class IndexTaskServiceTests : AbstractTest() {
         assertEquals(pred["score"], 0.991)
         assertEquals(pred["label"], "cats")
         assertEquals(pred["occurrences"], 1)
+    }
+
+    @Test
+    fun testMigrateProjectV7ToV8() {
+        val project = projectService.get(getProjectId())
+
+        val labels = listOf(
+            mapOf(
+                "label" to "cats",
+                "modelId" to "abc123"
+            )
+        )
+
+        // Make new v4 index.
+        val rspec = IndexRouteSpec("english_strict", 7, shards = 1, replicas = 0)
+        val route = indexRoutingService.createIndexRoute(rspec)
+        projectService.setIndexRoute(project, route)
+
+        addTestAssets("images", labels = labels)
+        refreshIndex()
+
+        val spec = ProjectIndexMigrationSpec("english_strict", 8, size = ProjectSize.XSMALL)
+        val task = indexTaskService.migrateProject(project, spec)
+        // Sleep while task completes
+
+        Thread.sleep(5000)
+
+        val newRoute = indexRoutingService.getIndexRoute(task.dstIndexRouteId as UUID)
+        projectService.setIndexRoute(project, newRoute)
+        indexRoutingService.setIndexRefreshInterval(newRoute, "5s")
+        refreshIndex()
+        Thread.sleep(1000)
+
+        val image = getSample(1, type = "image")[0]
+        val imageLabels = image.getAttr<List<Map<String, Any>>>("labels") ?: throw RuntimeException("no labels")
+        assertEquals("abc123", imageLabels[0]["datasetId"])
+        assertEquals("cats", imageLabels[0]["label"])
     }
 }

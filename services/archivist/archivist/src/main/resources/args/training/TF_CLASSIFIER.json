@@ -1,0 +1,29 @@
+{
+  "args": {
+    "base_model": {
+      "type": "string",
+      "defaultValue": "efficientnet-b1",
+      "description": "The base model to use for training."
+    },
+    "validation_split": {
+      "type": "float",
+      "defaultValue": 0.2,
+      "description": "The ratio of images to use for validation vs training."
+    },
+    "epochs": {
+      "type": "integer",
+      "defaultValue": 20,
+      "description": "The number of training passes using the full data set."
+    },
+    "fine_tune_epochs": {
+      "type": "integer",
+      "defaultValue": 20,
+      "description": "The number of fine tuning passes using the full data set."
+    },
+    "fine_tune_at_layer": {
+      "type": "integer",
+      "defaultValue": 20,
+      "description": "The number of layers to fine tune."
+    }
+  }
+}

@@ -5,16 +5,16 @@ import { constants, spacing, colors, typography } from '../Styles'
 
 import MetadataPrettyLabelsContent from './LabelsContent'
 
-const COLUMNS = ['bbox', 'model name/label', 'scope']
+const COLUMNS = ['bbox', 'dataset name/label', 'scope']
 
 const MetadataPrettyLabels = () => {
   const {
-    query: { projectId, id, assetId },
+    query: { projectId, assetId },
   } = useRouter()
 
   const {
-    data: { results: models },
-  } = useSWR(`/api/v1/projects/${projectId}/models/all/`)
+    data: { results: datasets },
+  } = useSWR(`/api/v1/projects/${projectId}/datasets/all/`)
 
   return (
     <div css={{ paddingTop: spacing.normal, paddingBottom: spacing.comfy }}>
@@ -56,8 +56,8 @@ const MetadataPrettyLabels = () => {
         <tbody>
           <MetadataPrettyLabelsContent
             projectId={projectId}
-            assetId={id || assetId}
-            models={models}
+            assetId={assetId}
+            datasets={datasets}
           />
         </tbody>
       </table>

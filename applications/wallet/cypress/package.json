@@ -1,5 +1,9 @@
 {
   "private": true,
+  "engines": {
+    "node": ">= 16",
+    "npm": ">= 7"
+  },
   "scripts": {
     "gui": "cypress open",
     "cli": "cypress run"
@@ -17,11 +21,11 @@
     "proseWrap": "always"
   },
   "dependencies": {
-    "cypress": "7.3.0"
+    "cypress": "8.1.0"
   },
   "devDependencies": {
-    "eslint": "7.26.0",
+    "eslint": "7.32.0",
     "eslint-plugin-cypress": "2.11.3",
-    "prettier": "2.3.0"
+    "prettier": "2.3.2"
   }
 }

@@ -41,8 +41,7 @@ const STYLES = {
       borderBottom: constants.borders.regular.smoke,
     },
     title: {
-      fontFamily: typography.family.mono,
-      fontSize: typography.size.small,
+      fontWeight: typography.weight.bold,
       lineHeight: typography.height.small,
       paddingRight: spacing.small,
     },
@@ -100,7 +99,7 @@ const Accordion = ({
             height={constants.icons.regular}
             css={{
               color: colors.structure.steel,
-              transform: isOpen ? 'rotate(-180deg)' : '',
+              transform: isOpen ? '' : 'rotate(-90deg)',
             }}
           />
 

@@ -1,7 +1,7 @@
 import argparse
 import logging
 
-from . import project, index
+from . import project, index, boonlib
 
 
 def main():
@@ -15,6 +15,7 @@ def main():
     # See README for instructions on creating new subcommands.
     project.add_subparser(subparsers)
     index.add_subparser(subparsers)
+    boonlib.add_subparser(subparsers)
 
     # Parse the args and set up the archivist client.
     args = parser.parse_args()

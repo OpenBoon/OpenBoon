@@ -39,10 +39,6 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
 
 .emotion-3 {
   color: #808080;
-  -webkit-transform: rotate(-180deg);
-  -moz-transform: rotate(-180deg);
-  -ms-transform: rotate(-180deg);
-  transform: rotate(-180deg);
 }
 
 .emotion-4 {
@@ -62,8 +58,7 @@ exports[`<FilterExists /> should select "Exists" 1`] = `
   white-space: nowrap;
   margin-top: -2px;
   padding-left: 8px;
-  font-family: Roboto Mono;
-  font-size: 14px;
+  font-weight: 700;
   line-height: 18px;
   padding-right: 4px;
 }
@@ -509,10 +504,6 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
 
 .emotion-3 {
   color: #808080;
-  -webkit-transform: rotate(-180deg);
-  -moz-transform: rotate(-180deg);
-  -ms-transform: rotate(-180deg);
-  transform: rotate(-180deg);
 }
 
 .emotion-4 {
@@ -532,8 +523,7 @@ exports[`<FilterExists /> should select "Missing" 1`] = `
   white-space: nowrap;
   margin-top: -2px;
   padding-left: 8px;
-  font-family: Roboto Mono;
-  font-size: 14px;
+  font-weight: 700;
   line-height: 18px;
   padding-right: 4px;
 }

@@ -25,7 +25,7 @@ class ProjectSerializer(ProjectOrganizationNameSerializer,
     class Meta:
         model = Project
         fields = ('id', 'name', 'url', 'jobs', 'apikeys', 'assets', 'users', 'roles',
-                  'permissions', 'tasks', 'taskerrors', 'datasources',
+                  'permissions', 'tasks', 'taskerrors', 'datasources', 'datasets',
                   'modules', 'providers', 'searches', 'faces', 'visualizations',
                   'models', 'createdDate', 'modifiedDate', 'organizationName',
                   'webhooks')
@@ -66,6 +66,10 @@ class ProjectSerializer(ProjectOrganizationNameSerializer,
         view_name='datasource-list',
         lookup_url_kwarg='project_pk',
     )
+    datasets = HyperlinkedIdentityField(
+        view_name='dataset-list',
+        lookup_url_kwarg='project_pk',
+    )
     modules = HyperlinkedIdentityField(
         view_name='module-list',
         lookup_url_kwarg='project_pk',
@@ -98,7 +102,9 @@ class ProjectSerializer(ProjectOrganizationNameSerializer,
 
 class UsageSerializer(serializers.Serializer):
     imageCount = serializers.IntegerField(source='image_count')
+    videoSeconds = serializers.FloatField(source='video_seconds')
     videoMinutes = serializers.FloatField(source='video_minutes')
+    videoHours = serializers.FloatField(source='video_hours')
 
 
 class TieredMlUsageSerializer(serializers.Serializer):
@@ -126,9 +132,13 @@ class ProjectDetailSerializer(ProjectOrganizationNameSerializer,
         except Exception as e:
             capture_exception(e)
             data = {'tier_1': {'image_count': -1,
-                               'video_minutes': -1},
+                               'video_seconds': -1,
+                               'video_minutes': -1,
+                               'video_hours': -1},
                     'tier_2': {'image_count': -1,
-                               'video_minutes': -1}}
+                               'video_seconds': -1,
+                               'video_minutes': -1,
+                               'video_hours': -1}}
         return TieredMlUsageSerializer(data).data
 
 

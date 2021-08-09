@@ -9,8 +9,8 @@ import { formatFullDate } from '../Date/helpers'
 import WarningSvg from '../Icons/warning.svg'
 
 import ProgressBar, { CONTAINER_WIDTH } from '../ProgressBar'
+import JobStatus, { VARIANTS as JOB_STATUS_VARIANTS } from '../Job/Status'
 
-import JobsStatus from './Status'
 import JobsMenu from './Menu'
 
 const ERROR_COUNT_HEIGHT = 32
@@ -42,7 +42,7 @@ const JobsRow = ({
       )}
     >
       <td>
-        <JobsStatus status={status} />
+        <JobStatus variant={JOB_STATUS_VARIANTS.SMALL} status={status} />
       </td>
 
       <td>

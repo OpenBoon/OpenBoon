@@ -9,7 +9,7 @@ import shutil
 
 from datetime import datetime
 
-from .base import app_instance
+from .env import app_instance
 
 logger = logging.getLogger(__name__)
 

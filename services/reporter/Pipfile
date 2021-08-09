@@ -6,9 +6,10 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
-google-cloud-monitoring = "*"
-boonsdk = {editable = true,path = "./../../client/python"}
+boonsdk = {editable = true,path = "./../../client/boonsdk"}
 kubernetes = "*"
+deprecation = "*"
+google-cloud-monitoring = "==1.1.0"
 
 [requires]
 python_version = "3.8"

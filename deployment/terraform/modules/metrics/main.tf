@@ -7,6 +7,30 @@ resource "random_password" "django-secret-key" {
   length = 50
 }
 
+resource "google_pubsub_subscription" "metrics" {
+  name  = "metrics"
+  topic = var.metrics-pub-sub-topic
+}
+
+resource "google_service_account" "metrics" {
+  project      = var.project
+  account_id   = "zmlp-metrics"
+  display_name = "ZMLP Metrics Service"
+}
+
+resource "google_project_iam_member" "metrics" {
+  project = var.project
+  role    = "roles/pubsub.admin"
+  member  = "serviceAccount:${google_service_account.metrics.email}"
+}
+
+resource "google_service_account_key" "metrics" {
+  service_account_id = google_service_account.metrics.name
+  keepers = {
+    "created_date" : timestamp()
+  }
+}
+
 resource "google_sql_database" "metrics" {
   lifecycle {
     prevent_destroy = true
@@ -190,6 +214,18 @@ resource "kubernetes_deployment" "metrics" {
           env {
             name  = "DJANGO_SETTINGS_MODULE"
             value = "metrics.settings"
+          }
+          env {
+            name  = "PUB_SUB_CREDENTIALS"
+            value = base64decode(google_service_account_key.metrics.private_key)
+          }
+          env {
+            name  = "PUBSUB_SUBSCRIPTION"
+            value = google_pubsub_subscription.metrics.name
+          }
+          env {
+            name  = "PROJECT_ID"
+            value = var.project
           }
         }
       }

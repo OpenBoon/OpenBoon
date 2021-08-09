@@ -29,6 +29,7 @@ const TableHead = ({ column, expandColumn }) => {
     query: query.query,
     sort: newSort,
     search: query.search,
+    filters: query.filters,
   })
   const href = `${pathname}${queryParam}`
   const as = href

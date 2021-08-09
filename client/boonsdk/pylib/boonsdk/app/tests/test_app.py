@@ -57,3 +57,9 @@ class BoonAppTests(unittest.TestCase):
         finally:
             del os.environ['BOONAI_APIKEY_FILE']
             del os.environ['BOONAI_SERVER']
+
+    def test_app_from_keyfile(self):
+        path = os.path.dirname(__file__) + "/test_key.json"
+        app1 = boonsdk.app_from_keyfile(path)
+        # Assert we can sign a request
+        assert app1.client.headers()

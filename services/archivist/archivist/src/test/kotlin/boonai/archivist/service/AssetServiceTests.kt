@@ -7,13 +7,13 @@ import boonai.archivist.domain.AssetSpec
 import boonai.archivist.domain.BatchCreateAssetsRequest
 import boonai.archivist.domain.BatchUpdateCustomFieldsRequest
 import boonai.archivist.domain.BatchUploadAssetsRequest
+import boonai.archivist.domain.DatasetSpec
+import boonai.archivist.domain.DatasetType
 import boonai.archivist.domain.FieldSpec
-import boonai.archivist.domain.Label
 import boonai.archivist.domain.FileExtResolver
 import boonai.archivist.domain.InternalTask
 import boonai.archivist.domain.JobSpec
-import boonai.archivist.domain.ModelSpec
-import boonai.archivist.domain.ModelType
+import boonai.archivist.domain.Label
 import boonai.archivist.domain.ProcessorMetric
 import boonai.archivist.domain.ProcessorRef
 import boonai.archivist.domain.ProjectFileLocator
@@ -22,6 +22,7 @@ import boonai.archivist.domain.ProjectStorageEntity
 import boonai.archivist.domain.ProjectStorageSpec
 import boonai.archivist.domain.TaskState
 import boonai.archivist.domain.UpdateAssetLabelsRequest
+import boonai.archivist.domain.UpdateAssetLabelsRequestV4
 import boonai.archivist.domain.UpdateAssetRequest
 import boonai.archivist.domain.emptyZpsScript
 import boonai.archivist.domain.emptyZpsScripts
@@ -39,7 +40,6 @@ import org.springframework.dao.DataRetrievalFailureException
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.mock.web.MockMultipartFile
 import java.io.File
-import java.lang.IllegalArgumentException
 import java.math.BigDecimal
 import java.util.UUID
 import kotlin.test.assertEquals
@@ -57,7 +57,7 @@ class AssetServiceTests : AbstractTest() {
     lateinit var jobService: JobService
 
     @Autowired
-    lateinit var modelService: ModelService
+    lateinit var datasetService: DatasetService
 
     @Autowired
     lateinit var dispatcherService: DispatcherService
@@ -299,11 +299,10 @@ class AssetServiceTests : AbstractTest() {
 
     @Test
     fun testBatchCreateAssetsWithLabel() {
-        val ds = modelService.createModel(
-            ModelSpec(
+        val ds = datasetService.createDataset(
+            DatasetSpec(
                 "THB Characters",
-                ModelType.TF_CLASSIFIER,
-                moduleName = "thb-chars"
+                DatasetType.Classification
             )
         )
 
@@ -823,13 +822,43 @@ class AssetServiceTests : AbstractTest() {
 
         // Create an expand
         val task1 = dispatcherService.getWaitingTasks(getProjectId(), 1)
-        val newTask = assetService.createAnalysisTask(task1[0], rsp.created, listOf("abc123"))
-        assertEquals("Expand with 1 assets, 0 processors.", newTask?.name)
+        val tasks = assetService.createAnalysisTask(task1[0], rsp.created, listOf("abc123"))
+        assertEquals(1, tasks.size)
+    }
+
+    @Test
+    fun testCreateVideoAnalysisTask() {
+        val spec = JobSpec(
+            "test_job",
+            emptyZpsScripts("foo"),
+            args = mutableMapOf("foo" to 1),
+            env = mutableMapOf("foo" to "bar")
+        )
+
+        // setup a job
+        jobService.create(spec)
+        val zps = emptyZpsScript("bar")
+        zps.execute = mutableListOf(ProcessorRef("foo", "bar"))
+
+        // Add an asset to make a test for
+        val req = BatchCreateAssetsRequest(
+            assets = listOf(
+                AssetSpec("gs://cats/large-brown-cat.mp4"),
+                AssetSpec("gs://cats/large-white-cat.mp4")
+            )
+        )
+        val rsp = assetService.batchCreate(req)
+
+        // Create an expand
+        val task1 = dispatcherService.getWaitingTasks(getProjectId(), 1)
+        val tasks = assetService.createAnalysisTask(task1[0], rsp.created, emptyList())
+
+        assertEquals(2, tasks.size)
     }
 
     @Test
     fun testUpdateLabels() {
-        val ds = modelService.createModel(ModelSpec("test", ModelType.TF_CLASSIFIER))
+        val ds = datasetService.createDataset(DatasetSpec("test", DatasetType.Classification))
         val batchCreate = BatchCreateAssetsRequest(
             assets = listOf(AssetSpec("gs://cats/cat-movie.m4v"))
         )
@@ -843,6 +872,42 @@ class AssetServiceTests : AbstractTest() {
                         Label(ds.id, "cat", simhash = "12345"),
                         Label(ds.id, "cat", simhash = "12345")
                     )
+                )
+            )
+        )
+
+        asset = assetService.getAsset(asset.id)
+        var labels = asset.getAttr("labels", Label.LIST_OF)
+        assertEquals(1, labels?.size)
+        assertEquals("cat", labels?.get(0)?.label)
+        assertEquals("12345", labels?.get(0)?.simhash)
+
+        // Remove a label
+        assetService.updateLabels(
+            UpdateAssetLabelsRequest(
+                null,
+                mapOf(asset.id to listOf(Label(ds.id, "cat")))
+            )
+        )
+
+        asset = assetService.getAsset(asset.id)
+        labels = asset.getAttr("labels", Label.LIST_OF) ?: listOf()
+        assert(labels.isNullOrEmpty())
+    }
+
+    @Test
+    fun testUpdateLabelsV4() {
+        val ds = datasetService.createDataset(DatasetSpec("test", DatasetType.Classification))
+        val batchCreate = BatchCreateAssetsRequest(
+            assets = listOf(AssetSpec("gs://cats/cat-movie.m4v"))
+        )
+        // Add a label.
+        var asset = assetService.getAsset(assetService.batchCreate(batchCreate).created[0])
+        assetService.updateLabelsV4(
+            UpdateAssetLabelsRequestV4(
+                // Validate adding 2 identical labels only adds 1
+                mapOf(
+                    asset.id to Label(ds.id, "cat", simhash = "12345")
                 )
             )
         )

@@ -12,7 +12,7 @@ describe('Visualizer', function () {
       )
     })
 
-    it('can be created, updated, and deleted', function () {
+    it.skip('can be created, updated, and deleted', function () {
       const now = Date.now()
 
       cy.login()

@@ -15,6 +15,7 @@ const PaginationPage = ({ currentPage, totalPages }) => {
     query: query.query,
     ordering: query.sort,
     search: query.search,
+    filters: query.filters,
     page: page === '1' ? '' : page,
   })
   const href = `${pathname}${queryParam}`

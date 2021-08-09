@@ -37,7 +37,7 @@ const Projects = ({ projectId, children }) => {
     )
   }, [projectId, routerProjectId])
 
-  // Render "Account Overview"
+  // Render "All Projects"
   if (pathname === '/') {
     return children
   }

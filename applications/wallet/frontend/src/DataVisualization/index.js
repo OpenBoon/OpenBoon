@@ -24,7 +24,7 @@ const DataVisualization = () => {
 
       <SuspenseBoundary role={ROLES.ML_Tools}>
         <FetchAhead url={`/api/v1/projects/${projectId}/searches/fields/`} />
-        <FetchAhead url={`/api/v1/projects/${projectId}/models/all/`} />
+        <FetchAhead url={`/api/v1/projects/${projectId}/datasets/all/`} />
 
         <div
           css={{

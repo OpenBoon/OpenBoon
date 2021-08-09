@@ -1,3 +1,20 @@
+resource "google_pubsub_topic" "cloud-builds" {
+  name = "cloud-builds"
+}
+
+resource "google_pubsub_topic" "model-events" {
+  name = "model-events"
+}
+
+resource "google_pubsub_topic" "metrics" {
+  name = "metrics"
+}
+
+resource "google_pubsub_subscription" "archivist-cloud-builds" {
+  name  = "archivist-cloud-builds"
+  topic = google_pubsub_topic.cloud-builds.name
+}
+
 ## GCS Buckets and Configuration Files
 resource "google_storage_bucket" "data" {
   lifecycle {
@@ -10,8 +27,28 @@ resource "google_storage_bucket" "data" {
     origin = ["*"]
     method = ["GET"]
   }
+  cors {
+    origin          = ["http://localhost:3000", "https://dev.boonai.app", "https://qa.boonai.app", "https://boonai.app"]
+    method          = ["PUT"]
+    response_header = ["Content-Type", "Content-Length"]
+  }
   versioning {
     enabled = true
+  }
+  logging {
+    log_bucket = var.log-bucket-name
+  }
+}
+
+resource "google_storage_bucket" "training" {
+  lifecycle {
+    prevent_destroy = true
+  }
+  name     = "${var.project}-${var.training-bucket-name}"
+  location = "US-CENTRAL1"
+  cors {
+    origin = ["*"]
+    method = ["GET"]
   }
   logging {
     log_bucket = var.log-bucket-name
@@ -58,7 +95,19 @@ resource "google_project_iam_custom_role" "archivist" {
     "storage.objects.create",
     "storage.objects.delete",
     "storage.objects.get",
-    "storage.objects.list"
+    "storage.objects.list",
+    "recommender.locations.get",
+    "recommender.locations.list",
+    "run.configurations.get",
+    "run.configurations.list",
+    "run.locations.list",
+    "run.revisions.get",
+    "run.revisions.list",
+    "run.routes.get",
+    "run.routes.list",
+    "run.services.get",
+    "run.services.getIamPolicy",
+    "run.services.list"
   ]
 }
 
@@ -317,4 +366,3 @@ resource "kubernetes_service" "archivist" {
     type = "ClusterIP"
   }
 }
-

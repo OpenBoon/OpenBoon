@@ -1,0 +1,969 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<DatasetLabelsContent /> should render properly 1`] = `
+Array [
+  .emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 0;
+  padding-right: 12px;
+  float: left;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+}
+
+.emotion-4 {
+  padding-right: 12px;
+}
+
+.emotion-5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  position: relative;
+  padding-top: 1px;
+}
+
+.emotion-7 {
+  padding: 0;
+  -webkit-appearance: none;
+  border-radius: 16px;
+  width: 16px;
+  height: 16px;
+  border: 1px solid #ffffff;
+}
+
+.emotion-8 {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  opacity: 100;
+  border-radius: 16px;
+  background-color: #3A5DFF;
+}
+
+.emotion-9 {
+  padding-left: 8px;
+}
+
+.emotion-10 {
+  font-weight: 400;
+  color: #ffffff;
+}
+
+.emotion-11 {
+  color: #b3b3b3;
+}
+
+.emotion-15 {
+  padding: 0;
+  -webkit-appearance: none;
+  border-radius: 16px;
+  width: 16px;
+  height: 16px;
+  border: 1px solid #808080;
+}
+
+.emotion-16 {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  opacity: 100;
+  border-radius: 16px;
+  background-color: none;
+}
+
+.emotion-20 {
+  width: 16px;
+}
+
+.emotion-21 {
+  color: #b3b3b3;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-22 {
+  padding-left: 8px;
+}
+
+.emotion-23 {
+  background-color: #808080;
+  border-radius: 2px;
+  border: none;
+  width: 300px;
+  color: #ffffff;
+  font-size: 15px;
+  line-height: 20px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  padding-left: 12px;
+  padding-right: 32px;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgPHBhdGggZD0iTTE0LjI0MyA3LjU4NkwxMCAxMS44MjggNS43NTcgNy41ODYgNC4zNDMgOSAxMCAxNC42NTcgMTUuNjU3IDlsLTEuNDE0LTEuNDE0eiIgZmlsbD0iI2ZmZmZmZiIgLz4KPC9zdmc+');
+  background-repeat: no-repeat,repeat;
+  -webkit-background-position: right 8px top 50%;
+  background-position: right 8px top 50%;
+  -webkit-background-size: 20px;
+  background-size: 20px;
+}
+
+.emotion-24 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  padding-bottom: 8px;
+}
+
+.emotion-25 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  -webkit-box-pack: end;
+  -ms-flex-pack: end;
+  -webkit-justify-content: flex-end;
+  justify-content: flex-end;
+}
+
+.emotion-26 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 8px 16px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+.emotion-26,
+.emotion-26:hover,
+.emotion-26:visited,
+.emotion-26 .noop {
+  background-color: #808080;
+}
+
+.emotion-26:hover,
+.emotion-26 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #b3b3b3;
+}
+
+.emotion-26[aria-disabled=true],
+.emotion-26 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-27 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-28 {
+  padding-right: 8px;
+}
+
+<div
+    className="emotion-0"
+  >
+    <div
+      className="emotion-1"
+    >
+      <fieldset
+        className="emotion-2"
+      >
+        <legend
+          className="emotion-3"
+        >
+          Select Scope:
+        </legend>
+        <div
+          className="emotion-4"
+        >
+          <div>
+            <label
+              className="emotion-5"
+            >
+              <div
+                className="emotion-6"
+              >
+                <input
+                  className="emotion-7"
+                  defaultChecked={true}
+                  name="Select Scope"
+                  onClick={[Function]}
+                  type="radio"
+                  value="TRAIN"
+                />
+                <div
+                  className="emotion-8"
+                />
+              </div>
+              <div
+                className="emotion-9"
+              >
+                <div
+                  className="emotion-10"
+                >
+                  Train
+                </div>
+                <div
+                  className="emotion-11"
+                >
+                  
+                </div>
+              </div>
+            </label>
+          </div>
+        </div>
+        <div
+          className="emotion-4"
+        >
+          <div>
+            <label
+              className="emotion-5"
+            >
+              <div
+                className="emotion-6"
+              >
+                <input
+                  className="emotion-15"
+                  defaultChecked={false}
+                  name="Select Scope"
+                  onClick={[Function]}
+                  type="radio"
+                  value="TEST"
+                />
+                <div
+                  className="emotion-16"
+                />
+              </div>
+              <div
+                className="emotion-9"
+              >
+                <div
+                  className="emotion-10"
+                >
+                  Test
+                </div>
+                <div
+                  className="emotion-11"
+                >
+                  
+                </div>
+              </div>
+            </label>
+          </div>
+        </div>
+      </fieldset>
+      <div
+        className="emotion-20"
+      />
+      <label
+        className="emotion-21"
+      >
+        Label:
+        <div
+          className="emotion-22"
+        >
+          <select
+            className="emotion-23"
+            defaultValue="#All#"
+            disabled={false}
+            onChange={[Function]}
+          >
+            <option
+              disabled={true}
+              value=""
+            >
+              Select an option...
+            </option>
+            <option
+              value="#All#"
+            >
+              All Training Labels (2)
+            </option>
+            <option
+              value="tabby"
+            >
+              tabby
+            </option>
+            <option
+              value="calico"
+            >
+              calico
+            </option>
+          </select>
+        </div>
+      </label>
+    </div>
+    <div
+      className="emotion-24"
+    >
+      <div
+        className="emotion-25"
+      >
+        <Link
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLmNhdHMiLCJkYXRhc2V0SWQiOiI0YjBiMTBhOC1jZWMxLTE1NWMtYjEyZi1lZTJiYzg3ODdlMDYiLCJ2YWx1ZXMiOnt9fV0="
+          passHref={true}
+        >
+          <button
+            aria-label="View in Filter Panel"
+            className="emotion-26"
+            onClick={[Function]}
+            type="button"
+          >
+            <div
+              className="emotion-27"
+            >
+              <svg
+                className="emotion-28"
+                data-file-name="filter.svg"
+                height={20}
+              />
+              View in Filter Panel
+            </div>
+          </button>
+        </Link>
+        <div
+          className="emotion-20"
+        />
+        <Link
+          as="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer"
+          href="/[projectId]/visualizer"
+          passHref={true}
+        >
+          <button
+            aria-label="Add More Labels"
+            className="emotion-26"
+            onClick={[Function]}
+            type="button"
+          >
+            <div
+              className="emotion-27"
+            >
+              <svg
+                className="emotion-28"
+                data-file-name="pen.svg"
+                height={20}
+              />
+              Add More Labels
+            </div>
+          </button>
+        </Link>
+      </div>
+    </div>
+  </div>,
+  .emotion-0 {
+  height: 16px;
+}
+
+<div
+    className="emotion-0"
+  />,
+  <DatasetLabelsAssets
+    datasetId="4b0b10a8-cec1-155c-b12f-ee2bc8787e06"
+    datasetName="cats"
+    label="#All#"
+    labels={
+      Array [
+        Object {
+          "label": "tabby",
+          "testCount": 64,
+          "trainCount": 128,
+        },
+        Object {
+          "label": "calico",
+          "testCount": 64,
+          "trainCount": 128,
+        },
+        Object {
+          "label": "grumpy",
+          "testCount": 42,
+          "trainCount": 0,
+        },
+      ]
+    }
+    page={1}
+    projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+    scope="TRAIN"
+  />,
+]
+`;
+
+exports[`<DatasetLabelsContent /> should render properly without labels 1`] = `
+Array [
+  .emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 0;
+  padding-right: 12px;
+  float: left;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+}
+
+.emotion-4 {
+  padding-right: 12px;
+}
+
+.emotion-5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  position: relative;
+  padding-top: 1px;
+}
+
+.emotion-7 {
+  padding: 0;
+  -webkit-appearance: none;
+  border-radius: 16px;
+  width: 16px;
+  height: 16px;
+  border: 1px solid #ffffff;
+}
+
+.emotion-8 {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  opacity: 100;
+  border-radius: 16px;
+  background-color: #3A5DFF;
+}
+
+.emotion-9 {
+  padding-left: 8px;
+}
+
+.emotion-10 {
+  font-weight: 400;
+  color: #ffffff;
+}
+
+.emotion-11 {
+  color: #b3b3b3;
+}
+
+.emotion-15 {
+  padding: 0;
+  -webkit-appearance: none;
+  border-radius: 16px;
+  width: 16px;
+  height: 16px;
+  border: 1px solid #808080;
+}
+
+.emotion-16 {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  opacity: 100;
+  border-radius: 16px;
+  background-color: none;
+}
+
+.emotion-20 {
+  width: 16px;
+}
+
+.emotion-21 {
+  color: #b3b3b3;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-22 {
+  padding-left: 8px;
+}
+
+.emotion-23 {
+  background-color: #808080;
+  border-radius: 2px;
+  border: none;
+  width: 300px;
+  color: #ffffff;
+  font-size: 15px;
+  line-height: 20px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  padding-left: 12px;
+  padding-right: 32px;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgPHBhdGggZD0iTTE0LjI0MyA3LjU4NkwxMCAxMS44MjggNS43NTcgNy41ODYgNC4zNDMgOSAxMCAxNC42NTcgMTUuNjU3IDlsLTEuNDE0LTEuNDE0eiIgZmlsbD0iI2ZmZmZmZiIgLz4KPC9zdmc+');
+  background-repeat: no-repeat,repeat;
+  -webkit-background-position: right 8px top 50%;
+  background-position: right 8px top 50%;
+  -webkit-background-size: 20px;
+  background-size: 20px;
+}
+
+.emotion-24 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  padding-bottom: 8px;
+}
+
+.emotion-25 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  -webkit-box-pack: end;
+  -ms-flex-pack: end;
+  -webkit-justify-content: flex-end;
+  justify-content: flex-end;
+}
+
+.emotion-26 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 8px 16px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+.emotion-26,
+.emotion-26:hover,
+.emotion-26:visited,
+.emotion-26 .noop {
+  background-color: #808080;
+}
+
+.emotion-26:hover,
+.emotion-26 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #b3b3b3;
+}
+
+.emotion-26[aria-disabled=true],
+.emotion-26 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-27 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-28 {
+  padding-right: 8px;
+}
+
+<div
+    className="emotion-0"
+  >
+    <div
+      className="emotion-1"
+    >
+      <fieldset
+        className="emotion-2"
+      >
+        <legend
+          className="emotion-3"
+        >
+          Select Scope:
+        </legend>
+        <div
+          className="emotion-4"
+        >
+          <div>
+            <label
+              className="emotion-5"
+            >
+              <div
+                className="emotion-6"
+              >
+                <input
+                  className="emotion-7"
+                  defaultChecked={true}
+                  name="Select Scope"
+                  onClick={[Function]}
+                  type="radio"
+                  value="TRAIN"
+                />
+                <div
+                  className="emotion-8"
+                />
+              </div>
+              <div
+                className="emotion-9"
+              >
+                <div
+                  className="emotion-10"
+                >
+                  Train
+                </div>
+                <div
+                  className="emotion-11"
+                >
+                  
+                </div>
+              </div>
+            </label>
+          </div>
+        </div>
+        <div
+          className="emotion-4"
+        >
+          <div>
+            <label
+              className="emotion-5"
+            >
+              <div
+                className="emotion-6"
+              >
+                <input
+                  className="emotion-15"
+                  defaultChecked={false}
+                  name="Select Scope"
+                  onClick={[Function]}
+                  type="radio"
+                  value="TEST"
+                />
+                <div
+                  className="emotion-16"
+                />
+              </div>
+              <div
+                className="emotion-9"
+              >
+                <div
+                  className="emotion-10"
+                >
+                  Test
+                </div>
+                <div
+                  className="emotion-11"
+                >
+                  
+                </div>
+              </div>
+            </label>
+          </div>
+        </div>
+      </fieldset>
+      <div
+        className="emotion-20"
+      />
+      <label
+        className="emotion-21"
+      >
+        Label:
+        <div
+          className="emotion-22"
+        >
+          <select
+            className="emotion-23"
+            defaultValue="#All#"
+            disabled={false}
+            onChange={[Function]}
+          >
+            <option
+              disabled={true}
+              value=""
+            >
+              Select an option...
+            </option>
+            <option
+              value="#All#"
+            >
+              All Training Labels (0)
+            </option>
+          </select>
+        </div>
+      </label>
+    </div>
+    <div
+      className="emotion-24"
+    >
+      <div
+        className="emotion-25"
+      >
+        <Link
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLmNhdHMiLCJkYXRhc2V0SWQiOiI0YjBiMTBhOC1jZWMxLTE1NWMtYjEyZi1lZTJiYzg3ODdlMDYiLCJ2YWx1ZXMiOnt9fV0="
+          passHref={true}
+        >
+          <button
+            aria-label="View in Filter Panel"
+            className="emotion-26"
+            onClick={[Function]}
+            type="button"
+          >
+            <div
+              className="emotion-27"
+            >
+              <svg
+                className="emotion-28"
+                data-file-name="filter.svg"
+                height={20}
+              />
+              View in Filter Panel
+            </div>
+          </button>
+        </Link>
+        <div
+          className="emotion-20"
+        />
+        <Link
+          as="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer"
+          href="/[projectId]/visualizer"
+          passHref={true}
+        >
+          <button
+            aria-label="Add More Labels"
+            className="emotion-26"
+            onClick={[Function]}
+            type="button"
+          >
+            <div
+              className="emotion-27"
+            >
+              <svg
+                className="emotion-28"
+                data-file-name="pen.svg"
+                height={20}
+              />
+              Add More Labels
+            </div>
+          </button>
+        </Link>
+      </div>
+    </div>
+  </div>,
+  .emotion-0 {
+  height: 16px;
+}
+
+<div
+    className="emotion-0"
+  />,
+  <DatasetLabelsAssets
+    datasetId="4b0b10a8-cec1-155c-b12f-ee2bc8787e06"
+    datasetName="cats"
+    label="#All#"
+    labels={Array []}
+    page={1}
+    projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+    scope="TRAIN"
+  />,
+]
+`;

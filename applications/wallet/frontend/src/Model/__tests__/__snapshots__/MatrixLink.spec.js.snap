@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<ModelMatrixLink /> should render properly when a matrix does not yet exist 1`] = `
+exports[`<ModelMatrixLink /> should render properly when a dataset has not yet been linked 1`] = `
 .emotion-0 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -10,14 +10,14 @@ exports[`<ModelMatrixLink /> should render properly when a matrix does not yet e
 
 .emotion-1 {
   width: 130px;
-  padding-right: 16px;
+  margin-right: 16px;
 }
 
 .emotion-2 {
   position: relative;
-  border: 2px solid #808080;
+  border: 4px solid #808080;
+  padding: 1px;
   border-radius: 2px;
-  margin-bottom: 8px;
   display: grid;
   grid-template: repeat(4, 1fr)/repeat(4, 1fr);
 }
@@ -36,8 +36,50 @@ exports[`<ModelMatrixLink /> should render properly when a matrix does not yet e
 }
 
 .emotion-19 {
+  color: #b3b3b3;
+  font-size: 15px;
+  line-height: 19px;
+  font-family: Roboto Condensed;
+  text-transform: uppercase;
+  padding-bottom: 8px;
+}
+
+.emotion-20 {
   width: 200px;
-  font-style: italic;
+}
+
+.emotion-21 {
+  margin: 0;
+  padding: 0;
+  padding-top: 8px;
+}
+
+.emotion-21 li {
+  line-height: 24px;
+  list-style-type: none;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-21 li svg,
+.emotion-21 li span {
+  padding-right: 8px;
+}
+
+.emotion-22 {
+  color: #b3b3b3;
+}
+
+.emotion-23 {
+  padding: 4px;
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
 <div
@@ -99,10 +141,51 @@ exports[`<ModelMatrixLink /> should render properly when a matrix does not yet e
       />
     </div>
   </div>
-  <div
-    className="emotion-19"
-  >
-    To view the matrix, you must add test labels and train the model.
+  <div>
+    <div
+      className="emotion-19"
+    >
+      Confusion Matrix
+    </div>
+    <div
+      className="emotion-20"
+    >
+      To view the matrix:
+      <ul
+        className="emotion-21"
+      >
+        <li
+          className="emotion-22"
+        >
+          <span
+            className="emotion-23"
+          >
+            —
+          </span>
+          add a dataset
+        </li>
+        <li
+          className="emotion-22"
+        >
+          <span
+            className="emotion-23"
+          >
+            —
+          </span>
+          add test labels to dataset
+        </li>
+        <li
+          className="emotion-22"
+        >
+          <span
+            className="emotion-23"
+          >
+            —
+          </span>
+          run "test" or "analyze all"
+        </li>
+      </ul>
+    </div>
   </div>
 </div>
 `;
@@ -117,32 +200,72 @@ exports[`<ModelMatrixLink /> should render properly when a matrix exists 1`] = `
 
 .emotion-1 {
   width: 130px;
-  padding-right: 16px;
+  margin-right: 16px;
 }
 
 .emotion-2 {
   opacity: 1;
   position: relative;
-  border: 2px solid #808080;
+  border: 4px solid #808080;
+  padding: 1px;
   border-radius: 2px;
-  margin-bottom: 8px;
+  margin-bottom: 0;
   display: grid;
   grid-template: repeat(3, 1fr)/repeat(3, 1fr);
 }
 
 .emotion-3 {
+  -webkit-filter: grayscale(0);
+  filter: grayscale(0);
   padding-bottom: 100%;
   background-color: rgb(255,255,255);
+  border-right: 1px solid #191919;
+  border-bottom: 1px solid #191919;
 }
 
 .emotion-5 {
+  -webkit-filter: grayscale(0);
+  filter: grayscale(0);
   padding-bottom: 100%;
   background-color: rgb(0,39,107);
+  border-right: none;
+  border-bottom: 1px solid #191919;
 }
 
 .emotion-6 {
+  -webkit-filter: grayscale(0);
+  filter: grayscale(0);
   padding-bottom: 100%;
   background-color: rgb(53,171,255);
+  border-right: 1px solid #191919;
+  border-bottom: 1px solid #191919;
+}
+
+.emotion-8 {
+  -webkit-filter: grayscale(0);
+  filter: grayscale(0);
+  padding-bottom: 100%;
+  background-color: rgb(255,255,255);
+  border-right: none;
+  border-bottom: 1px solid #191919;
+}
+
+.emotion-9 {
+  -webkit-filter: grayscale(0);
+  filter: grayscale(0);
+  padding-bottom: 100%;
+  background-color: rgb(255,255,255);
+  border-right: 1px solid #191919;
+  border-bottom: none;
+}
+
+.emotion-11 {
+  -webkit-filter: grayscale(0);
+  filter: grayscale(0);
+  padding-bottom: 100%;
+  background-color: rgb(255,255,255);
+  border-right: none;
+  border-bottom: none;
 }
 
 .emotion-12 {
@@ -150,15 +273,24 @@ exports[`<ModelMatrixLink /> should render properly when a matrix exists 1`] = `
 }
 
 .emotion-13 {
-  font-weight: 700;
+  color: #b3b3b3;
+  font-size: 15px;
+  line-height: 19px;
+  font-family: Roboto Condensed;
+  text-transform: uppercase;
   padding-bottom: 16px;
 }
 
 .emotion-14 {
-  font-weight: 400;
+  padding-bottom: 8px;
 }
 
 .emotion-15 {
+  color: #ffffff;
+  font-family: Roboto,Avenir,"sans-serif";
+}
+
+.emotion-16 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -192,22 +324,22 @@ exports[`<ModelMatrixLink /> should render properly when a matrix exists 1`] = `
   width: min-content;
 }
 
-.emotion-15,
-.emotion-15:hover,
-.emotion-15:visited,
-.emotion-15 .noop {
+.emotion-16,
+.emotion-16:hover,
+.emotion-16:visited,
+.emotion-16 .noop {
   background-color: #808080;
 }
 
-.emotion-15:hover,
-.emotion-15 .noop {
+.emotion-16:hover,
+.emotion-16 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-15[aria-disabled=true],
-.emotion-15 .noop {
+.emotion-16[aria-disabled=true],
+.emotion-16 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -237,16 +369,16 @@ exports[`<ModelMatrixLink /> should render properly when a matrix exists 1`] = `
         className="emotion-6"
       />
       <div
-        className="emotion-3"
+        className="emotion-8"
       />
       <div
-        className="emotion-3"
+        className="emotion-9"
       />
       <div
-        className="emotion-3"
+        className="emotion-9"
       />
       <div
-        className="emotion-3"
+        className="emotion-11"
       />
     </div>
   </div>
@@ -256,24 +388,254 @@ exports[`<ModelMatrixLink /> should render properly when a matrix exists 1`] = `
     <div
       className="emotion-13"
     >
-      Confusion Matrix 
-      <br />
-      Overall Accuracy:
-       
-      <span
+      <div
         className="emotion-14"
       >
-        60
-        %
-      </span>
+        Confusion Matrix
+      </div>
+      <div>
+        Accuracy:
+         
+        <span
+          className="emotion-15"
+        >
+          60
+          %
+        </span>
+      </div>
     </div>
     <a
-      className="emotion-15"
+      className="emotion-16"
       href="/76917058-b147-4556-987a-0a0f11e46d9b/models/621bf775-89d9-1244-9596-d6df43f1ede5/matrix"
       onClick={[Function]}
       onMouseEnter={[Function]}
     >
-      View Matrix
+      View Matrix Details
+    </a>
+  </div>
+</div>
+`;
+
+exports[`<ModelMatrixLink /> should render properly when a matrix is out of date 1`] = `
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-1 {
+  width: 130px;
+  margin-right: 16px;
+}
+
+.emotion-2 {
+  opacity: 1;
+  position: relative;
+  border: 4px solid #808080;
+  padding: 1px;
+  border-radius: 2px;
+  margin-bottom: 0;
+  display: grid;
+  grid-template: repeat(3, 1fr)/repeat(3, 1fr);
+}
+
+.emotion-3 {
+  -webkit-filter: grayscale(1);
+  filter: grayscale(1);
+  padding-bottom: 100%;
+  background-color: rgb(255,255,255);
+  border-right: 1px solid #191919;
+  border-bottom: 1px solid #191919;
+}
+
+.emotion-5 {
+  -webkit-filter: grayscale(1);
+  filter: grayscale(1);
+  padding-bottom: 100%;
+  background-color: rgb(0,39,107);
+  border-right: none;
+  border-bottom: 1px solid #191919;
+}
+
+.emotion-6 {
+  -webkit-filter: grayscale(1);
+  filter: grayscale(1);
+  padding-bottom: 100%;
+  background-color: rgb(53,171,255);
+  border-right: 1px solid #191919;
+  border-bottom: 1px solid #191919;
+}
+
+.emotion-8 {
+  -webkit-filter: grayscale(1);
+  filter: grayscale(1);
+  padding-bottom: 100%;
+  background-color: rgb(255,255,255);
+  border-right: none;
+  border-bottom: 1px solid #191919;
+}
+
+.emotion-9 {
+  -webkit-filter: grayscale(1);
+  filter: grayscale(1);
+  padding-bottom: 100%;
+  background-color: rgb(255,255,255);
+  border-right: 1px solid #191919;
+  border-bottom: none;
+}
+
+.emotion-11 {
+  -webkit-filter: grayscale(1);
+  filter: grayscale(1);
+  padding-bottom: 100%;
+  background-color: rgb(255,255,255);
+  border-right: none;
+  border-bottom: none;
+}
+
+.emotion-12 {
+  width: 200px;
+}
+
+.emotion-13 {
+  color: #b3b3b3;
+  font-size: 15px;
+  line-height: 19px;
+  font-family: Roboto Condensed;
+  text-transform: uppercase;
+  padding-bottom: 16px;
+}
+
+.emotion-14 {
+  padding-bottom: 8px;
+}
+
+.emotion-15 {
+  width: 200px;
+  font-style: italic;
+  color: #808080;
+  text-transform: none;
+}
+
+.emotion-16 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  width: -webkit-min-content;
+  width: -moz-min-content;
+  width: min-content;
+}
+
+.emotion-16,
+.emotion-16:hover,
+.emotion-16:visited,
+.emotion-16 .noop {
+  background-color: #808080;
+}
+
+.emotion-16:hover,
+.emotion-16 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #b3b3b3;
+}
+
+.emotion-16[aria-disabled=true],
+.emotion-16 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+<div
+  className="emotion-0"
+>
+  <div
+    className="emotion-1"
+  >
+    <div
+      className="emotion-2"
+    >
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-5"
+      />
+      <div
+        className="emotion-6"
+      />
+      <div
+        className="emotion-6"
+      />
+      <div
+        className="emotion-8"
+      />
+      <div
+        className="emotion-9"
+      />
+      <div
+        className="emotion-9"
+      />
+      <div
+        className="emotion-11"
+      />
+    </div>
+  </div>
+  <div
+    className="emotion-12"
+  >
+    <div
+      className="emotion-13"
+    >
+      <div
+        className="emotion-14"
+      >
+        Confusion Matrix
+      </div>
+      <div
+        className="emotion-15"
+      >
+        The matrix is out of date 
+        <br />
+         and not representative.
+      </div>
+    </div>
+    <a
+      className="emotion-16"
+      href="/76917058-b147-4556-987a-0a0f11e46d9b/models/621bf775-89d9-1244-9596-d6df43f1ede5/matrix"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+    >
+      View Matrix Details
     </a>
   </div>
 </div>
@@ -294,9 +656,9 @@ exports[`<ModelMatrixLink /> should render properly when a matrix will never exi
 
 .emotion-2 {
   position: relative;
-  border: 2px solid #3b3b3b;
+  border: 4px solid #3b3b3b;
+  padding: 1px;
   border-radius: 2px;
-  margin-bottom: 8px;
   display: grid;
   grid-template: repeat(4, 1fr)/repeat(4, 1fr);
 }
@@ -383,6 +745,578 @@ exports[`<ModelMatrixLink /> should render properly when a matrix will never exi
     className="emotion-19"
   >
     A confusion matrix is not available for this model type.
+  </div>
+</div>
+`;
+
+exports[`<ModelMatrixLink /> should render properly when the dataset is missing lables 1`] = `
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-1 {
+  width: 130px;
+  margin-right: 16px;
+}
+
+.emotion-2 {
+  position: relative;
+  border: 4px solid #808080;
+  padding: 1px;
+  border-radius: 2px;
+  display: grid;
+  grid-template: repeat(4, 1fr)/repeat(4, 1fr);
+}
+
+.emotion-3 {
+  padding-bottom: 100%;
+  background-color: #3b3b3b;
+}
+
+.emotion-3:not(:nth-of-type(4n)) {
+  border-right: 1px solid #191919;
+}
+
+.emotion-3:not(:nth-of-type(n + 13)) {
+  border-bottom: 1px solid #191919;
+}
+
+.emotion-19 {
+  color: #b3b3b3;
+  font-size: 15px;
+  line-height: 19px;
+  font-family: Roboto Condensed;
+  text-transform: uppercase;
+  padding-bottom: 8px;
+}
+
+.emotion-20 {
+  width: 200px;
+}
+
+.emotion-21 {
+  margin: 0;
+  padding: 0;
+  padding-top: 8px;
+}
+
+.emotion-21 li {
+  line-height: 24px;
+  list-style-type: none;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-21 li svg,
+.emotion-21 li span {
+  padding-right: 8px;
+}
+
+.emotion-22 {
+  color: #ffffff;
+}
+
+.emotion-23 {
+  color: #b3b3b3;
+}
+
+.emotion-24 {
+  padding: 4px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+<div
+  className="emotion-0"
+>
+  <div
+    className="emotion-1"
+  >
+    <div
+      className="emotion-2"
+    >
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+    </div>
+  </div>
+  <div>
+    <div
+      className="emotion-19"
+    >
+      Confusion Matrix
+    </div>
+    <div
+      className="emotion-20"
+    >
+      To view the matrix:
+      <ul
+        className="emotion-21"
+      >
+        <li
+          className="emotion-22"
+        >
+          <svg
+            color="#009f22"
+            data-file-name="checkmark.svg"
+            height={20}
+          />
+          add a dataset
+        </li>
+        <li
+          className="emotion-23"
+        >
+          <span
+            className="emotion-24"
+          >
+            —
+          </span>
+          add test labels to dataset
+        </li>
+        <li
+          className="emotion-23"
+        >
+          <span
+            className="emotion-24"
+          >
+            —
+          </span>
+          run "test" or "analyze all"
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<ModelMatrixLink /> should render properly when the model has been applied but the matrix isn't ready 1`] = `
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-1 {
+  width: 130px;
+  margin-right: 16px;
+}
+
+.emotion-2 {
+  position: relative;
+  border: 4px solid #808080;
+  padding: 1px;
+  border-radius: 2px;
+  display: grid;
+  grid-template: repeat(4, 1fr)/repeat(4, 1fr);
+}
+
+.emotion-3 {
+  padding-bottom: 100%;
+  background-color: #3b3b3b;
+}
+
+.emotion-3:not(:nth-of-type(4n)) {
+  border-right: 1px solid #191919;
+}
+
+.emotion-3:not(:nth-of-type(n + 13)) {
+  border-bottom: 1px solid #191919;
+}
+
+.emotion-19 {
+  color: #b3b3b3;
+  font-size: 15px;
+  line-height: 19px;
+  font-family: Roboto Condensed;
+  text-transform: uppercase;
+  padding-bottom: 8px;
+}
+
+.emotion-20 {
+  width: 200px;
+}
+
+.emotion-21 {
+  margin: 0;
+  padding: 0;
+  padding-top: 8px;
+}
+
+.emotion-21 li {
+  line-height: 24px;
+  list-style-type: none;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-21 li svg,
+.emotion-21 li span {
+  padding-right: 8px;
+}
+
+.emotion-22 {
+  color: #ffffff;
+}
+
+<div
+  className="emotion-0"
+>
+  <div
+    className="emotion-1"
+  >
+    <div
+      className="emotion-2"
+    >
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+    </div>
+  </div>
+  <div>
+    <div
+      className="emotion-19"
+    >
+      Confusion Matrix
+    </div>
+    <div
+      className="emotion-20"
+    >
+      To view the matrix:
+      <ul
+        className="emotion-21"
+      >
+        <li
+          className="emotion-22"
+        >
+          <svg
+            color="#009f22"
+            data-file-name="checkmark.svg"
+            height={20}
+          />
+          add a dataset
+        </li>
+        <li
+          className="emotion-22"
+        >
+          <svg
+            color="#009f22"
+            data-file-name="checkmark.svg"
+            height={20}
+          />
+          add test labels to dataset
+        </li>
+        <li
+          className="emotion-22"
+        >
+          <svg
+            color="#009f22"
+            data-file-name="checkmark.svg"
+            height={20}
+          />
+          run "test" or "analyze all"
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<ModelMatrixLink /> should render properly when the model has not yet been applied 1`] = `
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-1 {
+  width: 130px;
+  margin-right: 16px;
+}
+
+.emotion-2 {
+  position: relative;
+  border: 4px solid #808080;
+  padding: 1px;
+  border-radius: 2px;
+  display: grid;
+  grid-template: repeat(4, 1fr)/repeat(4, 1fr);
+}
+
+.emotion-3 {
+  padding-bottom: 100%;
+  background-color: #3b3b3b;
+}
+
+.emotion-3:not(:nth-of-type(4n)) {
+  border-right: 1px solid #191919;
+}
+
+.emotion-3:not(:nth-of-type(n + 13)) {
+  border-bottom: 1px solid #191919;
+}
+
+.emotion-19 {
+  color: #b3b3b3;
+  font-size: 15px;
+  line-height: 19px;
+  font-family: Roboto Condensed;
+  text-transform: uppercase;
+  padding-bottom: 8px;
+}
+
+.emotion-20 {
+  width: 200px;
+}
+
+.emotion-21 {
+  margin: 0;
+  padding: 0;
+  padding-top: 8px;
+}
+
+.emotion-21 li {
+  line-height: 24px;
+  list-style-type: none;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-21 li svg,
+.emotion-21 li span {
+  padding-right: 8px;
+}
+
+.emotion-22 {
+  color: #ffffff;
+}
+
+.emotion-24 {
+  color: #b3b3b3;
+}
+
+.emotion-25 {
+  padding: 4px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+<div
+  className="emotion-0"
+>
+  <div
+    className="emotion-1"
+  >
+    <div
+      className="emotion-2"
+    >
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+      <div
+        className="emotion-3"
+      />
+    </div>
+  </div>
+  <div>
+    <div
+      className="emotion-19"
+    >
+      Confusion Matrix
+    </div>
+    <div
+      className="emotion-20"
+    >
+      To view the matrix:
+      <ul
+        className="emotion-21"
+      >
+        <li
+          className="emotion-22"
+        >
+          <svg
+            color="#009f22"
+            data-file-name="checkmark.svg"
+            height={20}
+          />
+          add a dataset
+        </li>
+        <li
+          className="emotion-22"
+        >
+          <svg
+            color="#009f22"
+            data-file-name="checkmark.svg"
+            height={20}
+          />
+          add test labels to dataset
+        </li>
+        <li
+          className="emotion-24"
+        >
+          <span
+            className="emotion-25"
+          >
+            —
+          </span>
+          run "test" or "analyze all"
+        </li>
+      </ul>
+    </div>
   </div>
 </div>
 `;

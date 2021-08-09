@@ -91,7 +91,7 @@ exports[`<Sidebar /> should render properly closed 1`] = `
   background-color: #2e2e2e;
 }
 
-.emotion-10 {
+.emotion-12 {
   color: #ffffff;
   background-color: #d6680b;
   border-radius: 32px;
@@ -106,7 +106,7 @@ exports[`<Sidebar /> should render properly closed 1`] = `
   margin-left: 8px;
 }
 
-.emotion-19 {
+.emotion-21 {
   list-style-type: none;
   padding: 0;
   margin: 0;
@@ -115,7 +115,7 @@ exports[`<Sidebar /> should render properly closed 1`] = `
   background-color: #3b3b3b;
 }
 
-.emotion-26 {
+.emotion-28 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -140,7 +140,7 @@ exports[`<Sidebar /> should render properly closed 1`] = `
   margin-right: 12px;
 }
 
-.emotion-27 {
+.emotion-29 {
   position: fixed;
   top: 0;
   left: 0;
@@ -213,6 +213,22 @@ exports[`<Sidebar /> should render properly closed 1`] = `
       >
         <a
           className="emotion-3"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/datasets"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          <svg
+            data-file-name="tags.svg"
+            height={20}
+          />
+          Datasets
+        </a>
+      </li>
+      <li
+        className="emotion-2"
+      >
+        <a
+          className="emotion-3"
           href="/76917058-b147-4556-987a-0a0f11e46d9b/models"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -223,7 +239,7 @@ exports[`<Sidebar /> should render properly closed 1`] = `
           />
           Custom Models
           <span
-            className="emotion-10"
+            className="emotion-12"
           >
             beta
           </span>
@@ -295,7 +311,7 @@ exports[`<Sidebar /> should render properly closed 1`] = `
       </li>
     </ul>
     <ul
-      className="emotion-19"
+      className="emotion-21"
     >
       <li
         className="emotion-2"
@@ -310,7 +326,7 @@ exports[`<Sidebar /> should render properly closed 1`] = `
             data-file-name="dashboard.svg"
             height={20}
           />
-          Account Overview
+          All Projects
         </a>
       </li>
       <li
@@ -339,7 +355,7 @@ exports[`<Sidebar /> should render properly closed 1`] = `
           onMouseEnter={[Function]}
         >
           <div
-            className="emotion-26"
+            className="emotion-28"
           >
             
           </div>
@@ -350,7 +366,7 @@ exports[`<Sidebar /> should render properly closed 1`] = `
   </nav>
   <div
     aria-label="Close Sidebar Menu"
-    className="emotion-27"
+    className="emotion-29"
     onClick={[Function]}
     onKeyDown={[Function]}
     role="button"
@@ -450,7 +466,7 @@ exports[`<Sidebar /> should render properly opened 1`] = `
   background-color: #2e2e2e;
 }
 
-.emotion-10 {
+.emotion-12 {
   color: #ffffff;
   background-color: #d6680b;
   border-radius: 32px;
@@ -465,7 +481,7 @@ exports[`<Sidebar /> should render properly opened 1`] = `
   margin-left: 8px;
 }
 
-.emotion-19 {
+.emotion-21 {
   list-style-type: none;
   padding: 0;
   margin: 0;
@@ -474,7 +490,7 @@ exports[`<Sidebar /> should render properly opened 1`] = `
   background-color: #3b3b3b;
 }
 
-.emotion-24 {
+.emotion-26 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -499,7 +515,7 @@ exports[`<Sidebar /> should render properly opened 1`] = `
   margin-right: 12px;
 }
 
-.emotion-25 {
+.emotion-27 {
   position: fixed;
   top: 0;
   left: 0;
@@ -572,6 +588,22 @@ exports[`<Sidebar /> should render properly opened 1`] = `
       >
         <a
           className="emotion-3"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/datasets"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          <svg
+            data-file-name="tags.svg"
+            height={20}
+          />
+          Datasets
+        </a>
+      </li>
+      <li
+        className="emotion-2"
+      >
+        <a
+          className="emotion-3"
           href="/76917058-b147-4556-987a-0a0f11e46d9b/models"
           onClick={[Function]}
           onMouseEnter={[Function]}
@@ -582,7 +614,7 @@ exports[`<Sidebar /> should render properly opened 1`] = `
           />
           Custom Models
           <span
-            className="emotion-10"
+            className="emotion-12"
           >
             beta
           </span>
@@ -654,7 +686,7 @@ exports[`<Sidebar /> should render properly opened 1`] = `
       </li>
     </ul>
     <ul
-      className="emotion-19"
+      className="emotion-21"
     >
       <li
         className="emotion-2"
@@ -669,7 +701,7 @@ exports[`<Sidebar /> should render properly opened 1`] = `
             data-file-name="dashboard.svg"
             height={20}
           />
-          Account Overview
+          All Projects
         </a>
       </li>
       <li
@@ -682,7 +714,7 @@ exports[`<Sidebar /> should render properly opened 1`] = `
           onMouseEnter={[Function]}
         >
           <div
-            className="emotion-24"
+            className="emotion-26"
           >
             JD
           </div>
@@ -693,7 +725,7 @@ exports[`<Sidebar /> should render properly opened 1`] = `
   </nav>
   <div
     aria-label="Close Sidebar Menu"
-    className="emotion-25"
+    className="emotion-27"
     onClick={[Function]}
     onKeyDown={[Function]}
     role="button"

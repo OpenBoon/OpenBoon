@@ -127,7 +127,8 @@ def test_project_serializer_detail(project):
     expected_fields = ['id', 'name', 'url', 'jobs', 'apikeys', 'assets', 'users', 'roles',
                        'permissions', 'tasks', 'datasources', 'taskerrors',
                        'modules', 'providers', 'searches', 'faces', 'visualizations',
-                       'models', 'createdDate', 'modifiedDate', 'organizationName', 'webhooks']
+                       'models', 'createdDate', 'modifiedDate', 'organizationName', 'webhooks',
+                       'datasets']
     assert set(expected_fields) == set(data.keys())
     assert data['id'] == project.id
     assert data['name'] == project.name
@@ -139,6 +140,7 @@ def test_project_serializer_detail(project):
     assert data['users'] == f'/api/v1/projects/{project.id}/users/'
     assert data['roles'] == f'/api/v1/projects/{project.id}/roles/'
     assert data['assets'] == f'/api/v1/projects/{project.id}/assets/'
+    assert data['datasets'] == f'/api/v1/projects/{project.id}/datasets/'
     assert data['datasources'] == f'/api/v1/projects/{project.id}/data_sources/'
     assert data['apikeys'] == f'/api/v1/projects/{project.id}/api_keys/'
     assert data['permissions'] == f'/api/v1/projects/{project.id}/permissions/'
@@ -842,7 +844,7 @@ class TestMembershipModel:
     @pytest.fixture
     def apikey_data(self, data):
         data['permissions'] = ['AssetsRead', 'AssetsImport', 'AssetsDelete', 'DataSourceManage',
-                               'DataQueueManage']
+                               'DataQueueManage', 'ModelTraining']
         return data
 
     @pytest.fixture

@@ -391,9 +391,9 @@ class TestFieldUtility:
         result = self.field_utility.get_filter_map(mock_zmlp_client)
         assert result['labels'] == {'3500f84e-26f2-1505-9aa6-0242ac13000b': ['label']}
 
-    def test_get_all_model_ids_no_models(self):
+    def test_get_all_dataset_ids_no_models(self):
         client = Mock(post=Mock(return_value={'list': []}))
-        result = self.field_utility._get_all_model_ids(client)
+        result = self.field_utility._get_all_dataset_ids(client)
         assert result == []
 
     @pytest.mark.parametrize('attr,expected', [

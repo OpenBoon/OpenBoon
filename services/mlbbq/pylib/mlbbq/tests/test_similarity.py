@@ -1,25 +1,18 @@
 # flake8: noqa
 import io
-import os
-import logging
+
+from boonai_analysis.utils.simengine import SimilarityEngine
+from boonflow.testing import test_path
+
+SimilarityEngine.default_model_path = test_path("models/resnet-152")
+
 import unittest.mock as mock
 
 import pytest
-
-from boonflow.testing import test_path
-from mlbbq.main import setup_endpoints
-
-os.environ['SIMHASH_MODEL_PATH'] = test_path("models/resnet-152")
-# Have to set env before this endpoint
 import mlbbq.main as server
-
-
-logging.basicConfig(level=logging.INFO)
-
 
 @pytest.fixture
 def client():
-    setup_endpoints()
     with server.app.test_client() as client:
         yield client
 

@@ -1,0 +1,1442 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AssetLabelingForm should not try to save when there are no changes 1`] = `
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  height: 0%;
+}
+
+.emotion-1 {
+  padding: 16px;
+  font-weight: 700;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 470px;
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+  width: 100%;
+  padding: 0;
+  overflow: hidden;
+}
+
+.emotion-3 {
+  border-bottom: 1px solid #3b3b3b;
+  background-color: #191919;
+  overflow: auto;
+}
+
+.emotion-4 {
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.emotion-5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.emotion-5 button,
+.emotion-5 a {
+  margin-right: 16px;
+}
+
+.emotion-5 button:last-child,
+.emotion-5 a:last-child {
+  margin-right: 0;
+}
+
+.emotion-6 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-6,
+.emotion-6:hover,
+.emotion-6:visited,
+.emotion-6 .noop {
+  background-color: #808080;
+}
+
+.emotion-6:hover,
+.emotion-6 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #b3b3b3;
+}
+
+.emotion-6[aria-disabled=true],
+.emotion-6 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-7 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: not-allowed;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-7,
+.emotion-7:hover,
+.emotion-7:visited,
+.emotion-7 .noop {
+  background-color: #3A5DFF;
+}
+
+.emotion-7:hover,
+.emotion-7 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #6088FE;
+}
+
+.emotion-7[aria-disabled=true],
+.emotion-7 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+<div
+  className="emotion-0"
+>
+  <div
+    className="emotion-1"
+  >
+    Add 
+    Classification
+     Labels
+  </div>
+  <form
+    action=""
+    className="emotion-2"
+    method="post"
+    onSubmit={[Function]}
+  >
+    <div
+      className="emotion-3"
+    >
+      <AssetLabelingLabel
+        datasetId="4b0b10a8-cec1-155c-b12f-ee2bc8787e06"
+        dispatch={[Function]}
+        label={
+          Object {
+            "b64Image": "data:image/png;base64...",
+            "bbox": Array [
+              0.53,
+              0.113,
+              0.639,
+              0.29,
+            ],
+            "datasetId": "2691c930-c45c-1ac5-90af-a66f463dc6fe",
+            "label": "",
+            "scope": "TRAIN",
+          }
+        }
+        onDelete={[Function]}
+        projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+        state={
+          Object {
+            "label": "",
+            "scope": "TRAIN",
+          }
+        }
+      />
+      <AssetLabelingLabel
+        datasetId="4b0b10a8-cec1-155c-b12f-ee2bc8787e06"
+        dispatch={[Function]}
+        label={
+          Object {
+            "b64Image": "data:image/png;base64...",
+            "bbox": Array [
+              0.45,
+              0.27,
+              0.534,
+              0.395,
+            ],
+            "datasetId": "2691c930-c45c-1ac5-90af-a66f463dc6fe",
+            "label": "cat",
+            "scope": "TRAIN",
+          }
+        }
+        onDelete={[Function]}
+        projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+        state={
+          Object {
+            "label": "",
+            "scope": "TRAIN",
+          }
+        }
+      />
+      <AssetLabelingLabel
+        datasetId="4b0b10a8-cec1-155c-b12f-ee2bc8787e06"
+        dispatch={[Function]}
+        label={
+          Object {
+            "b64Image": "data:image/png;base64...",
+            "datasetId": "2691c930-c45c-1ac5-90af-a66f463dc6fe",
+            "label": "",
+            "scope": "TRAIN",
+          }
+        }
+        onDelete={[Function]}
+        projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+        state={
+          Object {
+            "label": "",
+            "scope": "TRAIN",
+          }
+        }
+      />
+    </div>
+    <div
+      className="emotion-4"
+    >
+      <div
+        className="emotion-5"
+      >
+        <button
+          className="emotion-6"
+          onClick={[Function]}
+          type="button"
+        >
+          Cancel
+        </button>
+        <button
+          aria-disabled={true}
+          className="emotion-7"
+          onClick={[Function]}
+          type="submit"
+        >
+          Save
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+`;
+
+exports[`AssetLabelingForm should render properly when saving 1`] = `
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  height: 0%;
+}
+
+.emotion-1 {
+  padding: 16px;
+  font-weight: 700;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 470px;
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+  width: 100%;
+  padding: 0;
+  overflow: hidden;
+}
+
+.emotion-3 {
+  border-bottom: 1px solid #3b3b3b;
+  background-color: #191919;
+  overflow: auto;
+}
+
+.emotion-4 {
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.emotion-5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.emotion-5 button,
+.emotion-5 a {
+  margin-right: 16px;
+}
+
+.emotion-5 button:last-child,
+.emotion-5 a:last-child {
+  margin-right: 0;
+}
+
+.emotion-6 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-6,
+.emotion-6:hover,
+.emotion-6:visited,
+.emotion-6 .noop {
+  background-color: #808080;
+}
+
+.emotion-6:hover,
+.emotion-6 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #b3b3b3;
+}
+
+.emotion-6[aria-disabled=true],
+.emotion-6 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-7 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: not-allowed;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-7,
+.emotion-7:hover,
+.emotion-7:visited,
+.emotion-7 .noop {
+  background-color: #3A5DFF;
+}
+
+.emotion-7:hover,
+.emotion-7 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #6088FE;
+}
+
+.emotion-7[aria-disabled=true],
+.emotion-7 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+<div
+  className="emotion-0"
+>
+  <div
+    className="emotion-1"
+  >
+    Add 
+    Classification
+     Labels
+  </div>
+  <form
+    action=""
+    className="emotion-2"
+    method="post"
+    onSubmit={[Function]}
+  >
+    <div
+      className="emotion-3"
+    >
+      <AssetLabelingLabel
+        datasetId="4b0b10a8-cec1-155c-b12f-ee2bc8787e06"
+        dispatch={[Function]}
+        label={
+          Object {
+            "b64Image": "data:image/png;base64...",
+            "bbox": Array [
+              0.53,
+              0.113,
+              0.639,
+              0.29,
+            ],
+            "datasetId": "2691c930-c45c-1ac5-90af-a66f463dc6fe",
+            "label": "",
+            "scope": "TRAIN",
+          }
+        }
+        onDelete={[Function]}
+        projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+        state={
+          Object {
+            "label": "",
+            "scope": "TRAIN",
+          }
+        }
+      />
+      <AssetLabelingLabel
+        datasetId="4b0b10a8-cec1-155c-b12f-ee2bc8787e06"
+        dispatch={[Function]}
+        label={
+          Object {
+            "b64Image": "data:image/png;base64...",
+            "bbox": Array [
+              0.45,
+              0.27,
+              0.534,
+              0.395,
+            ],
+            "datasetId": "2691c930-c45c-1ac5-90af-a66f463dc6fe",
+            "label": "cat",
+            "scope": "TRAIN",
+          }
+        }
+        onDelete={[Function]}
+        projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+        state={
+          Object {
+            "label": "",
+            "scope": "TRAIN",
+          }
+        }
+      />
+      <AssetLabelingLabel
+        datasetId="4b0b10a8-cec1-155c-b12f-ee2bc8787e06"
+        dispatch={[Function]}
+        label={
+          Object {
+            "b64Image": "data:image/png;base64...",
+            "datasetId": "2691c930-c45c-1ac5-90af-a66f463dc6fe",
+            "label": "",
+            "scope": "TRAIN",
+          }
+        }
+        onDelete={[Function]}
+        projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+        state={
+          Object {
+            "label": "",
+            "scope": "TRAIN",
+          }
+        }
+      />
+    </div>
+    <div
+      className="emotion-4"
+    >
+      <div
+        className="emotion-5"
+      >
+        <button
+          className="emotion-6"
+          onClick={[Function]}
+          type="button"
+        >
+          Cancel
+        </button>
+        <button
+          aria-disabled={true}
+          className="emotion-7"
+          onClick={[Function]}
+          type="submit"
+        >
+          Saving...
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+`;
+
+exports[`AssetLabelingForm should render properly when there are no faces detected 1`] = `
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  height: 0%;
+  padding: 16px;
+}
+
+.emotion-1 {
+  padding-bottom: 16px;
+  font-weight: 700;
+}
+
+.emotion-2 {
+  color: #b3b3b3;
+}
+
+<div
+  className="emotion-0"
+>
+  <div
+    className="emotion-1"
+  >
+    Add 
+    Face Recognition
+     Labels
+  </div>
+  <i
+    className="emotion-2"
+  >
+    No Faces have been detected in this Asset.
+  </i>
+</div>
+`;
+
+exports[`AssetLabelingForm should render that face detection is running 1`] = `
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  height: 0%;
+  padding: 16px;
+}
+
+.emotion-1 {
+  padding-bottom: 16px;
+  font-weight: 700;
+}
+
+.emotion-2 {
+  color: #b3b3b3;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.emotion-3 button,
+.emotion-3 a {
+  margin-right: 16px;
+}
+
+.emotion-3 button:last-child,
+.emotion-3 a:last-child {
+  margin-right: 0;
+}
+
+.emotion-4 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-4,
+.emotion-4:hover,
+.emotion-4:visited,
+.emotion-4 .noop {
+  background-color: #3A5DFF;
+}
+
+.emotion-4:hover,
+.emotion-4 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #6088FE;
+}
+
+.emotion-4[aria-disabled=true],
+.emotion-4 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+<div
+  className="emotion-0"
+>
+  <div
+    className="emotion-1"
+  >
+    Add 
+    Face Recognition
+     Labels
+  </div>
+  <i
+    className="emotion-2"
+  >
+    Face detection analysis has not been run on this asset. You can add "boonai-face-detection" to the Data Source or you can run it just on this asset by clicking the button below.
+  </i>
+  <div
+    className="emotion-3"
+  >
+    <button
+      className="emotion-4"
+      onClick={[Function]}
+      type="button"
+    >
+      Running...
+    </button>
+  </div>
+</div>
+`;
+
+exports[`AssetLabelingForm should run face detection when it's missing 1`] = `
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  height: 0%;
+  padding: 16px;
+}
+
+.emotion-1 {
+  padding-bottom: 16px;
+  font-weight: 700;
+}
+
+.emotion-2 {
+  color: #b3b3b3;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.emotion-3 button,
+.emotion-3 a {
+  margin-right: 16px;
+}
+
+.emotion-3 button:last-child,
+.emotion-3 a:last-child {
+  margin-right: 0;
+}
+
+.emotion-4 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-4,
+.emotion-4:hover,
+.emotion-4:visited,
+.emotion-4 .noop {
+  background-color: #3A5DFF;
+}
+
+.emotion-4:hover,
+.emotion-4 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #6088FE;
+}
+
+.emotion-4[aria-disabled=true],
+.emotion-4 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+<div
+  className="emotion-0"
+>
+  <div
+    className="emotion-1"
+  >
+    Add 
+    Face Recognition
+     Labels
+  </div>
+  <i
+    className="emotion-2"
+  >
+    Face detection analysis has not been run on this asset. You can add "boonai-face-detection" to the Data Source or you can run it just on this asset by clicking the button below.
+  </i>
+  <div
+    className="emotion-3"
+  >
+    <button
+      className="emotion-4"
+      onClick={[Function]}
+      type="button"
+    >
+      Run Face Detection On This Asset
+    </button>
+  </div>
+</div>
+`;
+
+exports[`AssetLabelingForm should save properly when there are Classification changes 1`] = `
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  height: 0%;
+}
+
+.emotion-1 {
+  padding: 16px;
+  font-weight: 700;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 470px;
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+  width: 100%;
+  padding: 0;
+  overflow: hidden;
+}
+
+.emotion-3 {
+  border-bottom: 1px solid #3b3b3b;
+  background-color: #191919;
+  overflow: auto;
+}
+
+.emotion-4 {
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.emotion-5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.emotion-5 button,
+.emotion-5 a {
+  margin-right: 16px;
+}
+
+.emotion-5 button:last-child,
+.emotion-5 a:last-child {
+  margin-right: 0;
+}
+
+.emotion-6 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-6,
+.emotion-6:hover,
+.emotion-6:visited,
+.emotion-6 .noop {
+  background-color: #808080;
+}
+
+.emotion-6:hover,
+.emotion-6 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #b3b3b3;
+}
+
+.emotion-6[aria-disabled=true],
+.emotion-6 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-7 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-7,
+.emotion-7:hover,
+.emotion-7:visited,
+.emotion-7 .noop {
+  background-color: #3A5DFF;
+}
+
+.emotion-7:hover,
+.emotion-7 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #6088FE;
+}
+
+.emotion-7[aria-disabled=true],
+.emotion-7 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+<div
+  className="emotion-0"
+>
+  <div
+    className="emotion-1"
+  >
+    Add 
+    Classification
+     Labels
+  </div>
+  <form
+    action=""
+    className="emotion-2"
+    method="post"
+    onSubmit={[Function]}
+  >
+    <div
+      className="emotion-3"
+    >
+      <AssetLabelingLabel
+        datasetId="4b0b10a8-cec1-155c-b12f-ee2bc8787e06"
+        dispatch={[Function]}
+        label={
+          Object {
+            "b64Image": "data:image/png;base64...",
+            "bbox": Array [
+              0.53,
+              0.113,
+              0.639,
+              0.29,
+            ],
+            "datasetId": "2691c930-c45c-1ac5-90af-a66f463dc6fe",
+            "label": "",
+            "scope": "TRAIN",
+          }
+        }
+        onDelete={[Function]}
+        projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+        state={
+          Object {
+            "label": "",
+            "scope": "TRAIN",
+          }
+        }
+      />
+      <AssetLabelingLabel
+        datasetId="4b0b10a8-cec1-155c-b12f-ee2bc8787e06"
+        dispatch={[Function]}
+        label={
+          Object {
+            "b64Image": "data:image/png;base64...",
+            "bbox": Array [
+              0.45,
+              0.27,
+              0.534,
+              0.395,
+            ],
+            "datasetId": "2691c930-c45c-1ac5-90af-a66f463dc6fe",
+            "label": "cat",
+            "scope": "TRAIN",
+          }
+        }
+        onDelete={[Function]}
+        projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+        state={
+          Object {
+            "label": "",
+            "scope": "TRAIN",
+          }
+        }
+      />
+      <AssetLabelingLabel
+        datasetId="4b0b10a8-cec1-155c-b12f-ee2bc8787e06"
+        dispatch={[Function]}
+        label={
+          Object {
+            "b64Image": "data:image/png;base64...",
+            "datasetId": "2691c930-c45c-1ac5-90af-a66f463dc6fe",
+            "label": "",
+            "scope": "TRAIN",
+          }
+        }
+        onDelete={[Function]}
+        projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+        state={
+          Object {
+            "label": "pony",
+            "scope": "TRAIN",
+          }
+        }
+      />
+    </div>
+    <div
+      className="emotion-4"
+    >
+      <div
+        className="emotion-5"
+      >
+        <button
+          className="emotion-6"
+          onClick={[Function]}
+          type="button"
+        >
+          Cancel
+        </button>
+        <button
+          className="emotion-7"
+          onClick={[Function]}
+          type="submit"
+        >
+          Save
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+`;
+
+exports[`AssetLabelingForm should save properly when there are FaceRecognition changes 1`] = `
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  height: 0%;
+}
+
+.emotion-1 {
+  padding: 16px;
+  font-weight: 700;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 470px;
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+  width: 100%;
+  padding: 0;
+  overflow: hidden;
+}
+
+.emotion-3 {
+  border-bottom: 1px solid #3b3b3b;
+  background-color: #191919;
+  overflow: auto;
+}
+
+.emotion-4 {
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.emotion-5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.emotion-5 button,
+.emotion-5 a {
+  margin-right: 16px;
+}
+
+.emotion-5 button:last-child,
+.emotion-5 a:last-child {
+  margin-right: 0;
+}
+
+.emotion-6 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-6,
+.emotion-6:hover,
+.emotion-6:visited,
+.emotion-6 .noop {
+  background-color: #808080;
+}
+
+.emotion-6:hover,
+.emotion-6 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #b3b3b3;
+}
+
+.emotion-6[aria-disabled=true],
+.emotion-6 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-7 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-7,
+.emotion-7:hover,
+.emotion-7:visited,
+.emotion-7 .noop {
+  background-color: #3A5DFF;
+}
+
+.emotion-7:hover,
+.emotion-7 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #6088FE;
+}
+
+.emotion-7[aria-disabled=true],
+.emotion-7 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+<div
+  className="emotion-0"
+>
+  <div
+    className="emotion-1"
+  >
+    Add 
+    Face Recognition
+     Labels
+  </div>
+  <form
+    action=""
+    className="emotion-2"
+    method="post"
+    onSubmit={[Function]}
+  >
+    <div
+      className="emotion-3"
+    >
+      <AssetLabelingLabel
+        datasetId="4b0b10a8-cec1-155c-b12f-ee2bc8787e06"
+        dispatch={[Function]}
+        label={
+          Object {
+            "b64Image": "data:image/png;base64...",
+            "bbox": Array [
+              0.53,
+              0.113,
+              0.639,
+              0.29,
+            ],
+            "datasetId": "2691c930-c45c-1ac5-90af-a66f463dc6fe",
+            "label": "",
+            "scope": "TRAIN",
+          }
+        }
+        onDelete={[Function]}
+        projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+        state={
+          Object {
+            "label": "pony",
+            "scope": "TRAIN",
+          }
+        }
+      />
+      <AssetLabelingLabel
+        datasetId="4b0b10a8-cec1-155c-b12f-ee2bc8787e06"
+        dispatch={[Function]}
+        label={
+          Object {
+            "b64Image": "data:image/png;base64...",
+            "bbox": Array [
+              0.45,
+              0.27,
+              0.534,
+              0.395,
+            ],
+            "datasetId": "2691c930-c45c-1ac5-90af-a66f463dc6fe",
+            "label": "cat",
+            "scope": "TRAIN",
+          }
+        }
+        onDelete={[Function]}
+        projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+        state={
+          Object {
+            "label": "",
+            "scope": "TRAIN",
+          }
+        }
+      />
+      <AssetLabelingLabel
+        datasetId="4b0b10a8-cec1-155c-b12f-ee2bc8787e06"
+        dispatch={[Function]}
+        label={
+          Object {
+            "b64Image": "data:image/png;base64...",
+            "datasetId": "2691c930-c45c-1ac5-90af-a66f463dc6fe",
+            "label": "",
+            "scope": "TRAIN",
+          }
+        }
+        onDelete={[Function]}
+        projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+        state={
+          Object {
+            "label": "",
+            "scope": "TRAIN",
+          }
+        }
+      />
+    </div>
+    <div
+      className="emotion-4"
+    >
+      <div
+        className="emotion-5"
+      >
+        <button
+          className="emotion-6"
+          onClick={[Function]}
+          type="button"
+        >
+          Cancel
+        </button>
+        <button
+          className="emotion-7"
+          onClick={[Function]}
+          type="submit"
+        >
+          Save
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+`;

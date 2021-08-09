@@ -83,6 +83,7 @@ exports[`<FiltersMenuSection /> should render properly for a "label" filter 1`] 
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
   opacity: 0;
+  fill: #ffffff;
 }
 
 .emotion-7 {
@@ -115,7 +116,7 @@ exports[`<FiltersMenuSection /> should render properly for a "label" filter 1`] 
           defaultChecked={false}
           onClick={[Function]}
           type="checkbox"
-          value="labels.boonai-console_face_recognition-face-recognition"
+          value="labels.faces"
         />
         <div
           className="emotion-5"
@@ -133,7 +134,7 @@ exports[`<FiltersMenuSection /> should render properly for a "label" filter 1`] 
         <span
           className="emotion-8"
         >
-          boonai-console_face_recognition-face-recognition
+          faces
         </span>
       </div>
     </label>
@@ -161,8 +162,7 @@ exports[`<FiltersMenuSection /> should render properly for a sub-section 1`] = `
 }
 
 .emotion-1 {
-  font-family: Roboto Mono;
-  font-weight: 400;
+  font-weight: 700;
 }
 
 .emotion-2 {
@@ -247,6 +247,7 @@ exports[`<FiltersMenuSection /> should render properly for a sub-section 1`] = `
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
   opacity: 0;
+  fill: #ffffff;
 }
 
 .emotion-9 {
@@ -397,6 +398,7 @@ exports[`<FiltersMenuSection /> should render properly for an "exists" filter 1`
   -webkit-transition: all .3s ease;
   transition: all .3s ease;
   opacity: 0;
+  fill: #ffffff;
 }
 
 .emotion-7 {

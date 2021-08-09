@@ -1,9 +1,10 @@
 import TestRenderer, { act } from 'react-test-renderer'
 
+import organizationOwners from '../__mocks__/organizationOwners'
+
 import OrganizationOwnersMenu from '../Menu'
 
 const ORGANIZATION_ID = '42869703-fb62-4988-a0d1-e59b15caff06'
-const OWNER_ID = 42
 
 describe('<OrganizationOwnersMenu />', () => {
   it('should render properly', async () => {
@@ -14,7 +15,7 @@ describe('<OrganizationOwnersMenu />', () => {
     const component = TestRenderer.create(
       <OrganizationOwnersMenu
         organizationId={ORGANIZATION_ID}
-        ownerId={OWNER_ID}
+        owner={organizationOwners.results[0]}
         revalidate={mockFn}
       />,
     )
@@ -58,7 +59,7 @@ describe('<OrganizationOwnersMenu />', () => {
     expect(fetch.mock.calls.length).toEqual(1)
 
     expect(fetch.mock.calls[0][0]).toEqual(
-      `/api/v1/organizations/${ORGANIZATION_ID}/owners/${OWNER_ID}/`,
+      `/api/v1/organizations/${ORGANIZATION_ID}/owners/${organizationOwners.results[0].id}/`,
     )
 
     expect(fetch.mock.calls[0][1]).toEqual({

@@ -4,6 +4,9 @@ import boonai.archivist.AbstractTest
 import boonai.archivist.domain.Asset
 import boonai.archivist.domain.AssetSpec
 import boonai.archivist.domain.BatchCreateAssetsRequest
+import boonai.archivist.domain.Dataset
+import boonai.archivist.domain.DatasetSpec
+import boonai.archivist.domain.DatasetType
 import boonai.archivist.domain.JobState
 import boonai.archivist.domain.Label
 import boonai.archivist.domain.ModOpType
@@ -11,10 +14,13 @@ import boonai.archivist.domain.Model
 import boonai.archivist.domain.ModelApplyRequest
 import boonai.archivist.domain.ModelCopyRequest
 import boonai.archivist.domain.ModelFilter
+import boonai.archivist.domain.ModelPatchRequestV2
 import boonai.archivist.domain.ModelPublishRequest
 import boonai.archivist.domain.ModelSpec
+import boonai.archivist.domain.ModelState
 import boonai.archivist.domain.ModelTrainingRequest
 import boonai.archivist.domain.ModelType
+import boonai.archivist.domain.ModelUpdateRequest
 import boonai.archivist.domain.ProcessorRef
 import boonai.archivist.domain.ProjectDirLocator
 import boonai.archivist.domain.ProjectStorageEntity
@@ -28,6 +34,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.EmptyResultDataAccessException
 import java.io.FileInputStream
 import java.nio.file.Paths
+import javax.persistence.EntityManager
+import javax.persistence.PersistenceContext
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertNotEquals
@@ -41,10 +49,13 @@ class ModelServiceTests : AbstractTest() {
     lateinit var modelService: ModelService
 
     @Autowired
-    lateinit var jobService: JobService
+    lateinit var modelDeployService: ModelDeployService
 
     @Autowired
-    lateinit var assetSearchService: AssetSearchService
+    lateinit var datasetService: DatasetService
+
+    @Autowired
+    lateinit var jobService: JobService
 
     @Autowired
     lateinit var pipelineModService: PipelineModService
@@ -52,13 +63,20 @@ class ModelServiceTests : AbstractTest() {
     @Autowired
     lateinit var fileStorageService: ProjectStorageService
 
+    @Autowired
+    lateinit var pipelineResolverService: PipelineResolverService
+
+    @PersistenceContext
+    lateinit var entityManager: EntityManager
+
     val testSearch =
         """{"query": {"term": { "source.filename": "large-brown-cat.jpg"} } }"""
 
-    fun create(name: String = "test", type: ModelType = ModelType.TF_CLASSIFIER): Model {
+    fun create(name: String = "test", type: ModelType = ModelType.TF_CLASSIFIER, ds: Dataset? = null): Model {
         val mspec = ModelSpec(
             name,
             type,
+            datasetId = ds?.id,
             applySearch = Json.Mapper.readValue(testSearch, Json.GENERIC_MAP)
         )
         return modelService.createModel(mspec)
@@ -68,6 +86,25 @@ class ModelServiceTests : AbstractTest() {
     fun testCreateModel() {
         val model = create()
         assertModel(model)
+    }
+
+    @Test(expected = IllegalArgumentException::class)
+    fun testCreateModelBadDataset() {
+        val ds = datasetService.createDataset(DatasetSpec("foo", DatasetType.Detection))
+        create(ds = ds)
+    }
+
+    @Test
+    fun testUpdateModel() {
+        val ds = datasetService.createDataset(DatasetSpec("foo", DatasetType.Classification))
+        val model = create()
+
+        val update = ModelUpdateRequest("bing", ds.id, listOf())
+        val umod = modelService.updateModel(model.id, update)
+        assertEquals(ds.id, umod.datasetId)
+        assertEquals("bing", umod.name)
+
+        assertNull(pipelineModService.findByName(model.moduleName, false))
     }
 
     @Test
@@ -104,12 +141,62 @@ class ModelServiceTests : AbstractTest() {
 
     @Test
     fun testTrainModel() {
-        val model1 = create()
+        val ds = datasetService.createDataset(DatasetSpec("frogs", DatasetType.Classification))
+        val model1 = create(ds = ds)
         val job = modelService.trainModel(model1, ModelTrainingRequest())
+        entityManager.flush()
 
         assertEquals(model1.trainingJobName, job.name)
         assertEquals(JobState.InProgress, job.state)
-        assertEquals(1, job.priority)
+        assertEquals(100, job.priority)
+
+        val model = modelService.findOne(ModelFilter(ids = listOf(model1.id)))
+        assertNotNull(model.actorLastTrained)
+        assertNotNull(model.timeLastTrained)
+        assertFalse(model.ready)
+    }
+
+    @Test
+    fun testModelReady() {
+        val ds = datasetService.createDataset(DatasetSpec("frogs", DatasetType.Classification))
+        val model1 = create(ds = ds)
+        val job = modelService.trainModel(model1, ModelTrainingRequest())
+        entityManager.flush()
+
+        assertEquals(model1.trainingJobName, job.name)
+        assertEquals(JobState.InProgress, job.state)
+        assertEquals(100, job.priority)
+
+        modelService.publishModel(model1, ModelPublishRequest())
+        entityManager.flush()
+
+        var model = modelService.findOne(ModelFilter(ids = listOf(model1.id)))
+        assertNotNull(model.actorLastTrained)
+        assertNotNull(model.timeLastTrained)
+        assertEquals(model.state, ModelState.Trained)
+
+        val batchCreate = BatchCreateAssetsRequest(
+            assets = listOf(AssetSpec("gs://cats/cat-movie.m4v"))
+        )
+        // Add a label.
+        var asset = assetService.getAsset(assetService.batchCreate(batchCreate).created[0])
+        assetService.updateLabels(
+            UpdateAssetLabelsRequest(
+                // Validate adding 2 identical labels only adds 1
+                mapOf(
+                    asset.id to listOf(
+                        Label(ds.id, "cat", simhash = "12345"),
+                        Label(ds.id, "cat", simhash = "12345")
+                    )
+                )
+            )
+        )
+        entityManager.flush()
+
+        model = modelService.findOne(ModelFilter(ids = listOf(model1.id)))
+        assertNotNull(model.actorLastTrained)
+        assertNotNull(model.timeLastTrained)
+        assertFalse(model.ready)
     }
 
     @Test(expected = EmptyResultDataAccessException::class)
@@ -158,6 +245,24 @@ class ModelServiceTests : AbstractTest() {
     }
 
     @Test
+    fun testPublishThenUpdateDepend() {
+        pipelineModService.updateStandardMods()
+
+        val model1 = create()
+        modelService.publishModel(model1, ModelPublishRequest())
+        modelService.patchModel(
+            model1.id,
+            ModelPatchRequestV2().apply {
+                setDependencies(listOf("boonai-face-detection"))
+            }
+        )
+
+        val mod = pipelineModService.getByName(model1.moduleName)
+        assertEquals(ModOpType.DEPEND, mod.ops[0].type)
+        assertEquals(ModOpType.APPEND, mod.ops[1].type)
+        assertEquals(ModelType.FACE_RECOGNITION.dependencies, mod.ops[0].apply as List<String>)
+    }
+    @Test
     fun testPublishModelWithDepend() {
         val model1 = create(type = ModelType.FACE_RECOGNITION)
         val mod = modelService.publishModel(model1, ModelPublishRequest())
@@ -166,6 +271,25 @@ class ModelServiceTests : AbstractTest() {
         assertEquals(ModelType.FACE_RECOGNITION.dependencies, mod.ops[0].apply as List<String>)
     }
 
+    @Test
+    fun testPublishModelWithUserSuppliedDepend() {
+        pipelineModService.updateStandardMods()
+        val model1 = create(type = ModelType.BOON_FUNCTION)
+        modelService.patchModel(
+            model1.id,
+            ModelPatchRequestV2().apply {
+                setDependencies(listOf("boonai-face-detection"))
+            }
+        )
+        val mod = modelService.publishModel(model1, ModelPublishRequest())
+        assertEquals(ModOpType.DEPEND, mod.ops[0].type)
+        assertEquals(ModOpType.APPEND, mod.ops[1].type)
+        assertEquals(ModelType.FACE_RECOGNITION.dependencies, mod.ops[0].apply as List<String>)
+
+        val pipe = pipelineResolverService.resolveModular(listOf(mod))
+        val shouldBeFace = pipe.execute.last { it.className == "boonai_analysis.boonai.ZviFaceDetectionProcessor" }
+        assertEquals("boonai_analysis.boonai.ZviFaceDetectionProcessor", shouldBeFace.className)
+    }
     @Test
     fun testPublishModelUpdate() {
         val model1 = create()
@@ -190,12 +314,12 @@ class ModelServiceTests : AbstractTest() {
 
     @Test
     fun testCopyModel() {
-        val model = create(type = ModelType.TF_UPLOADED_CLASSIFIER)
+        val model = create(type = ModelType.TORCH_MAR_CLASSIFIER)
         val mfp = Paths.get(
             "../../../test-data/training/custom-flowers-label-detection-tf2-xfer-mobilenet2.zip"
         )
 
-        modelService.publishModelFileUpload(model, FileInputStream(mfp.toFile()))
+        modelDeployService.deployUploadedModel(model, FileInputStream(mfp.toFile()))
         modelService.copyModelTag(model, ModelCopyRequest("latest", "approved"))
 
         val files = fileStorageService.listFiles(
@@ -203,8 +327,7 @@ class ModelServiceTests : AbstractTest() {
         )
 
         val names = files.map { FileUtils.filename(it) }
-        assertTrue("model-version.txt" in names)
-        assertTrue("model.zip" in names)
+        assertTrue(ModelType.TORCH_MAR_CLASSIFIER.fileName in names)
     }
 
     @Test
@@ -225,9 +348,16 @@ class ModelServiceTests : AbstractTest() {
     @Test
     fun testDeployModelCustomSearch() {
         setupTestAsset()
-
-        val model1 = create()
+        val ds = datasetService.createDataset(DatasetSpec("cats", DatasetType.Classification))
+        val model1 = create(ds = ds)
         modelService.publishModel(model1, ModelPublishRequest())
+
+        assertEquals(
+            1,
+            jdbc.queryForObject(
+                "SELECT int_model_count FROM dataset WHERE pk_dataset=?", Int::class.java, ds.id
+            )
+        )
 
         val rsp = modelService.applyModel(
             model1,
@@ -240,29 +370,7 @@ class ModelServiceTests : AbstractTest() {
 
         val scriptstr = Json.prettyString(script)
         assertTrue("\"match_all\" : { }" in scriptstr)
-        assertTrue("modelId" in scriptstr)
-    }
-
-    @Test
-    fun excludeLabeledAssetsFromSearch() {
-        val model = create()
-
-        val spec = AssetSpec("https://i.imgur.com/SSN26nN.jpg", label = model.getLabel("husky"))
-        val rsp = assetService.batchCreate(BatchCreateAssetsRequest(listOf(spec)))
-        val asset = assetService.getAsset(rsp.created[0])
-        assetService.index(asset.id, asset.document, true)
-        refreshIndex()
-
-        val counts = modelService.getLabelCounts(model)
-        assertEquals(1, counts["husky"])
-
-        assertEquals(1, assetSearchService.count(Model.matchAllSearch))
-        assertEquals(
-            0,
-            assetSearchService.count(
-                modelService.wrapSearchToExcludeTrainingSet(model, Model.matchAllSearch)
-            )
-        )
+        assertTrue("datasetId" in scriptstr)
     }
 
     fun setupTestAsset(): Asset {
@@ -279,116 +387,10 @@ class ModelServiceTests : AbstractTest() {
     }
 
     @Test
-    fun getLabelCounts() {
-        val model1 = create("test1")
-        val model2 = create("test2")
-
-        val rsp = assetService.batchCreate(
-            BatchCreateAssetsRequest(dataSet(model1))
-        )
-
-        assetService.updateLabels(
-            UpdateAssetLabelsRequest(
-                // Validate adding 2 identical labels only adds 1
-                mapOf(
-                    rsp.created[0] to listOf(
-                        Label(model2.id, "house"),
-                    ),
-                    rsp.created[1] to listOf(
-                        Label(model2.id, "tree"),
-                    )
-                )
-            )
-        )
-
-        val counts = modelService.getLabelCounts(model1)
-        assertEquals(4, counts.size)
-        assertEquals(1, counts["ant"])
-        assertEquals(1, counts["horse"])
-        assertEquals(1, counts["beaver"])
-        assertEquals(1, counts["zanzibar"])
-
-        val keys = counts.keys.toList()
-        assertEquals("ant", keys[0])
-        assertEquals("zanzibar", keys[3])
-    }
-
-    @Test
-    fun testRenameLabel() {
-        val model = create()
-        val specs = dataSet(model)
-
-        assetService.batchCreate(
-            BatchCreateAssetsRequest(specs)
-        )
-        modelService.updateLabel(model, "beaver", "horse")
-        refreshElastic()
-        val counts = modelService.getLabelCounts(model)
-        assertEquals(1, counts["ant"])
-        assertEquals(2, counts["horse"])
-        assertEquals(null, counts["beaver"])
-        assertEquals(1, counts["zanzibar"])
-    }
-
-    @Test
-    fun testRenameLabelToNullForDelete() {
-        val model = create()
-        val specs = dataSet(model)
-
-        assetService.batchCreate(
-            BatchCreateAssetsRequest(specs)
-        )
-        modelService.updateLabel(model, "horse", null)
-        refreshElastic()
-
-        val counts = modelService.getLabelCounts(model)
-        assertEquals(1, counts["ant"])
-        assertEquals(null, counts["horse"])
-        assertEquals(1, counts["beaver"])
-        assertEquals(1, counts["zanzibar"])
-    }
-
-    @Test
     fun testDeleteModel() {
         val model = create()
-        val specs = dataSet(model)
-
-        assetService.batchCreate(BatchCreateAssetsRequest(specs))
-        modelService.publishModel(model, ModelPublishRequest())
-
-        assertNotNull(pipelineModService.findByName(model.moduleName, false))
-
         modelService.deleteModel(model)
-        Thread.sleep(2000)
-
-        val counts = modelService.getLabelCounts(model)
-        assertTrue(counts.isEmpty())
         assertNull(pipelineModService.findByName(model.moduleName, false))
-    }
-
-    @Test
-    fun testValidateTModelUpload() {
-        modelService.validateTensorflowModel(
-            Paths.get(
-                "../../../test-data/training/custom-flowers-label-detection-tf2-xfer-mobilenet2.zip"
-            )
-        )
-    }
-
-    @Test(expected = IllegalArgumentException::class)
-    fun testValidateModelUploadFail() {
-        modelService.validateTensorflowModel(Paths.get("../../../test-data/training/pets.zip"))
-    }
-
-    @Test
-    fun testAcceptModelFileUploadAndList() {
-        val model = create(type = ModelType.TF_UPLOADED_CLASSIFIER)
-        val mfp = Paths.get(
-            "../../../test-data/training/custom-flowers-label-detection-tf2-xfer-mobilenet2.zip"
-        )
-
-        val module = modelService.publishModelFileUpload(model, FileInputStream(mfp.toFile()))
-        assertEquals("Custom Models", module.category)
     }
 
     @Test
@@ -408,15 +410,6 @@ class ModelServiceTests : AbstractTest() {
         assertEquals("test", model.moduleName)
         assertTrue(model.fileId.endsWith("model.zip"))
         assertFalse(model.ready)
-    }
-
-    fun dataSet(model: Model): List<AssetSpec> {
-        return listOf(
-            AssetSpec("https://i.imgur.com/12abc.jpg", label = model.getLabel("beaver")),
-            AssetSpec("https://i.imgur.com/abc123.jpg", label = model.getLabel("ant")),
-            AssetSpec("https://i.imgur.com/horse.jpg", label = model.getLabel("horse")),
-            AssetSpec("https://i.imgur.com/zani.jpg", label = model.getLabel("zanzibar"))
-        )
     }
 
     @Test

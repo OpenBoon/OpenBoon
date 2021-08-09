@@ -7,7 +7,7 @@ describe('<AssetLabelingShortcuts />', () => {
     const mockOnSubmit = jest.fn()
 
     const component = TestRenderer.create(
-      <AssetLabelingShortcuts onSubmit={mockOnSubmit} />,
+      <AssetLabelingShortcuts onSave={mockOnSubmit} />,
     )
 
     expect(component.toJSON()).toEqual(null)
@@ -29,7 +29,7 @@ describe('<AssetLabelingShortcuts />', () => {
     const mockOnSubmit = jest.fn()
 
     const component = TestRenderer.create(
-      <AssetLabelingShortcuts onSubmit={mockOnSubmit} />,
+      <AssetLabelingShortcuts onSave={mockOnSubmit} />,
     )
 
     expect(component.toJSON()).toEqual(null)
@@ -45,5 +45,9 @@ describe('<AssetLabelingShortcuts />', () => {
     })
 
     expect(mockOnSubmit).not.toHaveBeenCalled()
+
+    act(() => {
+      component.unmount()
+    })
   })
 })

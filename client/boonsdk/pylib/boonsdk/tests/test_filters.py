@@ -1,7 +1,7 @@
 import unittest
 
 from boonsdk.filters import apply_search_filters, ExcludeTrainingSetsFilter, TrainingSetFilter
-from boonsdk import LabelScope, Model
+from boonsdk import LabelScope, Model, Dataset
 
 
 class AssetSearchFilterTests(unittest.TestCase):
@@ -29,7 +29,7 @@ class AssetSearchFilterTests(unittest.TestCase):
         assert tsq['labels'] == ['cat']
 
     def test_training_set_filter_from_label(self):
-        ds = Model({'id': '12345'})
+        ds = Dataset({'id': '12345'})
         label = ds.make_label('dog', bbox=[0.1, 0.1, 0.5, 0.5], simhash='ABC1234')
 
         search = {}
@@ -40,7 +40,7 @@ class AssetSearchFilterTests(unittest.TestCase):
         assert tsq['labels'] == ['dog']
 
     def test_training_set_filter_from_model(self):
-        ds = Model({'id': '12345'})
+        ds = Dataset({'id': '12345'})
 
         search = {}
         apply_search_filters(search, ds.asset_search_filter())
@@ -50,7 +50,7 @@ class AssetSearchFilterTests(unittest.TestCase):
         assert tsq['labels'] is None
 
     def test_training_set_filter_from_model2(self):
-        ds = Model({'id': '12345'})
+        ds = Model({'id': '12345', 'datasetId': '12345'})
 
         search = {}
         apply_search_filters(search, ds)

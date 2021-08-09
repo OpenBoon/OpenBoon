@@ -1,15 +1,13 @@
 const assets = {
   count: 574,
-  next:
-    'https://wallet.zmlp.zorroa.com/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/searches/query/?from=100&size=100',
+  next: 'https://wallet.zmlp.zorroa.com/api/v1/projects/03aa4218-1243-4a62-8113-42064dcf8f0e/searches/query/?from=100&size=100',
   previous: null,
   results: [
     {
       id: 'pNwnXjVntgbDQgPZhkXqVT-2URMqvJNL',
       metadata: {
         source: {
-          path:
-            'gs://zmlp-private-test-data/zorroa-deploy-testdata/zorroa-dev-testdata/zorroa-test-data/office/test_document.docx',
+          path: 'gs://zmlp-private-test-data/zorroa-deploy-testdata/zorroa-dev-testdata/zorroa-test-data/office/test_document.docx',
           extension: 'docx',
           filename: 'test_document.docx',
           mimetype:
@@ -17,7 +15,9 @@ const assets = {
         },
         analysis: {
           'flower-types': {
-            score: 0.333,
+            count: 1,
+            type: 'labels',
+            predictions: [{ score: 0.153, label: 'rose' }],
           },
         },
       },
@@ -28,15 +28,16 @@ const assets = {
       id: '3DDnuCNruXiXtRjKxwGJt2UPGNTAZut4',
       metadata: {
         source: {
-          path:
-            'gs://zmlp-private-test-data/zorroa-deploy-testdata/zorroa-dev-testdata/zorroa-test-data/office/irr.pdf',
+          path: 'gs://zmlp-private-test-data/zorroa-deploy-testdata/zorroa-dev-testdata/zorroa-test-data/office/irr.pdf',
           extension: 'pdf',
           filename: 'irr.pdf',
           mimetype: 'application/pdf',
         },
         analysis: {
           'flower-types': {
-            score: 0.333,
+            count: 1,
+            type: 'labels',
+            predictions: [{ score: 0.153, label: 'rose' }],
           },
         },
       },
@@ -47,15 +48,16 @@ const assets = {
       id: 'iKiUfpLIq3lNGu7YZoVDRu1eEUAG3Gbo',
       metadata: {
         source: {
-          path:
-            'gs://zmlp-private-test-data/zorroa-deploy-testdata/zorroa-dev-testdata/zorroa-test-data/office/irr.pdf',
+          path: 'gs://zmlp-private-test-data/zorroa-deploy-testdata/zorroa-dev-testdata/zorroa-test-data/office/irr.pdf',
           extension: 'pdf',
           filename: 'irr.pdf',
           mimetype: 'application/pdf',
         },
         analysis: {
           'flower-types': {
-            score: 0.333,
+            count: 1,
+            type: 'labels',
+            predictions: [{ score: 0.153, label: 'rose' }],
           },
         },
       },
@@ -66,15 +68,16 @@ const assets = {
       id: 'LDOJ879pyZn4Y-gRhQmd6q3h_kG8mM2r',
       metadata: {
         source: {
-          path:
-            'gs://zmlp-private-test-data/zorroa-deploy-testdata/zorroa-dev-testdata/zorroa-test-data/office/irr.pdf',
+          path: 'gs://zmlp-private-test-data/zorroa-deploy-testdata/zorroa-dev-testdata/zorroa-test-data/office/irr.pdf',
           extension: 'pdf',
           filename: 'irr.pdf',
           mimetype: 'application/pdf',
         },
         analysis: {
           'flower-types': {
-            score: 0.333,
+            count: 1,
+            type: 'labels',
+            predictions: [{ score: 0.153, label: 'rose' }],
           },
         },
       },
@@ -91,12 +94,13 @@ const assets = {
           filename: 'FatManOnABike1914.mp4',
           filesize: 13168719,
           mimetype: 'video/mp4',
-          path:
-            'gs://zmlp-private-test-data/zorroa-deploy-testdata/zorroa-cypress-testdata/mp4/FatManOnABike1914.mp4',
+          path: 'gs://zmlp-private-test-data/zorroa-deploy-testdata/zorroa-cypress-testdata/mp4/FatManOnABike1914.mp4',
         },
         analysis: {
           'flower-types': {
-            score: 0.333,
+            count: 1,
+            type: 'labels',
+            predictions: [{ score: 0.153, label: 'rose' }],
           },
         },
       },

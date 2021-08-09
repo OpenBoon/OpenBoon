@@ -120,7 +120,7 @@ class AssetSearchServiceImpl : AssetSearchService {
             outerQuery.mustNot(
                 QueryBuilders.nestedQuery(
                     "labels",
-                    QueryBuilders.boolQuery().filter(QueryBuilders.existsQuery("labels.modelId")), ScoreMode.None
+                    QueryBuilders.boolQuery().filter(QueryBuilders.existsQuery("labels.datasetId")), ScoreMode.None
                 )
             )
         }
@@ -129,7 +129,7 @@ class AssetSearchServiceImpl : AssetSearchService {
         if (search.containsKey("training_set")) {
             val tsq = Json.Mapper.convertValue<TrainingSetQuery>(search.getValue("training_set"))
             val innerBool = QueryBuilders.boolQuery()
-            innerBool.filter(QueryBuilders.termQuery("labels.modelId", tsq.modelId.toString()))
+            innerBool.filter(QueryBuilders.termQuery("labels.datasetId", tsq.datasetId.toString()))
             if (tsq.scopes != null) {
                 innerBool.filter(QueryBuilders.termsQuery("labels.scope", tsq.scopes.map { it.toString() }))
             }

@@ -27,6 +27,7 @@ from agreements.views import AgreementViewSet
 from apikeys.views import ApikeyViewSet
 from assets.views import (AssetViewSet, FileCategoryViewSet,
                           FileNameViewSet, WebVttViewSet)
+from datasets.views import DatasetsViewSet
 from datasources.views import DataSourceViewSet
 from faces.views import FaceViewSet
 from gcpmarketplace.views import signup_success, SignUpView
@@ -65,21 +66,22 @@ organization_user_router.register('projects', OrganizationUserProjectViewSet,
 
 router.register('projects', ProjectViewSet, basename='project')
 projects_router = NestedSimpleRouter(router, 'projects', lookup='project')
+projects_router.register('api_keys', ApikeyViewSet, basename='apikey')
+projects_router.register('assets', AssetViewSet, basename='asset')
+projects_router.register('datasets', DatasetsViewSet, basename='dataset')
+projects_router.register('data_sources', DataSourceViewSet, basename='datasource')
+projects_router.register('faces', FaceViewSet, basename='face')
 projects_router.register('jobs', JobViewSet, basename='job')
+projects_router.register('models', ModelViewSet, basename='model')
+projects_router.register('modules', ModuleViewSet, basename='module')
+projects_router.register('permissions', PermissionViewSet, basename='permission')
+projects_router.register('providers', ProviderViewSet, basename='provider')
+projects_router.register('roles', RolesViewSet, basename='role')
+projects_router.register('searches', SearchViewSet, basename='search')
 projects_router.register('tasks', TaskViewSet, basename='task')
 projects_router.register('task_errors', TaskErrorViewSet, basename='taskerror')
 projects_router.register('users', ProjectUserViewSet, basename='projectuser')
-projects_router.register('assets', AssetViewSet, basename='asset')
-projects_router.register('api_keys', ApikeyViewSet, basename='apikey')
-projects_router.register('roles', RolesViewSet, basename='role')
-projects_router.register('permissions', PermissionViewSet, basename='permission')
-projects_router.register('data_sources', DataSourceViewSet, basename='datasource')
-projects_router.register('modules', ModuleViewSet, basename='module')
-projects_router.register('providers', ProviderViewSet, basename='provider')
-projects_router.register('searches', SearchViewSet, basename='search')
-projects_router.register('faces', FaceViewSet, basename='face')
 projects_router.register('visualizations', VisualizationViewSet, basename='visualization')
-projects_router.register('models', ModelViewSet, basename='model')
 projects_router.register('webhooks', ProjectWebhooksViewSet, basename='webhook')
 
 

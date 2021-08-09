@@ -23,7 +23,7 @@ const Navbar = ({ projectId, isSidebarOpen, setSidebarOpen, children }) => {
         justifyContent: 'space-between',
         alignItems: 'center',
         backgroundColor: colors.structure.mattGrey,
-        boxShadow: constants.boxShadows.navBar,
+        boxShadow: constants.boxShadows.tableRow,
         zIndex: zIndex.layout.navbar,
         paddingLeft: spacing.normal,
         paddingRight: spacing.normal,

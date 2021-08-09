@@ -534,6 +534,22 @@ exports[`<Icons /> should render properly 1`] = `
       className="emotion-2"
     >
       <div>
+        ./file.svg
+      </div>
+      <div
+        className="emotion-3"
+      >
+        <svg
+          data-file-name="file.svg"
+          height="100%"
+          width="100%"
+        />
+      </div>
+    </div>
+    <div
+      className="emotion-2"
+    >
+      <div>
         ./filter.svg
       </div>
       <div
@@ -1030,6 +1046,22 @@ exports[`<Icons /> should render properly 1`] = `
       className="emotion-2"
     >
       <div>
+        ./rocket.svg
+      </div>
+      <div
+        className="emotion-3"
+      >
+        <svg
+          data-file-name="rocket.svg"
+          height="100%"
+          width="100%"
+        />
+      </div>
+    </div>
+    <div
+      className="emotion-2"
+    >
+      <div>
         ./search.svg
       </div>
       <div
@@ -1085,6 +1117,22 @@ exports[`<Icons /> should render properly 1`] = `
       >
         <svg
           data-file-name="squareSquareSquare.svg"
+          height="100%"
+          width="100%"
+        />
+      </div>
+    </div>
+    <div
+      className="emotion-2"
+    >
+      <div>
+        ./tags.svg
+      </div>
+      <div
+        className="emotion-3"
+      >
+        <svg
+          data-file-name="tags.svg"
           height="100%"
           width="100%"
         />

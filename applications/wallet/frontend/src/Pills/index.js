@@ -17,7 +17,7 @@ const Pills = ({ children }) => {
       }}
     >
       {child.includes('_')
-        ? child.replace('_', ' ')
+        ? child.replaceAll('_', ' ')
         : child.replace(/([A-Z])/g, (match) => ` ${match}`)}
     </span>
   ))

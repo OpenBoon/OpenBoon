@@ -3,7 +3,7 @@ import pickle
 
 import numpy as np
 
-from boonflow import Argument, Prediction
+from boonflow import Argument, Prediction, ImageInputStream
 from boonflow.analysis import LabelDetectionAnalysis
 from boonai_analysis.utils.prechecks import Prechecks
 from boonflow import file_storage, proxy, clips, video
@@ -129,7 +129,7 @@ class KnnFaceRecognitionClassifier(CustomModelProcessor):
         clip_tracker = clips.ClipTracker(asset, self.app_model.module_name)
 
         for time_ms, path in extractor:
-            detected_faces = self.detect_engine.detect(path)
+            detected_faces = self.detect_engine.detect(ImageInputStream.from_path(path))
             if detected_faces:
                 recs = self.get_rec_predictions(detected_faces)
                 clip_tracker.append_predictions(time_ms, recs)

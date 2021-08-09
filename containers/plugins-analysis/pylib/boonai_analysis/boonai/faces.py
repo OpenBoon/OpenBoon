@@ -1,11 +1,10 @@
-from PIL import Image
 import numpy as np
 from facenet_pytorch import MTCNN, InceptionResnetV1
 
 from boonflow import AssetProcessor, Singleton
-from boonflow.proxy import get_proxy_level_path, calculate_normalized_bbox
-from boonflow.analysis import LabelDetectionAnalysis
 from boonflow import FileTypes
+from boonflow.analysis import LabelDetectionAnalysis
+from boonflow.proxy import calculate_normalized_bbox
 
 
 class ZviFaceDetectionProcessor(AssetProcessor):
@@ -27,8 +26,8 @@ class ZviFaceDetectionProcessor(AssetProcessor):
 
     def process(self, frame):
         asset = frame.asset
-        p_path = get_proxy_level_path(asset, 3)
-        asset.add_analysis(self.namespace,  self.engine.get_analysis(p_path))
+        buffer = self.load_proxy_image(frame, 3)
+        asset.add_analysis(self.namespace, self.engine.get_analysis(buffer))
 
 
 class MtCnnFaceDetectionEngine(metaclass=Singleton):
@@ -39,9 +38,10 @@ class MtCnnFaceDetectionEngine(metaclass=Singleton):
         self.mtcnn = MTCNN(image_size=160, margin=20, keep_all=True)
         self.resnet = InceptionResnetV1(pretrained='vggface2').eval()
 
-    def detect(self, path):
+    def detect(self, buffer):
         result = []
-        img = Image.open(path).convert('RGB')
+        img = buffer.pil_img()
+        img = img.convert('RGB')
         img_cropped = self.mtcnn(img)
         rects, confidences = self.mtcnn.detect(img)
 
@@ -59,9 +59,9 @@ class MtCnnFaceDetectionEngine(metaclass=Singleton):
 
         return result
 
-    def get_analysis(self, obj):
+    def get_analysis(self, buffer):
         analysis = LabelDetectionAnalysis()
-        for i, elem in enumerate(self.detect(obj)):
+        for i, elem in enumerate(self.detect(buffer)):
             analysis.add_label_and_score('face{}'.format(i),
                                          elem['score'], bbox=elem['bbox'], simhash=elem['simhash'])
         return analysis

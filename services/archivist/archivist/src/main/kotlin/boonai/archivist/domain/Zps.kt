@@ -2,6 +2,7 @@ package boonai.archivist.domain
 
 import com.fasterxml.jackson.core.type.TypeReference
 import boonai.common.util.Json
+import com.fasterxml.jackson.annotation.JsonInclude
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 import java.util.zip.Adler32
@@ -118,9 +119,10 @@ class ZpsScript(
     }
 }
 
-class ApplyModulesToAssetRequest(
+@JsonInclude(JsonInclude.Include.ALWAYS)
+class BuildZpsScriptRequest(
     @ApiModelProperty("The ID of the Asset.")
-    val assetId: String,
+    val assetId: String?,
     @ApiModelProperty("The modules to apply.")
     val modules: List<String>
 )
@@ -169,7 +171,7 @@ class ProcessorRef(
     val env: Map<String, String>? = null,
 
     @ApiModelProperty("The Pipeline module which added this processor.")
-    var module: String? = "standard",
+    var module: String = "standard",
 
     @ApiModelProperty("The Processor name to use for the checksum")
     var checksumName: String? = null

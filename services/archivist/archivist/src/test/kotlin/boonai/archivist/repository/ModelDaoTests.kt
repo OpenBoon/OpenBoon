@@ -3,13 +3,12 @@ package boonai.archivist.repository
 import boonai.archivist.AbstractTest
 import boonai.archivist.domain.ModelFilter
 import boonai.archivist.domain.ModelSpec
+import boonai.archivist.domain.ModelState
 import boonai.archivist.domain.ModelType
 import boonai.archivist.service.ModelService
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import kotlin.test.assertEquals
-import kotlin.test.assertFalse
-import kotlin.test.assertTrue
 
 class ModelDaoTests : AbstractTest() {
 
@@ -20,19 +19,22 @@ class ModelDaoTests : AbstractTest() {
     lateinit var modelJdbcDao: ModelJdbcDao
 
     @Test
-    fun testMarkAsReady() {
+    fun setEndpoint() {
         val model = modelService.createModel(ModelSpec("foo", ModelType.TF_CLASSIFIER))
-        modelJdbcDao.markAsReady(model.id, true)
-        var trained = jdbc.queryForObject(
-            "SELECT bool_trained FROM model WHERE pk_model=?", Boolean::class.java, model.id
-        )
-        assertTrue(trained)
+        modelJdbcDao.setEndpoint(model.id, "https://foo/bar")
 
-        modelJdbcDao.markAsReady(model.id, false)
-        trained = jdbc.queryForObject(
-            "SELECT bool_trained FROM model WHERE pk_model=?", Boolean::class.java, model.id
+        var endpoint = jdbc.queryForObject(
+            "SELECT str_endpoint FROM model WHERE pk_model=?", String::class.java, model.id
         )
-        assertFalse(trained)
+        assertEquals(endpoint, "https://foo/bar")
+    }
+
+    @Test
+    fun testUpdateState() {
+        val model1 = modelService.createModel(ModelSpec("test1", ModelType.TF_CLASSIFIER))
+        for (state in ModelState.values()) {
+            modelJdbcDao.updateState(model1.id, state)
+        }
     }
 
     @Test

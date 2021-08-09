@@ -32,8 +32,7 @@ describe('Api Keys', function () {
 
     cy.contains('Delete Permanently').click()
 
-    // TODO: uncomment me after this MR has been merged
-    // cy.contains('API Key deleted.')
+    cy.contains('API Key deleted.')
 
     cy.contains(apiKeyName).should('not.exist')
   })

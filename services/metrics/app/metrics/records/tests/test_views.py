@@ -1,8 +1,8 @@
 import pytest
-import boonsdk
-
-from django.urls import reverse
 from django.conf import settings
+from django.urls import reverse
+
+import boonsdk
 from metrics.records.models import ApiCall
 
 pytestmark = pytest.mark.django_db
@@ -15,24 +15,6 @@ class TestAPICallsViewSet:
         assert response.json() == {'count': 0, 'next': None,
                                    'previous': None, 'results': []}
 
-    def test_create_call(self, api_client):
-        body = {'project': '92db38cc-a9d1-43af-bfb5-7be32de1d33d',
-                'service': 'CoolMlStuff',
-                'asset_id': 'GTZ6ppbXYwXO4ssWYcPVaQJsXNC-cVap',
-                'asset_path': 'gs://bucket/image.jpg',
-                'image_count': 1,
-                'video_minutes': 0.0}
-        response = api_client.post(reverse('apicalls-list'), body)
-        assert response.status_code == 201
-        first_api_call = ApiCall.objects.first()
-
-        # Make sure upserting works.
-        response = api_client.post(reverse('apicalls-list'), body)
-        assert response.status_code == 201
-        second_api_call = ApiCall.objects.get(id=first_api_call.id)
-        assert first_api_call.created_date == second_api_call.created_date
-        assert first_api_call.modified_date < second_api_call.modified_date
-
     def test_get_single_record(self, api_client, single_record):
         url = reverse('apicalls-detail', kwargs={'pk': single_record.id})
         response = api_client.get(url)
@@ -43,7 +25,7 @@ class TestAPICallsViewSet:
         assert content['asset_id'] == single_record.asset_id
         assert content['asset_path'] == single_record.asset_path
         assert content['image_count'] == single_record.image_count
-        assert content['video_minutes'] == single_record.video_minutes
+        assert content['video_seconds'] == single_record.video_seconds
         assert 'created_date' in content
         assert 'modified_date' in content
 
@@ -55,44 +37,58 @@ class TestAPICallsViewSet:
                             'project': '00000000-0000-0000-0000-000000000000',
                             'service': 'boonai-object-detection',
                             'tier': 'tier_1',
-                            'video_minutes': 7.17},
+                            'video_seconds': 7.17,
+                            'video_minutes': 0.1195,
+                            'video_hours': 0.0019916666666666668},
                            {'image_count': 10,
                             'project': '00000000-0000-0000-0000-000000000000',
                             'service': 'gcp-label-detection',
                             'tier': 'tier_2',
-                            'video_minutes': 46.51},
+                            'video_seconds': 46.51,
+                            'video_minutes': 0.7751666666666667,
+                            'video_hours': 0.012919444444444445},
                            {'image_count': 15,
                             'project': '00000000-0000-0000-0000-000000000000',
                             'service': 'standard',
                             'tier': 'free',
-                            'video_minutes': 73.13},
+                            'video_seconds': 73.13,
+                            'video_minutes': 1.2188333333333332,
+                            'video_hours': 0.02031388888888889},
                            {'image_count': 11,
                             'project': '11111111-1111-1111-1111-111111111111',
                             'service': 'boonai-object-detection',
                             'tier': 'tier_1',
-                            'video_minutes': 45.66},
+                            'video_seconds': 45.66,
+                            'video_minutes': 0.7609999999999999,
+                            'video_hours': 0.012683333333333331},
                            {'image_count': 10,
                             'project': '11111111-1111-1111-1111-111111111111',
                             'service': 'standard',
                             'tier': 'free',
-                            'video_minutes': 48.8},
+                            'video_seconds': 48.8,
+                            'video_minutes': 0.8133333333333332,
+                            'video_hours': 0.013555555555555553},
                            {'image_count': 1,
                             'project': '22222222-2222-2222-2222-222222222222',
                             'service': 'boonai-label-detection',
                             'tier': 'tier_1',
-                            'video_minutes': 2.5},
+                            'video_seconds': 2.5,
+                            'video_minutes': 0.041666666666666664,
+                            'video_hours': 0.0006944444444444444},
                            {'image_count': 12,
                             'project': '22222222-2222-2222-2222-222222222222',
                             'service': 'boonai-object-detection',
                             'tier': 'tier_1',
-                            'video_minutes': 52.55}]
+                            'video_seconds': 52.55,
+                            'video_minutes': 0.8758333333333332,
+                            'video_hours': 0.014597222222222222}]
 
     def test_report_csv(self, api_client, test_set):
         response = api_client.get(reverse('apicalls-report'), content_type='text/csv',
                                   HTTP_ACCEPT='text/csv')
         content = response.rendered_content.decode('utf-8').strip().split('\r\n')
         assert len(content) == 8
-        assert content[0] == 'project,service,tier,image_count,video_minutes'
+        assert content[0] == 'project,service,tier,image_count,video_seconds'
         assert response['content-disposition'] == 'attachment; filename=billing_report.csv'
 
     def test_report_csv_custom_filename(self, api_client, test_set):
@@ -115,9 +111,13 @@ class TestAPICallsViewSet:
                                   {'project': '00000000-0000-0000-0000-000000000000'})
         assert response.status_code == 200
         assert response.json() == {'tier_1': {'image_count': 1,
-                                              'video_minutes': 7.17},
+                                              'video_hours': 1,
+                                              'video_minutes': 1,
+                                              'video_seconds': 7.17},
                                    'tier_2': {'image_count': 10,
-                                              'video_minutes': 46.51}}
+                                              'video_hours': 1,
+                                              'video_minutes': 1,
+                                              'video_seconds': 46.51}}
 
     def test_tiered_usage_before_date(self, api_client, test_set):
         response = api_client.get(reverse('apicalls-tiered-usage'),
@@ -125,9 +125,13 @@ class TestAPICallsViewSet:
                                    'before': '2020-12-01'})
         assert response.status_code == 200
         assert response.json() == {'tier_1': {'image_count': 0,
-                                              'video_minutes': 0.0},
+                                              'video_hours': 0.0,
+                                              'video_minutes': 0.0,
+                                              'video_seconds': 0.0},
                                    'tier_2': {'image_count': 0,
-                                              'video_minutes': 0.0}}
+                                              'video_hours': 0.0,
+                                              'video_minutes': 0.0,
+                                              'video_seconds': 0.0}}
 
 
 class TestTiers:

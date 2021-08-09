@@ -5,18 +5,19 @@ import boonai.archivist.domain.AssetSpec
 import boonai.archivist.domain.AssetState
 import boonai.archivist.domain.BatchCreateAssetsRequest
 import boonai.archivist.domain.BatchDeleteAssetsRequest
-import boonai.archivist.domain.TimelineClipSpec
+import boonai.archivist.domain.DatasetSpec
+import boonai.archivist.domain.DatasetType
 import boonai.archivist.domain.FieldSpec
 import boonai.archivist.domain.Label
-import boonai.archivist.domain.ModelSpec
-import boonai.archivist.domain.ModelType
+import boonai.archivist.domain.TimelineClipSpec
 import boonai.archivist.domain.TimelineSpec
 import boonai.archivist.domain.TrackSpec
 import boonai.archivist.domain.UpdateAssetLabelsRequest
+import boonai.archivist.domain.UpdateAssetLabelsRequestV4
 import boonai.archivist.service.AssetSearchService
 import boonai.archivist.service.ClipService
+import boonai.archivist.service.DatasetService
 import boonai.archivist.service.FieldService
-import boonai.archivist.service.ModelService
 import boonai.archivist.service.PipelineModService
 import boonai.archivist.util.bbox
 import boonai.common.util.Json
@@ -41,7 +42,7 @@ class AssetControllerTests : MockMvcTest() {
     lateinit var pipelineModService: PipelineModService
 
     @Autowired
-    lateinit var modelService: ModelService
+    lateinit var datasetService: DatasetService
 
     @Autowired
     lateinit var clipService: ClipService
@@ -119,12 +120,12 @@ class AssetControllerTests : MockMvcTest() {
 
     @Test
     fun testUpdateLabels() {
-        val ds = modelService.createModel(ModelSpec("test", ModelType.KNN_CLASSIFIER))
+        val ds = datasetService.createDataset(DatasetSpec("test", DatasetType.Classification))
         val spec = AssetSpec("https://i.imgur.com/SSN26nN.jpg")
         val created = assetService.batchCreate(BatchCreateAssetsRequest(listOf(spec)))
 
         val req = UpdateAssetLabelsRequest(
-            add = mapOf(created.created[0] to listOf(ds.getLabel("cat")))
+            add = mapOf(created.created[0] to listOf(ds.makeLabel("cat")))
         )
 
         mvc.perform(
@@ -140,15 +141,41 @@ class AssetControllerTests : MockMvcTest() {
     }
 
     @Test
+    fun testUpdateLabelsV4() {
+        val ds = datasetService.createDataset(DatasetSpec("test", DatasetType.Classification))
+        val spec = AssetSpec("https://i.imgur.com/SSN26nN.jpg")
+        val created = assetService.batchCreate(BatchCreateAssetsRequest(listOf(spec)))
+
+        val req = UpdateAssetLabelsRequestV4(
+            add = mapOf(created.created[0] to ds.makeLabel("cat", simhash = "ABCD1234"))
+        )
+
+        mvc.perform(
+            MockMvcRequestBuilders.put("/api/v4/assets/_batch_update_labels")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serialize(req))
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.updated", CoreMatchers.equalTo(1)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.errors", CoreMatchers.equalTo(0)))
+            .andReturn()
+
+        authenticate()
+        val asset = getSample(1)[0]
+        assertEquals("ABCD1234", asset.getAttr("labels", Label.LIST_OF)?.get(0)?.simhash)
+    }
+
+    @Test
     fun testUpdateLabelsWithBbox() {
-        val ds = modelService.createModel(ModelSpec("test", ModelType.KNN_CLASSIFIER))
+        val ds = datasetService.createDataset(DatasetSpec("test", DatasetType.Classification))
         val spec = AssetSpec("https://i.imgur.com/SSN26nN.jpg")
         val created = assetService.batchCreate(BatchCreateAssetsRequest(listOf(spec)))
 
         val req = UpdateAssetLabelsRequest(
             add = mapOf(
                 created.created[0] to
-                    listOf(ds.getLabel("cat", bbox = bbox(0.0, 0.0, 0.1, 0.1)))
+                    listOf(ds.makeLabel("cat", bbox = bbox(0.0, 0.0, 0.1, 0.1)))
             )
         )
 
@@ -166,7 +193,7 @@ class AssetControllerTests : MockMvcTest() {
         val req2 = UpdateAssetLabelsRequest(
             add = mapOf(
                 created.created[0] to
-                    listOf(ds.getLabel("dog", bbox = bbox(0.1, 0.1, 0.3, 0.3)))
+                    listOf(ds.makeLabel("dog", bbox = bbox(0.1, 0.1, 0.3, 0.3)))
             )
         )
 

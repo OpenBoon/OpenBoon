@@ -73,7 +73,7 @@ Array [
         onClick={[Function]}
         onMouseEnter={[Function]}
       >
-        Account Overview
+        All Projects
       </a>
       <span
         className="emotion-3"

@@ -208,3 +208,6 @@ LOGGING = {
 
 # Celery Settings
 REDIS_HOST = os.environ.get('REDIS_HOST', 'redis')
+PROJECT_ID = os.environ.get('PROJECT_ID')
+PUB_SUB_CREDENTIALS = os.environ.get('PUB_SUB_CREDENTIALS')
+PUBSUB_SUBSCRIPTION = os.environ.get('PUBSUB_SUBSCRIPTION')

@@ -75,14 +75,19 @@ const ApiKeysAddForm = () => {
         legend="Add Scope"
         description=""
         variant={CHECKBOX_VARIANTS.PRIMARY}
-        options={permissions.map(({ name, description }) => ({
-          value: name,
-          label: name.replace(/([A-Z])/g, (match) => ` ${match}`),
-          icon: '',
-          legend: description,
-          initialValue: false,
-          isDisabled: false,
-        }))}
+        options={permissions
+          .sort((a, b) => {
+            if (a.name.toLowerCase() < b.name.toLowerCase()) return -1
+            return 1
+          })
+          .map(({ name, description }) => ({
+            value: name,
+            label: name.replace(/([A-Z])/g, (match) => ` ${match}`),
+            icon: '',
+            legend: description,
+            initialValue: false,
+            isDisabled: false,
+          }))}
         onClick={(permission) =>
           dispatch({ permissions: { ...state.permissions, ...permission } })
         }

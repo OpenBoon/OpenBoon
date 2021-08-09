@@ -1,14 +1,18 @@
 package boonai.archivist.service
 
 import boonai.archivist.domain.Asset
+import boonai.archivist.domain.BoonLib
 import boonai.archivist.domain.Clip
 import boonai.archivist.domain.DataSource
 import boonai.archivist.domain.DataSourceDelete
 import boonai.archivist.domain.DataSourceImportOptions
+import boonai.archivist.domain.Dataset
 import boonai.archivist.domain.FileExtResolver
 import boonai.archivist.domain.Job
+import boonai.archivist.domain.JobFilter
 import boonai.archivist.domain.JobPriority
 import boonai.archivist.domain.JobSpec
+import boonai.archivist.domain.JobState
 import boonai.archivist.domain.ProcessorRef
 import boonai.archivist.domain.ReprocessAssetSearchRequest
 import boonai.archivist.domain.ReprocessAssetSearchResponse
@@ -21,6 +25,11 @@ import org.springframework.stereotype.Component
 import java.util.UUID
 
 interface JobLaunchService {
+
+    /**
+     * Launches a job to export a DS to boonlib.
+     */
+    fun launchBoonLibDatasetExport(dataset: Dataset, boonlib: BoonLib): Job
 
     /**
      * Launches a job to analyze a single Clip.
@@ -80,6 +89,7 @@ interface JobLaunchService {
         name: String,
         assets: List<String>,
         pipeline: ResolvedPipeline,
+        merge: Boolean = false,
         settings: Map<String, Any>? = null,
         creds: Set<String>? = null
     ): Job
@@ -200,6 +210,7 @@ class JobLaunchServiceImpl(
         name: String,
         assets: List<String>,
         pipeline: ResolvedPipeline,
+        merge: Boolean,
         settings: Map<String, Any>?,
         creds: Set<String>?
     ): Job {
@@ -212,6 +223,17 @@ class JobLaunchServiceImpl(
             pipeline.execute, settings = mergedSettings, assetIds = assets,
             globalArgs = pipeline.globalArgs
         )
+
+        if (merge) {
+            // Only merge if we can find a job with same name.
+            val jobs = jobService.getAll(JobFilter(names = listOf(name)))
+            if (jobs.list.isNotEmpty()) {
+                jobService.createTask(jobs[0], script)
+                jobService.setJobState(jobs[0], JobState.InProgress, null)
+                return jobs[0]
+            }
+        }
+
         val spec = JobSpec(name, listOf(script), credentials = creds)
         return launchJob(spec)
     }
@@ -226,7 +248,7 @@ class JobLaunchServiceImpl(
             listOf(processor), settings = mergedSettings
         )
 
-        val spec = JobSpec(name, listOf(script), replace = true, priority = JobPriority.Interactive)
+        val spec = JobSpec(name, listOf(script), replace = true, priority = JobPriority.Standard)
         return launchJob(spec)
     }
 
@@ -234,7 +256,7 @@ class JobLaunchServiceImpl(
         val script = getTimelineAnalysisScript(assetId, timeline)
         val spec = JobSpec(
             "VideoClip Analysis for Asset: $assetId",
-            listOf(script), replace = false, priority = JobPriority.Interactive
+            listOf(script), replace = false, priority = JobPriority.Standard
         )
         return jobService.create(spec)
     }
@@ -243,7 +265,35 @@ class JobLaunchServiceImpl(
         val script = getClipAnalysisScript(clip.id)
         val spec = JobSpec(
             "VideoClip Analysis for Clip: ${clip.id}",
-            listOf(script), replace = false, priority = JobPriority.Interactive
+            listOf(script), replace = false, priority = JobPriority.Standard
+        )
+        return jobService.create(spec)
+    }
+
+    override fun launchBoonLibDatasetExport(dataset: Dataset, boonlib: BoonLib): Job {
+        val gen = ProcessorRef(
+            "boonai_core.core.generators.AssetSearchGenerator",
+            StandardContainers.CORE,
+            args = mapOf("search" to dataset.getAssetSearch())
+        )
+
+        val execute = ProcessorRef(
+            "boonai_core.boonlib.dataset.ExportDatasetProcessor",
+            StandardContainers.CORE,
+            args = mapOf("boonlib_id" to boonlib.id, "dataset_id" to dataset.id)
+
+        )
+        val script = ZpsScript(
+            "Exporting Dataset '${dataset.name}' to BoonLib '${boonlib.id}'",
+            listOf(gen), listOf(Asset("boonlib")), listOf(execute),
+            settings = getDefaultJobSettings(index = false), globalArgs = mutableMapOf()
+        )
+        script.setSettting("batchSize", 128)
+        script.setSettting("fileTypes", FileExtResolver.all)
+
+        val spec = JobSpec(
+            "Exporting Dataset '${dataset.name}' to BoonLib '${boonlib.id}'",
+            listOf(script), replace = true, priority = JobPriority.Standard
         )
         return jobService.create(spec)
     }
