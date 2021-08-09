@@ -8,13 +8,15 @@ import boonai.archivist.service.IndexRoutingService
 import boonai.archivist.util.FileUtils
 import boonai.archivist.util.loadGcpCredentials
 import boonai.common.util.Json
+import com.google.cloud.logging.Logging
+import com.google.cloud.logging.LoggingOptions
+import com.google.cloud.logging.Payload
 import com.google.cloud.storage.BlobId
 import com.google.cloud.storage.BlobInfo
 import com.google.cloud.storage.CopyWriter
 import com.google.cloud.storage.HttpMethod
 import com.google.cloud.storage.Storage
 import com.google.cloud.storage.StorageOptions
-import com.google.cloud.logging.v2.LoggingClient
 import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.Profile
 import org.springframework.core.io.InputStreamResource
@@ -39,6 +41,8 @@ class GcsProjectStorageService constructor(
     val options: StorageOptions = StorageOptions.newBuilder()
         .setCredentials(loadGcpCredentials()).build()
     val gcs: Storage = options.service
+
+    val loggingService = LoggingOptions.newBuilder().build().service
 
     @PostConstruct
     fun initialize() {
@@ -93,10 +97,9 @@ class GcsProjectStorageService constructor(
 
         // Google logs
         var logBuilder = StringBuilder()
-        var logging = LoggingClient.create()
-        var logsPagedResponse = logging.listLogs(locator.name)
+        var logsPagedResponse = loggingService.listLogEntries(Logging.EntryListOption.filter(locator.name))
         logsPagedResponse.iterateAll().forEach {
-            logBuilder.append("$it\n")
+            logBuilder.append("${it.getPayload<Payload.StringPayload>().data}\n")
         }
 
         val allLogs = logBuilder.toString()
@@ -123,6 +126,7 @@ class GcsProjectStorageService constructor(
         val path = locator.getPath()
         return "gs://${properties.bucket}/$path"
     }
+
     override fun getNativeUri(locator: ProjectDirLocator): String {
         val path = locator.getPath()
         return "gs://${properties.bucket}/$path"

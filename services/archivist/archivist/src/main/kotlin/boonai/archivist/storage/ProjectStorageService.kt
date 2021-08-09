@@ -49,7 +49,7 @@ interface ProjectStorageService {
     fun stream(locator: ProjectStorageLocator): ResponseEntity<Resource>
 
     /**
-     * Stream the given file as a ResponseEntity.  This is used for serving
+     * Stream logs from a file in a bucket or from a cloud log service.  This is used for serving
      * the resource via the HTTP server.
      */
     fun streamLogs(locator: ProjectStorageLocator): ResponseEntity<Resource>
