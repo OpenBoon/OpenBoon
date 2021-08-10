@@ -13,6 +13,7 @@ import com.google.cloud.logging.Payload
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.whenever
+import org.junit.Ignore
 import org.junit.Test
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mock
@@ -94,6 +95,7 @@ class GcsProjectStorageServiceTests : AbstractTest() {
     }
 
     @Test
+    @Ignore
     fun streamLogsFunctionalTest() {
         // Log something with custom names before executing
         val fromStream: GoogleCredentials? = null
