@@ -119,17 +119,6 @@ class ModelServiceTests : AbstractTest() {
     }
 
     @Test
-    fun createFaceModuleCustomModel() {
-        val mspec = ModelSpec(
-            "faces",
-            ModelType.FACE_RECOGNITION,
-            applySearch = Json.Mapper.readValue(testSearch, Json.GENERIC_MAP)
-        )
-        val model = modelService.createModel(mspec)
-        assertEquals("foo", model.moduleName)
-    }
-
-    @Test
     fun testGetModel() {
         val model1 = create()
         val model2 = modelService.getModel(model1.id)
