@@ -71,6 +71,9 @@ class ModelType(Enum):
     BOON_FUNCTION = 9
     """Provide your own Python function to do inference or set custom fields."""
 
+    TORCH_MAR_IMAGE_SEGMENTER = 10
+    """Provide your on Torch Model Archive using the image_segmenter handler"""
+
 
 class PostTrainAction(Enum):
     """
