@@ -323,9 +323,6 @@ class ModelSpec(
     @ApiModelProperty("An associated Dataset")
     val datasetId: UUID? = null,
 
-    @ApiModelProperty("A model tag used to generate a PipelineMod name.")
-    val moduleName: String? = null,
-
     @ApiModelProperty("The search used to deploy the model.")
     val applySearch: Map<String, Any> = ModelSearch.MATCH_ALL,
 
