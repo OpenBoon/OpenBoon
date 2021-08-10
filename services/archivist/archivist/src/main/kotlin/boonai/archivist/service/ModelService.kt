@@ -42,9 +42,6 @@ import boonai.common.service.logging.LogAction
 import boonai.common.service.logging.LogObject
 import boonai.common.service.logging.event
 import com.google.pubsub.v1.PubsubMessage
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import org.slf4j.LoggerFactory
 import org.springframework.core.env.Environment
 import org.springframework.dao.EmptyResultDataAccessException
@@ -361,8 +358,11 @@ class ModelServiceImpl(
             mapOf("modelId" to model.id, "modelName" to model.name)
         )
 
-        model.ready = true
-        model.state = ModelState.Ready
+        if (model.isUploadable()) {
+            modelJdbcDao.updateState(model.id, ModelState.Deployed)
+        } else {
+            modelJdbcDao.updateState(model.id, ModelState.Trained)
+        }
 
         if (mod != null) {
             // Set version number to change checksum
@@ -438,14 +438,12 @@ class ModelServiceImpl(
 
         postToModelEventTopic(msg)
 
-        GlobalScope.launch(Dispatchers.IO) {
-            try {
-                fileStorageService.recursiveDelete(
-                    ProjectDirLocator(ProjectStorageEntity.MODELS, model.id.toString())
-                )
-            } catch (e: Exception) {
-                logger.error("Failed to delete files associated with model: ${model.id}")
-            }
+        try {
+            fileStorageService.recursiveDelete(
+                ProjectDirLocator(ProjectStorageEntity.MODELS, model.id.toString())
+            )
+        } catch (e: Exception) {
+            logger.error("Failed to delete files associated with model: ${model.id}", e)
         }
     }
 

@@ -4,6 +4,10 @@ import boonai.archivist.domain.Model
 import boonai.archivist.domain.ModelFilter
 import boonai.archivist.domain.ModelState
 import boonai.archivist.domain.ModelType
+import boonai.archivist.security.getZmlpActor
+import boonai.common.service.logging.LogAction
+import boonai.common.service.logging.LogObject
+import boonai.common.service.logging.event
 import boonai.common.util.Json
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.jdbc.core.RowMapper
@@ -43,21 +47,52 @@ interface ModelJdbcDao {
     fun count(filter: ModelFilter): Long
 
     /**
-     * Mark a model as ready.
-     */
-    fun markAsReady(modelId: UUID, value: Boolean)
-
-    /**
      * Set the endpoint property on a model.
      */
     fun setEndpoint(modelId: UUID, value: String)
+
+    /**
+     * Set the model state and associated values.
+     */
+    fun updateState(modelId: UUID, state: ModelState)
 }
 
 @Repository
 class ModelJdbcDaoImpl : AbstractDao(), ModelJdbcDao {
 
-    override fun markAsReady(modelId: UUID, value: Boolean) {
-        jdbc.update("UPDATE model SET bool_trained=? WHERE pk_model=?", value, modelId)
+    override fun updateState(modelId: UUID, state: ModelState) {
+        val time = System.currentTimeMillis()
+        val actor = getZmlpActor().toString()
+
+        logger.event(LogObject.MODEL, LogAction.STATE_CHANGE, mapOf("modelId" to modelId))
+
+        when (state) {
+            ModelState.Deploying -> {
+                jdbc.update(
+                    "UPDATE model SET int_state=?, time_last_uploaded=?, actor_last_uploaded=? WHERE pk_model=?",
+                    state.ordinal, time, actor, modelId
+                )
+            }
+            ModelState.Deployed -> {
+                jdbc.update(
+                    "UPDATE model SET int_state=?, time_last_deployed=?," +
+                        " actor_last_deployed=actor_last_uploaded WHERE pk_model=?",
+                    state.ordinal, time, modelId
+                )
+            }
+            ModelState.Trained -> {
+                jdbc.update(
+                    "UPDATE model SET int_state=?, time_last_trained=?, actor_last_trained=? WHERE pk_model=?",
+                    state.ordinal, time, actor, modelId
+                )
+            }
+            else -> {
+                jdbc.update(
+                    "UPDATE model SET int_state=? WHERE pk_model=?",
+                    state.ordinal, modelId
+                )
+            }
+        }
     }
 
     override fun setEndpoint(modelId: UUID, value: String) {

@@ -18,11 +18,29 @@ import javax.persistence.Id
 import javax.persistence.Table
 
 enum class ModelState {
+    /**
+     * The initial state of trainable models.
+     */
     RequiresTraining,
+    /**
+     * The initial state of uploadable models.
+     */
     RequiresUpload,
+    /**
+     * A trainable model is trained
+     */
     Trained,
+    /**
+     * A deployable model is deploying
+     */
     Deploying,
-    Ready,
+    /**
+     * A deployable model is Deployed
+     */
+    Deployed,
+    /**
+     * There was an error deploying a model.
+     */
     DeployError
 }
 
