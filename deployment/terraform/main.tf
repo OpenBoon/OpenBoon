@@ -207,6 +207,12 @@ resource "google_project_service" "dlp" {
   disable_on_destroy = false
 }
 
+## Enable Cloud Run #################################################################
+resource "google_project_service" "run_api" {
+  service = "run.googleapis.com"
+  disable_on_destroy = false
+}
+
 ## Third Party ML Resources #################################################################
 module "azure-ml" {
   source      = "./modules/azure-ml"
