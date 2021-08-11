@@ -10,7 +10,7 @@ resource "google_project_iam_member" "cloudbuilder" {
   depends_on = [google_project_service.cloudbuild]
 }
 
-resource "google_project_iam_member" "cloudbuilder" {
+resource "google_project_iam_member" "cloudbuilder-role-2" {
   project    = var.project
   role       = "roles/iam.serviceAccountUser"
   member     = "serviceAccount:${var.project-number}@cloudbuild.gserviceaccount.com"
