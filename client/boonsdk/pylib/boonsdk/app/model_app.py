@@ -206,7 +206,7 @@ class ModelApp:
             dataset (Dataset): A dataset or unique Dataset Id.
             dependencies (list): A list of modules that should run before this model.
         Returns:
-
+            Model: The updated model.
         """
         mid = as_id(model)
         if 'dataset' in kwargs:
