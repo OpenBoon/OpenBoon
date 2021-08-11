@@ -264,7 +264,7 @@ class TorchModelImageSegmenter(TorchModelBase):
         self.colors = self._load_color_array()
 
     def _load_label_file(self):
-        raise NotImplemented("load file from cloud storage and return a dict")
+        raise NotImplementedError("load file from cloud storage and return a dict")
 
     def _load_color_array(self):
         color_array = []
