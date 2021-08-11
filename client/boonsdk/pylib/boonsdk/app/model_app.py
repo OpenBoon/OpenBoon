@@ -211,6 +211,7 @@ class ModelApp:
         mid = as_id(model)
         if 'dataset' in kwargs:
             kwargs['datasetId'] = as_id(kwargs.get('dataset'))
+            del kwargs['dataset']
         self.app.client.patch(f'/api/v3/models/{mid}', kwargs)
         return self.get_model(mid)
 
