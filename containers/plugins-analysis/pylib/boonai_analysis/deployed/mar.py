@@ -254,35 +254,29 @@ class TorchModelTextClassifier(TorchModelBase):
 
 
 class TorchModelImageSegmenter(TorchModelBase):
-    CLASSES_LABEL = [
-        ('Unknown', [0, 0, 0], '#000000'),
-        ('Aeroplane', [128, 128, 128], '#808080'),
-        ('Bicycle', [0, 0, 128], '#000080'),
-        ('Bird', [0, 191, 255], '#00bfff'),
-        ('Boat', [0, 128, 128], '#008080'),
-        ('Bottle', [0, 100, 0], '#006400'),
-        ('Bus', [128, 128, 0], '#808000'),
-        ('Car', [139, 69, 19], '#8b4513'),
-        ('Cat', [255, 222, 173], '#ff16ad'),
-        ('Chair', [75, 0, 130], '#4c0082'),
-        ('Cow', [139, 0, 139], '#8b008b'),
-        ('Diningtable', [255, 0, 255], '#ff00ff'),
-        ('Dog', [255, 20, 147], '#ff1491'),
-        ('Horse', [139, 0, 0], '#8b0000'),
-        ('Motorbike', [255, 0, 0], '#ff0000'),
-        ('Person', [255, 69, 0], '#ff4400'),
-        ('Potted plant', [255, 255, 0], '#ffff00'),
-        ('Sheep', [250, 128, 114], '#fa8090'),
-        ('Sofa', [148, 0, 211], '#9400d3'),
-        ('Train', [211, 211, 211], '#d3d3d3'),
-        ('Tv/Monitor', [66, 49, 49], '#423131')
-    ]
 
     def __init__(self):
         super(TorchModelImageSegmenter, self).__init__()
         self.image = None
         self.response_image = None
         self.asset = None
+        self.label_index = self._load_label_file()
+        self.colors = self._load_color_array()
+
+    def _load_label_file(self):
+        raise NotImplemented("load file from cloud storage and return a dict")
+
+    def _load_color_array(self):
+        color_array = []
+        with open('../resources/colors.txt') as f:
+            for line in f.read().splitlines():
+                rgb = line.split(' ')
+                color_array.append((int(rgb[0]), int(rgb[1]), int(rgb[2])))
+
+        return color_array
+
+    def _rgb_to_hex(self, rgb):
+        return '#%02x%02x%02x' % rgb
 
     def process(self, frame):
         self.asset = frame.asset
@@ -305,7 +299,8 @@ class TorchModelImageSegmenter(TorchModelBase):
         raw_predictions = self.predict(image)
         predictions = []
         for label in raw_predictions:
-            predictions.append(Prediction(label[0], 1, kwargs={'color': label[1]}))
+            predictions.append(Prediction(label[1], 1,
+                                          kwargs={'color': self._rgb_to_hex(label[0])}))
 
         return predictions
 
@@ -334,7 +329,8 @@ class TorchModelImageSegmenter(TorchModelBase):
 
     def _get_labels(self, response_image):
         response_np = np.delete(np.array(response_image), 1, 2)
-        return [[self.CLASSES_LABEL[x][0], self.CLASSES_LABEL[x][2]] for x in
+
+        return [[self.colors[x], self.label_index[str(x)]] for x in
                 np.unique(response_np).astype(np.uint8)]
 
     def _segment_image(self, original_image, response_image):
@@ -344,7 +340,7 @@ class TorchModelImageSegmenter(TorchModelBase):
         response_shape[-1] = 3
 
         np_colored_image = np.array(
-            [self.CLASSES_LABEL[x][1] for x in response_np.astype(int).flatten()]) \
+            [self.colors[x] for x in response_np.astype(int).flatten()]) \
             .reshape(response_shape).astype(np.uint8)
 
         original_image_size = original_image.pil_img().size
