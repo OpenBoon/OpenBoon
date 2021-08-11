@@ -330,7 +330,7 @@ class TorchModelImageSegmenter(TorchModelBase):
     def _get_labels(self, response_image):
         response_np = np.delete(np.array(response_image), 1, 2)
 
-        return [[self.colors[x], self.label_index[str(x)]] for x in
+        return [[self.colors[x % 500], self.label_index[str(x)]] for x in
                 np.unique(response_np).astype(np.uint8)]
 
     def _segment_image(self, original_image, response_image):
