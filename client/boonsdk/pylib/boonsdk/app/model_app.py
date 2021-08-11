@@ -193,6 +193,28 @@ class ModelApp:
 
         return self.app.client.post(f'/api/v3/models/{mid}/_deploy')
 
+    def update_model(self, model, **kwargs):
+        """
+        Update various model properties.
+
+        Args:
+            model (Model): A model object or unique Model Id.
+
+        Keyword Args:
+            name (str): A new name for the model. Changing the model
+                name will change where the results are stored in the Asset's analysis metadata.
+            dataset (Dataset): A dataset or unique Dataset Id.
+            dependencies (list): A list of modules that should run before this model.
+        Returns:
+            Model: The updated model.
+        """
+        mid = as_id(model)
+        if 'dataset' in kwargs:
+            kwargs['datasetId'] = as_id(kwargs.get('dataset'))
+            del kwargs['dataset']
+        self.app.client.patch(f'/api/v3/models/{mid}', kwargs)
+        return self.get_model(mid)
+
     def export_trained_model(self, model, dst_file, tag='latest'):
         """
         Download a zip file containing the model.
