@@ -212,6 +212,7 @@ class ModelApp:
         if 'dataset' in kwargs:
             kwargs['datasetId'] = as_id(kwargs.get('dataset'))
         self.app.client.patch(f'/api/v3/models/{mid}', kwargs)
+        return self.get_model(mid)
 
     def export_trained_model(self, model, dst_file, tag='latest'):
         """
