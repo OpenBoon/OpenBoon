@@ -10,6 +10,13 @@ resource "google_project_iam_member" "cloudbuilder" {
   depends_on = [google_project_service.cloudbuild]
 }
 
+resource "google_project_iam_member" "cloudbuilder" {
+  project    = var.project
+  role       = "roles/iam.serviceAccountUser"
+  member     = "serviceAccount:${var.project-number}@cloudbuild.gserviceaccount.com"
+  depends_on = [google_project_service.cloudbuild]
+}
+
 resource "google_pubsub_subscription" "tugboat-model-events" {
   name  = "tugboat-model-events"
   topic = var.pubsub-topic
