@@ -268,7 +268,9 @@ class TorchModelImageSegmenter(TorchModelBase):
 
     def _load_color_array(self):
         color_array = []
-        with open(os.path.abspath('../resources/colors.txt')) as f:
+        color_file = \
+            os.path.join(os.path.dirname(os.path.abspath(__file__)), 'resources/colors.txt')
+        with open(color_file) as f:
             for line in f.read().splitlines():
                 rgb = line.split(' ')
                 color_array.append((int(rgb[0]), int(rgb[1]), int(rgb[2])))
