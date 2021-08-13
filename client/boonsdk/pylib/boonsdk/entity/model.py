@@ -123,6 +123,11 @@ class Model(BaseEntity):
         return ModelState[self._data['state']]
 
     @property
+    def dependencies(self):
+        """Modules that must run before this model"""
+        return self._data.get('dependencies', list())
+
+    @property
     def uploadable(self):
         """True of the model should be uploaded"""
         return self._data['uploadable']

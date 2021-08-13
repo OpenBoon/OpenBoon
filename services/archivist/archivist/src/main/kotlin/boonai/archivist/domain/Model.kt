@@ -330,7 +330,7 @@ class ModelSpec(
     val trainingArgs: Map<String, Any> = emptyMap(),
 
     @ApiModelProperty("Module dependencies")
-    val dependsOn: List<String> = emptyList()
+    val dependencies: List<String> = emptyList()
 )
 
 class ModelUpdateRequest(
@@ -388,7 +388,7 @@ class ModelPatchRequest(
     val datasetId: UUID? = null,
 
     @ApiModelProperty("Module dependencies")
-    val dependsOn: List<String>? = null
+    val dependencies: List<String>? = null
 )
 
 @Entity

@@ -132,7 +132,7 @@ class ModelServiceImpl(
             false,
             spec.applySearch, // VALIDATE THIS PARSES.
             spec.trainingArgs,
-            spec.dependsOn.minus(spec.name),
+            spec.dependencies.minus(spec.name),
             time,
             time,
             actor.toString(),
