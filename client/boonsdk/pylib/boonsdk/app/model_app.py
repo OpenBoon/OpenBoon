@@ -21,7 +21,7 @@ class ModelApp:
     def __init__(self, app):
         self.app = app
 
-    def create_model(self, name, type, dataset=None):
+    def create_model(self, name, type, dataset=None, dependencies=None):
         """
         Create and return a new model .
 
@@ -29,14 +29,15 @@ class ModelApp:
             name (str): The name of the model.
             type (ModelType): The type of Model, see the ModelType class.
             dataset (DataSet): An optional DataSet for training or testing the model.
-
+            dependencies (list): A list of modules this model depends on.
         Returns:
             Model: The new model.
         """
         body = {
             "name": name,
             "type": getattr(type, 'name', str(type)),
-            "datasetId": as_id(dataset)
+            "datasetId": as_id(dataset),
+            "dependencies": dependencies
         }
         return Model(self.app.client.post("/api/v3/models", body))
 
