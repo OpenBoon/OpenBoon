@@ -222,7 +222,7 @@ def generate_build_file(spec, build_path):
 
     memory = "2Gi"
     if model_type == 'BOON_FUNCTION':
-        memory = "768Mi"
+        memory = "1Gi"
 
     build_tag = get_base_image_tag()
 
