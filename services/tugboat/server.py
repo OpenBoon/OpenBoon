@@ -222,7 +222,7 @@ def generate_build_file(spec, build_path):
 
     memory = "2Gi"
     if model_type == 'BOON_FUNCTION':
-        memory = "128Mi"
+        memory = "256Mi"
 
     build_tag = get_base_image_tag()
 
@@ -249,7 +249,7 @@ def generate_build_file(spec, build_path):
                          '--ingress', 'internal',
                          '--allow-unauthenticated',
                          '--memory', memory,
-                         '--max-instances', '4',
+                         '--max-instances', os.environ.get('BOONAI_FUNC_MAX_INST', '100'),
                          '--timeout', '30m',
                          '--update-env-vars', get_boon_env(),
                          '--service-account', os.environ.get('BOONAI_FUNC_SVC_ACCOUNT'),
