@@ -1,3 +1,4 @@
+import os
 import json
 import logging
 import unittest
@@ -296,19 +297,21 @@ class FileUploadTests(unittest.TestCase):
 
 class CsvFileImportTests(unittest.TestCase):
 
+    test_file = os.path.dirname(__file__) + '/flipkart.csv'
+
     def test_iterate(self):
-        csv = CsvFileImport("flipkart.csv")
+        csv = CsvFileImport(self.test_file)
         batches = list(csv)
         assert len(batches) == 1
         assert len(batches[0]) == 19
 
     def test_max_assets(self):
-        csv = CsvFileImport("flipkart.csv", max_assets=5)
+        csv = CsvFileImport(self.test_file, max_assets=5)
         batches = list(csv)
         assert len(batches[0]) == 5
 
     def test_max_assets_batches(self):
-        csv = CsvFileImport("flipkart.csv", uri_index=8, max_assets=9)
+        csv = CsvFileImport(self.test_file, uri_index=8, max_assets=9)
         csv.batch_size = 2
         batches = list(csv)
         assert len(batches) == 5
@@ -317,7 +320,7 @@ class CsvFileImportTests(unittest.TestCase):
 
     def test_label(self):
         ds = Dataset({'id': '12345'})
-        csv = CsvFileImport("flipkart.csv", uri_index=8, dataset=ds, label_index=0)
+        csv = CsvFileImport(self.test_file, uri_index=8, dataset=ds, label_index=0)
         batches = list(csv)
         assert batches[0][0].label.label == 'c2d766ca982eca8304150849735ffef9'
         assert batches[0][0].label.dataset_id == '12345'
