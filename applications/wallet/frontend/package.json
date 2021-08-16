@@ -77,8 +77,8 @@
   "dependencies": {
     "@emotion/babel-preset-css-prop": "11.2.0",
     "@emotion/react": "11.4.0",
-    "@reach/combobox": "0.16.0",
-    "@reach/listbox": "0.16.0",
+    "@reach/combobox": "0.16.1",
+    "@reach/listbox": "0.16.1",
     "@reach/skip-nav": "0.16.0",
     "@sentry/browser": "6.11.0",
     "@svgr/webpack": "5.5.0",
