@@ -126,6 +126,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
+  white-space: nowrap;
 }
 
 .emotion-11 {
@@ -2071,6 +2072,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
+  white-space: nowrap;
 }
 
 .emotion-11 {

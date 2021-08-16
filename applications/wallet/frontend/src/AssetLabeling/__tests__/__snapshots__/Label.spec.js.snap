@@ -274,6 +274,7 @@ exports[`AssetLabelingLabel should render properly with no label 1`] = `
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
+  white-space: nowrap;
 }
 
 .emotion-7 {
