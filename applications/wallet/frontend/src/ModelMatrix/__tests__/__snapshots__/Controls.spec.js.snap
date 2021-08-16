@@ -34,6 +34,7 @@ exports[`<ModelMatrixControls should not crash when min equals max 1`] = `
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
+  white-space: nowrap;
 }
 
 .emotion-3 {
@@ -345,6 +346,7 @@ exports[`<ModelMatrixControls should render properly 1`] = `
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
+  white-space: nowrap;
 }
 
 .emotion-3 {
