@@ -5,7 +5,7 @@ from unittest.mock import patch
 
 import pytest
 
-from boonsdk import BoonClient, ModelType, Model, DatasetType
+from boonsdk import BoonClient, ModelType, Model, DatasetType, Dataset
 from boonsdk.app import ModelApp
 from .util import get_boon_app
 
@@ -247,6 +247,28 @@ class ModelAppTests(unittest.TestCase):
         model = Model({'id': '12345', 'type': 'TF_CLASSIFIER'})
         rsp = self.app.models.set_training_args(model, {"n_clusters": 5})
         assert rsp == {"n_clusters": 5}
+
+    @patch.object(BoonClient, 'post')
+    @patch.object(BoonClient, 'patch')
+    def test_update_model(self, patch, post_patch):
+        patch.return_value = {"success": True}
+        post_patch.return_value = {'id': '12345', 'type': 'TF_CLASSIFIER'}
+        model = Model({'id': '12345', 'type': 'TF_CLASSIFIER'})
+        ds = Dataset({'id': 'abc123'})
+        self.app.models.update_model(model, name="cats", dataset=ds, dependencies=['dogs'])
+
+        assert patch.call_args_list[0][0][1]['name'] == 'cats'
+        assert patch.call_args_list[0][0][1]['datasetId'] == 'abc123'
+        assert patch.call_args_list[0][0][1]['dependencies'] == ['dogs']
+
+    @patch.object(BoonClient, 'post')
+    @patch.object(BoonClient, 'patch')
+    def test_update_model_ds_none(self, patch, post_patch):
+        patch.return_value = {"success": True}
+        post_patch.return_value = {'id': '12345', 'type': 'TF_CLASSIFIER'}
+        model = Model({'id': '12345', 'type': 'TF_CLASSIFIER'})
+        self.app.models.update_model(model, dataset=None)
+        assert patch.call_args_list[0][0][1]['datasetId'] is None
 
     def assert_model(self, model):
         assert self.model_data['id'] == model.id

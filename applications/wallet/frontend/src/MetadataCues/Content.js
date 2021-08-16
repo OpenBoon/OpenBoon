@@ -3,9 +3,12 @@ import { useRouter } from 'next/router'
 
 import { colors, constants, spacing, typography } from '../Styles'
 
+import DoubleChevronSvg from '../Icons/doubleChevron.svg'
+
 import { useLocalStorage } from '../LocalStorage/helpers'
 import { reducer, INITIAL_STATE } from '../Timeline/reducer'
 
+import Button, { VARIANTS } from '../Button'
 import MetadataPrettyPredictionsContent from '../MetadataPretty/PredictionsContent'
 
 const COLOR_WIDTH = 3
@@ -21,16 +24,45 @@ const MetadataCuesContent = ({ metadata }) => {
     initialState: INITIAL_STATE,
   })
 
+  const [, dispatch] = useLocalStorage({
+    key: `MetadataCues.${assetId}`,
+    reducer: (state, action) => ({ ...state, ...action }),
+  })
+
   return (
     <>
       <div
         css={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
           padding: spacing.base,
-          paddingLeft: spacing.moderate,
-          borderBottom: constants.borders.regular.smoke,
+          paddingLeft: spacing.normal,
+          backgroundColor: colors.structure.lead,
+          textTransform: 'uppercase',
+          fontWeight: typography.weight.medium,
+          fontSize: typography.size.regular,
+          lineHeight: typography.height.regular,
         }}
       >
-        Clip Metadata:
+        <div>Clip Metadata</div>
+        <Button
+          aria-label="Close Panel"
+          variant={VARIANTS.ICON}
+          onClick={() => {
+            dispatch({ isOpen: false })
+          }}
+          style={{
+            padding: 0,
+          }}
+        >
+          <DoubleChevronSvg
+            height={constants.icons.regular}
+            css={{
+              transform: `rotate(-90deg)`,
+            }}
+          />
+        </Button>
       </div>
 
       <div css={{ flex: 1, overflowY: 'auto' }}>

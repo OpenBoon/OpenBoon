@@ -1,4 +1,4 @@
-import TestRenderer from 'react-test-renderer'
+import TestRenderer, { act } from 'react-test-renderer'
 
 import MetadataCuesContent from '../Content'
 
@@ -28,5 +28,12 @@ describe('<MetadataCuesContent />', () => {
     )
 
     expect(component.toJSON()).toMatchSnapshot()
+
+    // Close Panel with Chevron
+    act(() => {
+      component.root
+        .findByProps({ 'aria-label': 'Close Panel' })
+        .props.onClick()
+    })
   })
 })
