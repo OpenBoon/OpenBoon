@@ -1,7 +1,7 @@
 ## Wallet Integration CI Tests
 wallet-integration-test-suite:
   stage: test
-  image: cypress/browsers:node14.7.0-chrome84
+  image: cypress/browsers:node14.17.0-chrome91-ff89
   before_script:
     - cd applications/wallet/cypress
     - npm ci
