@@ -22,7 +22,7 @@
     },
     "fine_tune_at_layer": {
       "type": "integer",
-      "defaultValue": 20,
+      "defaultValue": 40,
       "description": "The number of layers to fine tune."
     }
   }

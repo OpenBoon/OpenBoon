@@ -250,6 +250,10 @@ exports[`AssetLabelingLabel should render properly with no label 1`] = `
 }
 
 .emotion-5 {
+  height: 8px;
+}
+
+.emotion-6 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -263,7 +267,7 @@ exports[`AssetLabelingLabel should render properly with no label 1`] = `
   margin: 0;
 }
 
-.emotion-6 {
+.emotion-7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -274,13 +278,14 @@ exports[`AssetLabelingLabel should render properly with no label 1`] = `
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
-}
-
-.emotion-7 {
-  padding-right: 12px;
+  white-space: nowrap;
 }
 
 .emotion-8 {
+  padding-right: 12px;
+}
+
+.emotion-9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -291,7 +296,7 @@ exports[`AssetLabelingLabel should render properly with no label 1`] = `
   align-items: center;
 }
 
-.emotion-9 {
+.emotion-10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -308,7 +313,7 @@ exports[`AssetLabelingLabel should render properly with no label 1`] = `
   padding-top: 1px;
 }
 
-.emotion-10 {
+.emotion-11 {
   padding: 0;
   -webkit-appearance: none;
   border-radius: 16px;
@@ -317,7 +322,7 @@ exports[`AssetLabelingLabel should render properly with no label 1`] = `
   border: 1px solid #ffffff;
 }
 
-.emotion-11 {
+.emotion-12 {
   position: absolute;
   width: 8px;
   height: 8px;
@@ -326,20 +331,20 @@ exports[`AssetLabelingLabel should render properly with no label 1`] = `
   background-color: #3A5DFF;
 }
 
-.emotion-12 {
+.emotion-13 {
   padding-left: 8px;
 }
 
-.emotion-13 {
+.emotion-14 {
   font-weight: 400;
   color: #ffffff;
 }
 
-.emotion-14 {
+.emotion-15 {
   color: #b3b3b3;
 }
 
-.emotion-18 {
+.emotion-19 {
   padding: 0;
   -webkit-appearance: none;
   border-radius: 16px;
@@ -348,7 +353,7 @@ exports[`AssetLabelingLabel should render properly with no label 1`] = `
   border: 1px solid #808080;
 }
 
-.emotion-19 {
+.emotion-20 {
   position: absolute;
   width: 8px;
   height: 8px;
@@ -411,26 +416,29 @@ exports[`AssetLabelingLabel should render properly with no label 1`] = `
       </div>
       
     </label>
-    <fieldset
+    <div
       className="emotion-5"
+    />
+    <fieldset
+      className="emotion-6"
     >
       <legend
-        className="emotion-6"
+        className="emotion-7"
       >
         Select Scope:
       </legend>
       <div
-        className="emotion-7"
+        className="emotion-8"
       >
         <div>
           <label
-            className="emotion-8"
+            className="emotion-9"
           >
             <div
-              className="emotion-9"
+              className="emotion-10"
             >
               <input
-                className="emotion-10"
+                className="emotion-11"
                 defaultChecked={true}
                 name="Select Scope"
                 onClick={[Function]}
@@ -438,19 +446,19 @@ exports[`AssetLabelingLabel should render properly with no label 1`] = `
                 value="TRAIN"
               />
               <div
-                className="emotion-11"
+                className="emotion-12"
               />
             </div>
             <div
-              className="emotion-12"
+              className="emotion-13"
             >
               <div
-                className="emotion-13"
+                className="emotion-14"
               >
                 Train
               </div>
               <div
-                className="emotion-14"
+                className="emotion-15"
               >
                 
               </div>
@@ -459,17 +467,17 @@ exports[`AssetLabelingLabel should render properly with no label 1`] = `
         </div>
       </div>
       <div
-        className="emotion-7"
+        className="emotion-8"
       >
         <div>
           <label
-            className="emotion-8"
+            className="emotion-9"
           >
             <div
-              className="emotion-9"
+              className="emotion-10"
             >
               <input
-                className="emotion-18"
+                className="emotion-19"
                 defaultChecked={false}
                 name="Select Scope"
                 onClick={[Function]}
@@ -477,19 +485,19 @@ exports[`AssetLabelingLabel should render properly with no label 1`] = `
                 value="TEST"
               />
               <div
-                className="emotion-19"
+                className="emotion-20"
               />
             </div>
             <div
-              className="emotion-12"
+              className="emotion-13"
             >
               <div
-                className="emotion-13"
+                className="emotion-14"
               >
                 Test
               </div>
               <div
-                className="emotion-14"
+                className="emotion-15"
               >
                 
               </div>

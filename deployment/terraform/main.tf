@@ -207,6 +207,12 @@ resource "google_project_service" "dlp" {
   disable_on_destroy = false
 }
 
+## Enable Cloud Run #################################################################
+resource "google_project_service" "run_api" {
+  service            = "run.googleapis.com"
+  disable_on_destroy = false
+}
+
 ## Third Party ML Resources #################################################################
 module "azure-ml" {
   source      = "./modules/azure-ml"
@@ -280,6 +286,11 @@ module "officer" {
   container-tag          = var.container-tag
   redis-host             = "${module.redis.ip-address}:6379"
   data-bucket-name       = module.archivist.data-bucket-name
+  memory-request         = var.officer-memory-request
+  memory-limit           = var.officer-memory-limit
+  cpu-request            = var.officer-cpu-request
+  cpu-limit              = var.officer-cpu-limit
+  machine-type           = var.officer-machine-type
 }
 
 module "analyst" {
