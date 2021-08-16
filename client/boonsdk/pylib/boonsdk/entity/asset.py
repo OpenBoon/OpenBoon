@@ -342,9 +342,9 @@ class CsvFileImport:
     """
 
     def __init__(self, path,
-                 uri_index=0,
+                 uri_column=0,
                  dataset=None,
-                 label_index=None,
+                 label_column=None,
                  field_map=None,
                  max_assets=None,
                  header='auto',
@@ -355,10 +355,10 @@ class CsvFileImport:
 
         Args:
             path (str): The path to the CSV file.
-            uri_index (int): The index of the column that contains an importable URI.
+            uri_column (int): The index of the column that contains an importable URI.
                 Defaults to 0
             dataset (Dataset): A Dataset to assign the assets to.  Must also set label_index.
-            label_index (int): The column that contains the label.
+            label_column (int): The column that contains the label.
             field_map (dict): A map of custom field names to index columns.
             max_assets (int): The maximum number of Assets to generate.
             header(mixed): 'auto' for autodetect, true for yes there is a header, false otherwise.
@@ -366,10 +366,10 @@ class CsvFileImport:
             delimiter (str): The CSV delimited, defaults to a comma.
             quotechar (str): The CSV special quote char, in the case a value contains the delimiter.
         """
-        self.path = path
-        self.uri_index = uri_index
+        self.path = os.path.abspath(path)
+        self.uri_column = uri_column
         self.dataset = dataset
-        self.label_index = label_index
+        self.label_column = label_column
         self.max_assets = max_assets
         self.delimiter = delimiter
         self.quotechar = quotechar
@@ -377,8 +377,8 @@ class CsvFileImport:
         self.header = header
         self.batch_size = 50
 
-        if self.dataset and self.label_index is None or \
-                self.label_index is not None and not self.dataset:
+        if self.dataset and self.label_column is None or \
+                self.label_column is not None and not self.dataset:
             raise ValueError("The dataset and label_index args must both be set")
 
     def __iter__(self):
@@ -450,12 +450,12 @@ class CsvBatchGenerator:
 
                 # Handle the label if set.
                 label = None
-                if self.csv.dataset and self.csv.label_index is not None:
-                    label = self.csv.dataset.make_label(row[self.csv.label_index].strip())
+                if self.csv.dataset and self.csv.label_column is not None:
+                    label = self.csv.dataset.make_label(row[self.csv.label_column].strip())
 
                 # Handle the image URL
                 # Check if line looks like a json/python array
-                img_url = row[self.csv.uri_index].strip()
+                img_url = row[self.csv.uri_column].strip()
                 if img_url.startswith("[") and img_url.endswith("]"):
                     uris = json.loads(img_url)
                 else:

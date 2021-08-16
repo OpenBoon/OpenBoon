@@ -311,7 +311,7 @@ class CsvFileImportTests(unittest.TestCase):
         assert len(batches[0]) == 5
 
     def test_max_assets_batches(self):
-        csv = CsvFileImport(self.test_file, uri_index=8, max_assets=9)
+        csv = CsvFileImport(self.test_file, uri_column=8, max_assets=9)
         csv.batch_size = 2
         batches = list(csv)
         assert len(batches) == 5
@@ -320,7 +320,7 @@ class CsvFileImportTests(unittest.TestCase):
 
     def test_label(self):
         ds = Dataset({'id': '12345'})
-        csv = CsvFileImport(self.test_file, uri_index=8, dataset=ds, label_index=0)
+        csv = CsvFileImport(self.test_file, uri_column=8, dataset=ds, label_column=0)
         batches = list(csv)
         assert batches[0][0].label.label == 'c2d766ca982eca8304150849735ffef9'
         assert batches[0][0].label.dataset_id == '12345'
