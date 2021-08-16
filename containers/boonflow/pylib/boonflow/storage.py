@@ -570,7 +570,7 @@ class FileCache:
         path = self.get_path(str(uri), ext)
         parsed_uri = urlparse(uri)
 
-        if os.path.exists(path):
+        if os.path.exists(path) and os.path.getsize(path) > 0:
             return path
 
         logger.info('Localizing URI: {}'.format(uri))
