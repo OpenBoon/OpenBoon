@@ -2,7 +2,8 @@ import json
 import logging
 import unittest
 
-from boonsdk import Asset, StoredFile, FileImport, FileUpload, FileTypes, Label, Model
+from boonsdk import Asset, StoredFile, FileImport, FileUpload, \
+    FileTypes, Label, Model, CsvFileImport, Dataset
 from boonsdk.client import to_json
 
 logging.basicConfig(level=logging.DEBUG)
@@ -291,6 +292,35 @@ class FileUploadTests(unittest.TestCase):
         assert 1 == d['page']
         assert '12345' == d['label']['datasetId']
         assert 'dog' == d['label']['label']
+
+
+class CsvFileImportTests(unittest.TestCase):
+
+    def test_iterate(self):
+        csv = CsvFileImport("flipkart.csv")
+        batches = list(csv)
+        assert len(batches) == 1
+        assert len(batches[0]) == 19
+
+    def test_max_assets(self):
+        csv = CsvFileImport("flipkart.csv", max_assets=5)
+        batches = list(csv)
+        assert len(batches[0]) == 5
+
+    def test_max_assets_batches(self):
+        csv = CsvFileImport("flipkart.csv", uri_index=8, max_assets=9)
+        csv.batch_size = 2
+        batches = list(csv)
+        assert len(batches) == 5
+        assert len(batches[4]) == 1
+        assert len(batches[0]) == 2
+
+    def test_label(self):
+        ds = Dataset({'id': '12345'})
+        csv = CsvFileImport("flipkart.csv", uri_index=8, dataset=ds, label_index=0)
+        batches = list(csv)
+        assert batches[0][0].label.label == 'c2d766ca982eca8304150849735ffef9'
+        assert batches[0][0].label.dataset_id == '12345'
 
 
 class FileTypesTests(unittest.TestCase):

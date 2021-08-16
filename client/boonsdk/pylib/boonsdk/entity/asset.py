@@ -1,6 +1,7 @@
 import json
 import logging
 import os
+import csv
 
 from ..client import to_json
 from ..util import as_collection
@@ -10,7 +11,8 @@ __all__ = [
     'Asset',
     'FileImport',
     'FileUpload',
-    'FileTypes'
+    'FileTypes',
+    'CsvFileImport'
 ]
 
 logger = logging.getLogger(__name__)
@@ -233,7 +235,7 @@ class FileImport:
     An FileImport is used to import a new file and metadata into Boon AI.
     """
 
-    def __init__(self, uri, transient=False, custom=None, page=None, label=None, tmp=None):
+    def __init__(self, uri, transient=False, custom=None, page=None, label=None):
         """
         Construct an FileImport instance which can point to a remote URI.
 
@@ -244,7 +246,6 @@ class FileImport:
             page (int): The specific page to import if any.
             label (Label): An optional Label which will add the file to
                 a Model training set.
-            tmp: (dict): A dict of temp attrs that are removed after procssing.
         """
         super(FileImport, self).__init__()
         self.uri = uri
@@ -280,6 +281,12 @@ class FileImport:
 
     def __getitem__(self, field):
         return self.custom[field]
+
+    def __str__(self):
+        return '<FileImport uri={}>'.format(self.uri)
+
+    def __repr__(self):
+        return '<FileImport uri="{}" object at {}>'.format(self.uri, hex(id(self)))
 
 
 class FileUpload(FileImport):
@@ -321,6 +328,190 @@ class FileUpload(FileImport):
             "custom": self.custom,
             "tmp": self.tmp
         }
+
+    def __str__(self):
+        return '<FileUpload uri={}>'.format(self.uri)
+
+    def __repr__(self):
+        return '<FileUpload uri="{}" object at {}>'.format(self.uri, hex(id(self)))
+
+
+class CsvFileImport:
+    """
+    The CsvFileImport class is used to import files and metadata in a a CSV file.
+    """
+
+    def __init__(self, path,
+                 uri_index=0,
+                 dataset=None,
+                 label_index=None,
+                 field_map=None,
+                 max_assets=None,
+                 header='auto',
+                 delimiter=',',
+                 quotechar='"'):
+        """
+        Create a new CsvFileImport instance.
+
+        Args:
+            path (str): The path to the CSV file.
+            uri_index (int): The index of the column that contains an importable URI.
+                Defaults to 0
+            dataset (Dataset): A Dataset to assign the assets to.  Must also set label_index.
+            label_index (int): The column that contains the label.
+            field_map (dict): A map of custom field names to index columns.
+            max_assets (int): The maximum number of Assets to generate.
+            header(mixed): 'auto' for autodetect, true for yes there is a header, false otherwise.
+                Defaults to 'auto'
+            delimiter (str): The CSV delimited, defaults to a comma.
+            quotechar (str): The CSV special quote char, in the case a value contains the delimiter.
+        """
+        self.path = path
+        self.uri_index = uri_index
+        self.dataset = dataset
+        self.label_index = label_index
+        self.max_assets = max_assets
+        self.delimiter = delimiter
+        self.quotechar = quotechar
+        self.field_map = field_map or {}
+        self.header = header
+        self.batch_size = 50
+
+        if self.dataset and self.label_index is None or \
+                self.label_index is not None and not self.dataset:
+            raise ValueError("The dataset and label_index args must both be set")
+
+    def __iter__(self):
+        return CsvBatchGenerator(self).generate_batches()
+
+
+class CsvBatchGenerator:
+    """
+    The CsvBatchGenerator generates batches of FileImport instance from a
+    supplied CSV file.
+    """
+    def __init__(self, csvfile):
+        """
+        Create a new CsvBatchGenerator instance.
+
+        Args:
+            csvfile (CsvFileImport): The CsvFileImport object.
+        """
+        self.csv = csvfile
+
+        self.file_queue = []
+        """The queue of files we append to."""
+        self.asset_count = 0
+        """The number of assets processed thus far"""
+        self.batch_size = csvfile.batch_size
+        """The number of files in each batch"""
+
+    def generate_batches(self):
+        """
+        Generates all batches.
+
+        Returns:
+            list: A list of FileImport instances
+        """
+        with open(self.csv.path, 'r', newline='') as fp:
+            if self.csv.header == "auto":
+                has_header = csv.Sniffer().has_header(fp.read(1024))
+                fp.seek(0)
+            else:
+                has_header = bool(self.csv.header)
+
+            reader = csv.reader(fp,
+                                delimiter=self.csv.delimiter,
+                                quotechar=self.csv.quotechar)
+            if has_header:
+                next(reader)
+
+            for row in reader:
+
+                # Handle custom field extraction.
+                custom = None
+                if self.csv.field_map:
+                    custom = {}
+                    for k, v in self.csv.field_map.items():
+                        if isinstance(v, (tuple, list)):
+                            idx = v[0]
+                            cast = v[1]
+                            value = row[idx].strip()
+                            if value:
+                                if cast == 'int':
+                                    custom[k] = int(value)
+                                elif cast == 'float':
+                                    custom[k] = float(value)
+                                else:
+                                    self.logger.warning(
+                                        'Invalid cast type: {}, must be int or float'.format(v[1]))
+                        else:
+                            custom[k] = row[v].strip()
+
+                # Handle the label if set.
+                label = None
+                if self.csv.dataset and self.csv.label_index is not None:
+                    label = self.csv.dataset.make_label(row[self.csv.label_index].strip())
+
+                # Handle the image URL
+                # Check if line looks like a json/python array
+                img_url = row[self.csv.uri_index].strip()
+                if img_url.startswith("[") and img_url.endswith("]"):
+                    uris = json.loads(img_url)
+                else:
+                    uris = [img_url]
+
+                for uri in uris:
+                    if not isinstance(uri, str):
+                        continue
+                self.file_queue.append(FileImport(uri, custom=custom, label=label))
+
+                yield_size = self.get_yield_size()
+                if yield_size > 0:
+                    yield self.get_yield_results(yield_size)
+                    if self.csv.max_assets and self.asset_count >= self.csv.max_assets:
+                        return
+
+            # Handle final batch
+            yield_size = self.get_yield_size(force=True)
+            if yield_size:
+                yield self.get_yield_results(yield_size)
+            else:
+                return
+
+    def get_yield_results(self, size):
+        """
+        Return an list of FileImport objects to yield and reset the queue.
+
+        Args:
+            size (int): The number of objects to retuurn
+
+        Returns:
+            list: The list of FileImport objects.
+        """
+        queue_copy = self.file_queue[0:size]
+        self.asset_count += len(queue_copy)
+        self.file_queue = []
+        return queue_copy
+
+    def get_yield_size(self, force=False):
+        """
+        Return the number of FileImport instances to yield, or 0 if the batch
+        is not ready yet.
+
+        Args:
+            force (bool): Set to true to force a yield size.
+
+        Returns:
+            int: The number of FileImport objects to yield.
+        """
+        queue_size = len(self.file_queue)
+        if not force and queue_size < self.batch_size:
+            return 0
+        elif self.csv.max_assets and self.csv.max_assets - self.asset_count < queue_size:
+            return self.csv.max_assets - self.asset_count
+        else:
+            return queue_size
 
 
 class Asset(DocumentMixin):
