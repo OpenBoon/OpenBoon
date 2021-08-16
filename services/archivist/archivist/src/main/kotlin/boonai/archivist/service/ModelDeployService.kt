@@ -147,7 +147,10 @@ class ModelDeployServiceImpl(
             }
         } else if (status.startsWith("FAIL") || status == "TIMEOUT") {
             val model = getModelFromBuildEvent(event) ?: return
-            modelJdbcDao.updateState(model.id, ModelState.DeployError)
+            val auth = InternalThreadAuthentication(model.projectId)
+            withAuth(auth) {
+                modelJdbcDao.updateState(model.id, ModelState.DeployError)
+            }
         }
     }
 

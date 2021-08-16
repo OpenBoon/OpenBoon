@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import PropTypes from 'prop-types'
 import useSWR from 'swr'
 
@@ -32,7 +31,10 @@ const MetadataContent = ({ projectId, assetId }) => {
     },
   } = useSWR(`/api/v1/projects/${projectId}/assets/${assetId}/`)
 
-  const [searchString, setSearchString] = useState('')
+  const [searchString, setSearchString] = useLocalStorage({
+    key: 'MetadataContent.filter',
+    initialState: '',
+  })
 
   const filteredMetadata = filter({ metadata, searchString })
 
@@ -158,7 +160,7 @@ const MetadataContent = ({ projectId, assetId }) => {
             aria-label="Filter metadata fields"
             placeholder="Filter metadata fields"
             value={searchString}
-            onChange={({ value }) => setSearchString(value)}
+            onChange={({ value }) => setSearchString({ value })}
             variant={INPUT_SEARCH_VARIANTS.DARK}
           />
         </div>

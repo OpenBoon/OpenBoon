@@ -63,7 +63,6 @@ interface ModelService {
     fun setTrainingArgs(model: Model, args: Map<String, Any>)
     fun patchTrainingArgs(model: Model, patch: Map<String, Any>)
     fun getTrainingArgSchema(type: ModelType): ArgSchema
-    fun generateModuleName(spec: ModelSpec): String
     fun getModelVersions(model: Model): Set<String>
     fun copyModelTag(model: Model, req: ModelCopyRequest)
     fun updateModel(id: UUID, update: ModelUpdateRequest): Model
@@ -91,17 +90,10 @@ class ModelServiceImpl(
 
     val topic = "model-events"
 
-    override fun generateModuleName(spec: ModelSpec): String {
-        return spec.moduleName ?: "${spec.name}"
-            .replace(Regex("[\\s\\n\\r\\t]+", RegexOption.MULTILINE), "-")
-            .lowercase()
-    }
-
     override fun createModel(spec: ModelSpec): Model {
         val time = System.currentTimeMillis()
         val id = UUIDGen.uuid1.generate()
         val actor = getZmlpActor()
-        val moduleName = generateModuleName(spec)
 
         if (!spec.type.enabled) {
             throw IllegalArgumentException(
@@ -109,17 +101,11 @@ class ModelServiceImpl(
             )
         }
 
-        if (moduleName.trim().isEmpty() || !moduleName.matches(modelNameRegex)) {
-            throw IllegalArgumentException(
-                "Model names must be alpha-numeric," +
-                    " dashes,underscores, and spaces are allowed."
-            )
-        }
-
         val locator = ProjectFileLocator(
             ProjectStorageEntity.MODELS, id.toString(), "__TAG__", spec.type.fileName
         )
 
+        validateModelName(spec.name)
         spec.datasetId?.let {
             validateDatasetType(it, spec.type)
         }
@@ -139,14 +125,14 @@ class ModelServiceImpl(
             state,
             spec.type,
             spec.name,
-            moduleName,
+            spec.name,
             null,
             locator.getFileId(),
             "Training model: ${spec.name} - [${spec.type.objective}]",
             false,
             spec.applySearch, // VALIDATE THIS PARSES.
             spec.trainingArgs,
-            spec.dependsOn.minus(moduleName),
+            spec.dependencies.minus(spec.name),
             time,
             time,
             actor.toString(),
@@ -169,6 +155,10 @@ class ModelServiceImpl(
         val model = getModel(id)
         update.datasetId?.let {
             validateDatasetType(it, model.type)
+        }
+
+        if (update.name != model.name) {
+            validateModelName(update.name)
         }
 
         model.name = update.name
@@ -196,7 +186,10 @@ class ModelServiceImpl(
         }
 
         if (update.isFieldSet("name")) {
-            update.name?.let { model.name = it }
+            update.name?.let {
+                validateModelName(it)
+                model.name = it
+            }
         }
 
         if (update.isFieldSet("dependencies")) {
@@ -528,10 +521,28 @@ class ModelServiceImpl(
         }
     }
 
+    fun validateModelName(name: String) {
+        if (!name.matches(modelNameRegex)) {
+            throw IllegalArgumentException(
+                "Model names must be alpha-numeric lowercase, dashes allowed."
+            )
+        }
+
+        reservedPrefixes.forEach {
+            if (name.startsWith(it)) {
+                throw IllegalArgumentException(
+                    "Model names cannot start with a reserved prefix."
+                )
+            }
+        }
+    }
+
     companion object {
 
         private val logger = LoggerFactory.getLogger(ModelServiceImpl::class.java)
 
         private val modelNameRegex = Regex("^[a-z0-9_\\-\\s]{2,}$", RegexOption.IGNORE_CASE)
+
+        private val reservedPrefixes = listOf("boonai-", "gcp-", "aws-", "clarifai-")
     }
 }

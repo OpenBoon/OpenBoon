@@ -48,6 +48,7 @@ Array [
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
+  white-space: nowrap;
 }
 
 .emotion-4 {
@@ -173,7 +174,7 @@ Array [
   background-size: 20px;
 }
 
-.emotion-24 {
+.emotion-25 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -188,7 +189,7 @@ Array [
   padding-bottom: 8px;
 }
 
-.emotion-25 {
+.emotion-26 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -202,7 +203,7 @@ Array [
   justify-content: flex-end;
 }
 
-.emotion-26 {
+.emotion-27 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -235,27 +236,27 @@ Array [
   padding-bottom: 12px;
 }
 
-.emotion-26,
-.emotion-26:hover,
-.emotion-26:visited,
-.emotion-26 .noop {
+.emotion-27,
+.emotion-27:hover,
+.emotion-27:visited,
+.emotion-27 .noop {
   background-color: #808080;
 }
 
-.emotion-26:hover,
-.emotion-26 .noop {
+.emotion-27:hover,
+.emotion-27 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-26[aria-disabled=true],
-.emotion-26 .noop {
+.emotion-27[aria-disabled=true],
+.emotion-27 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-27 {
+.emotion-28 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -266,7 +267,7 @@ Array [
   align-items: center;
 }
 
-.emotion-28 {
+.emotion-29 {
   padding-right: 8px;
 }
 
@@ -403,12 +404,15 @@ Array [
           </select>
         </div>
       </label>
+      <div
+        className="emotion-20"
+      />
     </div>
     <div
-      className="emotion-24"
+      className="emotion-25"
     >
       <div
-        className="emotion-25"
+        className="emotion-26"
       >
         <Link
           href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLmNhdHMiLCJkYXRhc2V0SWQiOiI0YjBiMTBhOC1jZWMxLTE1NWMtYjEyZi1lZTJiYzg3ODdlMDYiLCJ2YWx1ZXMiOnt9fV0="
@@ -416,15 +420,15 @@ Array [
         >
           <button
             aria-label="View in Filter Panel"
-            className="emotion-26"
+            className="emotion-27"
             onClick={[Function]}
             type="button"
           >
             <div
-              className="emotion-27"
+              className="emotion-28"
             >
               <svg
-                className="emotion-28"
+                className="emotion-29"
                 data-file-name="filter.svg"
                 height={20}
               />
@@ -442,15 +446,15 @@ Array [
         >
           <button
             aria-label="Add More Labels"
-            className="emotion-26"
+            className="emotion-27"
             onClick={[Function]}
             type="button"
           >
             <div
-              className="emotion-27"
+              className="emotion-28"
             >
               <svg
-                className="emotion-28"
+                className="emotion-29"
                 data-file-name="pen.svg"
                 height={20}
               />
@@ -546,6 +550,7 @@ Array [
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
+  white-space: nowrap;
 }
 
 .emotion-4 {
@@ -671,7 +676,7 @@ Array [
   background-size: 20px;
 }
 
-.emotion-24 {
+.emotion-25 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -686,7 +691,7 @@ Array [
   padding-bottom: 8px;
 }
 
-.emotion-25 {
+.emotion-26 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -700,7 +705,7 @@ Array [
   justify-content: flex-end;
 }
 
-.emotion-26 {
+.emotion-27 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -733,27 +738,27 @@ Array [
   padding-bottom: 12px;
 }
 
-.emotion-26,
-.emotion-26:hover,
-.emotion-26:visited,
-.emotion-26 .noop {
+.emotion-27,
+.emotion-27:hover,
+.emotion-27:visited,
+.emotion-27 .noop {
   background-color: #808080;
 }
 
-.emotion-26:hover,
-.emotion-26 .noop {
+.emotion-27:hover,
+.emotion-27 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-26[aria-disabled=true],
-.emotion-26 .noop {
+.emotion-27[aria-disabled=true],
+.emotion-27 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
 
-.emotion-27 {
+.emotion-28 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -764,7 +769,7 @@ Array [
   align-items: center;
 }
 
-.emotion-28 {
+.emotion-29 {
   padding-right: 8px;
 }
 
@@ -891,12 +896,15 @@ Array [
           </select>
         </div>
       </label>
+      <div
+        className="emotion-20"
+      />
     </div>
     <div
-      className="emotion-24"
+      className="emotion-25"
     >
       <div
-        className="emotion-25"
+        className="emotion-26"
       >
         <Link
           href="/76917058-b147-4556-987a-0a0f11e46d9b/visualizer?query=W3sidHlwZSI6ImxhYmVsIiwiYXR0cmlidXRlIjoibGFiZWxzLmNhdHMiLCJkYXRhc2V0SWQiOiI0YjBiMTBhOC1jZWMxLTE1NWMtYjEyZi1lZTJiYzg3ODdlMDYiLCJ2YWx1ZXMiOnt9fV0="
@@ -904,15 +912,15 @@ Array [
         >
           <button
             aria-label="View in Filter Panel"
-            className="emotion-26"
+            className="emotion-27"
             onClick={[Function]}
             type="button"
           >
             <div
-              className="emotion-27"
+              className="emotion-28"
             >
               <svg
-                className="emotion-28"
+                className="emotion-29"
                 data-file-name="filter.svg"
                 height={20}
               />
@@ -930,15 +938,15 @@ Array [
         >
           <button
             aria-label="Add More Labels"
-            className="emotion-26"
+            className="emotion-27"
             onClick={[Function]}
             type="button"
           >
             <div
-              className="emotion-27"
+              className="emotion-28"
             >
               <svg
-                className="emotion-28"
+                className="emotion-29"
                 data-file-name="pen.svg"
                 height={20}
               />

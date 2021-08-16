@@ -7,9 +7,9 @@ class ApiCall(models.Model):
     objects = PostgresManager()
 
     project = models.UUIDField()
-    service = models.CharField(max_length=64)
+    service = models.TextField()
     asset_id = models.CharField(max_length=32)
-    asset_path = models.CharField(max_length=255, blank=True, default='')
+    asset_path = models.TextField(blank=True, default='')
     image_count = models.IntegerField(blank=True, default=0)
     video_seconds = models.FloatField(blank=True, default=0.0)
     created_date = models.DateTimeField(auto_now_add=True)
