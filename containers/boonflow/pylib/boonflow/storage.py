@@ -566,11 +566,14 @@ class FileCache:
             str: The path within the local file cache.
 
         """
-        logger.debug('Localizing URI: {}'.format(uri))
         _, ext = os.path.splitext(uri)
         path = self.get_path(str(uri), ext)
         parsed_uri = urlparse(uri)
 
+        if os.path.exists(path) and os.path.getsize(path) > 0:
+            return path
+
+        logger.info('Localizing URI: {}'.format(uri))
         # Remote HTTP/HTTPS Files
         if parsed_uri.scheme in ('http', 'https'):
             if uri.startswith('https://www.youtube.com/watch'):

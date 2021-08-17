@@ -59,7 +59,7 @@ class BatchUploadAssetsRequest(
     @ApiModelProperty("A list of available credentials for the analysis job.")
     val credentials: Set<String>? = null,
 
-    @ApiModelProperty("Name of job to process uploadss")
+    @ApiModelProperty("Name of job to process uploads")
     val jobName: String? = null
 
 ) {
@@ -87,6 +87,9 @@ class BatchCreateAssetsRequest(
 
     @ApiModelProperty("A list of available credentials for the analysis job.")
     val credentials: Set<String>? = null,
+
+    @ApiModelProperty("The Job name request should be added to.")
+    val jobName: String? = null,
 
     @JsonIgnore
     @ApiModelProperty("The taskId that is creating the assets via expand.", hidden = true)

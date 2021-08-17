@@ -435,7 +435,10 @@ class AssetServiceImpl : AssetService {
             asset
         }
 
-        return bulkIndexAndAnalyzePendingAssets(assets, existingAssetIds, pipeline, request.credentials, null)
+        return bulkIndexAndAnalyzePendingAssets(
+            assets,
+            existingAssetIds, pipeline, request.credentials, request.jobName
+        )
     }
 
     override fun update(assetId: String, req: UpdateAssetRequest): Response {
