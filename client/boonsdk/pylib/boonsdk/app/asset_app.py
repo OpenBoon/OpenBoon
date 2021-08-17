@@ -1,10 +1,11 @@
+import datetime
 import os
 from collections import namedtuple
 
 import requests
 from deprecation import deprecated
 
-from ..entity import Asset, StoredFile, FileUpload, FileTypes, Job, VideoClip
+from ..entity import Asset, StoredFile, FileUpload, FileTypes, Job, VideoClip, CsvFileImport
 from ..filters import apply_search_filters
 from ..search import AssetSearchResult, AssetSearchScroller, SimilarityQuery, SearchScroller
 from ..util import as_collection, as_id_collection, as_id
@@ -16,7 +17,7 @@ class AssetApp:
     def __init__(self, app):
         self.app = app
 
-    def batch_import_files(self, files, modules=None):
+    def batch_import_files(self, files, modules=None, job_name=None):
         """
         Import a list of FileImport instances.
 
@@ -29,9 +30,35 @@ class AssetApp:
         """
         body = {
             'assets': as_collection(files),
-            'modules': modules
+            'modules': modules,
+            'jobName': job_name
         }
         return self.app.client.post('/api/v3/assets/_batch_create', body)
+
+    def import_csv(self, csvfile, modules=None, job_name=None):
+        """
+        Import files list in a CSV file.
+
+        Args:
+            csvfile (CsvFileImport): A CsvFileImport to describe the file.
+            modules (list): The list of modules to apply.
+            job_name (str): A job name to import the CSV, will default to a generated name.
+        Returns:
+            dict: The last response from the batch import operation.
+        """
+        if not isinstance(csvfile, CsvFileImport):
+            raise ValueError("The csvfile argument must be an instance of CsvFileImport")
+        if not job_name:
+            job_name = 'CSV import of "{}" at {}'.format(
+                os.path.basename(csvfile.path), datetime.datetime.now())
+
+        results = {'errors': 0, 'created': 0, 'exists': 0}
+        for batch in csvfile:
+            result = self.batch_import_files(batch, modules=modules, job_name=job_name)
+            results['errors'] += len(result.get('failed', []))
+            results['created'] += len(result.get('created', []))
+            results['exists'] += len(result.get('exists', []))
+        return results
 
     def analyze_file(self, iostream, modules):
         """
@@ -60,6 +87,7 @@ class AssetApp:
         Args:
             files (list of FileUpload):
             modules (list): A list of Pipeline Modules to apply to the data.
+            job_name (str): The job name for the batch.
 
         Returns:
             dict: A dictionary containing failed files and created asset ids.
