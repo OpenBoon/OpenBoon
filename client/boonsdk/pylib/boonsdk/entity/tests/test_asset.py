@@ -1,6 +1,6 @@
-import os
 import json
 import logging
+import os
 import unittest
 
 from boonsdk import Asset, StoredFile, FileImport, FileUpload, \
@@ -324,6 +324,17 @@ class CsvFileImportTests(unittest.TestCase):
         batches = list(csv)
         assert batches[0][0].label.label == 'c2d766ca982eca8304150849735ffef9'
         assert batches[0][0].label.dataset_id == '12345'
+
+    def test_custom_fields(self):
+        csv = CsvFileImport(self.test_file, uri_column=8,
+                            field_map={'product_id': 0, 'product_name': 3})
+        count = 0
+        for batch in csv:
+            for item in batch:
+                count += 1
+                assert 'product_id' in item.custom
+                assert 'product_name' in item.custom
+        assert count == 19
 
 
 class FileTypesTests(unittest.TestCase):
