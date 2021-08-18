@@ -5,6 +5,7 @@ import logging
 import unittest
 from unittest.mock import patch
 
+import boonsdk
 from boonsdk import BoonClient, BoonApp
 from boonsdk.entity import Job, Task
 
@@ -28,6 +29,70 @@ class BoonSdkJobAppTests(unittest.TestCase):
     def test_get_job(self, get_patch):
         get_patch.return_value = mock_job_data
         self.assert_job(self.app.jobs.get_job('12345'))
+
+    @patch.object(BoonClient, 'get')
+    def test_wait_on_job_success(self, get_patch):
+        job_data1 = mock_job_data.copy()
+        job_data1['state'] = 'InProgress'
+
+        job_data2 = mock_job_data.copy()
+        job_data2['state'] = 'Success'
+
+        get_patch.side_effect = [job_data1, job_data1, job_data2]
+
+        job = self.app.jobs.get_job('12345')
+        assert self.app.jobs.wait_on_job(job)
+
+    @patch.object(BoonClient, 'get')
+    def test_wait_on_job_failure(self, get_patch):
+        job_data1 = mock_job_data.copy()
+        job_data1['state'] = 'InProgress'
+
+        job_data2 = mock_job_data.copy()
+        job_data2['state'] = 'Failure'
+
+        get_patch.side_effect = [job_data1, job_data1, job_data2]
+
+        job = self.app.jobs.get_job('12345')
+        assert not self.app.jobs.wait_on_job(job)
+
+    @patch.object(BoonClient, 'get')
+    def test_wait_on_job_status_dict(self, get_patch):
+        job_data1 = mock_job_data.copy()
+        job_data1['state'] = 'InProgress'
+
+        job_data2 = mock_job_data.copy()
+        job_data2['state'] = 'Success'
+
+        get_patch.side_effect = [job_data1, job_data2]
+        assert self.app.jobs.wait_on_job({"jobId": "12345"})
+
+    @patch.object(BoonClient, 'get')
+    def test_wait_on_job_status_callback(self, get_patch):
+        job_data1 = mock_job_data.copy()
+        job_data1['state'] = 'InProgress'
+
+        job_data2 = mock_job_data.copy()
+        job_data2['state'] = 'Success'
+
+        get_patch.side_effect = [job_data1, job_data2]
+
+        foo = []
+
+        def callback(job):
+            print(job)
+            foo.append(1)
+
+        self.app.jobs.wait_on_job({"jobId": "12345"}, callback=callback)
+        assert len(foo)
+
+    @patch.object(BoonClient, 'get')
+    def test_wait_on_job_status_timeout(self, get_patch):
+        job_data1 = mock_job_data.copy()
+        job_data1['state'] = 'InProgress'
+
+        get_patch.side_effect = [job_data1, job_data1]
+        assert not self.app.jobs.wait_on_job({"jobId": "12345"}, timeout=1)
 
     @patch.object(BoonClient, 'get')
     def test_refresh_job(self, get_patch):
@@ -206,7 +271,7 @@ class BoonSdkJobAppTests(unittest.TestCase):
         assert mock_task_data['id'] == task.id
         assert mock_task_data['name'] == task.name
         assert mock_task_data['jobId'] == task.job_id
-        assert mock_task_data['state'] == task.state
+        assert mock_task_data['state'] == task.state.name
         assert isinstance(task.time_created, datetime.datetime)
         assert isinstance(task.time_modified, datetime.datetime)
         assert isinstance(task.time_started, datetime.datetime)
@@ -226,7 +291,7 @@ class BoonSdkJobAppTests(unittest.TestCase):
 
     def assert_job(self, job):
         assert mock_job_data['id'] == job.id
-        assert mock_job_data['state'] == job.state
+        assert mock_job_data['state'] == job.state.name
         assert mock_job_data['priority'] == job.priority
         assert isinstance(job.time_created, datetime.datetime)
         assert isinstance(job.time_modified, datetime.datetime)
