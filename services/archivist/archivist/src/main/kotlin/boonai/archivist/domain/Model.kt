@@ -330,7 +330,7 @@ class ModelSpec(
     val trainingArgs: Map<String, Any> = emptyMap(),
 
     @ApiModelProperty("Module dependencies")
-    val dependencies: List<String> = emptyList()
+    val dependencies: List<String>?
 )
 
 class ModelUpdateRequest(
