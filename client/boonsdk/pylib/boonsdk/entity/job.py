@@ -1,4 +1,5 @@
 from datetime import datetime
+from enum import Enum
 
 from .base import BaseEntity
 from ..util import ObjectView
@@ -6,8 +7,40 @@ from ..util import ObjectView
 __all__ = [
     'Job',
     'Task',
-    'TaskError'
+    'TaskError',
+    'JobState',
+    'TaskState'
 ]
+
+
+class JobState(Enum):
+    InProgress = 0
+    """The Job is in progress"""
+    Cancelled = 1
+    """The job was manually cancelled"""
+    Success = 2
+    """All Tasks in the job have succeeded"""
+    Archived = 3
+    """All job logs and task data has been deleted."""
+    Failure = 4
+    """The job has failed tasks"""
+
+
+class TaskState(Enum):
+    Waiting = 0
+    """The Task is waiting for a CPU"""
+    Running = 1
+    """The Task is being executed"""
+    Success = 2
+    """The Task succeeded"""
+    Failure = 3
+    """The Task failed"""
+    Skipped = 4
+    """The Task was manually skipped"""
+    Queued = 5
+    """The task is queued for execution"""
+    Depend = 6
+    """The Task depends on another task completing"""
 
 
 class Job(BaseEntity):
@@ -27,7 +60,7 @@ class Job(BaseEntity):
     @property
     def state(self):
         """The state of the Job"""
-        return self._data['state']
+        return JobState[self._data['state']]
 
     @property
     def paused(self):
@@ -92,7 +125,7 @@ class Task(BaseEntity):
     @property
     def state(self):
         """The name of the Task"""
-        return self._data['state']
+        return TaskState[self._data['state']]
 
     @property
     def time_started(self):

@@ -270,6 +270,69 @@ class ModelAppTests(unittest.TestCase):
         self.app.models.update_model(model, dataset=None)
         assert patch.call_args_list[0][0][1]['datasetId'] is None
 
+    @patch.object(BoonClient, 'get')
+    def test_wait_on_deploy(self, get_patch):
+        data1 = self.model_data.copy()
+        data1['state'] = 'Deploying'
+        data1['uploadable'] = True
+
+        data2 = self.model_data.copy()
+        data2['state'] = 'Deployed'
+        data2['uploadable'] = True
+
+        get_patch.side_effect = [data1, data2]
+
+        model = Model(data1)
+        assert self.app.models.wait_on_deploy(model)
+
+    @patch.object(BoonClient, 'get')
+    def test_wait_on_deploy_fail(self, get_patch):
+        data1 = self.model_data.copy()
+        data1['state'] = 'Deploying'
+        data1['uploadable'] = True
+
+        data2 = self.model_data.copy()
+        data2['state'] = 'DeployError'
+        data2['uploadable'] = True
+
+        get_patch.side_effect = [data1, data2]
+
+        model = Model(data1)
+        assert not self.app.models.wait_on_deploy(model)
+
+    @patch.object(BoonClient, 'get')
+    def test_wait_on_deploy_timeout(self, get_patch):
+        data1 = self.model_data.copy()
+        data1['state'] = 'Deploying'
+        data1['uploadable'] = True
+
+        get_patch.side_effect = [data1, data1]
+
+        model = Model(data1)
+        assert not self.app.models.wait_on_deploy(model, timeout=1)
+
+    @patch.object(BoonClient, 'get')
+    def test_wait_on_deploy_callback(self, get_patch):
+        data1 = self.model_data.copy()
+        data1['state'] = 'Deploying'
+        data1['uploadable'] = True
+
+        data2 = self.model_data.copy()
+        data2['state'] = 'Deployed'
+        data2['uploadable'] = True
+
+        get_patch.side_effect = [data1, data2]
+
+        foo = []
+
+        def callback(model):
+            print(model)
+            foo.append(1)
+
+        model = Model(data1)
+        self.app.models.wait_on_deploy(model, callback=callback)
+        assert foo
+
     def assert_model(self, model):
         assert self.model_data['id'] == model.id
         assert self.model_data['name'] == model.name
