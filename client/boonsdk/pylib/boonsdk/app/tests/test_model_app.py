@@ -138,26 +138,30 @@ class ModelAppTests(unittest.TestCase):
     @patch.object(BoonClient, 'post')
     def test_apply_model(self, post_patch):
         job_data = {
-            'id': '12345',
-            'name': 'job-foo-bar'
+            'job': {
+                'id': '12345',
+                'name': 'job-foo-bar'
+            }
         }
         post_patch.return_value = job_data
         model = Model(self.model_data)
         mod = self.app.models.apply_model(model)
-        assert job_data['id'] == mod.id
-        assert job_data['name'] == mod.name
+        assert job_data['job']['id'] == mod.id
+        assert job_data['job']['name'] == mod.name
 
     @patch.object(BoonClient, 'post')
     def test_test_model(self, post_patch):
         job_data = {
-            'id': '12345',
-            'name': 'job-foo-bar'
+            'job': {
+                'id': '12345',
+                'name': 'job-foo-bar'
+            }
         }
         post_patch.return_value = job_data
         model = Model(self.model_data)
         mod = self.app.models.test_model(model)
-        assert job_data['id'] == mod.id
-        assert job_data['name'] == mod.name
+        assert job_data['job']['id'] == mod.id
+        assert job_data['job']['name'] == mod.name
 
     @patch.object(BoonClient, 'get')
     def test_get_model_type_info(self, get_patch):

@@ -38,7 +38,7 @@ class ModelApp:
             "name": name,
             "type": getattr(type, 'name', str(type)),
             "datasetId": as_id(dataset),
-            "dependencies": dependencies
+            "dependencies": dependencies or []
         }
         return Model(self.app.client.post("/api/v3/models", body))
 
@@ -135,7 +135,7 @@ class ModelApp:
         body = {
             "search": search
         }
-        return Job(self.app.client.post(f'/api/v3/models/{mid}/_apply', body))
+        return Job(self.app.client.post(f'/api/v3/models/{mid}/_apply', body)['job'])
 
     def test_model(self, model):
         """
@@ -148,7 +148,7 @@ class ModelApp:
             Job: The Job that is hosting the reprocess task.
         """
         mid = as_id(model)
-        return Job(self.app.client.post(f'/api/v3/models/{mid}/_test', {}))
+        return Job(self.app.client.post(f'/api/v3/models/{mid}/_test', {})['job'])
 
     def delete_model(self, model):
         """
