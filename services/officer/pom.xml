@@ -76,21 +76,21 @@
         <dependency>
             <groupId>com.aspose</groupId>
             <artifactId>aspose-slides</artifactId>
-            <version>21.7</version>
+            <version>21.8</version>
             <classifier>jdk16</classifier>
         </dependency>
 
         <dependency>
             <groupId>com.aspose</groupId>
             <artifactId>aspose-words</artifactId>
-            <version>21.7</version>
+            <version>21.8</version>
             <classifier>jdk17</classifier>
         </dependency>
 
         <dependency>
             <groupId>com.aspose</groupId>
             <artifactId>aspose-cells</artifactId>
-            <version>21.7</version>
+            <version>21.8</version>
         </dependency>
 
         <dependency>
@@ -140,7 +140,7 @@
         <dependency>
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-core</artifactId>
-            <version>1.7.1</version>
+            <version>1.7.3</version>
         </dependency>
 
         <dependency>
@@ -231,7 +231,7 @@
             <plugin>
               <groupId>org.pitest</groupId>
               <artifactId>pitest-maven</artifactId>
-              <version>1.6.7</version>
+              <version>1.6.9</version>
             </plugin>
         </plugins>
     </build>

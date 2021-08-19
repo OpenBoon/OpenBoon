@@ -342,9 +342,6 @@ class ModelSpec(
     @ApiModelProperty("An associated Dataset")
     val datasetId: UUID? = null,
 
-    @ApiModelProperty("A model tag used to generate a PipelineMod name.")
-    val moduleName: String? = null,
-
     @ApiModelProperty("The search used to deploy the model.")
     val applySearch: Map<String, Any> = ModelSearch.MATCH_ALL,
 
@@ -352,7 +349,7 @@ class ModelSpec(
     val trainingArgs: Map<String, Any> = emptyMap(),
 
     @ApiModelProperty("Module dependencies")
-    val dependsOn: List<String> = emptyList()
+    var dependencies: List<String>? = null
 )
 
 class ModelUpdateRequest(
@@ -410,7 +407,7 @@ class ModelPatchRequest(
     val datasetId: UUID? = null,
 
     @ApiModelProperty("Module dependencies")
-    val dependsOn: List<String>? = null
+    val dependencies: List<String>? = null
 )
 
 @Entity

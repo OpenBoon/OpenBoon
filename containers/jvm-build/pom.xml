@@ -34,7 +34,7 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <kotlin.compiler.jvmTarget>1.8</kotlin.compiler.jvmTarget>
         <boonai-common.version>1.0.0</boonai-common.version>
-        <elasticsearch.version>7.6.2</elasticsearch.version>
+        <elasticsearch.version>7.10.2</elasticsearch.version>
         <spring-boot.version>2.4.5</spring-boot.version>
         <kotlin.version>1.5.21</kotlin.version>
     </properties>
@@ -218,18 +218,18 @@
         <dependency>
             <groupId>com.amazonaws</groupId>
             <artifactId>aws-java-sdk-s3</artifactId>
-            <version>1.12.29</version>
+            <version>1.12.49</version>
         </dependency>
         <dependency>
             <groupId>com.amazonaws</groupId>
             <artifactId>aws-java-sdk-sqs</artifactId>
-            <version>1.12.29</version>
+            <version>1.12.49</version>
         </dependency>
 
         <dependency>
             <groupId>com.amazonaws</groupId>
             <artifactId>aws-java-sdk-sns</artifactId>
-            <version>1.12.29</version>
+            <version>1.12.49</version>
         </dependency>
         <dependency>
             <groupId>io.minio</groupId>
@@ -330,21 +330,21 @@
         <dependency>
             <groupId>com.aspose</groupId>
             <artifactId>aspose-slides</artifactId>
-            <version>21.7</version>
+            <version>21.8</version>
             <classifier>jdk16</classifier>
         </dependency>
 
         <dependency>
             <groupId>com.aspose</groupId>
             <artifactId>aspose-words</artifactId>
-            <version>21.7</version>
+            <version>21.8</version>
             <classifier>jdk17</classifier>
         </dependency>
 
         <dependency>
             <groupId>com.aspose</groupId>
             <artifactId>aspose-cells</artifactId>
-            <version>21.7</version>
+            <version>21.8</version>
         </dependency>
 
         <dependency>
@@ -377,7 +377,7 @@
         <dependency>
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-core</artifactId>
-            <version>1.7.1</version>
+            <version>1.7.3</version>
         </dependency>
     </dependencies>
     <build>
@@ -430,7 +430,7 @@
             <plugin>
                 <groupId>org.pitest</groupId>
                 <artifactId>pitest-maven</artifactId>
-                <version>1.6.7</version>
+                <version>1.6.9</version>
             </plugin>
         </plugins>
     </build>

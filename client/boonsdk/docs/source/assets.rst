@@ -21,5 +21,8 @@ Assets are the main currency of Boon AI. They typically contains the following d
 .. autoclass:: boonsdk.FileImport
     :members:
 
+.. autoclass:: boonsdk.CsvFileImport
+    :members:
+
 .. autoclass:: boonsdk.FileUpload
     :members:

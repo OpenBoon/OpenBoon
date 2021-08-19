@@ -5,7 +5,7 @@ from unittest.mock import patch
 
 import pytest
 
-from boonsdk import BoonClient, ModelType, Model, DatasetType
+from boonsdk import BoonClient, ModelType, Model, DatasetType, Dataset
 from boonsdk.app import ModelApp
 from .util import get_boon_app
 
@@ -138,26 +138,30 @@ class ModelAppTests(unittest.TestCase):
     @patch.object(BoonClient, 'post')
     def test_apply_model(self, post_patch):
         job_data = {
-            'id': '12345',
-            'name': 'job-foo-bar'
+            'job': {
+                'id': '12345',
+                'name': 'job-foo-bar'
+            }
         }
         post_patch.return_value = job_data
         model = Model(self.model_data)
         mod = self.app.models.apply_model(model)
-        assert job_data['id'] == mod.id
-        assert job_data['name'] == mod.name
+        assert job_data['job']['id'] == mod.id
+        assert job_data['job']['name'] == mod.name
 
     @patch.object(BoonClient, 'post')
     def test_test_model(self, post_patch):
         job_data = {
-            'id': '12345',
-            'name': 'job-foo-bar'
+            'job': {
+                'id': '12345',
+                'name': 'job-foo-bar'
+            }
         }
         post_patch.return_value = job_data
         model = Model(self.model_data)
         mod = self.app.models.test_model(model)
-        assert job_data['id'] == mod.id
-        assert job_data['name'] == mod.name
+        assert job_data['job']['id'] == mod.id
+        assert job_data['job']['name'] == mod.name
 
     @patch.object(BoonClient, 'get')
     def test_get_model_type_info(self, get_patch):
@@ -247,6 +251,91 @@ class ModelAppTests(unittest.TestCase):
         model = Model({'id': '12345', 'type': 'TF_CLASSIFIER'})
         rsp = self.app.models.set_training_args(model, {"n_clusters": 5})
         assert rsp == {"n_clusters": 5}
+
+    @patch.object(BoonClient, 'post')
+    @patch.object(BoonClient, 'patch')
+    def test_update_model(self, patch, post_patch):
+        patch.return_value = {"success": True}
+        post_patch.return_value = {'id': '12345', 'type': 'TF_CLASSIFIER'}
+        model = Model({'id': '12345', 'type': 'TF_CLASSIFIER'})
+        ds = Dataset({'id': 'abc123'})
+        self.app.models.update_model(model, name="cats", dataset=ds, dependencies=['dogs'])
+
+        assert patch.call_args_list[0][0][1]['name'] == 'cats'
+        assert patch.call_args_list[0][0][1]['datasetId'] == 'abc123'
+        assert patch.call_args_list[0][0][1]['dependencies'] == ['dogs']
+
+    @patch.object(BoonClient, 'post')
+    @patch.object(BoonClient, 'patch')
+    def test_update_model_ds_none(self, patch, post_patch):
+        patch.return_value = {"success": True}
+        post_patch.return_value = {'id': '12345', 'type': 'TF_CLASSIFIER'}
+        model = Model({'id': '12345', 'type': 'TF_CLASSIFIER'})
+        self.app.models.update_model(model, dataset=None)
+        assert patch.call_args_list[0][0][1]['datasetId'] is None
+
+    @patch.object(BoonClient, 'get')
+    def test_wait_on_deploy(self, get_patch):
+        data1 = self.model_data.copy()
+        data1['state'] = 'Deploying'
+        data1['uploadable'] = True
+
+        data2 = self.model_data.copy()
+        data2['state'] = 'Deployed'
+        data2['uploadable'] = True
+
+        get_patch.side_effect = [data1, data2]
+
+        model = Model(data1)
+        assert self.app.models.wait_on_deploy(model)
+
+    @patch.object(BoonClient, 'get')
+    def test_wait_on_deploy_fail(self, get_patch):
+        data1 = self.model_data.copy()
+        data1['state'] = 'Deploying'
+        data1['uploadable'] = True
+
+        data2 = self.model_data.copy()
+        data2['state'] = 'DeployError'
+        data2['uploadable'] = True
+
+        get_patch.side_effect = [data1, data2]
+
+        model = Model(data1)
+        assert not self.app.models.wait_on_deploy(model)
+
+    @patch.object(BoonClient, 'get')
+    def test_wait_on_deploy_timeout(self, get_patch):
+        data1 = self.model_data.copy()
+        data1['state'] = 'Deploying'
+        data1['uploadable'] = True
+
+        get_patch.side_effect = [data1, data1]
+
+        model = Model(data1)
+        assert not self.app.models.wait_on_deploy(model, timeout=1)
+
+    @patch.object(BoonClient, 'get')
+    def test_wait_on_deploy_callback(self, get_patch):
+        data1 = self.model_data.copy()
+        data1['state'] = 'Deploying'
+        data1['uploadable'] = True
+
+        data2 = self.model_data.copy()
+        data2['state'] = 'Deployed'
+        data2['uploadable'] = True
+
+        get_patch.side_effect = [data1, data2]
+
+        foo = []
+
+        def callback(model):
+            print(model)
+            foo.append(1)
+
+        model = Model(data1)
+        self.app.models.wait_on_deploy(model, callback=callback)
+        assert foo
 
     def assert_model(self, model):
         assert self.model_data['id'] == model.id

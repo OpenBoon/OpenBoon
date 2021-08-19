@@ -109,6 +109,31 @@ variable "analyst-machine-type" {
   default     = "custom-6-18176"
 }
 
+variable "officer-memory-request" {
+  description = "Memory request for Officer pods."
+  default     = "4Gi"
+}
+
+variable "officer-memory-limit" {
+  description = "Memory limit for Officer pods."
+  default     = "8Gi"
+}
+
+variable "officer-cpu-request" {
+  description = "CPU request for Officer pods."
+  default     = "2"
+}
+
+variable "officer-cpu-limit" {
+  description = "CPU limit for Officer pods."
+  default     = "3"
+}
+
+variable "officer-machine-type" {
+  description = "Machine type for the Officers' node pool."
+  default     = "custom-6-18176"
+}
+
 variable "container-tag" {
   description = "Tag to use for all zvi service docker contianers."
   default     = "stable"
