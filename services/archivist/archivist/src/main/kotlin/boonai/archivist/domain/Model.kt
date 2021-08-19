@@ -246,8 +246,7 @@ enum class ModelType(
         DatasetType.Classification,
         "model.zip"
     ),
-    TORCH_MAR_IMAGE_SEGMENTER
-        (
+    TORCH_MAR_IMAGE_SEGMENTER(
         "Torch Model Archive Image Segmenter",
         "None",
         "boonai_analysis.deployed.mar.TorchModelImageSegmenter",

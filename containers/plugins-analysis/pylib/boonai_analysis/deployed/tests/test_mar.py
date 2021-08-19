@@ -3,6 +3,7 @@ import shutil
 from unittest.mock import patch
 
 import pytest
+import json
 
 from boonsdk.app import ModelApp
 from boonsdk.entity import Model
@@ -452,13 +453,14 @@ class TorchModelImageSegmenterTests(PluginUnitTestCase):
     name = "custom-label"
     torch_model_name = "deeplabv3"
 
+    @patch.object(TorchModelImageSegmenter, "_load_label_file")
     @patch.object(TorchModelImageSegmenter, "_segment_image")
     @patch.object(TorchModelImageSegmenter, "predict")
     @patch.object(file_storage.assets, 'store_file')
     @patch.object(ModelApp, "get_model")
     @patch("boonflow.base.get_proxy_level_path")
     def test_image_segmenter(self, proxy_patch, model_patch, file_storage_patch,
-                             predict_patch, segment_image_patch):
+                             predict_patch, segment_image_patch, label_file_patch):
         model_patch.return_value = Model(
             {
                 "id": self.model_id,
@@ -469,7 +471,10 @@ class TorchModelImageSegmenterTests(PluginUnitTestCase):
             }
         )
 
-        predict_patch.return_value = [['Unknown', '#000000'], ['Person', '#ff4400']]
+        with open(test_path("models/mar/index_to_name.json")) as json_file:
+            label_file_patch.return_value = json.load(json_file)
+
+        predict_patch.return_value = [[(0, 0, 0), ['Unknown']], [(238, 121, 159), ['Person']]]
 
         path = test_path("images/set01/faces.jpg")
         proxy_patch.return_value = path
@@ -492,10 +497,10 @@ class TorchModelImageSegmenterTests(PluginUnitTestCase):
 
         assert len(analysis['predictions']) == 2
         assert analysis['count'] == 2
-        assert analysis['predictions'][0]['label'] == 'Unknown'
+        assert analysis['predictions'][0]['label'] == ['Unknown']
         assert analysis['predictions'][0]['kwargs']['color'] == '#000000'
-        assert analysis['predictions'][1]['label'] == 'Person'
-        assert analysis['predictions'][1]['kwargs']['color'] == '#ff4400'
+        assert analysis['predictions'][1]['label'] == ['Person']
+        assert analysis['predictions'][1]['kwargs']['color'] == '#ee799f'
 
 
 @pytest.mark.skip(reason='dont run automatically')
@@ -509,10 +514,11 @@ class TorchModelImageSegmenterIntegrationTests(PluginUnitTestCase):
     name = "custom-label"
     torch_model_name = "deeplabv3"
 
+    @patch.object(TorchModelImageSegmenter, "_load_label_file")
     @patch.object(file_storage.assets, 'store_file')
     @patch.object(ModelApp, "get_model")
     @patch("boonflow.base.get_proxy_level_path")
-    def test_image_segmenter(self, proxy_patch, model_patch, file_storage_patch):
+    def test_image_segmenter(self, proxy_patch, model_patch, file_storage_patch, label_file_patch):
         model_patch.return_value = Model(
             {
                 "id": self.model_id,
@@ -524,6 +530,9 @@ class TorchModelImageSegmenterIntegrationTests(PluginUnitTestCase):
         )
         path = test_path("images/set01/faces.jpg")
         proxy_patch.return_value = path
+
+        with open(test_path("models/mar/index_to_name.json")) as json_file:
+            label_file_patch.return_value = json.load(json_file)
 
         args = {
             "model_id": self.model_id,
@@ -543,10 +552,10 @@ class TorchModelImageSegmenterIntegrationTests(PluginUnitTestCase):
 
         assert len(analysis['predictions']) == 2
         assert analysis['count'] == 2
-        assert analysis['predictions'][0]['label'] == 'Unknown'
+        assert analysis['predictions'][0]['label'] == ['Unknown']
         assert analysis['predictions'][0]['kwargs']['color'] == '#000000'
-        assert analysis['predictions'][1]['label'] == 'Person'
-        assert analysis['predictions'][1]['kwargs']['color'] == '#ff4400'
+        assert analysis['predictions'][1]['label'] == ['Person']
+        assert analysis['predictions'][1]['kwargs']['color'] == '#ee799f'
 
     @patch("boonflow.video.save_timeline")
     @patch.object(file_storage.assets, 'store_file')
@@ -584,6 +593,6 @@ class TorchModelImageSegmenterIntegrationTests(PluginUnitTestCase):
         analysis = frame.asset.get_analysis(self.name)
 
         assert analysis['count'] == 9
-        assert analysis['predictions'][0]['label'] == 'Unknown'
-        assert analysis['predictions'][1]['label'] == 'Aeroplane'
-        assert analysis['predictions'][2]['label'] == 'Boat'
+        assert analysis['predictions'][0]['label'] == ['Unknown']
+        assert analysis['predictions'][1]['label'] == ['Aeroplane']
+        assert analysis['predictions'][2]['label'] == ['Boat']
