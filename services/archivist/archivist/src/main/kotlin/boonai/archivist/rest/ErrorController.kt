@@ -43,14 +43,23 @@ import javax.servlet.http.HttpServletRequest
 /**
  * The RestApiExceptionHandler converts different types of excepts into HTTP response codes.
  */
+
 @ControllerAdvice
-class RestApiExceptionHandler {
+class RestApiExceptionHandler(
+    val errorAttributes: ErrorAttributes,
+    val errorMessages: HttpErrorMessages
+) {
 
-    @Autowired
-    lateinit var errorAttributes: ErrorAttributes
-
-    @Autowired
-    lateinit var errorMessages: HttpErrorMessages
+    var httpErrorMessage: Map<HttpStatus, String?> = mapOf(
+        HttpStatus.TOO_MANY_REQUESTS to errorMessages.tooManyRequests,
+        HttpStatus.NOT_FOUND to errorMessages.notFound,
+        HttpStatus.CONFLICT to errorMessages.conflict,
+        HttpStatus.METHOD_FAILURE to errorMessages.methodFailure,
+        HttpStatus.FORBIDDEN to errorMessages.forbidden,
+        HttpStatus.METHOD_NOT_ALLOWED to errorMessages.methodNotAllowed,
+        HttpStatus.BAD_REQUEST to errorMessages.badRequest,
+        HttpStatus.INTERNAL_SERVER_ERROR to errorMessages.internalServerError
+    )
 
     @Value("\${archivist.debug-mode.enabled}")
     var debug: Boolean = false
@@ -64,16 +73,6 @@ class RestApiExceptionHandler {
             HttpStatus.BAD_REQUEST,
             HttpStatus.INTERNAL_SERVER_ERROR
         )
-
-    val httpErrorMessage = mapOf<HttpStatus, String>(
-        HttpStatus.TOO_MANY_REQUESTS to errorMessages.tooManyRequests,
-        HttpStatus.NOT_FOUND to errorMessages.notFound,
-        HttpStatus.CONFLICT to errorMessages.conflict,
-        HttpStatus.FORBIDDEN to errorMessages.forbidden,
-        HttpStatus.METHOD_NOT_ALLOWED to errorMessages.methodNotAllowed,
-        HttpStatus.BAD_REQUEST to errorMessages.badRequest,
-        HttpStatus.INTERNAL_SERVER_ERROR to errorMessages.internalServerError
-    )
 
     @ExceptionHandler(Exception::class)
     fun defaultErrorHandler(wb: WebRequest, req: HttpServletRequest, e: Exception): ResponseEntity<Any> {
@@ -89,13 +88,13 @@ class RestApiExceptionHandler {
             } else {
                 HttpStatus.INTERNAL_SERVER_ERROR
             }
+        } else if (e is IncorrectResultSizeDataAccessException) {
+            // We're borrowing this http status
+            HttpStatus.METHOD_FAILURE
         } else if (e is DataRetrievalFailureException || e is EntityNotFoundException) {
             HttpStatus.NOT_FOUND
         } else if (e is ResponseException) {
             HttpStatus.valueOf(e.response.statusLine.statusCode)
-        } else if (e is IncorrectResultSizeDataAccessException) {
-            // We're borrowing this http status
-            HttpStatus.METHOD_FAILURE
         } else if (e is DataIntegrityViolationException || e is DuplicateEntityException) {
             HttpStatus.CONFLICT
         } else if (e is ArchivistSecurityException || e is AccessDeniedException) {
@@ -139,11 +138,7 @@ class RestApiExceptionHandler {
         val errAttrs = errorAttributes.getErrorAttributes(wb, debug)
         errAttrs["errorId"] = errorId
         errAttrs["status"] = status.value()
-
-        if (!debug && req.getAttribute("authType") != HttpServletRequest.CLIENT_CERT_AUTH) {
-            errAttrs["message"] = httpErrorMessage.getOrDefault(status, errorMessages.default)
-            errAttrs["errorId"] = errorId
-        }
+        errAttrs["message"] = httpErrorMessage.getOrDefault(status, errorMessages.default)
 
         return ResponseEntity.status(status)
             .contentType(MediaType.APPLICATION_JSON)
@@ -158,14 +153,15 @@ class RestApiExceptionHandler {
 @Configuration
 @ConfigurationProperties(prefix = "archivist.error.message")
 class HttpErrorMessages {
-    lateinit var default: String
-    lateinit var tooManyRequests: String
-    lateinit var notFound: String
-    lateinit var conflict: String
-    lateinit var forbidden: String
-    lateinit var methodNotAllowed: String
-    lateinit var badRequest: String
-    lateinit var internalServerError: String
+    var default: String? = null
+    var tooManyRequests: String? = null
+    var notFound: String? = null
+    var methodFailure: String? = null
+    var conflict: String? = null
+    var forbidden: String? = null
+    var methodNotAllowed: String? = null
+    var badRequest: String? = null
+    var internalServerError: String? = null
 }
 
 @RestController
