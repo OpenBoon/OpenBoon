@@ -1,7 +1,11 @@
 package boonai.archivist.rest
 
 import boonai.archivist.MockMvcTest
-import boonai.archivist.domain.*
+import boonai.archivist.domain.ArchivistException
+import boonai.archivist.domain.ArchivistSecurityException
+import boonai.archivist.domain.DuplicateEntityException
+import boonai.archivist.domain.EntityNotFoundException
+import boonai.archivist.domain.InvalidRequestException
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.doThrow
 import com.nhaarman.mockito_kotlin.given
