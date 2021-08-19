@@ -30,7 +30,7 @@ class TorchModelBase(CustomModelProcessor):
 
     def process_image(self, frame):
         input_image = self.load_proxy_image(frame, 1)
-        predictions = self.load_predictions(input_image)
+        predictions = self.load_predictions(input_image, frame.asset)
         analysis = LabelDetectionAnalysis(min_score=self.min_score)
 
         analysis.add_predictions(predictions)
@@ -39,7 +39,7 @@ class TorchModelBase(CustomModelProcessor):
     def process(self, frame):
         pass
 
-    def load_predictions(self, input_image):
+    def load_predictions(self, input_image, asset=None):
         pass
 
     def predict(self, stream):
@@ -103,12 +103,12 @@ class TorchModelArchiveClassifier(TorchModelBase):
         else:
             self.process_image(frame)
 
-    def load_predictions(self, input_file):
+    def load_predictions(self, input_file, asset=None):
         """
             Run prediction methods and returns a list of Prediction objects
         Args:
             input_file: An object with a read() method that returns bytes.
-
+            asset: Asset that can be used for further processing
         Returns:
             list[Prediction]: A list of Prediction objects
 
@@ -149,12 +149,12 @@ class TorchModelArchiveDetector(TorchModelBase):
         else:
             self.process_image(frame)
 
-    def load_predictions(self, input_image):
+    def load_predictions(self, input_image, asset=None):
         """
             Run prediction methods and returns a list of Prediction objects
         Args:
             input_image: An object with a read() method that returns bytes.
-
+            asset: Asset that can be used for further processing
         Returns:
             list[Prediction]: A list of Prediction objects
 
@@ -202,11 +202,12 @@ class TorchModelTextClassifier(TorchModelBase):
         if self.arg_value('text_content_field') or asset.get_attr('media.content'):
             self.process_text(frame)
 
-    def load_predictions(self, text):
+    def load_predictions(self, text, asset=None):
         """
             Run prediction methods and returns a list of Prediction objects
         Args:
             text: A String that will have the content predicted.
+            asset: Asset that can be used for further processing
 
         Returns:
             list[Prediction]: A list of Prediction objects
@@ -257,9 +258,6 @@ class TorchModelImageSegmenter(TorchModelBase):
 
     def __init__(self):
         super(TorchModelImageSegmenter, self).__init__()
-        self.image = None
-        self.response_image = None
-        self.asset = None
         self.label_index = self._load_label_file()
         self.colors = self._load_color_array()
 
@@ -281,24 +279,22 @@ class TorchModelImageSegmenter(TorchModelBase):
         return '#%02x%02x%02x' % rgb
 
     def process(self, frame):
-        self.asset = frame.asset
         if frame.asset.get_attr('media.type') == "video":
             self.process_video(frame.asset)
         else:
             self.process_image(frame)
 
-    def load_predictions(self, image):
+    def load_predictions(self, image, asset):
         """
             Run prediction methods and returns a list of Prediction objects
         Args:
             image: The image that will be segmented
-
+            asset: Asset that can be used for further processing
         Returns:
             list[Prediction]: A list of Prediction Labels containing the colors present in the image
 
         """
-        self.image = image
-        raw_predictions = self.predict(image)
+        raw_predictions = self.predict(image, asset)
         predictions = []
         for label in raw_predictions:
             predictions.append(Prediction(label[1], 1,
@@ -306,13 +302,13 @@ class TorchModelImageSegmenter(TorchModelBase):
 
         return predictions
 
-    def predict(self, image):
+    def predict(self, image, asset):
         """
         Call the model to make predictions.
 
         Args:
-            stream (IOBase): An object with a read() method that returns bytes.
-
+            image (IOBase): An object with a read() method that returns bytes.
+            asset: Asset object that will be used for cloud saving
         Returns:
             list: A list of tuples containing predictions
 
@@ -321,13 +317,12 @@ class TorchModelImageSegmenter(TorchModelBase):
 
         rsp.raise_for_status()
 
-        self.response_image = rsp.json()
+        response_image = rsp.json()
 
-        return self._get_labels(rsp.json())
+        # Segment image and store it in the cloud
+        self._segment_image(original_image=image, response_image=response_image, asset=asset)
 
-    def process_image(self, frame):
-        super(TorchModelImageSegmenter, self).process_image(frame)
-        self._segment_image(original_image=self.image, response_image=self.response_image)
+        return self._get_labels(response_image)
 
     def _get_labels(self, response_image):
         response_np = np.delete(np.array(response_image), 1, 2)
@@ -335,7 +330,7 @@ class TorchModelImageSegmenter(TorchModelBase):
         return [[self.colors[x % 500], self.label_index[str(x)]] for x in
                 np.unique(response_np).astype(np.uint8)]
 
-    def _segment_image(self, original_image, response_image):
+    def _segment_image(self, original_image, response_image, asset):
 
         response_np = np.delete(np.array(response_image), 1, 2)
         response_shape = list(response_np.shape)
@@ -347,17 +342,17 @@ class TorchModelImageSegmenter(TorchModelBase):
 
         original_image_size = original_image.pil_img().size
         colored_image = Image.fromarray(np_colored_image, 'RGB').resize(original_image_size)
+        # Save to File
         colored_image_file = self._save_to_file(colored_image)
-
         # Create Proxy image
-        self._create_proxy_image(colored_image_file, original_image_size)
+        self._create_proxy_image(colored_image_file, original_image_size, asset)
 
     def _save_to_file(self, colored_image):
         _, path = tempfile.mkstemp(suffix='.jpg')
         colored_image.save(path)
         return path
 
-    def _create_proxy_image(self, colored_image_file, original_shape):
+    def _create_proxy_image(self, colored_image_file, original_shape, asset):
         attrs = {"width": original_shape[0], "height": original_shape[1]}
-        return file_storage.assets.store_file(colored_image_file, self.asset, "web-proxy",
+        return file_storage.assets.store_file(colored_image_file, asset, "web-proxy",
                                               "web-proxy.jpg", attrs)
