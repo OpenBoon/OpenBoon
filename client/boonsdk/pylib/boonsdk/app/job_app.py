@@ -1,3 +1,6 @@
+import time
+
+import boonsdk
 from ..entity import Job, Task, TaskError
 from ..util import as_collection, as_id_collection, as_id
 
@@ -339,3 +342,46 @@ class JobApp:
 
         """
         return self.app.client.stream_text('/api/v1/tasks/{}/_log'.format(as_id(task)))
+
+    def wait_on_job(self, job, timeout=None, callback=None):
+        """
+        Wait on a given job to complete or fail.
+
+        Args:
+            job (mixed): A Job, unique id, or dict with a jobId key.
+            timeout (int): The number of seconds to wait before giving up
+            callback (func): A function that gets called everytime the status of
+                the job is polled. The function should take a single argument which
+                is the last Job polled.
+
+        Returns:
+            bool: True if job was a success, false if it has errors or timed out.
+        """
+        if isinstance(job, str):
+            job_id = job
+        elif isinstance(job, Job):
+            job_id = as_id(job)
+        elif isinstance(job, dict):
+            job_id = job['jobId']
+        else:
+            raise ValueError(
+                "Invalid job type, must be Job, a unique Job ID, or dict with jobId key")
+
+        exit_false_states = [boonsdk.JobState.Archived,
+                             boonsdk.JobState.Failure,
+                             boonsdk.JobState.Cancelled]
+
+        start_time = time.time()
+        while True:
+            cur = self.get_job(job_id)
+            if callback:
+                callback(cur)
+
+            if cur.state in exit_false_states:
+                return False
+            elif cur.state == boonsdk.JobState.Success:
+                return True
+            elif timeout and time.time() - start_time >= timeout:
+                return False
+
+            time.sleep(5)
