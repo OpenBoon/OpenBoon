@@ -266,14 +266,16 @@ class TorchModelImageSegmenter(CustomModelProcessor):
         """An array of labels if set on the model."""
         self.colors = None
         """The colors for the segmentation, is either supplied by args or"""
+        self.endpoint_path = '/predictions/model1'
+        """The base edpoint path"""
 
     def init(self):
         self.load_app_model()
         self.endpoint = self.arg_value('endpoint') + self.endpoint_path
 
         train_args = self.app.models.get_training_args(self.app_model)
-        self.labels = train_args.get("labels")
-        self.colors = train_args.get("colors") or self.load_color_file()
+        self.labels = train_args.get('labels')
+        self.colors = train_args.get('colors') or self.load_color_file()
 
     def process(self, frame):
         img = self.load_proxy_image(frame, 1)
