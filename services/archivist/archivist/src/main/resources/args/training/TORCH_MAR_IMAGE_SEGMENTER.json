@@ -1,0 +1,18 @@
+{
+  "args": {
+    "labels": {
+      "type": "list",
+      "itemsType": {
+        "type": "string"
+      },
+      "description": "Any array of labels for converting the numeric predictions"
+    },
+    "colors": {
+      "type": "list",
+      "itemsType": {
+        "type": "string"
+      },
+      "description": "An array of hex color values to assign to each label, defaults to internal list"
+    }
+  }
+}

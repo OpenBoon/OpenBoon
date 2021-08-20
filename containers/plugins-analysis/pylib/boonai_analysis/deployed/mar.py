@@ -1,16 +1,15 @@
 import os
-
-import requests
 import tempfile
 
+import numpy as np
+import requests
+from PIL import Image, ImageColor
+
 from boonai_analysis.utils.prechecks import Prechecks
-from boonflow import Argument, file_storage, proxy, clips, video, Prediction
+from boonflow import Argument, file_storage, proxy, clips, video, Prediction, FileTypes
 from boonflow.analysis import LabelDetectionAnalysis
 from boonflow.base import ImageInputStream
 from ..custom.base import CustomModelProcessor
-
-from PIL import Image
-import numpy as np
 
 
 class TorchModelBase(CustomModelProcessor):
@@ -30,10 +29,11 @@ class TorchModelBase(CustomModelProcessor):
 
     def process_image(self, frame):
         input_image = self.load_proxy_image(frame, 1)
+
         predictions = self.load_predictions(input_image, frame.asset)
         analysis = LabelDetectionAnalysis(min_score=self.min_score)
-
         analysis.add_predictions(predictions)
+
         frame.asset.add_analysis(self.app_model.module_name, analysis)
 
     def process(self, frame):
@@ -254,105 +254,144 @@ class TorchModelTextClassifier(TorchModelBase):
         return [(k, v) for k, v in rsp.json().items()]
 
 
-class TorchModelImageSegmenter(TorchModelBase):
+class TorchModelImageSegmenter(CustomModelProcessor):
+
+    # Not supporting video.
+    file_types = FileTypes.images | FileTypes.documents
 
     def __init__(self):
         super(TorchModelImageSegmenter, self).__init__()
-        self.label_index = self._load_label_file()
-        self.colors = self._load_color_array()
+        self.endpoint = None
+        """The Torch Serve endpoint"""
+        self.labels = None
+        """An array of labels if set on the model."""
+        self.colors = None
+        """The colors for the segmentation, is either supplied by args or"""
 
-    def _load_label_file(self):
-        raise NotImplementedError("load file from cloud storage and return a dict")
+    def init(self):
+        self.load_app_model()
+        self.endpoint = os.path.join(
+            self.arg_value('endpoint'), 'predictions', self.arg_value('model'))
 
-    def _load_color_array(self):
-        color_array = []
-        color_file = \
-            os.path.join(os.path.dirname(os.path.abspath(__file__)), 'resources/colors.txt')
-        with open(color_file) as f:
-            for line in f.read().splitlines():
-                rgb = line.split(' ')
-                color_array.append((int(rgb[0]), int(rgb[1]), int(rgb[2])))
-
-        return color_array
-
-    def _rgb_to_hex(self, rgb):
-        return '#%02x%02x%02x' % rgb
+        train_args = self.app.models.get_training_args(self.app_model)
+        self.labels = train_args.get("labels")
+        self.colors = train_args.get("colors") or self.load_color_file()
 
     def process(self, frame):
-        if frame.asset.get_attr('media.type') == "video":
-            self.process_video(frame.asset)
-        else:
-            self.process_image(frame)
+        img = self.load_proxy_image(frame, 1)
+        seg_img = self.make_torch_serve_request(img)
 
-    def load_predictions(self, image, asset):
+        analysis = LabelDetectionAnalysis(min_score=self.min_score)
+        analysis.add_predictions(self.segmented_image_to_predictions(seg_img))
+        frame.asset.add_analysis(self.app_model.module_name, analysis)
+
+        self.save_segmented_proxy(frame.asset, img, seg_img)
+
+    def segmented_image_to_predictions(self, seg_img):
         """
             Run prediction methods and returns a list of Prediction objects
         Args:
-            image: The image that will be segmented
-            asset: Asset that can be used for further processing
+            seg_img: The image that will be segmented
         Returns:
             list[Prediction]: A list of Prediction Labels containing the colors present in the image
 
         """
-        raw_predictions = self.predict(image, asset)
-        predictions = []
-        for label in raw_predictions:
-            predictions.append(Prediction(label[1], 1,
-                                          kwargs={'color': self._rgb_to_hex(label[0])}))
+        trim = np.delete(np.array(seg_img), 1, 2)
+        color_label_pairs = [(self.colors[x % 500], self.get_label(x)) for x in
+                             np.unique(trim).astype(np.uint8)]
 
-        return predictions
+        results = []
+        for color, label in color_label_pairs:
+            results.append(Prediction(label, 1, color=color))
+        return results
 
-    def predict(self, image, asset):
+    def make_torch_serve_request(self, image):
         """
         Call the model to make predictions.
 
         Args:
             image (IOBase): An object with a read() method that returns bytes.
-            asset: Asset object that will be used for cloud saving
         Returns:
             list: A list of tuples containing predictions
 
         """
         rsp = requests.post(self.endpoint, data=image.read())
-
         rsp.raise_for_status()
+        return rsp.json()
 
-        response_image = rsp.json()
+    def get_label(self, idx):
+        """
+        Get a label for a particular class index.  If no labels were defined
+        then return a stringified index.
 
-        # Segment image and store it in the cloud
-        self._segment_image(original_image=image, response_image=response_image, asset=asset)
+        Args:
+            idx (int): The class index
 
-        return self._get_labels(response_image)
+        Returns:
+            str: The converted label.
+        """
+        if not self.labels:
+            return str(idx)
+        else:
+            return self.labels[idx]
 
-    def _get_labels(self, response_image):
-        response_np = np.delete(np.array(response_image), 1, 2)
+    def save_segmented_proxy(self, asset, src_img, seg_img):
+        """
+        Save the segmented image proxy.
 
-        return [[self.colors[x % 500], self.label_index[str(x)]] for x in
-                np.unique(response_np).astype(np.uint8)]
+        Args:
+            asset (Asset): The Asset
+            src_img (IOBase): The original processed image.
+            seg_img (nparay): The pixesl with predictions.
 
-    def _segment_image(self, original_image, response_image, asset):
-
-        response_np = np.delete(np.array(response_image), 1, 2)
+        """
+        response_np = np.delete(np.array(seg_img), 1, 2)
         response_shape = list(response_np.shape)
         response_shape[-1] = 3
 
         np_colored_image = np.array(
-            [self.colors[x] for x in response_np.astype(int).flatten()]) \
-            .reshape(response_shape).astype(np.uint8)
+            [ImageColor.getcolor(self.colors[x], "RGB")
+             for x in response_np.astype(int).flatten()]).reshape(response_shape).astype(np.uint8)
 
-        original_image_size = original_image.pil_img().size
-        colored_image = Image.fromarray(np_colored_image, 'RGB').resize(original_image_size)
+        src_img_size = src_img.pil_img().size
+        colored_image = Image.fromarray(np_colored_image, 'RGB').resize(src_img_size)
+
         # Save to File
-        colored_image_file = self._save_to_file(colored_image)
-        # Create Proxy image
-        self._create_proxy_image(colored_image_file, original_image_size, asset)
+        _, img_path = tempfile.mkstemp(suffix='.jpg')
+        colored_image.save(img_path)
 
-    def _save_to_file(self, colored_image):
-        _, path = tempfile.mkstemp(suffix='.jpg')
-        colored_image.save(path)
-        return path
+        # Save proxy
+        self.create_proxy_image(img_path, src_img_size, asset)
 
-    def _create_proxy_image(self, colored_image_file, original_shape, asset):
-        attrs = {"width": original_shape[0], "height": original_shape[1]}
-        return file_storage.assets.store_file(colored_image_file, asset, "web-proxy",
-                                              "web-proxy.jpg", attrs)
+    def create_proxy_image(self, seg_img_path, size, asset):
+        """
+        Update an image segmentation proxy image.
+
+        Args:
+            seg_img_path (str): Path to the file.
+            size (dict): A size dict
+            asset (Asset): The Asset.
+
+        Returns:
+            StoredFile: The stored file reference
+        """
+        attrs = {"width": size[0], "height": size[1]}
+        return file_storage.assets.store_file(seg_img_path, asset, "segment-proxy",
+                                              "segment-proxy.jpg", attrs)
+
+    def load_color_file(self):
+        """
+        Loads the colors from the pre-cached color file.
+
+        Returns:
+            list: A list of tuples with int RGB values
+        """
+        color_array = []
+        path = os.path.dirname(__file__) + "/colors.txt"
+        with open(path) as fp:
+            for line in fp.readlines():
+                line = line.strip()
+                if not line:
+                    continue
+                color_array.append(line)
+        return color_array
