@@ -225,7 +225,7 @@ enum class ModelType(
         false,
         true,
         true,
-        null,
+        DatasetType.Detection,
         "model.mar"
     ),
     BOON_FUNCTION(
@@ -261,7 +261,7 @@ enum class ModelType(
         false,
         true,
         true,
-        null,
+        DatasetType.Classification,
         "model.mar"
     );
 
