@@ -261,7 +261,7 @@ enum class ModelType(
         false,
         true,
         true,
-        null,
+        DatasetType.Classification,
         "model.mar"
     );
 
