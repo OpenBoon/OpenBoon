@@ -215,7 +215,7 @@ enum class ModelType(
         "None",
         "boonai_analysis.deployed.mar.TorchModelTextClassifier",
         null,
-        "Upload a pre-trained Pytorch Model Archive",
+        "Upload a pre-trained Pytorch Model Archive for Text Classification",
         ModelObjective.LABEL_DETECTION,
         Provider.BOONAI,
         true,
@@ -224,7 +224,7 @@ enum class ModelType(
         listOf(),
         false,
         true,
-        false,
+        true,
         null,
         "model.mar"
     ),
@@ -251,7 +251,7 @@ enum class ModelType(
         "None",
         "boonai_analysis.deployed.mar.TorchModelImageSegmenter",
         null,
-        "Upload a pre-trained Pytorch Model Archive",
+        "Upload a pre-trained Pytorch Model Archive to perform image segmentation.",
         ModelObjective.IMAGE_SEGMENTATION,
         Provider.BOONAI,
         true,
@@ -260,7 +260,7 @@ enum class ModelType(
         listOf(),
         false,
         true,
-        false,
+        true,
         null,
         "model.mar"
     );
