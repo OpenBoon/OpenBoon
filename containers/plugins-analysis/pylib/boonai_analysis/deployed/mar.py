@@ -17,15 +17,14 @@ class TorchModelBase(CustomModelProcessor):
     def __init__(self):
         super(TorchModelBase, self).__init__()
         self.add_arg(Argument("endpoint", "str", required=True))
-        self.add_arg(Argument("model", "str", default="model1"))
         self.endpoint = None
+        self.endpoint_path = '/predictions/model1'
 
     def init(self):
         """Init constructor """
         # get model by model id
         self.load_app_model()
-        self.endpoint = os.path.join(
-            self.arg_value('endpoint'), 'predictions', self.arg_value('model'))
+        self.endpoint = self.arg_value('endpoint') + self.endpoint_path
 
     def process_image(self, frame):
         input_image = self.load_proxy_image(frame, 1)
@@ -270,8 +269,7 @@ class TorchModelImageSegmenter(CustomModelProcessor):
 
     def init(self):
         self.load_app_model()
-        self.endpoint = os.path.join(
-            self.arg_value('endpoint'), 'predictions', self.arg_value('model'))
+        self.endpoint = self.arg_value('endpoint') + self.endpoint_path
 
         train_args = self.app.models.get_training_args(self.app_model)
         self.labels = train_args.get("labels")
