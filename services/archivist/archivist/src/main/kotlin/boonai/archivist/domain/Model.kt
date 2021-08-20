@@ -195,7 +195,7 @@ enum class ModelType(
     TORCH_MAR_DETECTOR(
         "Torch Model Archive Object Detector",
         "None",
-        "boonai_analysis.custom.TorchModelArchiveDetector",
+        "boonai_analysis.deployed.mar.TorchModelArchiveDetector",
         null,
         "Upload a pre-trained Pytorch Model Archive",
         ModelObjective.OBJECT_DETECTION,
@@ -213,9 +213,9 @@ enum class ModelType(
     TORCH_MAR_TEXT_CLASSIFIER(
         "Torch Model Archive Text Classifier",
         "None",
-        "boonai_analysis.custom.TorchModelArchiveDetector",
+        "boonai_analysis.deployed.mar.TorchModelTextClassifier",
         null,
-        "Upload a pre-trained Pytorch Model Archive",
+        "Upload a pre-trained Pytorch Model Archive for Text Classification",
         ModelObjective.LABEL_DETECTION,
         Provider.BOONAI,
         true,
@@ -224,7 +224,7 @@ enum class ModelType(
         listOf(),
         false,
         true,
-        false,
+        true,
         null,
         "model.mar"
     ),
@@ -245,6 +245,24 @@ enum class ModelType(
         true,
         DatasetType.Classification,
         "model.zip"
+    ),
+    TORCH_MAR_IMAGE_SEGMENTER(
+        "Torch Model Archive Image Segmenter",
+        "None",
+        "boonai_analysis.deployed.mar.TorchModelImageSegmenter",
+        null,
+        "Upload a pre-trained Pytorch Model Archive to perform image segmentation.",
+        ModelObjective.IMAGE_SEGMENTATION,
+        Provider.BOONAI,
+        true,
+        0,
+        0,
+        listOf(),
+        false,
+        true,
+        true,
+        null,
+        "model.mar"
     );
 
     fun asMap(): Map<String, Any?> {
