@@ -226,9 +226,9 @@ class ModelAppTests(unittest.TestCase):
         assert rsp['success']
 
     @patch.object(BoonClient, 'get')
-    def test_get_model_type_training_args(self, get_patch):
+    def get_training_arg_schema(self, get_patch):
         get_patch.return_value = self.arg_schema
-        rsp = self.app.models.get_model_type_training_args(ModelType.KNN_CLASSIFIER)
+        rsp = self.app.models.get_training_arg_schema(ModelType.KNN_CLASSIFIER)
         assert rsp == self.arg_schema
 
     @patch.object(BoonClient, 'get')

@@ -196,11 +196,15 @@ class TorchModelTextClassifier(TorchModelBase):
 
     def __init__(self):
         super(TorchModelTextClassifier, self).__init__()
+        self.field = None
+
+    def init(self):
+        super(TorchModelTextClassifier, self).init()
+        train_args = self.app.models.get_training_args(self.app_model)
+        self.field = train_args.get("field") or "media.content"
 
     def process(self, frame):
-        asset = frame.asset
-        if self.arg_value('text_content_field') or asset.get_attr('media.content'):
-            self.process_text(frame)
+        self.process_text(frame)
 
     def load_predictions(self, text, asset=None):
         """
@@ -223,17 +227,13 @@ class TorchModelTextClassifier(TorchModelBase):
 
     def process_text(self, frame):
         asset = frame.asset
-        arg_name = 'text_content_field'
-
-        if self.arg_value(arg_name) and asset.attr_exists(self.arg_value(arg_name)):
-            text = asset.get_attr(self.arg_value(arg_name))
-        else:
-            text = asset.get_attr('media.content')
+        text = asset.get_attr(self.field)
+        if not text:
+            return
 
         if text:
             predictions = self.load_predictions(text)
             analysis = LabelDetectionAnalysis(min_score=self.min_score)
-
             analysis.add_predictions(predictions)
             frame.asset.add_analysis(self.app_model.module_name, analysis)
 

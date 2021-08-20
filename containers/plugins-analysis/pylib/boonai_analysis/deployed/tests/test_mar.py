@@ -321,10 +321,11 @@ class TorchModelArchiveTextClassificationTests(PluginUnitTestCase):
     name = "custom-label"
     torch_model_name = "my_tc"
 
+    @patch.object(ModelApp, 'get_training_args')
     @patch.object(ModelApp, "get_model")
     @patch.object(file_storage.projects, "localize_file")
     @patch.object(TorchModelTextClassifier, "predict")
-    def test_text_classifier_from_media_content(self, predict_patch, file_patch, model_patch):
+    def test_text_classifier_from_default(self, predict_patch, _, model_patch, args_patch):
         model_patch.return_value = Model(
             {
                 "id": self.model_id,
@@ -337,6 +338,8 @@ class TorchModelArchiveTextClassificationTests(PluginUnitTestCase):
         predict_patch.return_value = [
             ("Business", 0.999)
         ]
+        args_patch.return_value = {}
+
         args = {
             "model_id": self.model_id,
             "tag": "latest",
@@ -359,10 +362,11 @@ class TorchModelArchiveTextClassificationTests(PluginUnitTestCase):
         assert analysis['predictions'][0]['label'] == 'Business'
         assert analysis['predictions'][0]['score'] == 0.999
 
+    @patch.object(ModelApp, 'get_training_args')
     @patch.object(ModelApp, "get_model")
     @patch.object(file_storage.projects, "localize_file")
     @patch.object(TorchModelTextClassifier, "predict")
-    def test_text_classifier_from_custom_field(self, predict_patch, file_patch, model_patch):
+    def test_text_classifier_from_custom_field(self, predict_patch, _, model_patch, args_patch):
         model_patch.return_value = Model(
             {
                 "id": self.model_id,
@@ -375,12 +379,13 @@ class TorchModelArchiveTextClassificationTests(PluginUnitTestCase):
         predict_patch.return_value = [
             ("Business", 0.999)
         ]
+        args_patch.return_value = {"field": "text.content"}
+
         args = {
             "model_id": self.model_id,
             "tag": "latest",
             "endpoint": "http://127.0.0.1:8080",
-            "model": self.torch_model_name,
-            "text_content_field": "text.content"  # custom Field
+            "model": self.torch_model_name
         }
 
         text = 'Bloomberg has decided to publish a new report on global economic situation.'
@@ -397,55 +402,6 @@ class TorchModelArchiveTextClassificationTests(PluginUnitTestCase):
         assert analysis['count'] == 1
         assert analysis['predictions'][0]['label'] == 'Business'
         assert analysis['predictions'][0]['score'] == 0.999
-
-
-@pytest.mark.skip(reason='dont run automatically')
-class TorchModelArchiveTextClassificationIntegrationTests(PluginUnitTestCase):
-    """
-    Should have a Pythorch server deployed locally with text_classification model
-    https://github.com/pytorch/serve/tree/master/examples/text_classification
-    """
-
-    model_id = "model-id-34568"
-    name = "custom-label"
-    torch_model_name = "my_tc"
-
-    @patch.object(ModelApp, "get_model")
-    @patch("boonflow.base.get_proxy_level_path")
-    def test_text_classifier_asset(self, proxy_patch, model_patch):
-        model_patch.return_value = Model(
-            {
-                "id": self.model_id,
-                "type": "TORCH_MAR_CLASSIFIER",
-                "fileId": "models/{}/foo/bar".format(self.model_id),
-                "name": self.name,
-                "moduleName": self.name
-            }
-        )
-
-        text = 'Bloomberg has decided to publish a new report on global economic situation.'
-
-        args = {
-            "model_id": self.model_id,
-            "tag": "latest",
-            "endpoint": "http://127.0.0.1:8080",
-            "model": self.torch_model_name,
-            'text_content_field': 'text.content'
-        }
-
-        frame = Frame(TestAsset(attrs={"media.content": text, 'text.content': text}))
-
-        processor = self.init_processor(
-            TorchModelTextClassifier(), args
-        )
-        processor.process(frame)
-
-        analysis = frame.asset.get_analysis(self.name)
-
-        assert len(analysis['predictions']) == 1
-        assert analysis['count'] == 1
-        assert analysis['predictions'][0]['label'] == 'Business'
-        assert analysis['predictions'][0]['score'] == 0.927
 
 
 class TorchModelImageSegmentTests(PluginUnitTestCase):
