@@ -4,7 +4,9 @@ import boonai.archivist.AbstractTest
 import boonai.archivist.domain.Asset
 import boonai.archivist.domain.AssetMetrics
 import boonai.archivist.domain.AssetSpec
+import boonai.archivist.domain.AssetState
 import boonai.archivist.domain.BatchCreateAssetsRequest
+import boonai.archivist.domain.BatchLabelBySearchRequest
 import boonai.archivist.domain.BatchUpdateCustomFieldsRequest
 import boonai.archivist.domain.BatchUploadAssetsRequest
 import boonai.archivist.domain.DatasetSpec
@@ -929,5 +931,33 @@ class AssetServiceTests : AbstractTest() {
         asset = assetService.getAsset(asset.id)
         labels = asset.getAttr("labels", Label.LIST_OF) ?: listOf()
         assert(labels.isNullOrEmpty())
+    }
+
+    @Test
+    fun testLabelAssetsBySeaarch() {
+        val ds = datasetService.createDataset(DatasetSpec("test", DatasetType.Classification))
+        val label = ds.makeLabel("cat")
+
+        val batchCreate = BatchCreateAssetsRequest(
+            assets = listOf(
+                AssetSpec("gs://cats/large-brown-deleted-cat.jpg"),
+                AssetSpec("gs://cats/large-brown-not-deleted-cat.jpg")
+            ),
+            state = AssetState.Analyzed
+        )
+        assetService.batchCreate(batchCreate)
+        refreshElastic()
+
+        val search = mapOf(
+            "query" to mapOf("match_all" to emptyMap<String, Any>())
+        )
+        val req = BatchLabelBySearchRequest(search, label, 100)
+        assetService.batchLabelAssetsBySearch(req)
+        Thread.sleep(2000)
+        refreshElastic()
+
+        for (asset in getSample(2)) {
+            print(asset.getAttr("labels"))
+        }
     }
 }
