@@ -14,10 +14,8 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.web.servlet.error.AbstractErrorController
-import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.boot.web.servlet.error.ErrorAttributes
 import org.springframework.boot.web.servlet.error.ErrorController
-import org.springframework.context.annotation.Configuration
 import org.springframework.core.annotation.AnnotationUtils
 import org.springframework.dao.DataAccessException
 import org.springframework.dao.DataIntegrityViolationException
@@ -47,18 +45,18 @@ import javax.servlet.http.HttpServletRequest
 @ControllerAdvice
 class RestApiExceptionHandler(
     val errorAttributes: ErrorAttributes,
-    val errorMessages: HttpErrorMessages
 ) {
 
-    var httpErrorMessage: Map<HttpStatus, String?> = mapOf(
-        HttpStatus.TOO_MANY_REQUESTS to errorMessages.tooManyRequests,
-        HttpStatus.NOT_FOUND to errorMessages.notFound,
-        HttpStatus.CONFLICT to errorMessages.conflict,
-        HttpStatus.METHOD_FAILURE to errorMessages.methodFailure,
-        HttpStatus.FORBIDDEN to errorMessages.forbidden,
-        HttpStatus.METHOD_NOT_ALLOWED to errorMessages.methodNotAllowed,
-        HttpStatus.BAD_REQUEST to errorMessages.badRequest,
-        HttpStatus.INTERNAL_SERVER_ERROR to errorMessages.internalServerError
+    val defaultErrorMessage = "An unexpected error happened."
+    val httpErrorMessage: Map<HttpStatus, String?> = mapOf(
+        HttpStatus.TOO_MANY_REQUESTS to "The ES server is receiving too many requests at the moment.",
+        HttpStatus.CONFLICT to "Entity conflict with current state of the target resource.",
+        HttpStatus.METHOD_FAILURE to "This method has failed.",
+        HttpStatus.FORBIDDEN to "The client does not have access rights to the content.",
+        HttpStatus.METHOD_NOT_ALLOWED to "The request method is known by the server but is not supported by the target resource.",
+        HttpStatus.BAD_REQUEST to "The server could not understand the request due to invalid syntax.",
+        HttpStatus.INTERNAL_SERVER_ERROR to "The server has encountered a situation it doesn't know how to handle.",
+        HttpStatus.NOT_FOUND to "The server can not find the requested resource."
     )
 
     @Value("\${archivist.debug-mode.enabled}")
@@ -138,7 +136,7 @@ class RestApiExceptionHandler(
         val errAttrs = errorAttributes.getErrorAttributes(wb, debug)
         errAttrs["errorId"] = errorId
         errAttrs["status"] = status.value()
-        errAttrs["message"] = httpErrorMessage.getOrDefault(status, errorMessages.default)
+        errAttrs["message"] = httpErrorMessage.getOrDefault(status, defaultErrorMessage)
 
         return ResponseEntity.status(status)
             .contentType(MediaType.APPLICATION_JSON)
@@ -148,20 +146,6 @@ class RestApiExceptionHandler(
     companion object {
         private val logger = LoggerFactory.getLogger(RestApiExceptionHandler::class.java)
     }
-}
-
-@Configuration
-@ConfigurationProperties(prefix = "archivist.error.message")
-class HttpErrorMessages {
-    var default: String? = null
-    var tooManyRequests: String? = null
-    var notFound: String? = null
-    var methodFailure: String? = null
-    var conflict: String? = null
-    var forbidden: String? = null
-    var methodNotAllowed: String? = null
-    var badRequest: String? = null
-    var internalServerError: String? = null
 }
 
 @RestController
