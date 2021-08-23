@@ -105,8 +105,8 @@ def create_model(args):
 def show_train_args(args):
     mt = args.type
     if mt in model_types:
-        targs = app.models.get_model_type_training_args(mt)
+        targs = app.models.get_training_arg_schema(mt)
     else:
         model = get_model(mt)
-        targs = app.models.get_model_type_training_args(model.type)
+        targs = app.models.get_training_arg_schema(model.type)
     print(json.dumps(targs, indent=4))

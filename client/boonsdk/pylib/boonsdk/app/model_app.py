@@ -245,7 +245,7 @@ class ModelApp:
         type_name = getattr(model_type, 'name', str(model_type))
         return ModelTypeInfo(self.app.client.get(f'/api/v3/models/_types/{type_name}'))
 
-    def get_model_type_training_args(self, model_type):
+    def get_training_arg_schema(self, model_type):
         """
         Return a dictionary describing the available training args for a given Model.
 
