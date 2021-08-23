@@ -199,6 +199,19 @@ class UpdateAssetLabelsRequestV4(
 )
 
 @ApiModel(
+    "BatchLabelBySearchRequest",
+    description = "Label a batch of Assets using a search."
+)
+class BatchLabelBySearchRequest(
+    @ApiModelProperty("The search used o find the assets to label")
+    val search: Map<String, Any>,
+    @ApiModelProperty("The Label to apply")
+    val label: Label,
+    @ApiModelProperty("The maximum number of Assets to label")
+    var maxAssets: Int = 10000
+)
+
+@ApiModel(
     "BatchDeleteAssetsRequest",
     description = "Response for batch deleting of assets."
 )
