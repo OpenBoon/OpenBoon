@@ -42,9 +42,6 @@ class ErrorControllerTests : MockMvcTest() {
     @Autowired
     lateinit var restApiExceptionHandler: RestApiExceptionHandler
 
-    @Autowired
-    lateinit var errorMessages: HttpErrorMessages
-
     @Before
     override fun setup() {
         mockMvc = MockMvcBuilders.standaloneSetup(restApiExceptionHandler, errorController).build()
@@ -55,85 +52,85 @@ class ErrorControllerTests : MockMvcTest() {
 
         doThrow(ElasticsearchStatusException("circuit_breaking_exception", RestStatus.TOO_MANY_REQUESTS))
             .`when`(errorController).error(any())
-        performExceptionRequest(HttpStatus.TOO_MANY_REQUESTS, errorMessages.tooManyRequests)
+        performExceptionRequest(HttpStatus.TOO_MANY_REQUESTS)
     }
 
     @Test
     fun testIncorrectResultSizeDataAccessException() {
         doThrow(IncorrectResultSizeDataAccessException::class).`when`(errorController).error(any())
-        performExceptionRequest(HttpStatus.METHOD_FAILURE, errorMessages.methodFailure)
+        performExceptionRequest(HttpStatus.METHOD_FAILURE)
     }
 
     @Test
     fun testDataRetrievalFailureException() {
         doThrow(DataRetrievalFailureException::class).`when`(errorController).error(any())
-        performExceptionRequest(HttpStatus.NOT_FOUND, errorMessages.notFound)
+        performExceptionRequest(HttpStatus.NOT_FOUND)
 
         doThrow(EntityNotFoundException::class).`when`(errorController).error(any())
-        performExceptionRequest(HttpStatus.NOT_FOUND, errorMessages.notFound)
+        performExceptionRequest(HttpStatus.NOT_FOUND)
     }
 
     @Test
     fun testDataIntegrityViolationException() {
         doThrow(DataIntegrityViolationException::class).`when`(errorController).error(any())
-        performExceptionRequest(HttpStatus.CONFLICT, errorMessages.conflict)
+        performExceptionRequest(HttpStatus.CONFLICT)
 
         doThrow(DuplicateEntityException::class).`when`(errorController).error(any())
-        performExceptionRequest(HttpStatus.CONFLICT, errorMessages.conflict)
+        performExceptionRequest(HttpStatus.CONFLICT)
     }
 
     @Test
     fun testAccessDeniedException() {
         doThrow(ArchivistSecurityException::class).`when`(errorController).error(any())
-        performExceptionRequest(HttpStatus.FORBIDDEN, errorMessages.forbidden)
+        performExceptionRequest(HttpStatus.FORBIDDEN)
 
         doThrow(AccessDeniedException::class).`when`(errorController).error(any())
-        performExceptionRequest(HttpStatus.FORBIDDEN, errorMessages.forbidden)
+        performExceptionRequest(HttpStatus.FORBIDDEN)
     }
 
     @Test
     fun testHttpRequestMethodNotSupportedException() {
         given(errorController.error(any())).willAnswer { throw HttpRequestMethodNotSupportedException("error message") }
-        performExceptionRequest(HttpStatus.METHOD_NOT_ALLOWED, errorMessages.methodNotAllowed)
+        performExceptionRequest(HttpStatus.METHOD_NOT_ALLOWED)
 
         doThrow(MethodArgumentTypeMismatchException::class).`when`(errorController).error(any())
-        performExceptionRequest(HttpStatus.METHOD_NOT_ALLOWED, errorMessages.methodNotAllowed)
+        performExceptionRequest(HttpStatus.METHOD_NOT_ALLOWED)
     }
 
     @Test
     fun testBadRequestThrownMethodException() {
         doThrow(ArchivistException::class).`when`(errorController).error(any())
-        performExceptionRequest(HttpStatus.BAD_REQUEST, errorMessages.badRequest)
+        performExceptionRequest(HttpStatus.BAD_REQUEST)
 
         doThrow(ElasticsearchException("es exception")).`when`(errorController).error(any())
-        performExceptionRequest(HttpStatus.BAD_REQUEST, errorMessages.badRequest)
+        performExceptionRequest(HttpStatus.BAD_REQUEST)
 
         doThrow(InvalidRequestException::class).`when`(errorController).error(any())
-        performExceptionRequest(HttpStatus.BAD_REQUEST, errorMessages.badRequest)
+        performExceptionRequest(HttpStatus.BAD_REQUEST)
 
         doThrow(NullPointerException::class).`when`(errorController).error(any())
-        performExceptionRequest(HttpStatus.BAD_REQUEST, errorMessages.badRequest)
+        performExceptionRequest(HttpStatus.BAD_REQUEST)
 
         doThrow(IllegalArgumentException::class).`when`(errorController).error(any())
-        performExceptionRequest(HttpStatus.BAD_REQUEST, errorMessages.badRequest)
+        performExceptionRequest(HttpStatus.BAD_REQUEST)
 
         doThrow(IllegalStateException::class).`when`(errorController).error(any())
-        performExceptionRequest(HttpStatus.BAD_REQUEST, errorMessages.badRequest)
+        performExceptionRequest(HttpStatus.BAD_REQUEST)
 
         doThrow(NumberFormatException::class).`when`(errorController).error(any())
-        performExceptionRequest(HttpStatus.BAD_REQUEST, errorMessages.badRequest)
+        performExceptionRequest(HttpStatus.BAD_REQUEST)
 
         doThrow(ArrayIndexOutOfBoundsException::class).`when`(errorController).error(any())
-        performExceptionRequest(HttpStatus.BAD_REQUEST, errorMessages.badRequest)
+        performExceptionRequest(HttpStatus.BAD_REQUEST)
     }
 
-    private fun performExceptionRequest(httpStatus: HttpStatus, errorMessage: String?) {
+    private fun performExceptionRequest(httpStatus: HttpStatus) {
         mockMvc.perform(
             MockMvcRequestBuilders.get("/error")
                 .headers(admin())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
             .andExpect(MockMvcResultMatchers.status().`is`(httpStatus.value()))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.message", CoreMatchers.equalTo(errorMessage)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.message", CoreMatchers.equalTo(RestApiExceptionHandler.httpErrorMessage[httpStatus])))
     }
 }

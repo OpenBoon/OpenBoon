@@ -47,18 +47,6 @@ class RestApiExceptionHandler(
     val errorAttributes: ErrorAttributes,
 ) {
 
-    val defaultErrorMessage = "An unexpected error happened."
-    val httpErrorMessage: Map<HttpStatus, String?> = mapOf(
-        HttpStatus.TOO_MANY_REQUESTS to "The ES server is receiving too many requests at the moment.",
-        HttpStatus.CONFLICT to "Entity conflict with current state of the target resource.",
-        HttpStatus.METHOD_FAILURE to "This method has failed.",
-        HttpStatus.FORBIDDEN to "The client does not have access rights to the content.",
-        HttpStatus.METHOD_NOT_ALLOWED to "The request method is known by the server but is not supported by the target resource.",
-        HttpStatus.BAD_REQUEST to "The server could not understand the request due to invalid syntax.",
-        HttpStatus.INTERNAL_SERVER_ERROR to "The server has encountered a situation it doesn't know how to handle.",
-        HttpStatus.NOT_FOUND to "The server can not find the requested resource."
-    )
-
     @Value("\${archivist.debug-mode.enabled}")
     var debug: Boolean = false
 
@@ -145,6 +133,17 @@ class RestApiExceptionHandler(
 
     companion object {
         private val logger = LoggerFactory.getLogger(RestApiExceptionHandler::class.java)
+        val defaultErrorMessage = "An unexpected error happened."
+        val httpErrorMessage: Map<HttpStatus, String?> = mapOf(
+            HttpStatus.TOO_MANY_REQUESTS to "The ES server is receiving too many requests at the moment.",
+            HttpStatus.CONFLICT to "Entity conflict with current state of the target resource.",
+            HttpStatus.METHOD_FAILURE to "This method has failed.",
+            HttpStatus.FORBIDDEN to "The client does not have access rights to the content.",
+            HttpStatus.METHOD_NOT_ALLOWED to "The request method is known by the server but is not supported by the target resource.",
+            HttpStatus.BAD_REQUEST to "The server could not understand the request due to invalid syntax.",
+            HttpStatus.INTERNAL_SERVER_ERROR to "The server has encountered a situation it doesn't know how to handle.",
+            HttpStatus.NOT_FOUND to "The server can not find the requested resource."
+        )
     }
 }
 
