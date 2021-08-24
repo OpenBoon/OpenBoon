@@ -22,6 +22,7 @@ import boonai.archivist.domain.FileExtResolver
 import boonai.archivist.domain.FileStorage
 import boonai.archivist.domain.InternalTask
 import boonai.archivist.domain.Job
+import boonai.archivist.domain.BatchLabelBySearchRequest
 import boonai.archivist.domain.ProcessorRef
 import boonai.archivist.domain.ProjectDirLocator
 import boonai.archivist.domain.ProjectFileLocator
@@ -56,6 +57,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.elasticsearch.action.DocWriteRequest
+import org.elasticsearch.action.bulk.BackoffPolicy
+import org.elasticsearch.action.bulk.BulkProcessor
 import org.elasticsearch.action.bulk.BulkRequest
 import org.elasticsearch.action.bulk.BulkResponse
 import org.elasticsearch.action.support.WriteRequest
@@ -211,6 +214,7 @@ interface AssetService {
      */
     fun updateLabels(req: UpdateAssetLabelsRequest): BulkResponse
     fun updateLabelsV4(req: UpdateAssetLabelsRequestV4): BulkResponse
+    fun batchLabelAssetsBySearch(lreq: BatchLabelBySearchRequest): Int
 }
 
 @Service
@@ -251,6 +255,9 @@ class AssetServiceImpl : AssetService {
 
     @Autowired
     lateinit var publisherService: PublisherService
+
+    @Autowired
+    lateinit var assetSearchService: AssetSearchService
 
     override fun getAsset(id: String): Asset {
         val rest = indexRoutingService.getProjectRestClient()
@@ -435,7 +442,10 @@ class AssetServiceImpl : AssetService {
             asset
         }
 
-        return bulkIndexAndAnalyzePendingAssets(assets, existingAssetIds, pipeline, request.credentials, null)
+        return bulkIndexAndAnalyzePendingAssets(
+            assets,
+            existingAssetIds, pipeline, request.credentials, request.jobName
+        )
     }
 
     override fun update(assetId: String, req: UpdateAssetRequest): Response {
@@ -1296,6 +1306,66 @@ class AssetServiceImpl : AssetService {
         }
 
         return result
+    }
+
+    override fun batchLabelAssetsBySearch(lreq: BatchLabelBySearchRequest): Int {
+
+        if (lreq.maxAssets > 10000) {
+            throw IllegalArgumentException("You cannot label more than 10000 assets at 1 time.")
+        }
+
+        val rest = indexRoutingService.getProjectRestClient()
+
+        val req = rest.newSearchRequest()
+        req.source(assetSearchService.mapToSearchSourceBuilder(lreq.search))
+        req.scroll(TimeValue(60000))
+        req.source().sort(FieldSortBuilder.DOC_FIELD_NAME, SortOrder.ASC)
+        req.source().size(500)
+        req.source().fetchSource("labels", null)
+
+        val listener: BulkProcessor.Listener = object : BulkProcessor.Listener {
+            override fun beforeBulk(executionId: Long, request: BulkRequest) {}
+            override fun afterBulk(
+                executionId: Long,
+                request: BulkRequest,
+                response: BulkResponse
+            ) {
+            }
+
+            override fun afterBulk(
+                executionId: Long,
+                request: BulkRequest,
+                failure: Throwable
+            ) {
+                logger.warn("Bulk labeling error ", failure)
+            }
+        }
+
+        val builder = BulkProcessor.builder(
+            { request, bulkListener -> rest.client.bulkAsync(request, RequestOptions.DEFAULT, bulkListener) },
+            listener
+        )
+        builder.setBulkActions(250)
+        builder.setConcurrentRequests(2)
+        builder.setBackoffPolicy(
+            BackoffPolicy
+                .constantBackoff(TimeValue.timeValueSeconds(1L), 3)
+        )
+        val bulk = builder.build()
+
+        var count = 0
+        for (
+            asset in AssetIterator(
+                rest.client,
+                rest.client.search(req, RequestOptions.DEFAULT), lreq.maxAssets.toLong()
+            )
+        ) {
+            asset.addLabel(lreq.label)
+            bulk.add(rest.newUpdateRequest(asset.id).doc(asset.document))
+            count += 1
+        }
+        bulk.close()
+        return count
     }
 
     /**

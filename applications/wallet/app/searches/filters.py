@@ -625,3 +625,23 @@ class DateFilter(BaseFilter):
                 }
             }
         }
+
+
+class LimitFilter(BaseFilter):
+    """The Limit Filter has no Agg and has no Query. The UI is always set to either:
+        1 - 10,000
+            or
+        1 - Current Total Assets in Query.
+    There is no query because the actual limiting happens outside of the Filter system
+    since ES has no way of limiting the total amount of assets returned."""
+
+    type = 'limit'
+    required_query_keys = ['maxAssets']
+
+    @property
+    def max_assets(self):
+        return self.data.get('values', {}).get('maxAssets')
+
+    def add_to_query(self, query):
+        """Should not be added to the query in any way."""
+        return query

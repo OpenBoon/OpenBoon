@@ -8,7 +8,7 @@ from searches.schemas import (SimilarityAnalysisSchema, ContentAnalysisSchema,
                               LabelsAnalysisSchema, FIELD_TYPE_FILTER_MAPPING)
 from searches.filters import (ExistsFilter, FacetFilter, RangeFilter, LabelConfidenceFilter,
                               TextContentFilter, SimilarityFilter, LabelFilter, DateFilter,
-                              PredictionCountFilter)
+                              PredictionCountFilter, LimitFilter)
 
 
 ANALYSIS_SCHEMAS = [SimilarityAnalysisSchema, ContentAnalysisSchema, LabelsAnalysisSchema]
@@ -17,10 +17,15 @@ logger = logging.getLogger(__name__)
 
 class FieldUtility(object):
 
+    @property
+    def utility_fields(self):
+        return {'utility': {'Search Results Limit': ['limit']}}
+
     def get_filter_map(self, client=None):
         """Returns the list of fields and their valid filters."""
         field_types = self.get_field_type_map(client)
-        return self._get_child_filters_from_field_types(field_types)
+        fields = self._get_child_filters_from_field_types(field_types)
+        return self._add_utility_fields(fields)
 
     def _get_child_filters_from_field_types(self, field_types):
         """Recursive helper to parse the list of fields and convert fieldTypes to filters."""
@@ -125,6 +130,19 @@ class FieldUtility(object):
 
         raise ParseError(detail=['Attribute given is not a valid filterable or visualizable field.'])
 
+    def _add_utility_fields(self, fields):
+        """Adds any one-off utility fields to the field mapping so the UI can display them properly.
+
+        Args:
+            fields (dict): Current set of determined fields from the ES Field Mapping.
+
+        Returns:
+            (dict): All fields plus the additional utility fields.
+        """
+        for field in self.utility_fields:
+            fields[field] = self.utility_fields[field]
+        return fields
+
 
 class FilterBuddy(object):
 
@@ -136,7 +154,8 @@ class FilterBuddy(object):
                SimilarityFilter,
                LabelFilter,
                DateFilter,
-               PredictionCountFilter]
+               PredictionCountFilter,
+               LimitFilter]
 
     def get_filter_from_request(self, request):
         """Gets Filter object from a requests querystring.

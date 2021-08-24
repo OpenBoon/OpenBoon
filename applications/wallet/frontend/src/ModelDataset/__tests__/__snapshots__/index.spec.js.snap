@@ -47,6 +47,7 @@ exports[`<ModelDataset /> should render properly with a datasetId 1`] = `
         "trainingJobName": "Train console_face_recognition / boonai-console_face_recognition-face-recognition",
         "type": "ZVI_FACE_RECOGNITION",
         "unappliedChanges": true,
+        "uploadable": false,
       }
     }
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
@@ -91,6 +92,7 @@ exports[`<ModelDataset /> should render properly without a datasetId 1`] = `
       "trainingJobName": "Train console_face_recognition / boonai-console_face_recognition-face-recognition",
       "type": "ZVI_FACE_RECOGNITION",
       "unappliedChanges": true,
+      "uploadable": false,
     }
   }
 />

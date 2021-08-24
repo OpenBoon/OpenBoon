@@ -20,6 +20,7 @@ const ModelMatrixLink = ({ projectId, model }) => {
     datasetId,
     timeLastApplied,
     unappliedChanges,
+    uploadable,
   } = model
 
   const { data: matrix } = useSWR(
@@ -171,7 +172,7 @@ const ModelMatrixLink = ({ projectId, model }) => {
                     color={colors.signal.grass.base}
                   />
                 )}
-                run &quot;test&quot; or &quot;analyze all&quot;
+                {uploadable ? 'run "Test Model"' : 'run "Train & Test Model"'}
               </li>
             </ul>
           </div>
@@ -262,6 +263,7 @@ ModelMatrixLink.propTypes = {
       missingLabelsOnAssets: PropTypes.number.isRequired,
     }).isRequired,
     unappliedChanges: PropTypes.bool.isRequired,
+    uploadable: PropTypes.bool.isRequired,
     timeLastTrained: PropTypes.number,
     timeLastApplied: PropTypes.number,
   }).isRequired,

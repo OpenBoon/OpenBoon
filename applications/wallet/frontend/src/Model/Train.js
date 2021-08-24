@@ -33,9 +33,10 @@ const ModelTrain = ({ projectId, model, setError }) => {
     },
     datasetId,
     timeLastTrained,
-    timeLastApplied,
+    timeLastTested,
     unappliedChanges,
     state,
+    uploadable,
     runningJobId,
   } = model
 
@@ -43,7 +44,7 @@ const ModelTrain = ({ projectId, model, setError }) => {
     <div>
       <div css={{ height: spacing.normal }} />
 
-      {!datasetId && (
+      {!datasetId && !uploadable && (
         <div css={{ display: 'flex', paddingBottom: spacing.normal }}>
           <FlashMessage variant={FLASH_VARIANTS.INFO}>
             You must add a dataset below before you can train or apply the
@@ -53,6 +54,7 @@ const ModelTrain = ({ projectId, model, setError }) => {
       )}
 
       {!runningJobId &&
+        !uploadable &&
         datasetId &&
         (!!missingLabels || !!missingLabelsOnAssets) && (
           <div css={{ display: 'flex', paddingBottom: spacing.normal }}>
@@ -98,6 +100,7 @@ const ModelTrain = ({ projectId, model, setError }) => {
         )}
 
       {!runningJobId &&
+        !uploadable &&
         datasetId &&
         !missingLabels &&
         !missingLabelsOnAssets &&
@@ -111,6 +114,7 @@ const ModelTrain = ({ projectId, model, setError }) => {
         )}
 
       {!runningJobId &&
+        !uploadable &&
         datasetId &&
         !missingLabels &&
         !missingLabelsOnAssets &&
@@ -129,38 +133,15 @@ const ModelTrain = ({ projectId, model, setError }) => {
           <ItemList
             attributes={[
               [
-                'Last Trained',
-                timeLastTrained
-                  ? formatFullDate({ timestamp: timeLastTrained })
-                  : 'Untrained',
-              ],
-              [
-                'Last Analyzed',
-                timeLastApplied
-                  ? formatFullDate({ timestamp: timeLastApplied })
-                  : 'Model analysis has not been run.',
+                uploadable ? 'Last Tested' : 'Last Trained & Tested',
+                timeLastTested
+                  ? formatFullDate({ timestamp: timeLastTested })
+                  : 'n/a',
               ],
             ]}
           />
 
           <ButtonGroup>
-            <Button
-              variant={BUTTON_VARIANTS.PRIMARY}
-              onClick={() =>
-                onTrain({
-                  model,
-                  apply: false,
-                  test: false,
-                  projectId,
-                  modelId: model.id,
-                  setError,
-                })
-              }
-              isDisabled={!!missingLabels}
-            >
-              Train Model
-            </Button>
-
             <Button
               variant={BUTTON_VARIANTS.PRIMARY}
               onClick={() =>
@@ -173,26 +154,9 @@ const ModelTrain = ({ projectId, model, setError }) => {
                   setError,
                 })
               }
-              isDisabled={!!missingLabels}
+              isDisabled={!datasetId || !!missingLabels}
             >
-              Train &amp; Test
-            </Button>
-
-            <Button
-              variant={BUTTON_VARIANTS.PRIMARY}
-              onClick={() =>
-                onTrain({
-                  model,
-                  apply: true,
-                  test: false,
-                  projectId,
-                  modelId: model.id,
-                  setError,
-                })
-              }
-              isDisabled={!!missingLabels}
-            >
-              Train &amp; Analyze All
+              {uploadable ? 'Test Model' : 'Train & Test Model'}
             </Button>
 
             <ModelTip />
@@ -232,8 +196,9 @@ ModelTrain.propTypes = {
     }).isRequired,
     unappliedChanges: PropTypes.bool.isRequired,
     state: PropTypes.string.isRequired,
+    uploadable: PropTypes.bool.isRequired,
     timeLastTrained: PropTypes.number,
-    timeLastApplied: PropTypes.number,
+    timeLastTested: PropTypes.number,
     runningJobId: PropTypes.string,
   }).isRequired,
   setError: PropTypes.func.isRequired,

@@ -9,6 +9,7 @@ import boonai.archivist.domain.BatchIndexAssetsEvent
 import boonai.archivist.domain.BatchUpdateCustomFieldsRequest
 import boonai.archivist.domain.BatchUpdateResponse
 import boonai.archivist.domain.BatchUploadAssetsRequest
+import boonai.archivist.domain.BatchLabelBySearchRequest
 import boonai.archivist.domain.UpdateAssetLabelsRequest
 import boonai.archivist.domain.ReprocessAssetSearchRequest
 import boonai.archivist.domain.ReprocessAssetSearchResponse
@@ -191,6 +192,18 @@ class AssetController @Autowired constructor(
         return RestUtils.batchUpdated(
             LogObject.ASSET,
             "_batch_update_labels", rsp.items.count { !it.isFailed }, rsp.items.count { it.isFailed }
+        )
+    }
+
+    @ApiOperation("Update labels")
+    @PreAuthorize("hasAuthority('AssetsImport')")
+    @PutMapping(value = ["/api/v3/assets/_batch_label_by_search"])
+    @ResponseBody
+    fun updateLabelsBySearch(@RequestBody req: BatchLabelBySearchRequest): Any {
+        val count = assetService.batchLabelAssetsBySearch(req)
+        return RestUtils.batchSubmitted(
+            LogObject.ASSET,
+            "_batch_label_by_search", count, 0
         )
     }
 

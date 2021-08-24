@@ -1,0 +1,9 @@
+{
+  "args": {
+    "field": {
+      "type": "string",
+      "defaultValue": "media.content",
+      "description": "The field to analyze"
+    }
+  }
+}

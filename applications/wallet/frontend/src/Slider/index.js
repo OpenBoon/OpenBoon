@@ -18,6 +18,7 @@ const HANDLE_HEIGHT = 24
 export const noop = () => {}
 
 const Slider = ({
+  mode,
   step,
   domain,
   values,
@@ -98,7 +99,7 @@ const Slider = ({
         </Handles>
       )}
       {!isDisabled && (
-        <Tracks left={false} right={values.length === 1}>
+        <Tracks left={mode === 'min'} right={mode === 'max'}>
           {({ tracks, getTrackProps }) => (
             <div>
               {tracks.map(({ id, source, target }) => (
@@ -128,6 +129,7 @@ const Slider = ({
 }
 
 Slider.propTypes = {
+  mode: PropTypes.oneOf(['min', 'both', 'max']).isRequired,
   step: PropTypes.number.isRequired,
   domain: PropTypes.arrayOf(PropTypes.number).isRequired,
   values: PropTypes.arrayOf(PropTypes.number).isRequired,

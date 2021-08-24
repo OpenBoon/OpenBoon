@@ -1,7 +1,8 @@
 flask
 requests
 gevent
-google-cloud-pubsub
+google-cloud-pubsub==2.7.0
 backoff
 pyOpenSSL
 PyJWT==2.1.0
+pytz

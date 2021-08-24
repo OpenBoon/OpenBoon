@@ -59,7 +59,7 @@ class BatchUploadAssetsRequest(
     @ApiModelProperty("A list of available credentials for the analysis job.")
     val credentials: Set<String>? = null,
 
-    @ApiModelProperty("Name of job to process uploadss")
+    @ApiModelProperty("Name of job to process uploads")
     val jobName: String? = null
 
 ) {
@@ -87,6 +87,9 @@ class BatchCreateAssetsRequest(
 
     @ApiModelProperty("A list of available credentials for the analysis job.")
     val credentials: Set<String>? = null,
+
+    @ApiModelProperty("The Job name request should be added to.")
+    val jobName: String? = null,
 
     @JsonIgnore
     @ApiModelProperty("The taskId that is creating the assets via expand.", hidden = true)
@@ -193,6 +196,19 @@ class UpdateAssetLabelsRequestV4(
 
     @ApiModelProperty("The labels to remove.")
     val remove: Map<String, Label>? = null
+)
+
+@ApiModel(
+    "BatchLabelBySearchRequest",
+    description = "Label a batch of Assets using a search."
+)
+class BatchLabelBySearchRequest(
+    @ApiModelProperty("The search used o find the assets to label")
+    val search: Map<String, Any>,
+    @ApiModelProperty("The Label to apply")
+    val label: Label,
+    @ApiModelProperty("The maximum number of Assets to label")
+    var maxAssets: Int = 10000
 )
 
 @ApiModel(

@@ -42,6 +42,7 @@ exports[`<ModelLink /> should render properly for Existing 1`] = `
         "trainingJobName": "Train console_face_recognition / boonai-console_face_recognition-face-recognition",
         "type": "ZVI_FACE_RECOGNITION",
         "unappliedChanges": true,
+        "uploadable": false,
       }
     }
   />

@@ -193,6 +193,7 @@ const FilterDateRangeContent = ({
         </div>
         <div css={{ padding: spacing.small }}>
           <Slider
+            mode="both"
             step={DAY_MS_VALUE}
             domain={sliderDomain}
             values={sliderValues}

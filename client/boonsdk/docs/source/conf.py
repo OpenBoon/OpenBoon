@@ -22,7 +22,7 @@ copyright = '2021, support@boonai.io'
 author = 'support@boonai.io'
 
 # The full version, including alpha/beta/rc tags
-release = '1.4.1'
+release = '1.4.5'
 
 
 # -- General configuration ---------------------------------------------------

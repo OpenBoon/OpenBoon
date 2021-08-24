@@ -221,6 +221,28 @@ describe('<FiltersContent />', () => {
     expect(component.toJSON()).toMatchSnapshot()
   })
 
+  it('should render the "Limit" filter', () => {
+    const filters = [
+      {
+        type: 'limit',
+        attribute: 'utility.Search Results Limit',
+        values: { maxAssets: 10_000 },
+      },
+    ]
+
+    const component = TestRenderer.create(
+      <FiltersContent
+        pathname="/[projectId]/visualizer"
+        projectId={PROJECT_ID}
+        assetId=""
+        filters={filters}
+        setIsMenuOpen={noop}
+      />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
   it('should render the default filter', () => {
     const filters = [
       {
