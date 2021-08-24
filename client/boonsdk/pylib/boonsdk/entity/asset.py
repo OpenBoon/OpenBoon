@@ -346,7 +346,7 @@ class CsvFileImport:
                  uri_column=0,
                  dataset=None,
                  label_column=None,
-                 label_scope=None,
+                 label_scope=LabelScope.TRAIN,
                  field_map=None,
                  max_assets=None,
                  header='auto',
