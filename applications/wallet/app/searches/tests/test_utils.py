@@ -393,7 +393,7 @@ class TestFieldUtility:
 
     def test_utility_fields(self, mock_zmlp_client):
         result = self.field_utility.get_filter_map(mock_zmlp_client)
-        assert result['utility'] == ['limit']
+        assert result['utility'] == {'Search Results Limit': ['limit']}
 
     def test_get_all_dataset_ids_no_models(self):
         client = Mock(post=Mock(return_value={'list': []}))
