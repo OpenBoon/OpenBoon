@@ -215,6 +215,15 @@ class SearchViewSet(CreateModelMixin,
             like a Range filter, but adds the `.count` field to the analysis name to filter
             over the given prediction count.
 
+        Limit:
+
+            {
+                "type": "limit",
+                "values": {
+                    "maxAssets": $value
+                }
+            }
+
         """
         path = 'api/v3/assets'
         fields = ['id',
@@ -244,7 +253,13 @@ class SearchViewSet(CreateModelMixin,
 
         _filters = filter_boy.get_filters_from_request(request)
         for _filter in _filters:
-            _filter.is_valid(query=True, raise_exception=True)
+            if _filter.type == 'limit':
+                # If a limit filter was found we ignore it in regards to the query
+                # and then set it directly on the request so that the pagination class
+                # can handle restricting the assets returned
+                request.max_assets = _filter.max_assets
+            else:
+                _filter.is_valid(query=True, raise_exception=True)
         query = filter_boy.reduce_filters_to_query(_filters)
 
         # If there's no specific query at this point, let's sort by the created date
