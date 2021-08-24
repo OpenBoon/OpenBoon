@@ -9,7 +9,7 @@ import Button, { VARIANTS } from '../Button'
 
 import { dispatch, ACTIONS } from '../Filters/helpers'
 
-import { formatOptions } from './helpers'
+import { formatOptions, getValues } from './helpers'
 
 const FilterReset = ({
   pathname,
@@ -104,7 +104,7 @@ const FilterReset = ({
           onClick={() => {
             const { type, values: { ids } = {} } = filter
 
-            const values = type === 'similarity' && ids ? { ids } : {}
+            const values = getValues({ type, ids })
 
             onReset()
 

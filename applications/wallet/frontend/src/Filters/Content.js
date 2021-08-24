@@ -17,6 +17,7 @@ import FilterRange from '../FilterRange'
 import FilterLabelConfidence from '../FilterLabelConfidence'
 import FilterSimilarity from '../FilterSimilarity'
 import FilterDateRange from '../FilterDateRange'
+import FilterLimit from '../FilterLimit'
 
 import { dispatch, ACTIONS } from './helpers'
 
@@ -197,6 +198,19 @@ const FiltersContent = ({
             case 'date':
               return (
                 <FilterDateRange
+                  key={`${filter.type}-${index}`}
+                  pathname={pathname}
+                  projectId={projectId}
+                  assetId={assetId}
+                  filters={filters}
+                  filter={filter}
+                  filterIndex={index}
+                />
+              )
+
+            case 'limit':
+              return (
+                <FilterLimit
                   key={`${filter.type}-${index}`}
                   pathname={pathname}
                   projectId={projectId}

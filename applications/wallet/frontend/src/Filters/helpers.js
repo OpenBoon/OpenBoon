@@ -13,6 +13,22 @@ export const ACTIONS = {
   CLEAR_FILTERS: 'CLEAR_FILTERS',
 }
 
+export const getValues = ({ type }) => {
+  switch (type) {
+    case 'exists': {
+      return { exists: true }
+    }
+
+    case 'limit': {
+      return { maxAssets: 10_000 }
+    }
+
+    default: {
+      return {}
+    }
+  }
+}
+
 export const getNewLabels = ({
   labels,
   isSelected,

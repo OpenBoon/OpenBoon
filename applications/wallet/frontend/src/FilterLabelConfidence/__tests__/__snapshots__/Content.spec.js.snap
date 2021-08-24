@@ -91,6 +91,7 @@ Array [
         }
         isDisabled={true}
         isMuted={false}
+        mode="both"
         onChange={[Function]}
         onUpdate={[Function]}
         step={0.01}
@@ -367,6 +368,7 @@ Array [
         }
         isDisabled={true}
         isMuted={false}
+        mode="both"
         onChange={[Function]}
         onUpdate={[Function]}
         step={0.01}
@@ -909,6 +911,7 @@ Array [
         }
         isDisabled={true}
         isMuted={false}
+        mode="both"
         onChange={[Function]}
         onUpdate={[Function]}
         step={0.01}
@@ -1319,6 +1322,7 @@ Array [
         }
         isDisabled={false}
         isMuted={false}
+        mode="both"
         onChange={[Function]}
         onUpdate={[Function]}
         step={0.01}
