@@ -19,7 +19,7 @@ class FieldUtility(object):
 
     @property
     def utility_fields(self):
-        return {'utility': ['limit']}
+        return {'utility': {'Search Results Limit': ['limit']}}
 
     def get_filter_map(self, client=None):
         """Returns the list of fields and their valid filters."""
