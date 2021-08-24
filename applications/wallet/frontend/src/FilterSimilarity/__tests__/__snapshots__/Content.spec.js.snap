@@ -118,6 +118,7 @@ exports[`<FilterSimilarityContent /> should render a video properly 1`] = `
         }
         isDisabled={false}
         isMuted={false}
+        mode="max"
         onChange={[Function]}
         onUpdate={[Function]}
         step={0.01}
@@ -250,6 +251,7 @@ exports[`<FilterSimilarityContent /> should render a wide asset properly 1`] = `
         }
         isDisabled={false}
         isMuted={false}
+        mode="max"
         onChange={[Function]}
         onUpdate={[Function]}
         step={0.01}
@@ -382,6 +384,7 @@ exports[`<FilterSimilarityContent /> should render properly 1`] = `
         }
         isDisabled={false}
         isMuted={false}
+        mode="max"
         onChange={[Function]}
         onUpdate={[Function]}
         step={0.01}
@@ -514,6 +517,7 @@ exports[`<FilterSimilarityContent /> should render properly 2`] = `
         }
         isDisabled={false}
         isMuted={false}
+        mode="max"
         onChange={[Function]}
         onUpdate={[Function]}
         step={0.01}
@@ -646,6 +650,7 @@ exports[`<FilterSimilarityContent /> should render properly 3`] = `
         }
         isDisabled={false}
         isMuted={false}
+        mode="max"
         onChange={[Function]}
         onUpdate={[Function]}
         step={0.01}
@@ -778,6 +783,7 @@ exports[`<FilterSimilarityContent /> should render properly 4`] = `
         }
         isDisabled={false}
         isMuted={false}
+        mode="max"
         onChange={[Function]}
         onUpdate={[Function]}
         step={0.01}

@@ -6,6 +6,7 @@ describe('<Slider />', () => {
   it('should render properly when muted', () => {
     const component = TestRenderer.create(
       <Slider
+        mode="both"
         step={0.1}
         domain={[0, 100]}
         values={[0, 100]}
@@ -22,6 +23,7 @@ describe('<Slider />', () => {
   it('should render properly when disabled', () => {
     const component = TestRenderer.create(
       <Slider
+        mode="both"
         step={0.1}
         domain={[0, 100]}
         values={[0, 100]}

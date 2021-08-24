@@ -14,7 +14,7 @@ import Button, { VARIANTS } from '../Button'
 
 import { formatDisplayName } from '../Metadata/helpers'
 
-import { dispatch, ACTIONS } from './helpers'
+import { getValues, dispatch, ACTIONS } from './helpers'
 
 import FiltersMenuSection from './MenuSection'
 
@@ -37,7 +37,7 @@ const FiltersMenu = ({
   const onClick = ({ type, attribute, datasetId }) => {
     return (value) => {
       if (value) {
-        const values = type === 'exists' ? { exists: true } : {}
+        const values = getValues({ type })
 
         setNewFilters((nF) => ({
           ...nF,

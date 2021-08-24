@@ -63,6 +63,7 @@ const FilterLabelConfidenceSlider = ({
 
         <div css={{ padding: spacing.small }}>
           <Slider
+            mode="both"
             step={0.01}
             domain={[0, 1]}
             values={rangeValues}

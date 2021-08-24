@@ -1,6 +1,16 @@
-import { getNewLabels, cleanup, dispatch } from '../helpers'
+import { getNewLabels, cleanup, dispatch, getValues } from '../helpers'
 
 describe('<Filters /> helpers', () => {
+  describe('getValues()', () => {
+    it('should return the "Limit" value', () => {
+      expect(
+        getValues({
+          type: 'limit',
+        }),
+      ).toEqual({ maxAssets: 10_000 })
+    })
+  })
+
   describe('getNewLabels()', () => {
     it('should remove a label', () => {
       expect(
