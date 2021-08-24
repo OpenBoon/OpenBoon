@@ -22,6 +22,7 @@ const models = {
         'faa6f55d-ae85-42c1-9b93-d80588b2ab57/Admin Console Generated Key - 30a6d0c2-8a65-455b-bd2c-b12b429b20fc - danny@zorroa.com_a0952c03-cc04-461c-a367-9ffae8c4199a',
       url: 'https://dev.console.zvi.zorroa.com/api/v1/projects/a0952c03-cc04-461c-a367-9ffae8c4199a/models/621bf774-89d9-1244-9596-d6df43f1ede5/',
       runningJobId: '',
+      state: 'Deployed',
     },
     {
       id: '621bf774-89d9-9596-1244-d6df43f1ede5',
@@ -42,6 +43,7 @@ const models = {
         'faa6f55d-ae85-42c1-9b93-d80588b2ab57/Admin Console Generated Key - 30a6d0c2-8a65-455b-bd2c-b12b429b20fc - zach@zorroa.com_a0952c03-cc04-461c-a367-9ffae8c4199a',
       url: 'https://dev.console.zvi.zorroa.com/api/v1/projects/a0952c03-cc04-461c-a367-9ffae8c4199a/models/621bf774-89d9-9596-1244-d6df43f1ede5/',
       runningJobId: '',
+      state: 'Deployed',
     },
     {
       id: 'c0e83460-6a25-1238-86fa-0242ac150002',
@@ -60,6 +62,7 @@ const models = {
         '6a6af1da-09d8-49a6-b02a-032acc0bd17e/Admin Console Generated Key - 517ecff6-4859-4b07-8cf0-aebea45601c8 - software@zorroa.com_00000000-0000-0000-0000-000000000000',
       url: 'http://localhost/api/v1/projects/00000000-0000-0000-0000-000000000000/models/c0e83460-6a25-1238-86fa-0242ac150002/',
       runningJobId: '',
+      state: 'DeployError',
     },
     {
       id: 'c0e83462-6a25-1238-86fa-0242ac150002',
@@ -78,6 +81,7 @@ const models = {
         '6a6af1da-09d8-49a6-b02a-032acc0bd17e/Admin Console Generated Key - 517ecff6-4859-4b07-8cf0-aebea45601c8 - software@zorroa.com_00000000-0000-0000-0000-000000000000',
       url: 'http://localhost/api/v1/projects/00000000-0000-0000-0000-000000000000/models/c0e83462-6a25-1238-86fa-0242ac150002/',
       runningJobId: '',
+      state: 'Deploying',
     },
   ],
 }
