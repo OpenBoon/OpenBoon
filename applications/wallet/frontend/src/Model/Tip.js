@@ -27,32 +27,17 @@ const ModelTip = () => {
               lineHeight: typography.height.regular,
             }}
           >
-            Train Model
+            Test Model
           </h3>
-          Train a model without running it on your assets.
-          <h3
-            css={{
-              fontSize: typography.size.regular,
-              lineHeight: typography.height.regular,
-              paddingTop: spacing.normal,
-            }}
-          >
-            Train &amp; Test
-          </h3>
-          Train and run the model on your test set ONLY. This enables you to
-          view the results in the matrix and assess your model’s performance. To
-          save processing time, make adjustments to your model before running it
-          on all of your assets.
-          <h3
-            css={{
-              fontSize: typography.size.regular,
-              lineHeight: typography.height.regular,
-              paddingTop: spacing.normal,
-            }}
-          >
-            Train &amp; Analyze All
-          </h3>
-          Train the model and run the model analysis on all project assets.
+          <p>
+            Test the model by running it on your dataset test assets ONLY. This
+            enables you to view the results in the matrix, assess your model’s
+            performance and make any adjustments before using it at scale.
+          </p>
+          <i>
+            Once you have trained your model it will be available to use in Data
+            Sources.
+          </i>
         </div>
       </Toggletip>
     </div>

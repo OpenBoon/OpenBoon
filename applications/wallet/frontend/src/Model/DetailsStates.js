@@ -6,12 +6,12 @@ import { spacing } from '../Styles'
 import FlashMessage, { VARIANTS as FLASH_VARIANTS } from '../FlashMessage'
 import SectionTitle from '../SectionTitle'
 import ModelUpload from '../ModelUpload'
-
-import ModelTrain from './Train'
 import ModelsEdit from '../ModelsEdit'
 
-const REQUIRES_UPLOAD = ['RequiresUpload', 'DeployError']
+import ModelTrain from './Train'
+
 const DEPLOY_ERROR = 'DeployError'
+const REQUIRES_UPLOAD = ['RequiresUpload', DEPLOY_ERROR]
 const DEPLOYING = 'Deploying'
 
 const ModelDetailsStates = ({ projectId, model, modelTypes, setError }) => {

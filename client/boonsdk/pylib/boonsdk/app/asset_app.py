@@ -58,6 +58,7 @@ class AssetApp:
             results['errors'] += len(result.get('failed', []))
             results['created'] += len(result.get('created', []))
             results['exists'] += len(result.get('exists', []))
+            results['jobId'] = result.get('jobId')
         return results
 
     def analyze_file(self, iostream, modules):

@@ -114,6 +114,7 @@ Array [
         "trainingJobName": "Train console_face_recognition / boonai-console_face_recognition-face-recognition",
         "type": "ZVI_FACE_RECOGNITION",
         "unappliedChanges": true,
+        "uploadable": false,
       }
     }
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
@@ -148,6 +149,7 @@ Array [
         "trainingJobName": "Train console_face_recognition / boonai-console_face_recognition-face-recognition",
         "type": "ZVI_FACE_RECOGNITION",
         "unappliedChanges": true,
+        "uploadable": false,
       }
     }
     setErrors={[Function]}
@@ -269,6 +271,7 @@ Array [
         "trainingJobName": "Train console_face_recognition / boonai-console_face_recognition-face-recognition",
         "type": "ZVI_FACE_RECOGNITION",
         "unappliedChanges": true,
+        "uploadable": false,
       }
     }
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
@@ -303,6 +306,7 @@ Array [
         "trainingJobName": "Train console_face_recognition / boonai-console_face_recognition-face-recognition",
         "type": "ZVI_FACE_RECOGNITION",
         "unappliedChanges": true,
+        "uploadable": false,
       }
     }
     setErrors={[Function]}
@@ -424,6 +428,7 @@ Array [
         "trainingJobName": "Train console_face_recognition / boonai-console_face_recognition-face-recognition",
         "type": "ZVI_FACE_RECOGNITION",
         "unappliedChanges": true,
+        "uploadable": false,
       }
     }
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
@@ -458,6 +463,7 @@ Array [
         "trainingJobName": "Train console_face_recognition / boonai-console_face_recognition-face-recognition",
         "type": "ZVI_FACE_RECOGNITION",
         "unappliedChanges": true,
+        "uploadable": false,
       }
     }
     setErrors={[Function]}
@@ -579,6 +585,7 @@ Array [
         "trainingJobName": "Train console_face_recognition / boonai-console_face_recognition-face-recognition",
         "type": "ZVI_FACE_RECOGNITION",
         "unappliedChanges": true,
+        "uploadable": false,
       }
     }
     projectId="76917058-b147-4556-987a-0a0f11e46d9b"
