@@ -34,7 +34,7 @@ describe('<ModelDetails />', () => {
     expect(component.toJSON()).toMatchSnapshot()
   })
 
-  it('should render properly when trained and applied', async () => {
+  it('should render properly when uploadable trained and tested', async () => {
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/models/[modelId]',
       query: {
@@ -51,8 +51,67 @@ describe('<ModelDetails />', () => {
         model={{
           ...model,
           timeLastTrained: 1625774562852,
-          timeLastApplied: 1625774664673,
+          timeLastTested: 1625774664673,
           modelTypeRestrictions: { missingLabels: 0 },
+          state: 'Deployed',
+          uploadable: true,
+        }}
+      />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  it('should render properly when uploadable just created', async () => {
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/models/[modelId]',
+      query: {
+        projectId: PROJECT_ID,
+        modelId: MODEL_ID,
+      },
+    })
+
+    require('swr').__setMockUseSWRResponse({ data: modelTypes })
+
+    const component = TestRenderer.create(
+      <ModelDetails
+        projectId={PROJECT_ID}
+        model={{
+          ...model,
+          datasetId: DATASET_ID,
+          runningJobId: '',
+          timeLastTrained: null,
+          timeLastTested: null,
+          modelTypeRestrictions: { missingLabels: 0 },
+          state: 'Deployed',
+          uploadable: true,
+        }}
+      />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  it('should render properly when trained and tested', async () => {
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/models/[modelId]',
+      query: {
+        projectId: PROJECT_ID,
+        modelId: MODEL_ID,
+      },
+    })
+
+    require('swr').__setMockUseSWRResponse({ data: modelTypes })
+
+    const component = TestRenderer.create(
+      <ModelDetails
+        projectId={PROJECT_ID}
+        model={{
+          ...model,
+          timeLastTrained: 1625774562852,
+          timeLastTested: 1625774664673,
+          modelTypeRestrictions: { missingLabels: 0 },
+          state: 'Deployed',
         }}
       />,
     )
@@ -79,8 +138,9 @@ describe('<ModelDetails />', () => {
           datasetId: DATASET_ID,
           runningJobId: '',
           timeLastTrained: null,
-          timeLastApplied: null,
+          timeLastTested: null,
           modelTypeRestrictions: { missingLabels: 0 },
+          state: 'Deployed',
         }}
       />,
     )
@@ -106,9 +166,10 @@ describe('<ModelDetails />', () => {
           ...model,
           datasetId: DATASET_ID,
           timeLastTrained: null,
-          timeLastApplied: null,
+          timeLastTested: null,
           modelTypeRestrictions: { missingLabels: 0 },
           state: 'RequiresUpload',
+          uploadable: true,
         }}
       />,
     )
@@ -134,7 +195,7 @@ describe('<ModelDetails />', () => {
           ...model,
           datasetId: DATASET_ID,
           timeLastTrained: null,
-          timeLastApplied: null,
+          timeLastTested: null,
           modelTypeRestrictions: { missingLabels: 0 },
           state: 'Deploying',
         }}
@@ -162,7 +223,7 @@ describe('<ModelDetails />', () => {
           ...model,
           datasetId: DATASET_ID,
           timeLastTrained: null,
-          timeLastApplied: null,
+          timeLastTested: null,
           modelTypeRestrictions: { missingLabels: 0 },
           state: 'DeployError',
         }}
@@ -190,7 +251,7 @@ describe('<ModelDetails />', () => {
           ...model,
           datasetId: DATASET_ID,
           timeLastTrained: 1625774562852,
-          timeLastApplied: 1625774664673,
+          timeLastTested: 1625774664673,
           modelTypeRestrictions: {
             requiredLabels: 5,
             missingLabels: 5,
@@ -230,7 +291,7 @@ describe('<ModelDetails />', () => {
           ...model,
           datasetId: DATASET_ID,
           timeLastTrained: 1625774562852,
-          timeLastApplied: 1625774664673,
+          timeLastTested: 1625774664673,
           modelTypeRestrictions: {
             requiredLabels: 0,
             missingLabels: 0,
@@ -264,7 +325,11 @@ describe('<ModelDetails />', () => {
     const component = TestRenderer.create(
       <ModelDetails
         projectId={PROJECT_ID}
-        model={{ ...model, modelTypeRestrictions: { missingLabels: 0 } }}
+        model={{
+          ...model,
+          datasetId: DATASET_ID,
+          modelTypeRestrictions: { missingLabels: 0 },
+        }}
       />,
     )
 
@@ -292,7 +357,7 @@ describe('<ModelDetails />', () => {
 
     await act(async () => {
       component.root
-        .findByProps({ children: 'Train Model', isDisabled: false })
+        .findByProps({ children: 'Train & Test Model', isDisabled: false })
         .props.onClick({ preventDefault: noop, stopPropagation: noop })
     })
 
@@ -301,7 +366,7 @@ describe('<ModelDetails />', () => {
 
     await act(async () => {
       component.root
-        .findByProps({ children: 'Train & Test', isDisabled: false })
+        .findByProps({ children: 'Train & Test Model', isDisabled: false })
         .props.onClick({ preventDefault: noop, stopPropagation: noop })
     })
 
@@ -314,7 +379,7 @@ describe('<ModelDetails />', () => {
 
     await act(async () => {
       component.root
-        .findByProps({ children: 'Train & Analyze All', isDisabled: false })
+        .findByProps({ children: 'Train & Test Model', isDisabled: false })
         .props.onClick({ preventDefault: noop, stopPropagation: noop })
     })
 
@@ -328,11 +393,12 @@ describe('<ModelDetails />', () => {
         'Content-Type': 'application/json;charset=UTF-8',
       },
       method: 'POST',
-      body: '{"apply":false,"test":false}',
+      body: '{"apply":false,"test":true}',
     })
 
     expect(mockMutate).toHaveBeenCalledWith({
       ...model,
+      datasetId: DATASET_ID,
       modelTypeRestrictions: { missingLabels: 0 },
       runningJobId: JOB_ID,
       ready: true,
