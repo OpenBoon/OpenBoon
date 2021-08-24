@@ -1,11 +1,12 @@
+import csv
 import json
 import logging
 import os
-import csv
 
+from .dataset import LabelScope
+from .storage import StoredFile
 from ..client import to_json
 from ..util import as_collection
-from .storage import StoredFile
 
 __all__ = [
     'Asset',
@@ -345,6 +346,7 @@ class CsvFileImport:
                  uri_column=0,
                  dataset=None,
                  label_column=None,
+                 label_scope=None,
                  field_map=None,
                  max_assets=None,
                  header='auto',
@@ -359,6 +361,8 @@ class CsvFileImport:
                 Defaults to 0
             dataset (Dataset): A Dataset to assign the assets to.  Must also set label_index.
             label_column (int): The column that contains the label.
+            label_scope (mixed): A label scope name, a LabelScope, a column index (int),
+                a callable to convert a row value, or a float for dynamic selection.
             field_map (dict): A map of custom field names to index columns.
             max_assets (int): The maximum number of Assets to generate.
             header(mixed): 'auto' for autodetect, true for yes there is a header, false otherwise.
@@ -370,6 +374,7 @@ class CsvFileImport:
         self.uri_column = uri_column
         self.dataset = dataset
         self.label_column = label_column
+        self.label_scope = label_scope
         self.max_assets = max_assets
         self.delimiter = delimiter
         self.quotechar = quotechar
@@ -405,6 +410,8 @@ class CsvBatchGenerator:
         """The number of assets processed thus far"""
         self.batch_size = csvfile.batch_size
         """The number of files in each batch"""
+        self.label_counts = {}
+        """Keeps track of the number of train labels for each class"""
 
     def generate_batches(self):
         """
@@ -451,7 +458,9 @@ class CsvBatchGenerator:
                 # Handle the label if set.
                 label = None
                 if self.csv.dataset and self.csv.label_column is not None:
-                    label = self.csv.dataset.make_label(row[self.csv.label_column].strip())
+                    label_name = row[self.csv.label_column].strip()
+                    scope = self.get_label_scope(self.csv.label_scope, label_name, row)
+                    label = self.csv.dataset.make_label(label_name, scope=scope)
 
                 # Handle the image URL
                 # Check if line looks like a json/python array
@@ -512,6 +521,42 @@ class CsvBatchGenerator:
             return self.csv.max_assets - self.asset_count
         else:
             return queue_size
+
+    def get_label_scope(self, label_scope, label_name, row):
+        """
+        Determine the label scope for a given row of the CSV file.  This can be accomplished
+        a multitude of ways.
+
+        Args:
+            label_scope (mixed): A label scope name, a LabelScope, a column index (int),
+                a callable to convert a row value, or a float for dynamic selection.
+            label_name (str): The name of the label to find the scope for.
+            row (list): The row of CSV values.
+
+        Returns:
+            LabelScope: The found label scope.
+        """
+        if isinstance(label_scope, str):
+            return LabelScope[label_scope.upper()]
+        elif isinstance(label_scope, LabelScope):
+            return label_scope
+        elif isinstance(label_scope, int):
+            value = row[label_scope].upper()
+            return LabelScope[value]
+        elif isinstance(label_scope, float):
+            count = self.label_counts.get(label_name, 0) + 1
+            self.label_counts[label_name] = count
+            if count == 1:
+                return LabelScope.TEST
+            elif count * label_scope >= 1.0:
+                self.label_counts[label_name] = 0
+                return LabelScope.TRAIN
+            else:
+                return LabelScope.TRAIN
+        elif callable(label_scope):
+            return label_scope(row)
+        else:
+            raise ValueError(f'Unable to determine label scope from ${label_scope}')
 
 
 class Asset(DocumentMixin):
