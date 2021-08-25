@@ -257,6 +257,25 @@ class AssetApp:
         rsp = self.app.client.post('/api/v3/assets/_search/reprocess', body)
         return ReprocessSearchResponse(rsp['assetCount'], Job(rsp['job']))
 
+    def label_search(self, search, label, max_assets=10000):
+        """
+        Label up to 10000 assets in a given search.
+
+        Args:
+            search (dict): An ElasticSearch search.
+            label (Label): The label
+            max_assets (int): The maximum # of assets to label.
+
+        Returns:
+            dict: A status dict with the number of assets labeled.
+        """
+        body = {
+            'search': search,
+            'label': label,
+            'maxAssets': max_assets
+        }
+        return self.app.client.put('/api/v3/assets/_batch_label_by_search', body)
+
     def scroll_search_clips(self, asset, search=None, timeout="1m"):
         """
         Scroll through clips for given asset using the ElasticSearch query DSL.
