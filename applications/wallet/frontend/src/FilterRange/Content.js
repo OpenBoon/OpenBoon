@@ -147,6 +147,7 @@ const FilterRangeContent = ({
         </div>
         <div css={{ padding: spacing.small }}>
           <Slider
+            mode="both"
             step={type === 'predictionCount' ? 1 : 0.1}
             domain={domain}
             values={rangeValues}

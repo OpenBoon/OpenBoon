@@ -15,7 +15,7 @@ import { formatFullDate } from '../Date/helpers'
 import { usePanel, ACTIONS } from '../Panel/helpers'
 import { useLabelTool } from '../AssetLabeling/helpers'
 
-import { onTrain } from './helpers'
+import { onTrainAndTest, onTest } from './helpers'
 
 import ModelMatrixLink from './MatrixLink'
 import ModelTip from './Tip'
@@ -142,22 +142,37 @@ const ModelTrain = ({ projectId, model, setError }) => {
           />
 
           <ButtonGroup>
-            <Button
-              variant={BUTTON_VARIANTS.PRIMARY}
-              onClick={() =>
-                onTrain({
-                  model,
-                  apply: false,
-                  test: true,
-                  projectId,
-                  modelId: model.id,
-                  setError,
-                })
-              }
-              isDisabled={!datasetId || !!missingLabels}
-            >
-              {uploadable ? 'Test Model' : 'Train & Test Model'}
-            </Button>
+            {uploadable ? (
+              <Button
+                variant={BUTTON_VARIANTS.PRIMARY}
+                onClick={() =>
+                  onTest({
+                    model,
+                    projectId,
+                    modelId: model.id,
+                    setError,
+                  })
+                }
+                isDisabled={!datasetId || !!missingLabels}
+              >
+                Test Model
+              </Button>
+            ) : (
+              <Button
+                variant={BUTTON_VARIANTS.PRIMARY}
+                onClick={() =>
+                  onTrainAndTest({
+                    model,
+                    projectId,
+                    modelId: model.id,
+                    setError,
+                  })
+                }
+                isDisabled={!datasetId || !!missingLabels}
+              >
+                Train &amp; Test Model
+              </Button>
+            )}
 
             <ModelTip />
           </ButtonGroup>

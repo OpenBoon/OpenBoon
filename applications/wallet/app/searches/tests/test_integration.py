@@ -295,6 +295,14 @@ class BaseFiltersTestCase(object):
     def facet_query_qs(self, facet_query):
         return convert_json_to_base64([facet_query])
 
+    @pytest.fixture
+    def facet_query_limited_qs(self, facet_query):
+        return convert_json_to_base64([
+            facet_query,
+            {'type': 'limit',
+             'values': {'maxAssets': 1}}
+        ])
+
 
 class TestSearchAssetModifier:
 
@@ -375,6 +383,18 @@ class TestQuery(BaseFiltersTestCase):
         assert 'previous' in content
         # Should only be the requested fields on this request
         assert list(content['results'][0]['metadata']) == ['source']
+
+    def test_get_with_max_assets_limited(self, login, api_client, project, monkeypatch,
+                                         facet_query_limited_qs, mock_response, snapshot):
+        def _response(*args, **kwargs):
+            return mock_response
+
+        monkeypatch.setattr(BoonClient, 'post', _response)
+        response = api_client.get(reverse('search-query', kwargs={'project_pk': project.id}),
+                                  {'query': facet_query_limited_qs})
+
+        content = check_response(response, status=status.HTTP_200_OK)
+        snapshot.assert_match(content)
 
     def test_get_md_missing_media(self, login, api_client, project, monkeypatch, facet_query_qs):
         def _response(*args, **kwargs):

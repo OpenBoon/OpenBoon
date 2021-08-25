@@ -1,0 +1,693 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<FilterLimitContent /> should render properly 1`] = `
+.emotion-0 {
+  padding: 16px;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+  padding-bottom: 16px;
+  font-family: Roboto Mono;
+}
+
+.emotion-2 {
+  padding: 4px;
+}
+
+.emotion-3 {
+  padding-top: 24px;
+  color: #b3b3b3;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+
+.emotion-3 label {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+
+.emotion-3 label input {
+  width: 40%;
+}
+
+.emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-5 {
+  text-align: center;
+  border-radius: 2px;
+  background-color: #252525;
+  color: #ffffff;
+  padding-left: 12px;
+  padding-right: 12px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  border: 1px solid transparent;
+  width: 60%;
+}
+
+.emotion-5:focus {
+  outline: 1px solid transparent;
+  border: 1px solid #3A5DFF;
+  color: #191919;
+  background-color: #ffffff;
+}
+
+.emotion-5:hover {
+  border: 1px solid #808080;
+}
+
+<div>
+  <FilterReset
+    assetId=""
+    filter={
+      Object {
+        "attribute": "utility.Search Results Limit",
+        "type": "limit",
+        "values": Object {
+          "maxAssets": 10000,
+        },
+      }
+    }
+    filterIndex={0}
+    filters={
+      Array [
+        Object {
+          "attribute": "utility.Search Results Limit",
+          "type": "limit",
+          "values": Object {
+            "maxAssets": 10000,
+          },
+        },
+      ]
+    }
+    onReset={[Function]}
+    pathname="/[projectId]/visualizer"
+    projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+  />
+  <div
+    className="emotion-0"
+  >
+    <div
+      className="emotion-1"
+    >
+      <span>
+        0
+      </span>
+      <span>
+        10,000
+      </span>
+    </div>
+    <div
+      className="emotion-2"
+    >
+      <Slider
+        domain={
+          Array [
+            0,
+            10000,
+          ]
+        }
+        isDisabled={false}
+        isMuted={false}
+        mode="min"
+        onChange={[Function]}
+        onUpdate={[Function]}
+        step={1}
+        values={
+          Array [
+            10000,
+          ]
+        }
+      />
+    </div>
+    <div
+      className="emotion-3"
+    >
+      <label
+        className="emotion-4"
+      >
+        MAX NUMBER OF ASSETS
+          
+        <input
+          className="emotion-5"
+          onBlur={[Function]}
+          onChange={[Function]}
+          onKeyPress={[Function]}
+          type="text"
+          value={10000}
+        />
+      </label>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<FilterLimitContent /> should render properly 2`] = `
+.emotion-0 {
+  padding: 16px;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+  padding-bottom: 16px;
+  font-family: Roboto Mono;
+}
+
+.emotion-2 {
+  padding: 4px;
+}
+
+.emotion-3 {
+  padding-top: 24px;
+  color: #b3b3b3;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+
+.emotion-3 label {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+
+.emotion-3 label input {
+  width: 40%;
+}
+
+.emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-5 {
+  text-align: center;
+  border-radius: 2px;
+  background-color: #252525;
+  color: #ffffff;
+  padding-left: 12px;
+  padding-right: 12px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  border: 1px solid transparent;
+  width: 60%;
+}
+
+.emotion-5:focus {
+  outline: 1px solid transparent;
+  border: 1px solid #3A5DFF;
+  color: #191919;
+  background-color: #ffffff;
+}
+
+.emotion-5:hover {
+  border: 1px solid #808080;
+}
+
+<div>
+  <FilterReset
+    assetId=""
+    filter={
+      Object {
+        "attribute": "utility.Search Results Limit",
+        "type": "limit",
+        "values": Object {
+          "maxAssets": 10000,
+        },
+      }
+    }
+    filterIndex={0}
+    filters={
+      Array [
+        Object {
+          "attribute": "utility.Search Results Limit",
+          "type": "limit",
+          "values": Object {
+            "maxAssets": 10000,
+          },
+        },
+      ]
+    }
+    onReset={[Function]}
+    pathname="/[projectId]/visualizer"
+    projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+  />
+  <div
+    className="emotion-0"
+  >
+    <div
+      className="emotion-1"
+    >
+      <span>
+        0
+      </span>
+      <span>
+        10,000
+      </span>
+    </div>
+    <div
+      className="emotion-2"
+    >
+      <Slider
+        domain={
+          Array [
+            0,
+            10000,
+          ]
+        }
+        isDisabled={false}
+        isMuted={false}
+        mode="min"
+        onChange={[Function]}
+        onUpdate={[Function]}
+        step={1}
+        values={
+          Array [
+            10000,
+          ]
+        }
+      />
+    </div>
+    <div
+      className="emotion-3"
+    >
+      <label
+        className="emotion-4"
+      >
+        MAX NUMBER OF ASSETS
+          
+        <input
+          className="emotion-5"
+          onBlur={[Function]}
+          onChange={[Function]}
+          onKeyPress={[Function]}
+          type="text"
+          value={200}
+        />
+      </label>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<FilterLimitContent /> should render properly 3`] = `
+.emotion-0 {
+  padding: 16px;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+  padding-bottom: 16px;
+  font-family: Roboto Mono;
+}
+
+.emotion-2 {
+  padding: 4px;
+}
+
+.emotion-3 {
+  padding-top: 24px;
+  color: #b3b3b3;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+
+.emotion-3 label {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+
+.emotion-3 label input {
+  width: 40%;
+}
+
+.emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-5 {
+  text-align: center;
+  border-radius: 2px;
+  background-color: #252525;
+  color: #ffffff;
+  padding-left: 12px;
+  padding-right: 12px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  border: 1px solid transparent;
+  width: 60%;
+}
+
+.emotion-5:focus {
+  outline: 1px solid transparent;
+  border: 1px solid #3A5DFF;
+  color: #191919;
+  background-color: #ffffff;
+}
+
+.emotion-5:hover {
+  border: 1px solid #808080;
+}
+
+<div>
+  <FilterReset
+    assetId=""
+    filter={
+      Object {
+        "attribute": "utility.Search Results Limit",
+        "type": "limit",
+        "values": Object {
+          "maxAssets": 10000,
+        },
+      }
+    }
+    filterIndex={0}
+    filters={
+      Array [
+        Object {
+          "attribute": "utility.Search Results Limit",
+          "type": "limit",
+          "values": Object {
+            "maxAssets": 10000,
+          },
+        },
+      ]
+    }
+    onReset={[Function]}
+    pathname="/[projectId]/visualizer"
+    projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+  />
+  <div
+    className="emotion-0"
+  >
+    <div
+      className="emotion-1"
+    >
+      <span>
+        0
+      </span>
+      <span>
+        10,000
+      </span>
+    </div>
+    <div
+      className="emotion-2"
+    >
+      <Slider
+        domain={
+          Array [
+            0,
+            10000,
+          ]
+        }
+        isDisabled={false}
+        isMuted={false}
+        mode="min"
+        onChange={[Function]}
+        onUpdate={[Function]}
+        step={1}
+        values={
+          Array [
+            10000,
+          ]
+        }
+      />
+    </div>
+    <div
+      className="emotion-3"
+    >
+      <label
+        className="emotion-4"
+      >
+        MAX NUMBER OF ASSETS
+          
+        <input
+          className="emotion-5"
+          onBlur={[Function]}
+          onChange={[Function]}
+          onKeyPress={[Function]}
+          type="text"
+          value={200}
+        />
+      </label>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<FilterLimitContent /> should render properly 4`] = `
+.emotion-0 {
+  padding: 16px;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+  padding-bottom: 16px;
+  font-family: Roboto Mono;
+}
+
+.emotion-2 {
+  padding: 4px;
+}
+
+.emotion-3 {
+  padding-top: 24px;
+  color: #b3b3b3;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+
+.emotion-3 label {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+
+.emotion-3 label input {
+  width: 40%;
+}
+
+.emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-5 {
+  text-align: center;
+  border-radius: 2px;
+  background-color: #252525;
+  color: #ffffff;
+  padding-left: 12px;
+  padding-right: 12px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  border: 1px solid transparent;
+  width: 60%;
+}
+
+.emotion-5:focus {
+  outline: 1px solid transparent;
+  border: 1px solid #3A5DFF;
+  color: #191919;
+  background-color: #ffffff;
+}
+
+.emotion-5:hover {
+  border: 1px solid #808080;
+}
+
+<div>
+  <FilterReset
+    assetId=""
+    filter={
+      Object {
+        "attribute": "utility.Search Results Limit",
+        "type": "limit",
+        "values": Object {
+          "maxAssets": 10000,
+        },
+      }
+    }
+    filterIndex={0}
+    filters={
+      Array [
+        Object {
+          "attribute": "utility.Search Results Limit",
+          "type": "limit",
+          "values": Object {
+            "maxAssets": 10000,
+          },
+        },
+      ]
+    }
+    onReset={[Function]}
+    pathname="/[projectId]/visualizer"
+    projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+  />
+  <div
+    className="emotion-0"
+  >
+    <div
+      className="emotion-1"
+    >
+      <span>
+        0
+      </span>
+      <span>
+        10,000
+      </span>
+    </div>
+    <div
+      className="emotion-2"
+    >
+      <Slider
+        domain={
+          Array [
+            0,
+            10000,
+          ]
+        }
+        isDisabled={false}
+        isMuted={false}
+        mode="min"
+        onChange={[Function]}
+        onUpdate={[Function]}
+        step={1}
+        values={
+          Array [
+            10000,
+          ]
+        }
+      />
+    </div>
+    <div
+      className="emotion-3"
+    >
+      <label
+        className="emotion-4"
+      >
+        MAX NUMBER OF ASSETS
+          
+        <input
+          className="emotion-5"
+          onBlur={[Function]}
+          onChange={[Function]}
+          onKeyPress={[Function]}
+          type="text"
+          value={10000}
+        />
+      </label>
+    </div>
+  </div>
+</div>
+`;

@@ -44,6 +44,8 @@ importlib-metadata = "*"
 django-filter = "*"
 boonsdk = {path = "./../../client/boonsdk"}
 deprecated = "*"
+snapshottest = "*"
+deprecation = "*"
 
 [requires]
 python_version = "3.7"

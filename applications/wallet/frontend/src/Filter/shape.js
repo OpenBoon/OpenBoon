@@ -11,6 +11,7 @@ const filterShape = {
     'similarity',
     'date',
     'label',
+    'limit',
   ]),
   attribute: PropTypes.string.isRequired,
   values: PropTypes.shape({}),

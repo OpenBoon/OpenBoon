@@ -104,6 +104,7 @@ const FilterSimilarityContent = ({
 
         <div css={{ padding: spacing.small }}>
           <Slider
+            mode="max"
             step={0.01}
             domain={[0.01, 1]}
             values={[value]}
