@@ -35,6 +35,10 @@ describe('<ModelDetails />', () => {
   })
 
   it('should render properly when uploadable trained and tested', async () => {
+    const mockMutate = jest.fn()
+
+    require('swr').__setMockMutateFn(mockMutate)
+
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/models/[modelId]',
       query: {
@@ -50,6 +54,7 @@ describe('<ModelDetails />', () => {
         projectId={PROJECT_ID}
         model={{
           ...model,
+          datasetId: DATASET_ID,
           timeLastTrained: 1625774562852,
           timeLastTested: 1625774664673,
           modelTypeRestrictions: { missingLabels: 0 },
@@ -60,6 +65,50 @@ describe('<ModelDetails />', () => {
     )
 
     expect(component.toJSON()).toMatchSnapshot()
+
+    // Mock Failure
+    fetch.mockResponseOnce(null, { status: 400 })
+
+    await act(async () => {
+      component.root
+        .findByProps({ children: 'Test Model', isDisabled: false })
+        .props.onClick({ preventDefault: noop, stopPropagation: noop })
+    })
+
+    // Mock Success
+    fetch.mockResponseOnce(JSON.stringify({ jobId: JOB_ID }), {
+      headers: { 'content-type': 'application/json' },
+    })
+
+    await act(async () => {
+      component.root
+        .findByProps({ children: 'Test Model', isDisabled: false })
+        .props.onClick({ preventDefault: noop, stopPropagation: noop })
+    })
+
+    expect(fetch.mock.calls[0][0]).toEqual(
+      `/api/v1/projects/${PROJECT_ID}/models/${MODEL_ID}/test/`,
+    )
+
+    expect(fetch.mock.calls[0][1]).toEqual({
+      headers: {
+        'X-CSRFToken': 'CSRF_TOKEN',
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      method: 'POST',
+    })
+
+    expect(mockMutate).toHaveBeenCalledWith({
+      ...model,
+      datasetId: DATASET_ID,
+      timeLastTrained: 1625774562852,
+      timeLastTested: 1625774664673,
+      modelTypeRestrictions: { missingLabels: 0 },
+      state: 'Deployed',
+      uploadable: true,
+      ready: true,
+      runningJobId: JOB_ID,
+    })
   })
 
   it('should render properly when uploadable just created', async () => {
