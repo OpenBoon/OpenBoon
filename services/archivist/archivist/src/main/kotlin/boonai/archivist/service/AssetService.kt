@@ -1310,17 +1310,18 @@ class AssetServiceImpl : AssetService {
 
     override fun batchLabelAssetsBySearch(lreq: BatchLabelBySearchRequest): Int {
 
-        if (lreq.maxAssets > 10000) {
-            throw IllegalArgumentException("You cannot label more than 10000 assets at 1 time.")
+        if (lreq.maxAssets > 10000 || lreq.maxAssets < 1) {
+            throw IllegalArgumentException("Invalid maxAsssts value, must be between 1 and 10000")
         }
 
         val rest = indexRoutingService.getProjectRestClient()
 
+        // Make sure not to touch the sort or else you'll end up
+        // tagging the wrong assets.
         val req = rest.newSearchRequest()
         req.source(assetSearchService.mapToSearchSourceBuilder(lreq.search))
         req.scroll(TimeValue(60000))
-        req.source().sort(FieldSortBuilder.DOC_FIELD_NAME, SortOrder.ASC)
-        req.source().size(500)
+        req.source().size(100)
         req.source().fetchSource("labels", null)
 
         val listener: BulkProcessor.Listener = object : BulkProcessor.Listener {
@@ -1345,7 +1346,7 @@ class AssetServiceImpl : AssetService {
             { request, bulkListener -> rest.client.bulkAsync(request, RequestOptions.DEFAULT, bulkListener) },
             listener
         )
-        builder.setBulkActions(250)
+        builder.setBulkActions(100)
         builder.setConcurrentRequests(2)
         builder.setBackoffPolicy(
             BackoffPolicy
