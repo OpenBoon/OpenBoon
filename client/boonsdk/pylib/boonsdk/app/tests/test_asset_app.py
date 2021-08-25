@@ -474,8 +474,8 @@ class AssetAppTests(unittest.TestCase):
 
     @patch.object(BoonClient, 'put')
     def test_label_search(self, put_patch):
-        put_patch.return_value = {'count': 100 }
-        search = { "match_all": {}}
+        put_patch.return_value = {'count': 100}
+        search = {"match_all": {}}
         label = boonsdk.Label("abc123", "cat")
         res = self.app.assets.label_search(search, label)
         assert res['count'] == 100

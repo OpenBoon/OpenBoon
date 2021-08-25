@@ -64,8 +64,10 @@ class ModelJdbcDaoImpl : AbstractDao(), ModelJdbcDao {
         val time = System.currentTimeMillis()
         val actor = getZmlpActor().toString()
 
-        logger.event(LogObject.MODEL, LogAction.STATE_CHANGE,
-            mapOf("modelId" to modelId, "newState" to state.name))
+        logger.event(
+            LogObject.MODEL, LogAction.STATE_CHANGE,
+            mapOf("modelId" to modelId, "newState" to state.name)
+        )
 
         when (state) {
             ModelState.Deploying -> {
