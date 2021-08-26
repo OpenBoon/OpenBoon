@@ -28,12 +28,15 @@ class DatasetTypeSerializer(serializers.Serializer):
     description = serializers.CharField()
 
 
-class LabelSerializer(serializers.Serializer):
-    assetId = serializers.CharField()
+class RawLabelSerializer(serializers.Serializer):
     label = serializers.CharField()
     bbox = serializers.ListField(default=None)
     simhash = serializers.CharField(default=None)
     scope = serializers.ChoiceField(choices=['TRAIN', 'TEST'], default='TRAIN')
+
+
+class LabelSerializer(RawLabelSerializer):
+    assetId = serializers.CharField()
 
 
 class RemoveLabelsSerializer(serializers.Serializer):
@@ -56,3 +59,7 @@ class RenameLabelSerializer(serializers.Serializer):
 
 class DestroyLabelSerializer(serializers.Serializer):
     label = serializers.CharField()
+
+
+class AddLabelsBySearchSerializer(RawLabelSerializer):
+    filters = serializers.JSONField()
