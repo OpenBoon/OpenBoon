@@ -265,3 +265,15 @@ class FilterBuddy(object):
         for _filter in filters:
             query = _filter.add_to_clip_query(query)
         return query
+
+    def validate_filters(self, filters, request):
+        """Ensures every filter was valid, while also catching the Limit filter and
+        setting the max_assets value on the overall request object."""
+        for _filter in filters:
+            if _filter.type == 'limit':
+                # If a limit filter was found we ignore it in regards to the query
+                # and then set it directly on the request so that the pagination class
+                # can handle restricting the assets returned
+                request.max_assets = _filter.max_assets
+            else:
+                _filter.is_valid(query=True, raise_exception=True)
