@@ -132,6 +132,7 @@ class ZpsExecutor(object):
         except Exception as e:
             # If any exceptions bubble out here, then the task is a hard failure
             # and the container is immediately stopped.
+            logger.info(f"DEBUG: RECEIVED A EVENT ERROR 3")
             msg = "Exception during generation, reason: {}".format(e)
             logger.exception(msg)
             self.stop_container(msg)
@@ -467,6 +468,7 @@ class DockerContainerWrapper:
             self.socket.connect(uri)
             self.socket.send_json({"type": "ready", "payload": {}})
             event = self.receive_event(20000)
+
             if event["type"] == "timeout":
                 if retry:
                     logger.info("Retrying ready event")
@@ -478,6 +480,7 @@ class DockerContainerWrapper:
                 logger.info("Container '{}' is ready to accept commands.".format(self.image))
                 return
             else:
+                logger.info(f"DEBUG: RECEIVED A EVENT ERROR 2")
                 raise RuntimeError(
                     "Container {} in bad state, did not send ok event: {}".format(
                         self.image, event))
@@ -559,6 +562,7 @@ class DockerContainerWrapper:
         while True:
             event = self.receive_event()
             event_type = event["type"]
+            logger.info(f"DEBUG: RECEIVED A EVENT {event_type} 2")
             if event_type == "finished":
                 break
             else:
@@ -633,8 +637,13 @@ class DockerContainerWrapper:
         while True:
             event = self.receive_event()
             event_type = event["type"]
+            logger.info(f"DEBUG RECEIVED {event}")
             if event_type == "preprocess":
                 break
+            elif event_type == 'error':
+                raise RuntimeError(
+                    "Container {} in bad state. Error event received: {}".format(
+                        self.image, event))
             else:
                 self.client.emit_event(self.task, event_type, event["payload"])
 
@@ -710,7 +719,7 @@ class DockerContainerWrapper:
         except (KeyError, TypeError):
             asset_id = None
 
-        logger.info('Analyst received event =\'{}\' from image=\'{}\' assetId=\'{}\''.format(
+        logger.info(' event =\'{}\' from image=\'{}\' assetId=\'{}\''.format(
             event["type"], self.image, asset_id))
         if logger.isEnabledFor(logging.DEBUG):
             logger.debug('------------------------------------------------------')
