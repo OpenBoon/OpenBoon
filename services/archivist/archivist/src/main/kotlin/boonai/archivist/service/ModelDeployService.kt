@@ -140,10 +140,17 @@ class ModelDeployServiceImpl(
                 val auth = InternalThreadAuthentication(model.projectId)
                 withAuth(auth) {
                     logger.info("Setting ${model.id} endpoint to $endpoint")
-                    modelService.publishModel(model, ModelPublishRequest(mapOf("endpoint" to endpoint)))
+
+                    val req = ModelPublishRequest(mapOf("endpoint" to endpoint))
+                    if (!modelService.checkModelPublishArgs(model, req)) {
+                        modelJdbcDao.updateState(model.id, ModelState.DeployError)
+                    } else {
+                        modelService.publishModel(model, ModelPublishRequest(mapOf("endpoint" to endpoint)))
+                    }
                 }
             } else {
                 logger.error("The model build ${model.id} completed but no endpoint was found.")
+                modelJdbcDao.updateState(model.id, ModelState.DeployError)
             }
         } else if (status.startsWith("FAIL") || status == "TIMEOUT") {
             val model = getModelFromBuildEvent(event) ?: return
