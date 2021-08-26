@@ -478,7 +478,6 @@ class DockerContainerWrapper:
                 logger.info("Container '{}' is ready to accept commands.".format(self.image))
                 return
             else:
-                logger.info(f"DEBUG: RECEIVED A EVENT ERROR 2")
                 raise RuntimeError(
                     "Container {} in bad state, did not send ok event: {}".format(
                         self.image, event))
