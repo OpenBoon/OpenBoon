@@ -10,7 +10,6 @@ import boonai.archivist.util.loadGcpCredentials
 import boonai.common.util.Json
 import com.google.cloud.logging.Logging
 import com.google.cloud.logging.LoggingOptions
-import com.google.cloud.logging.Payload
 import com.google.cloud.storage.BlobId
 import com.google.cloud.storage.BlobInfo
 import com.google.cloud.storage.CopyWriter
@@ -41,7 +40,7 @@ class GcsProjectStorageService constructor(
         .setCredentials(loadGcpCredentials()).build()
     val gcs: Storage = options.service
 
-    val loggingService = LoggingOptions.newBuilder().build().service
+    val loggingService: Logging = LoggingOptions.newBuilder().build().service
 
     @PostConstruct
     fun initialize() {
@@ -90,21 +89,13 @@ class GcsProjectStorageService constructor(
         val blob = gcs.get(getBlobId(locator))
 
         // Retrieve logs from file in bucket
-        if (blob.exists()) {
-            return this.stream(locator)
+        return if (blob.exists()) {
+            this.stream(locator)
+        } else {
+            ResponseEntity.ok()
+                .contentType(MediaType.TEXT_PLAIN)
+                .body(InputStreamResource(GcpLogInputStream(loggingService, locator)))
         }
-
-        // Google logs
-        var logsPagedResponse = loggingService.listLogEntries(Logging.EntryListOption.filter(locator.name))
-        val allLogs = logsPagedResponse.iterateAll().joinToString(separator = "\n") {
-            it.getPayload<Payload.StringPayload>().data
-        }
-
-        return ResponseEntity.ok()
-            .contentType(MediaType.TEXT_PLAIN)
-            .contentLength(allLogs.length.toLong())
-            .cacheControl(CacheControl.maxAge(7, TimeUnit.DAYS).cachePrivate())
-            .body(InputStreamResource(allLogs.byteInputStream()))
     }
 
     override fun copy(src: String, dst: String): Long {
