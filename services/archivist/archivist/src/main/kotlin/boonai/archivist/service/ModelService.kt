@@ -349,7 +349,7 @@ class ModelServiceImpl(
         }
     }
 
-    override fun publishModel(model: Model, req: ModelPublishRequest): PipelineMod? {
+    override fun publishModel(model: Model, req: ModelPublishRequest): PipelineMod {
 
         val mod = pipelineModService.findByName(model.moduleName, false)
         val version = versionUp(model)
