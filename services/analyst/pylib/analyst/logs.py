@@ -30,16 +30,21 @@ class LogFileRotator:
 
         """
         self.task = task
-        self.handler = logging.FileHandler(self.log_path)
-        self.gc_logs_handler = GCLogHandler(self.log_name)
 
         # The log file is intended for customer use and thus
         # is not set to debug level.  Debug gives away underlying
         # software, versions, and internal communications protocol
         # which is a security risk.
+
+        self.handler = logging.FileHandler(self.log_path)
         self.handler.setLevel(logging.INFO)
         task_logger.addHandler(self.handler)
-        task_logger.addHandler(self.gc_logs_handler)
+
+        # If we're not in local dev setup the GCP log handler.
+        if os.environ.get("ENVIRONMENT") != "localdev":
+            self.gc_logs_handler = GCLogHandler(self.log_name)
+            self.gc_logs_handler.setLevel(logging.INFO)
+            task_logger.addHandler(self.gc_logs_handler)
 
         logger.info(f'Set up task log for {self.task_id}')
 
