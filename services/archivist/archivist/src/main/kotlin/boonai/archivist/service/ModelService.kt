@@ -36,11 +36,13 @@ import boonai.archivist.repository.PipelineModDao
 import boonai.archivist.repository.UUIDGen
 import boonai.archivist.security.getProjectId
 import boonai.archivist.security.getZmlpActor
+import boonai.archivist.security.getZmlpActorOrNull
 import boonai.archivist.storage.ProjectStorageService
 import boonai.archivist.util.FileUtils
 import boonai.common.service.logging.LogAction
 import boonai.common.service.logging.LogObject
 import boonai.common.service.logging.event
+import boonai.common.util.Json
 import com.google.pubsub.v1.PubsubMessage
 import org.slf4j.LoggerFactory
 import org.springframework.core.env.Environment
@@ -68,6 +70,7 @@ interface ModelService {
     fun updateModel(id: UUID, update: ModelUpdateRequest): Model
     fun patchModel(id: UUID, update: ModelPatchRequestV2): Model
     fun postToModelEventTopic(msg: PubsubMessage)
+    fun checkModelPublishArgs(model: Model, req: ModelPublishRequest): Boolean
 }
 
 @Service
@@ -167,11 +170,13 @@ class ModelServiceImpl(
         model.timeModified = System.currentTimeMillis()
         model.actorModified = getZmlpActor().toString()
 
-        val mod = pipelineModDao.findByNameIn(listOf(model.name))
-        if (mod.isNotEmpty()) {
-            publishModel(model, ModelPublishRequest())
-        }
-
+        logger.event(
+            LogObject.MODEL, LogAction.UPDATE,
+            mapOf(
+                "modelId" to id,
+                "modelType" to model.type.name
+            )
+        )
         return model
     }
 
@@ -199,10 +204,13 @@ class ModelServiceImpl(
         model.timeModified = System.currentTimeMillis()
         model.actorModified = getZmlpActor().toString()
 
-        val mod = pipelineModDao.findByNameIn(listOf(model.name))
-        if (mod.isNotEmpty()) {
-            publishModel(model, ModelPublishRequest())
-        }
+        logger.event(
+            LogObject.MODEL, LogAction.UPDATE,
+            mapOf(
+                "modelId" to id,
+                "modelType" to model.type.name
+            )
+        )
 
         return model
     }
@@ -342,12 +350,13 @@ class ModelServiceImpl(
     }
 
     override fun publishModel(model: Model, req: ModelPublishRequest): PipelineMod {
+
         val mod = pipelineModService.findByName(model.moduleName, false)
         val version = versionUp(model)
         val ops = buildModuleOps(model, req, version)
 
         logger.event(
-            LogObject.MODEL, LogAction.DEPLOY,
+            LogObject.MODEL, LogAction.PUBLISH,
             mapOf("modelId" to model.id, "modelName" to model.name)
         )
 
@@ -379,6 +388,17 @@ class ModelServiceImpl(
             )
             return pipelineModService.create(modspec)
         }
+    }
+
+    override fun checkModelPublishArgs(model: Model, req: ModelPublishRequest): Boolean {
+        val keys = req.args.keys
+        for (arg in model.type.requiredArgs) {
+            if (arg !in keys) {
+                logger.warn("The model ${model.name} pub request is missing the required arg: '$arg'")
+                return false
+            }
+        }
+        return true
     }
 
     override fun copyModelTag(model: Model, req: ModelCopyRequest) {
@@ -451,6 +471,11 @@ class ModelServiceImpl(
             ops.addAll(mod?.ops ?: emptyList())
         }
          */
+
+        val user = getZmlpActorOrNull() ?: "Unknown"
+        logger.info("$user is building module ops  for ' ${model.name} / ${model.id}")
+        logger.info("Processor: ${model.name} / ${model.id}")
+        logger.info("Args: ${Json.prettyString(req.args)}")
 
         // Add the dependency before.
         if (model.type.dependencies.isNotEmpty()) {

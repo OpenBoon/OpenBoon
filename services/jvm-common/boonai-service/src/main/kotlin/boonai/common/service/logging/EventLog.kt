@@ -41,7 +41,9 @@ enum class LogAction {
     ENABLE,
     DISABLE,
     RESOLVE,
-    DEPLOY
+    DEPLOY,
+    PUBLISH,
+    BUILD
 }
 
 /**

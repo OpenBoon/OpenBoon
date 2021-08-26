@@ -509,6 +509,13 @@ Array [
 ]
 `;
 
+exports[`AssetLabeling should render properly with bulk labeling selected 1`] = `
+<BulkAssetLabeling
+  projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+  setIsBulkLabeling={[Function]}
+/>
+`;
+
 exports[`AssetLabeling should render properly with no asset selected 1`] = `
 .emotion-0 {
   padding: 16px;
@@ -516,9 +523,74 @@ exports[`AssetLabeling should render properly with no asset selected 1`] = `
   font-style: italic;
 }
 
+.emotion-1 {
+  height: 16px;
+}
+
+.emotion-2 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-2,
+.emotion-2:hover,
+.emotion-2:visited,
+.emotion-2 .noop {
+  background-color: #3A5DFF;
+}
+
+.emotion-2:hover,
+.emotion-2 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #6088FE;
+}
+
+.emotion-2[aria-disabled=true],
+.emotion-2 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
 <div
   className="emotion-0"
 >
-  Select an asset to add labels.
+  Select an asset to the left to label a single asset or click the button below to label all assets in the current search.
+  <div
+    className="emotion-1"
+  />
+  <button
+    className="emotion-2"
+    onClick={[Function]}
+    type="button"
+  >
+    Label All Assets in Search
+  </button>
 </div>
 `;

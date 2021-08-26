@@ -64,6 +64,7 @@ enum class ModelType(
     val enabled: Boolean,
     val datasetType: DatasetType?,
     val fileName: String = "model.zip",
+    val requiredArgs: Set<String> = emptySet()
 ) {
     KNN_CLASSIFIER(
         "K-Nearest Neighbors Classifier",
@@ -190,7 +191,8 @@ enum class ModelType(
         true,
         true,
         DatasetType.Classification,
-        "model.mar"
+        "model.mar",
+        setOf("endpoint")
     ),
     TORCH_MAR_DETECTOR(
         "Torch Model Archive Object Detector",
@@ -208,7 +210,8 @@ enum class ModelType(
         true,
         false,
         DatasetType.Detection,
-        "model.mar"
+        "model.mar",
+        setOf("endpoint")
     ),
     TORCH_MAR_TEXT_CLASSIFIER(
         "Torch Model Archive Text Classifier",
@@ -226,7 +229,8 @@ enum class ModelType(
         true,
         true,
         DatasetType.Detection,
-        "model.mar"
+        "model.mar",
+        setOf("endpoint")
     ),
     BOON_FUNCTION(
         "Boon Function",
@@ -244,7 +248,8 @@ enum class ModelType(
         true,
         true,
         DatasetType.Classification,
-        "model.zip"
+        "model.zip",
+        setOf("endpoint")
     ),
     TORCH_MAR_IMAGE_SEGMENTER(
         "Torch Model Archive Image Segmenter",
@@ -262,7 +267,8 @@ enum class ModelType(
         true,
         true,
         DatasetType.Classification,
-        "model.mar"
+        "model.mar",
+        setOf("endpoint")
     );
 
     fun asMap(): Map<String, Any?> {

@@ -1,0 +1,344 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BulkAssetLabelingForm should render properly 1`] = `
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  height: 0%;
+}
+
+.emotion-1 {
+  padding: 16px;
+  font-weight: 700;
+}
+
+.emotion-2 {
+  border-bottom: 1px solid #3b3b3b;
+  background-color: #191919;
+  overflow: auto;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 16px;
+  border-bottom: 1px solid #3b3b3b;
+}
+
+.emotion-3:last-of-type {
+  border-bottom: none;
+}
+
+.emotion-4 {
+  color: #b3b3b3;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.emotion-5 {
+  position: relative;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.emotion-6 {
+  width: 100%;
+  padding: 10px 8px;
+  outline: 1px solid transparent;
+  background-color: #3b3b3b;
+  color: #ffffff;
+  line-height: 20px;
+  font-weight: 500;
+  border: 2px solid transparent;
+  border-radius: 2px;
+  border-width: 2px;
+  margin-bottom: 1px;
+}
+
+.emotion-6:hover {
+  border: 2px solid #ffffff;
+}
+
+.emotion-6:focus {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.emotion-7 {
+  height: 8px;
+}
+
+.emotion-8 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.emotion-9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 0;
+  padding-right: 12px;
+  float: left;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.emotion-10 {
+  padding-right: 12px;
+}
+
+.emotion-11 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-12 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  position: relative;
+  padding-top: 1px;
+}
+
+.emotion-13 {
+  padding: 0;
+  -webkit-appearance: none;
+  border-radius: 16px;
+  width: 16px;
+  height: 16px;
+  border: 1px solid #ffffff;
+}
+
+.emotion-14 {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  opacity: 100;
+  border-radius: 16px;
+  background-color: #3A5DFF;
+}
+
+.emotion-15 {
+  padding-left: 8px;
+}
+
+.emotion-16 {
+  font-weight: 400;
+  color: #ffffff;
+}
+
+.emotion-17 {
+  color: #b3b3b3;
+}
+
+.emotion-21 {
+  padding: 0;
+  -webkit-appearance: none;
+  border-radius: 16px;
+  width: 16px;
+  height: 16px;
+  border: 1px solid #808080;
+}
+
+.emotion-22 {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  opacity: 100;
+  border-radius: 16px;
+  background-color: none;
+}
+
+<div
+  className="emotion-0"
+>
+  <div
+    className="emotion-1"
+  >
+    Add Classification Label
+  </div>
+  <div
+    className="emotion-2"
+  >
+    <div
+      className="emotion-3"
+    >
+      <div>
+        <label
+          className="emotion-4"
+        >
+          Label:
+          <div
+            className="emotion-5"
+            data-reach-combobox=""
+            data-state="idle"
+          >
+            <input
+              aria-autocomplete="both"
+              aria-controls="listbox--1"
+              aria-expanded={false}
+              aria-haspopup="listbox"
+              autoComplete="off"
+              className="emotion-6"
+              data-reach-combobox-input=""
+              data-state="idle"
+              onBlur={[Function]}
+              onChange={[Function]}
+              onClick={[Function]}
+              onFocus={[Function]}
+              onKeyDown={[Function]}
+              role="combobox"
+              value=""
+            />
+            <span />
+          </div>
+        </label>
+        <div
+          className="emotion-7"
+        />
+        <fieldset
+          className="emotion-8"
+        >
+          <legend
+            className="emotion-9"
+          >
+            Select Scope:
+          </legend>
+          <div
+            className="emotion-10"
+          >
+            <div>
+              <label
+                className="emotion-11"
+              >
+                <div
+                  className="emotion-12"
+                >
+                  <input
+                    className="emotion-13"
+                    defaultChecked={true}
+                    name="Select Scope"
+                    onClick={[Function]}
+                    type="radio"
+                    value="TRAIN"
+                  />
+                  <div
+                    className="emotion-14"
+                  />
+                </div>
+                <div
+                  className="emotion-15"
+                >
+                  <div
+                    className="emotion-16"
+                  >
+                    Train
+                  </div>
+                  <div
+                    className="emotion-17"
+                  >
+                    
+                  </div>
+                </div>
+              </label>
+            </div>
+          </div>
+          <div
+            className="emotion-10"
+          >
+            <div>
+              <label
+                className="emotion-11"
+              >
+                <div
+                  className="emotion-12"
+                >
+                  <input
+                    className="emotion-21"
+                    defaultChecked={false}
+                    name="Select Scope"
+                    onClick={[Function]}
+                    type="radio"
+                    value="TEST"
+                  />
+                  <div
+                    className="emotion-22"
+                  />
+                </div>
+                <div
+                  className="emotion-15"
+                >
+                  <div
+                    className="emotion-16"
+                  >
+                    Test
+                  </div>
+                  <div
+                    className="emotion-17"
+                  >
+                    
+                  </div>
+                </div>
+              </label>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`BulkAssetLabelingForm should render properly for a non-Classification dataset 1`] = `
+.emotion-0 {
+  padding: 16px;
+  color: #ffffff;
+  font-style: italic;
+  border-bottom: 1px solid #3b3b3b;
+}
+
+<div
+  className="emotion-0"
+>
+  Bulk Labeling is only possible for "Classification" type datasets. Please select another dataset.
+</div>
+`;

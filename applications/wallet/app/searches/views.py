@@ -249,18 +249,11 @@ class SearchViewSet(CreateModelMixin,
 
     def _build_query_from_querystring(self, request):
         """Helper to build the query used for query and raw_query."""
-        filter_boy = FilterBuddy()
+        filter_buddy = FilterBuddy()
 
-        _filters = filter_boy.get_filters_from_request(request)
-        for _filter in _filters:
-            if _filter.type == 'limit':
-                # If a limit filter was found we ignore it in regards to the query
-                # and then set it directly on the request so that the pagination class
-                # can handle restricting the assets returned
-                request.max_assets = _filter.max_assets
-            else:
-                _filter.is_valid(query=True, raise_exception=True)
-        query = filter_boy.reduce_filters_to_query(_filters)
+        _filters = filter_buddy.get_filters_from_request(request)
+        filter_buddy.validate_filters(_filters, request)
+        query = filter_buddy.reduce_filters_to_query(_filters)
 
         # If there's no specific query at this point, let's sort by the created date
         # to make the visual display in Visualizer more useful
