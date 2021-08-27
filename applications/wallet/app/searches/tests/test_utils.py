@@ -1,11 +1,11 @@
 import pytest
 
 from unittest.mock import Mock
-from rest_framework.exceptions import ParseError
+from rest_framework.exceptions import ParseError, ValidationError
 
 from wallet.exceptions import InvalidRequestError
 from searches.utils import FieldUtility, FilterBuddy
-from searches.filters import RangeFilter, FacetFilter
+from searches.filters import RangeFilter, FacetFilter, LimitFilter
 from wallet.utils import convert_json_to_base64
 
 
@@ -524,7 +524,7 @@ class TestFilterBoy:
                                'values': {'min': 1, 'max': 100}})
         expected_query = {'query': {
             'bool': {'filter': [{'range': {'source.filesize': {'gte': 1, 'lte': 100}}}]}}}  # noqa
-        response_query = filter_boy.reduce_filters_to_query([_filter])
+        response_query = filter_boy.reduce_filters_to_query([_filter], None)
         assert expected_query == response_query
 
     def test_reduce_filters_to_query_multiple_filters(self, filter_boy):
@@ -537,5 +537,47 @@ class TestFilterBoy:
         expected_query = {
             'query': {'bool': {'filter': [{'range': {'source.filesize': {'gte': 1, 'lte': 100}}},
                                           {'terms': {'source.extension': ['jpeg', 'tiff']}}]}}}
-        response_query = filter_boy.reduce_filters_to_query(_filters)
+        response_query = filter_boy.reduce_filters_to_query(_filters, None)
         assert expected_query == response_query
+
+    def test_validate_filters(self, filter_boy):
+        _filters = [RangeFilter({'type': 'range',
+                                 'attribute': 'source.filesize',
+                                 'values': {'min': 1, 'max': 100}}),
+                    FacetFilter({'type': 'facet',
+                                 'attribute': 'source.extension',
+                                 'values': {'facets': ['jpeg', 'tiff']}})]
+        filter_boy.validate_filters(_filters)
+        # If we got here everything was valid
+
+    def test_validate_filters_raises(self, filter_boy):
+        _filters = [RangeFilter({'type': 'range',
+                                 'attribute': 'source.filesize',
+                                 'values': {}}),
+                    FacetFilter({'type': 'facet',
+                                 'attribute': 'source.extension',
+                                 'values': {'facets': ['jpeg', 'tiff']}})]
+        with pytest.raises(ValidationError):
+            filter_boy.validate_filters(_filters)
+
+    def test_finalize_query_normal_filters(self, filter_boy, snapshot):
+        _filters = [RangeFilter({'type': 'range',
+                                 'attribute': 'source.filesize',
+                                 'values': {'min': 1, 'max': 100}}),
+                    FacetFilter({'type': 'facet',
+                                 'attribute': 'source.extension',
+                                 'values': {'facets': ['jpeg', 'tiff']}}),
+                    LimitFilter({'type': 'limit',
+                                 'values': {'maxAssets': 20}})]
+        request = Mock()
+        query = filter_boy.finalize_query_from_filters_and_request(_filters, request)
+        snapshot.assert_match(query)
+        assert request.max_assets == 20
+
+    def test_finalize_query_only_limit_filter(self, filter_boy, snapshot):
+        _filters = [LimitFilter({'type': 'limit',
+                                 'values': {'maxAssets': 20}})]
+        request = Mock()
+        query = filter_boy.finalize_query_from_filters_and_request(_filters, request)
+        snapshot.assert_match(query)
+        assert request.max_assets == 20

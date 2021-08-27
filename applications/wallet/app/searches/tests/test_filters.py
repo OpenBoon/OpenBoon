@@ -1,4 +1,5 @@
 import pytest
+from copy import deepcopy
 from unittest.mock import Mock
 
 from django.core.exceptions import ImproperlyConfigured
@@ -8,7 +9,7 @@ from boonsdk import BoonApp, BoonClient
 from searches.filters import (BaseFilter, RangeFilter, ExistsFilter, FacetFilter,
                               LabelConfidenceFilter, TextContentFilter,
                               SimilarityFilter, LabelFilter, DateFilter,
-                              PredictionCountFilter)
+                              PredictionCountFilter, LimitFilter)
 
 
 class MockFilter(BaseFilter):
@@ -129,53 +130,53 @@ class TestExistsFilter(FilterBaseTestCase):
     def test_add_to_empty_query(self, mock_query_data):
         _filter = ExistsFilter(mock_query_data)
         query = {}
-        query = _filter.add_to_query(query)
+        query = _filter.add_to_query(query, None)
         assert query == {'query': {'bool': {'filter': [{'exists': {'field': 'name'}}]}}}
 
     def test_add_to_pagination_empty_query(self, mock_query_data):
         _filter = ExistsFilter(mock_query_data)
         query = {'from': 0, 'size': 10}
-        query = _filter.add_to_query(query)
+        query = _filter.add_to_query(query, None)
         assert query == {'from': 0, 'size': 10,
                          'query': {'bool': {'filter': [{'exists': {'field': 'name'}}]}}}
 
     def test_add_to_empty_query_2(self, mock_query_data):
         _filter = ExistsFilter(mock_query_data)
         query = {'query': {}}
-        query = _filter.add_to_query(query)
+        query = _filter.add_to_query(query, None)
         assert query == {'query': {'bool': {'filter': [{'exists': {'field': 'name'}}]}}}
 
     def test_add_to_empty_bool(self, mock_query_data):
         _filter = ExistsFilter(mock_query_data)
         query = {'query': {'bool': {}}}
-        query = _filter.add_to_query(query)
+        query = _filter.add_to_query(query, None)
         assert query == {'query': {'bool': {'filter': [{'exists': {'field': 'name'}}]}}}
 
     def test_add_to_empty_other_query_type(self, mock_query_data):
         _filter = ExistsFilter(mock_query_data)
         query = {'query': {'stuff': {}}}
-        query = _filter.add_to_query(query)
+        query = _filter.add_to_query(query, None)
         assert query == {'query': {'stuff': {},
                                    'bool': {'filter': [{'exists': {'field': 'name'}}]}}}
 
     def test_add_to_existing_exists_query(self, mock_query_data):
         _filter = ExistsFilter(mock_query_data)
         query = {'query': {'bool': {'filter': [{'exists': {'field': 'foo'}}]}}}
-        query = _filter.add_to_query(query)
+        query = _filter.add_to_query(query, None)
         assert query == {'query': {'bool': {'filter': [{'exists': {'field': 'foo'}},
                                                        {'exists': {'field': 'name'}}]}}}
 
     def test_add_to_existing_missing_query(self, mock_query_data):
         _filter = ExistsFilter(mock_query_data)
         query = {'query': {'bool': {'must_not': [{'exists': {'field': 'foo'}}]}}}
-        query = _filter.add_to_query(query)
+        query = _filter.add_to_query(query, None)
         assert query == {'query': {'bool': {'filter': [{'exists': {'field': 'name'}}],
                                             'must_not': [{'exists': {'field': 'foo'}}]}}}
 
     def test_add_to_existing_other_query(self, mock_query_data):
         _filter = ExistsFilter(mock_query_data)
         query = {'query': {'bool': {'filter': [{'terms': ['foo', 'bar']}]}}}
-        query = _filter.add_to_query(query)
+        query = _filter.add_to_query(query, None)
         assert query == {'query': {'bool': {'filter': [{'terms': ['foo', 'bar']},
                                                        {'exists': {'field': 'name'}}]}}}
 
@@ -237,14 +238,14 @@ class TestRangeFilter(FilterBaseTestCase):
     def test_add_to_empty_query(self, mock_query_data, expected_attr_name):
         _filter = self.Filter(mock_query_data)
         query = {}
-        query = _filter.add_to_query(query)
+        query = _filter.add_to_query(query, None)
         assert query == {
             'query': {'bool': {'filter': [{'range': {expected_attr_name: {'gte': 1, 'lte': 100}}}]}}}  # noqa
 
     def test_add_to_existing_range_query(self, mock_query_data, expected_attr_name):
         _filter = self.Filter(mock_query_data)
         query = {'query': {'bool': {'filter': [{'range': {'foo': {'gte': 1, 'lte': 5}}}]}}}
-        query = _filter.add_to_query(query)
+        query = _filter.add_to_query(query, None)
         assert query == {'query': {'bool': {'filter': [{'range': {'foo': {'gte': 1, 'lte': 5}}},
                                                        {'range': {expected_attr_name: {'gte': 1,
                                                                                        'lte': 100}}}]}}}  # noqa
@@ -252,7 +253,7 @@ class TestRangeFilter(FilterBaseTestCase):
     def test_add_to_existing_range_query_same_attr(self, mock_query_data, expected_attr_name):
         _filter = self.Filter(mock_query_data)
         query = {'query': {'bool': {'filter': [{'range': {'my_attr': {'gte': 1, 'lte': 5}}}]}}}
-        query = _filter.add_to_query(query)
+        query = _filter.add_to_query(query, None)
         assert query == {'query': {'bool': {'filter': [{'range': {'my_attr': {'gte': 1, 'lte': 5}}},
                                                        {'range': {expected_attr_name: {'gte': 1,
                                                                                        'lte': 100}}}]}}}  # noqa
@@ -260,7 +261,7 @@ class TestRangeFilter(FilterBaseTestCase):
     def test_add_to_other_query(self, mock_query_data, expected_attr_name):
         _filter = self.Filter(mock_query_data)
         query = {'query': {'bool': {'filter': [{'terms': ['foo', 'bar']}]}}}
-        query = _filter.add_to_query(query)
+        query = _filter.add_to_query(query, None)
         assert query == {'query': {'bool': {'filter': [{'terms': ['foo', 'bar']},
                                                        {'range': {expected_attr_name: {'gte': 1,
                                                                                        'lte': 100}}}]}}}  # noqa
@@ -360,14 +361,14 @@ class TestFacetFilter(FilterBaseTestCase):
     def test_add_to_empty_query(self, mock_query_data):
         _filter = FacetFilter(mock_query_data)
         query = {}
-        query = _filter.add_to_query(query)
+        query = _filter.add_to_query(query, None)
         assert query == {
             'query': {'bool': {'filter': [{'terms': {'my_attr': ['value1', 'value2']}}]}}}  # noqa
 
     def test_add_to_existing_facet_query(self, mock_query_data):
         _filter = FacetFilter(mock_query_data)
         query = {'query': {'bool': {'filter': [{'terms': {'my_attr': ['foo', 'bar']}}]}}}
-        query = _filter.add_to_query(query)
+        query = _filter.add_to_query(query, None)
         assert query == {'query': {'bool': {'filter': [{'terms': {'my_attr': ['foo', 'bar']}},
                                                        {'terms': {'my_attr': ['value1',
                                                                               'value2']}}]}}}  # noqa
@@ -375,7 +376,7 @@ class TestFacetFilter(FilterBaseTestCase):
     def test_add_to_other_query(self, mock_query_data):
         _filter = FacetFilter(mock_query_data)
         query = {'query': {'bool': {'filter': [{'range': {'my_attr': {'gte': 1, 'lte': 100}}}]}}}
-        query = _filter.add_to_query(query)
+        query = _filter.add_to_query(query, None)
         assert query == {
             'query': {'bool': {'filter': [{'range': {'my_attr': {'gte': 1, 'lte': 100}}},  # noqa
                                           {'terms': {'my_attr': ['value1', 'value2']}}]}}}  # noqa
@@ -497,7 +498,7 @@ class TestLabelConfidenceFilter(FilterBaseTestCase):
                 }
             }
         }
-        new_query = _filter.add_to_query(query)
+        new_query = _filter.add_to_query(query, None)
         assert new_query == {'query': {'bool': {
             'filter': [{'terms': {'my_attr': ['value1', 'value2']}}, {
                 'terms': {'analysis.zvi-label-detection.predictions.label': ['value1', 'value2']}}],
@@ -526,7 +527,7 @@ class TestLabelConfidenceFilter(FilterBaseTestCase):
         })
         _filter2._field_type = 'prediction'
         query = _filter.get_es_query()
-        query = _filter2.add_to_query(query)
+        query = _filter2.add_to_query(query, None)
         assert query == {'query': {'bool': {'filter': [
             {'terms': {'analysis.zvi-label-detection.predictions.label': ['value1', 'value2']}},
             {'terms': {'analysis.zvi-object-detection.predictions.label': ['dog', 'cat']}}],
@@ -915,3 +916,29 @@ class TestDateFilter(FilterBaseTestCase):
                         {'range': {'system.timeCreated': {'gte': 123, 'lte': 234}}}
                     ]
                 }}}
+
+
+class TestLimitFilter(FilterBaseTestCase):
+
+    Filter = LimitFilter
+
+    @pytest.fixture
+    def mock_data(self):
+        return {
+            'type': 'limit',
+            'values': {'maxAssets': 20}
+        }
+
+    def test_bad_validation(self):
+        filter = self.Filter({'type': 'limit'})
+        with pytest.raises(ValidationError):
+            filter.is_valid(query=True, raise_exception=True)
+
+    def test_add_to_query_does_nothing(self, mock_data):
+        filter = self.Filter(mock_data)
+        original_query = {'test': 'me'}
+        query = deepcopy(original_query)
+        request = Mock()
+        filter.add_to_query(query, request)
+        assert query == original_query
+        assert request.max_assets == 20
