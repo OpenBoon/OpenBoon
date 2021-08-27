@@ -61,4 +61,9 @@ class GcpLogInputStream(
             0
         }
     }
+
+    override fun close() {
+        buffer.clear()
+        page = null
+    }
 }
