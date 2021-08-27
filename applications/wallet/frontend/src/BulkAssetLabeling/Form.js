@@ -3,6 +3,8 @@ import useSWR from 'swr'
 
 import { colors, constants, spacing, typography } from '../Styles'
 
+import AllSvg from '../Icons/all.svg'
+
 import FlashMessageErrors from '../FlashMessage/Errors'
 import Combobox from '../Combobox'
 import RadioGroup from '../Radio/Group'
@@ -73,6 +75,11 @@ const BulkAssetLabelingForm = ({ projectId, datasetType, state, dispatch }) => {
             },
           }}
         >
+          <AllSvg
+            height={constants.bbox}
+            css={{ color: colors.structure.iron, marginRight: spacing.normal }}
+          />
+
           <div>
             <Combobox
               key={count}
