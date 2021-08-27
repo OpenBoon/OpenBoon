@@ -45,6 +45,11 @@ class ZMLPFromSizePagination(FromSizePagination):
             self.count = content['page']['totalCount']
         except KeyError:
             self.count = None
+        if hasattr(self.request, 'max_assets') and self.count:
+            # If we've put a limit on the request and it's had an effect, only show the
+            # limit as the count, and not the true query count.
+            if self.count > int(self.request.max_assets):
+                self.count = self.request.max_assets
 
         self.limit = self.get_limit(request)
         if self.limit is None:

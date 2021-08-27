@@ -8,7 +8,7 @@ from snapshottest import Snapshot
 snapshots = Snapshot()
 
 snapshots['TestQuery.test_get_with_max_assets_limited 1'] = {
-    'count': 2,
+    'count': 1,
     'next': None,
     'previous': None,
     'results': [
