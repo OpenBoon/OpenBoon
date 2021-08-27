@@ -13,11 +13,12 @@ from datasets.serializers import (DatasetSerializer, RemoveLabelsSerializer,
                                   AddLabelsSerializer,
                                   UpdateLabelsSerializer, DestroyLabelSerializer,
                                   RenameLabelSerializer, DatasetDetailSerializer,
-                                  DatasetTypeSerializer)
+                                  DatasetTypeSerializer, AddLabelsBySearchSerializer)
 from models.serializers import SimpleModelSerializer
 from projects.viewsets import (BaseProjectViewSet, ZmlpListMixin, ZmlpCreateMixin,
                                ZmlpDestroyMixin, ZmlpRetrieveMixin, ListViewType,
                                ZmlpUpdateMixin)
+from searches.utils import FilterBuddy
 from wallet.exceptions import InvalidRequestError
 from wallet.utils import validate_zmlp_data
 
@@ -117,6 +118,60 @@ class DatasetsViewSet(ZmlpCreateMixin,
             return Response(status=status.HTTP_400_BAD_REQUEST, data={'detail': [msg]})
 
         return Response(status=status.HTTP_201_CREATED, data={})
+
+    @action(methods=['put'], detail=True)
+    def add_labels_by_search_filters(self, request, project_pk, pk):
+        """Create labels for each asset returned by the specified search, on this dataset.
+
+        Expected Body:
+
+            {
+                "filters": [<list of JSON filters>],
+                "label": "Label Name",
+                "bbox": [0.313, 0.439, 0.394, 0.571],  # Optional
+                "simhash": "The sim hash",  # Optional
+                "scope": "TRAIN",  # or TEST, optional, default is TRAIN
+            }
+        """
+        boon_endpoint = '/api/v3/assets/_batch_label_by_search'
+        serializer = AddLabelsBySearchSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        data = serializer.validated_data
+
+        # Get the search
+        raw_search_json = data['filters']
+        filter_buddy = FilterBuddy()
+        _filters = []
+        for raw_filter in raw_search_json:
+            _filters.append(filter_buddy.get_filter_from_json(raw_filter, request))
+        # Validate and apply Limit Filter to Request
+        filter_buddy.validate_filters(_filters, request)
+        query = filter_buddy.reduce_filters_to_query(_filters)
+
+        # Create the label
+        label = {
+            'datasetId': pk,
+            'label': data['label'],
+            'scope': self._get_label_scope(data['scope']).name
+        }
+        # Include bbox and simhash if they exist
+        bbox = data.get('bbox')
+        if bbox:
+            label['bbox'] = bbox
+        simhash = data.get('simhash')
+        if simhash:
+            label['simhash'] = simhash
+
+        # Send batch label request to Boon
+        request_body = {
+            'search': query,
+            'label': label,
+        }
+        # Include the max assets if it exists
+        if hasattr(request, 'max_assets'):
+            request_body['maxAssets'] = int(request.max_assets)
+        response = request.client.put(boon_endpoint, request_body)
+        return Response(status=status.HTTP_200_OK, data=response)
 
     @action(methods=['post'], detail=True)
     def update_labels(self, request, project_pk, pk):
@@ -313,13 +368,16 @@ class DatasetsViewSet(ZmlpCreateMixin,
         labels = []
         for raw in data:
             asset = app.assets.get_asset(raw['assetId'])
-            if raw['scope'] == 'TRAIN':
-                scope = LabelScope.TRAIN
-            elif raw['scope'] == 'TEST':
-                scope = LabelScope.TEST
-            else:
-                scope = None
+            scope = self._get_label_scope(raw['scope'])
             label = dataset.make_label(raw['label'], bbox=raw['bbox'],
                                        simhash=raw['simhash'], scope=scope)
             labels.append((asset, label))
         return labels
+
+    def _get_label_scope(self, raw_scope):
+        """Converts a scope string into the appropriate LabelScope enum."""
+        if raw_scope.upper() == 'TRAIN':
+            return LabelScope.TRAIN
+        elif raw_scope.upper() == 'TEST':
+            return LabelScope.TEST
+        return None

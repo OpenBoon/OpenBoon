@@ -5642,7 +5642,7 @@ exports[`<ModelDetails /> should render properly when uploadable trained and tes
   line-height: 19px;
   font-weight: 500;
   border: none;
-  cursor: not-allowed;
+  cursor: pointer;
   color: #ffffff;
   background-color: transparent;
 }
@@ -5986,7 +5986,6 @@ exports[`<ModelDetails /> should render properly when uploadable trained and tes
           className="emotion-25"
         >
           <button
-            aria-disabled={true}
             className="emotion-26"
             onClick={[Function]}
             type="button"
@@ -6043,7 +6042,7 @@ exports[`<ModelDetails /> should render properly when uploadable trained and tes
           Object {
             "actorCreated": "56fb89be-f380-423f-bcf5-70b43b384a99/Admin Console Generated Key - c2825674-a1fe-4b51-8207-231bc46c1279 - danny@zorroa.com_6a72b6c1-aa96-415b-8c2d-df355ba9c8f5",
             "actorModified": "56fb89be-f380-423f-bcf5-70b43b384a99/Admin Console Generated Key - c2825674-a1fe-4b51-8207-231bc46c1279 - danny@zorroa.com_6a72b6c1-aa96-415b-8c2d-df355ba9c8f5",
-            "datasetId": null,
+            "datasetId": "4b0b10a8-cec1-155c-b12f-ee2bc8787e06",
             "datasetType": "FaceRecognition",
             "deploySearch": Object {
               "query": Object {

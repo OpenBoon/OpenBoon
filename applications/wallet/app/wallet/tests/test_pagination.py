@@ -28,3 +28,62 @@ def test_prep_and_paginate_an_api_response_default_size(api_factory):
     assert response.data['previous'] is None
     assert '?from=20&size=20' in response.data['next']
     assert response.data['count'] == 30
+
+
+class TestPaginationLimiting:
+
+    def test_max_assets_equals_limit(self, api_factory, snapshot):
+        request = Request(api_factory.get('api/v1/projects/123/jobs/?from=0&size=5'))
+        request.max_assets = 5
+        content = {'list': [
+            {'id': '1'}, {'id': '2'}, {'id': '3'}, {'id': '4'}, {'id': '5'}
+        ], "page": {
+            "from": 0,
+            "size": 5,
+            "totalCount": 30}}
+        paginator = ZMLPFromSizePagination()
+        paginator.prep_pagination_for_api_response(content, request)
+        response = paginator.get_paginated_response(content['list'])
+        snapshot.assert_match(response.data)
+
+    def test_limit_under_max_assets(self, api_factory, snapshot):
+        request = Request(api_factory.get('api/v1/projects/123/jobs/?from=0&size=5'))
+        request.max_assets = 6
+        content = {'list': [
+            {'id': '1'}, {'id': '2'}, {'id': '3'}, {'id': '4'}, {'id': '5'}
+        ], "page": {
+            "from": 0,
+            "size": 5,
+            "totalCount": 30}}
+        paginator = ZMLPFromSizePagination()
+        paginator.prep_pagination_for_api_response(content, request)
+        response = paginator.get_paginated_response(content['list'])
+        snapshot.assert_match(response.data)
+
+    def test_second_page_max_asset_limited(self, api_factory, snapshot):
+        request = Request(api_factory.get('api/v1/projects/123/jobs/?from=5&size=5'))
+        request.max_assets = 6
+        content = {'list': [
+            {'id': '1'}, {'id': '2'}, {'id': '3'}, {'id': '4'}, {'id': '5'}
+        ], "page": {
+            "from": 5,
+            "size": 5,
+            "totalCount": 30}}
+        paginator = ZMLPFromSizePagination()
+        paginator.prep_pagination_for_api_response(content, request)
+        response = paginator.get_paginated_response(content['list'])
+        snapshot.assert_match(response.data)
+
+    def test_deep_empty_page_correctly_sets_previous_link(self, api_factory, snapshot):
+        request = Request(api_factory.get('api/v1/projects/123/jobs/?from=25&size=5'))
+        request.max_assets = 6
+        content = {'list': [
+            {'id': '1'}, {'id': '2'}, {'id': '3'}, {'id': '4'}, {'id': '5'}
+        ], "page": {
+            "from": 25,
+            "size": 5,
+            "totalCount": 30}}
+        paginator = ZMLPFromSizePagination()
+        paginator.prep_pagination_for_api_response(content, request)
+        response = paginator.get_paginated_response(content['list'])
+        snapshot.assert_match(response.data)
