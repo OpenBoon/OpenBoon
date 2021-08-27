@@ -12,6 +12,29 @@ jest.mock('../Form', () => 'BulkAssetLabelingForm')
 const noop = () => () => {}
 
 describe('BulkAssetLabeling', () => {
+  it('should succeed properly', async () => {
+    const mockFn = jest.fn()
+
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/visualizer',
+      query: { projectId: PROJECT_ID, action: 'bulk-labeling-success' },
+    })
+
+    require('swr').__setMockUseSWRResponse({
+      data: { results: datasets.results },
+    })
+
+    const component = TestRenderer.create(
+      <BulkAssetLabeling
+        projectId={PROJECT_ID}
+        query=""
+        setIsBulkLabeling={mockFn}
+      />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
   it('should render properly', async () => {
     const mockFn = jest.fn()
 
@@ -31,6 +54,15 @@ describe('BulkAssetLabeling', () => {
     )
 
     expect(component.toJSON()).toMatchSnapshot()
+
+    // Click Cancel
+    await act(async () => {
+      component.root
+        .findByProps({ children: 'Cancel' })
+        .props.onClick({ preventDefault: noop })
+    })
+
+    expect(mockFn).toHaveBeenCalledWith(false)
 
     // Select Dataset
     act(() => {
@@ -63,14 +95,35 @@ describe('BulkAssetLabeling', () => {
     // Mock Success
     fetch.mockResponseOnce(JSON.stringify({ detail: 'Label Edited' }))
 
-    // Click Submit
+    // Click Save
     await act(async () => {
       component.root
         .findByProps({ children: 'Save' })
         .props.onClick({ preventDefault: noop })
     })
 
-    expect(fetch.mock.calls.length).toEqual(3)
+    // Cancel
+    await act(async () => {
+      component.root
+        .findByProps({ children: 'Cancel', isDisabled: false })
+        .props.onClick({ preventDefault: noop })
+    })
+
+    // Click Save
+    await act(async () => {
+      component.root
+        .findByProps({ children: 'Save' })
+        .props.onClick({ preventDefault: noop })
+    })
+
+    // Confirm
+    await act(async () => {
+      component.root
+        .findByProps({ children: `Label ${datasets.count} Assets` })
+        .props.onClick({ preventDefault: noop })
+    })
+
+    expect(fetch.mock.calls.length).toEqual(1)
 
     expect(fetch.mock.calls[0][0]).toEqual(
       `/api/v1/projects/${PROJECT_ID}/datasets/${datasets.results[0].id}/add_labels_by_search_filters/`,
@@ -87,13 +140,6 @@ describe('BulkAssetLabeling', () => {
         label: 'cat',
         scope: 'TRAIN',
       }),
-    })
-
-    // Click Cancel
-    await act(async () => {
-      component.root
-        .findByProps({ children: 'Cancel' })
-        .props.onClick({ preventDefault: noop })
     })
   })
 })

@@ -40,19 +40,24 @@ exports[`BulkAssetLabelingForm should render properly 1`] = `
 }
 
 .emotion-4 {
+  color: #4a4a4a;
+  margin-right: 16px;
+}
+
+.emotion-5 {
   color: #b3b3b3;
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
 }
 
-.emotion-5 {
+.emotion-6 {
   position: relative;
   padding-top: 8px;
   padding-bottom: 8px;
 }
 
-.emotion-6 {
+.emotion-7 {
   width: 100%;
   padding: 10px 8px;
   outline: 1px solid transparent;
@@ -66,20 +71,20 @@ exports[`BulkAssetLabelingForm should render properly 1`] = `
   margin-bottom: 1px;
 }
 
-.emotion-6:hover {
+.emotion-7:hover {
   border: 2px solid #ffffff;
 }
 
-.emotion-6:focus {
+.emotion-7:focus {
   background-color: #ffffff;
   color: #000000;
 }
 
-.emotion-7 {
+.emotion-8 {
   height: 8px;
 }
 
-.emotion-8 {
+.emotion-9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -93,7 +98,7 @@ exports[`BulkAssetLabelingForm should render properly 1`] = `
   margin: 0;
 }
 
-.emotion-9 {
+.emotion-10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -107,11 +112,11 @@ exports[`BulkAssetLabelingForm should render properly 1`] = `
   white-space: nowrap;
 }
 
-.emotion-10 {
+.emotion-11 {
   padding-right: 12px;
 }
 
-.emotion-11 {
+.emotion-12 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -122,7 +127,7 @@ exports[`BulkAssetLabelingForm should render properly 1`] = `
   align-items: center;
 }
 
-.emotion-12 {
+.emotion-13 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -139,7 +144,7 @@ exports[`BulkAssetLabelingForm should render properly 1`] = `
   padding-top: 1px;
 }
 
-.emotion-13 {
+.emotion-14 {
   padding: 0;
   -webkit-appearance: none;
   border-radius: 16px;
@@ -148,7 +153,7 @@ exports[`BulkAssetLabelingForm should render properly 1`] = `
   border: 1px solid #ffffff;
 }
 
-.emotion-14 {
+.emotion-15 {
   position: absolute;
   width: 8px;
   height: 8px;
@@ -157,20 +162,20 @@ exports[`BulkAssetLabelingForm should render properly 1`] = `
   background-color: #3A5DFF;
 }
 
-.emotion-15 {
+.emotion-16 {
   padding-left: 8px;
 }
 
-.emotion-16 {
+.emotion-17 {
   font-weight: 400;
   color: #ffffff;
 }
 
-.emotion-17 {
+.emotion-18 {
   color: #b3b3b3;
 }
 
-.emotion-21 {
+.emotion-22 {
   padding: 0;
   -webkit-appearance: none;
   border-radius: 16px;
@@ -179,7 +184,7 @@ exports[`BulkAssetLabelingForm should render properly 1`] = `
   border: 1px solid #808080;
 }
 
-.emotion-22 {
+.emotion-23 {
   position: absolute;
   width: 8px;
   height: 8px;
@@ -202,13 +207,18 @@ exports[`BulkAssetLabelingForm should render properly 1`] = `
     <div
       className="emotion-3"
     >
+      <svg
+        className="emotion-4"
+        data-file-name="all.svg"
+        height={56}
+      />
       <div>
         <label
-          className="emotion-4"
+          className="emotion-5"
         >
           Label:
           <div
-            className="emotion-5"
+            className="emotion-6"
             data-reach-combobox=""
             data-state="idle"
           >
@@ -218,7 +228,7 @@ exports[`BulkAssetLabelingForm should render properly 1`] = `
               aria-expanded={false}
               aria-haspopup="listbox"
               autoComplete="off"
-              className="emotion-6"
+              className="emotion-7"
               data-reach-combobox-input=""
               data-state="idle"
               onBlur={[Function]}
@@ -233,28 +243,28 @@ exports[`BulkAssetLabelingForm should render properly 1`] = `
           </div>
         </label>
         <div
-          className="emotion-7"
+          className="emotion-8"
         />
         <fieldset
-          className="emotion-8"
+          className="emotion-9"
         >
           <legend
-            className="emotion-9"
+            className="emotion-10"
           >
             Select Scope:
           </legend>
           <div
-            className="emotion-10"
+            className="emotion-11"
           >
             <div>
               <label
-                className="emotion-11"
+                className="emotion-12"
               >
                 <div
-                  className="emotion-12"
+                  className="emotion-13"
                 >
                   <input
-                    className="emotion-13"
+                    className="emotion-14"
                     defaultChecked={true}
                     name="Select Scope"
                     onClick={[Function]}
@@ -262,19 +272,19 @@ exports[`BulkAssetLabelingForm should render properly 1`] = `
                     value="TRAIN"
                   />
                   <div
-                    className="emotion-14"
+                    className="emotion-15"
                   />
                 </div>
                 <div
-                  className="emotion-15"
+                  className="emotion-16"
                 >
                   <div
-                    className="emotion-16"
+                    className="emotion-17"
                   >
                     Train
                   </div>
                   <div
-                    className="emotion-17"
+                    className="emotion-18"
                   >
                     
                   </div>
@@ -283,17 +293,17 @@ exports[`BulkAssetLabelingForm should render properly 1`] = `
             </div>
           </div>
           <div
-            className="emotion-10"
+            className="emotion-11"
           >
             <div>
               <label
-                className="emotion-11"
+                className="emotion-12"
               >
                 <div
-                  className="emotion-12"
+                  className="emotion-13"
                 >
                   <input
-                    className="emotion-21"
+                    className="emotion-22"
                     defaultChecked={false}
                     name="Select Scope"
                     onClick={[Function]}
@@ -301,19 +311,19 @@ exports[`BulkAssetLabelingForm should render properly 1`] = `
                     value="TEST"
                   />
                   <div
-                    className="emotion-22"
+                    className="emotion-23"
                   />
                 </div>
                 <div
-                  className="emotion-15"
+                  className="emotion-16"
                 >
                   <div
-                    className="emotion-16"
+                    className="emotion-17"
                   >
                     Test
                   </div>
                   <div
-                    className="emotion-17"
+                    className="emotion-18"
                   >
                     
                   </div>

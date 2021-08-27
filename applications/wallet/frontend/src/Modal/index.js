@@ -10,7 +10,7 @@ import CrossSvg from '../Icons/cross.svg'
 const BUTTON_HEIGHT = 40
 const MODAL_WIDTH = 480
 
-const Modal = ({ title, message, action, onCancel, onConfirm }) => {
+const Modal = ({ isPrimary, title, message, action, onCancel, onConfirm }) => {
   return (
     <AriaModal
       titleId={title}
@@ -95,7 +95,7 @@ const Modal = ({ title, message, action, onCancel, onConfirm }) => {
             </Button>
 
             <Button
-              variant={VARIANTS.WARNING}
+              variant={isPrimary ? VARIANTS.PRIMARY : VARIANTS.WARNING}
               onClick={onConfirm}
               isDisabled={action.includes('...')}
             >
@@ -108,7 +108,12 @@ const Modal = ({ title, message, action, onCancel, onConfirm }) => {
   )
 }
 
+Modal.defaultProps = {
+  isPrimary: false,
+}
+
 Modal.propTypes = {
+  isPrimary: PropTypes.bool,
   title: PropTypes.string.isRequired,
   message: PropTypes.string.isRequired,
   action: PropTypes.string.isRequired,
