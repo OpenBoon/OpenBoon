@@ -1,15 +1,15 @@
 package boonai.archivist.storage
 
-import boonai.archivist.domain.ProjectStorageLocator
 import com.google.api.gax.paging.Page
 import com.google.cloud.logging.LogEntry
 import com.google.cloud.logging.Logging
 import com.google.cloud.logging.Payload
+import org.slf4j.LoggerFactory
 import java.io.InputStream
 
 class GcpLogInputStream(
     val loggingService: Logging,
-    val locator: ProjectStorageLocator
+    val logName: String
 ) : InputStream() {
 
     var page: Page<LogEntry>? = null
@@ -25,10 +25,13 @@ class GcpLogInputStream(
      */
     fun pullNextPage(curpage: Page<LogEntry>?): Boolean {
         page = if (curpage == null) {
-            loggingService.listLogEntries(Logging.EntryListOption.filter(locator.name))
+            logger.info("pulling first page $curpage")
+            loggingService.listLogEntries(Logging.EntryListOption.filter("logName=$logName"))
         } else if (curpage.hasNextPage()) {
+            logger.info("pulling next page")
             curpage.nextPage
         } else {
+            logger.info("no more pages")
             null
         }
 
@@ -49,21 +52,28 @@ class GcpLogInputStream(
     }
 
     override fun read(): Int {
+        if (page == null) {
+            return -1
+        }
+
         index += 1
         if (index >= buffer.length) {
             if (!pullNextPage(page)) {
-                return 0
+                return -1
             }
         }
         return try {
-            Character.getNumericValue(buffer[index])
+            return buffer.codePointAt(index)
         } catch (e: IndexOutOfBoundsException) {
-            0
+            -1
         }
     }
 
     override fun close() {
         buffer.clear()
-        page = null
+    }
+
+    companion object {
+        val logger = LoggerFactory.getLogger(GcpLogInputStream::class.java)
     }
 }

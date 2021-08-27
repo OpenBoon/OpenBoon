@@ -41,8 +41,8 @@ class LogFileRotator:
         task_logger.addHandler(self.handler)
 
         # If we're not in local dev setup the GCP log handler.
-        if os.environ.get("ENVIRONMENT") != "localdev":
-            self.gc_logs_handler = GCLogHandler(self.log_name)
+        if os.environ.get('ENVIRONMENT') != 'localdev':
+            self.gc_logs_handler = GCLogHandler(self.task['logId'])
             self.gc_logs_handler.setLevel(logging.INFO)
             task_logger.addHandler(self.gc_logs_handler)
 

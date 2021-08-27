@@ -94,7 +94,7 @@ class GcsProjectStorageService constructor(
         } else {
             ResponseEntity.ok()
                 .contentType(MediaType.TEXT_PLAIN)
-                .body(InputStreamResource(GcpLogInputStream(loggingService, locator)))
+                .body(InputStreamResource(GcpLogInputStream(loggingService, locator.getFileId())))
         }
     }
 

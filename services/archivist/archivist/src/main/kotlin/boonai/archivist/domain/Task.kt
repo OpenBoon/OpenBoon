@@ -181,6 +181,8 @@ class DispatchTask(
     var env: MutableMap<String, String>,
     @ApiModelProperty("Extra script args to pass to the ZpsScript")
     var args: MutableMap<String, Any>,
+    @ApiModelProperty("The Id of the log file.")
+    var logId: String,
     @ApiModelProperty("The path to the Task log file.")
     var logFile: String? = null
 ) : InternalTask(id, jobId, projectId, dataSourceId, name, state), TaskId {
