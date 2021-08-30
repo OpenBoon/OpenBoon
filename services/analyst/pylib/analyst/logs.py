@@ -112,13 +112,6 @@ class LogFileRotator:
         """
         return self.task['taskId']
 
-    @property
-    def log_name(self):
-        """
-        The task log name.
-        """
-        return f'{self.task_id}.log'
-
 
 class CustomCloudLogHandler(logging.StreamHandler):
 
