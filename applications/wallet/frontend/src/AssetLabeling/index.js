@@ -6,6 +6,11 @@ import { colors, spacing, typography } from '../Styles'
 import SuspenseBoundary from '../SuspenseBoundary'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
 import BulkAssetLabeling from '../BulkAssetLabeling'
+import {
+  ACTIONS as FILTER_ACTIONS,
+  dispatch as filterDispatch,
+  decode,
+} from '../Filters/helpers'
 
 import AssetLabelingContent from './Content'
 
@@ -13,8 +18,11 @@ const AssetLabeling = () => {
   const [isBulkLabeling, setIsBulkLabeling] = useState(false)
 
   const {
+    pathname,
     query: { projectId, assetId, query },
   } = useRouter()
+
+  const filters = decode({ query })
 
   if (assetId) {
     return (
@@ -52,6 +60,23 @@ const AssetLabeling = () => {
       <Button
         variant={BUTTON_VARIANTS.PRIMARY}
         onClick={() => {
+          if (!filters.find(({ type }) => type === 'limit')) {
+            filterDispatch({
+              type: FILTER_ACTIONS.ADD_VALUE,
+              payload: {
+                pathname,
+                projectId,
+                assetId,
+                filter: {
+                  type: 'limit',
+                  attribute: 'utility.Search Results Limit',
+                  values: { maxAssets: 10_000 },
+                },
+                query,
+              },
+            })
+          }
+
           setIsBulkLabeling(true)
         }}
       >

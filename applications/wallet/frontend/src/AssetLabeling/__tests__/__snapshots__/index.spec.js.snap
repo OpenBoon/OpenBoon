@@ -516,6 +516,14 @@ exports[`AssetLabeling should render properly with bulk labeling selected 1`] = 
 />
 `;
 
+exports[`AssetLabeling should render properly with bulk labeling selected 2`] = `
+<BulkAssetLabeling
+  projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+  query="W3sidHlwZSI6ImxpbWl0IiwiYXR0cmlidXRlIjoidXRpbGl0eS5TZWFyY2ggUmVzdWx0cyBMaW1pdCIsInZhbHVlcyI6eyJtYXhBc3NldHMiOjEwMDAwfX1d"
+  setIsBulkLabeling={[Function]}
+/>
+`;
+
 exports[`AssetLabeling should render properly with no asset selected 1`] = `
 .emotion-0 {
   padding: 16px;
