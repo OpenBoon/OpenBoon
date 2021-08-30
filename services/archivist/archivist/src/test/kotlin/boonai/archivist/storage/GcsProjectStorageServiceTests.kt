@@ -6,6 +6,7 @@ import boonai.archivist.domain.ProjectFileLocator
 import boonai.archivist.domain.ProjectStorageCategory
 import boonai.archivist.domain.ProjectStorageEntity
 import boonai.archivist.domain.ProjectStorageSpec
+import boonai.archivist.domain.Task
 import com.google.auth.oauth2.GoogleCredentials
 import com.google.cloud.logging.Logging
 import com.google.cloud.logging.LoggingOptions
@@ -17,6 +18,7 @@ import org.junit.Ignore
 import org.junit.Test
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mock
+import org.mockito.Mockito.mock
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.CacheControl
 import org.springframework.http.MediaType
@@ -88,7 +90,12 @@ class GcsProjectStorageServiceTests : AbstractTest() {
             "1234", ProjectStorageCategory.SOURCE, "bob.jpg", projectId = UUID.randomUUID()
         )
 
-        val res = googleStorageService.streamLogs(loc)
+        val task = mock(Task::class.java)
+        whenever(task.projectId).thenReturn(UUID.randomUUID())
+        whenever(task.id).thenReturn(UUID.randomUUID())
+        whenever(task.runCount).thenReturn(1)
+
+        val res = googleStorageService.streamLogs(task)
 
         assertEquals(200, res.statusCode.value())
         assertEquals(allLogs, BufferedReader(res.body.inputStream.reader()).readLine())
