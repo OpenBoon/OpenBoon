@@ -151,10 +151,16 @@ open class Task(
     @ApiModelProperty("Task Progress")
     var progress: Int = 0,
 
+    @ApiModelProperty("Task run count")
+    var runCount: Int,
+
     @ApiModelProperty("Current Task Status")
     var status: String? = null
 
-) : InternalTask(id, jobId, projectId, dataSourceId, name, state)
+) : InternalTask(id, jobId, projectId, dataSourceId, name, state) {
+
+    val logName = "projects/$projectId/logs/$id-$runCount}"
+}
 
 /**
  * A DispatchTask is used by the Analysts to start a new task.
@@ -182,7 +188,7 @@ class DispatchTask(
     @ApiModelProperty("Extra script args to pass to the ZpsScript")
     var args: MutableMap<String, Any>,
     @ApiModelProperty("The Id of the log file.")
-    var logId: String,
+    var logName: String,
     @ApiModelProperty("The path to the Task log file.")
     var logFile: String? = null
 ) : InternalTask(id, jobId, projectId, dataSourceId, name, state), TaskId {

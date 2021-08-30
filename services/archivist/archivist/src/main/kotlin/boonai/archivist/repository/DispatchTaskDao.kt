@@ -97,6 +97,7 @@ class DispatchTaskDaoImpl : AbstractDao(), DispatchTaskDao {
                 script.setGlobalArg(key, value)
             }
             val id = rs.getObject("pk_task") as UUID
+            val projId = rs.getObject("pk_project") as UUID
             DispatchTask(
                 id,
                 rs.getObject("pk_job") as UUID,
@@ -108,7 +109,7 @@ class DispatchTaskDaoImpl : AbstractDao(), DispatchTaskDao {
                 script,
                 Json.Mapper.readValue(rs.getString("json_env")),
                 globalArgs,
-                "projects/${boonai.archivist.security.getProjectId()}/logs/$id-${rs.getInt("int_run_count")}"
+                "projects/$projId/logs/$id-${rs.getInt("int_run_count")}"
             )
         }
 
