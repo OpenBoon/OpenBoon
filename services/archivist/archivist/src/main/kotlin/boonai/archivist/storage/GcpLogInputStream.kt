@@ -13,7 +13,7 @@ class GcpLogInputStream(
 ) : InputStream() {
 
     var page: Page<LogEntry>? = null
-    val buffer: StringBuilder = StringBuilder(1024)
+    val buffer: StringBuilder = StringBuilder(4096)
     var index = -1
 
     init {
@@ -25,13 +25,10 @@ class GcpLogInputStream(
      */
     fun pullNextPage(curpage: Page<LogEntry>?): Boolean {
         page = if (curpage == null) {
-            logger.info("pulling first page $curpage")
             loggingService.listLogEntries(Logging.EntryListOption.filter("logName=$logName"))
         } else if (curpage.hasNextPage()) {
-            logger.info("pulling next page")
             curpage.nextPage
         } else {
-            logger.info("no more pages")
             null
         }
 
@@ -62,11 +59,7 @@ class GcpLogInputStream(
                 return -1
             }
         }
-        return try {
-            return buffer.codePointAt(index)
-        } catch (e: IndexOutOfBoundsException) {
-            -1
-        }
+        return buffer.codePointAt(index)
     }
 
     override fun close() {
