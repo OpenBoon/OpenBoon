@@ -61,7 +61,7 @@ class AnalystClient(val baseUri: String) {
         }
     }
 
-    fun killTask(taskId: UUID, reason: String, newState: TaskState) : Map<String, Any>{
+    fun killTask(taskId: UUID, reason: String, newState: TaskState): Map<String, Any> {
         return delete(
             "/kill/$taskId",
             mapOf("reason" to reason, "newState" to newState.name)
