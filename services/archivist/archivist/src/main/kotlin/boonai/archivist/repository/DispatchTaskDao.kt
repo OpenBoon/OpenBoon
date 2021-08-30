@@ -96,9 +96,10 @@ class DispatchTaskDaoImpl : AbstractDao(), DispatchTaskDao {
             for ((key, value) in globalArgs) {
                 script.setGlobalArg(key, value)
             }
-
+            val id = rs.getObject("pk_task") as UUID
+            val projId = rs.getObject("pk_project") as UUID
             DispatchTask(
-                rs.getObject("pk_task") as UUID,
+                id,
                 rs.getObject("pk_job") as UUID,
                 rs.getObject("pk_project") as UUID,
                 rs.getObject("pk_datasource") as UUID?,
@@ -107,7 +108,8 @@ class DispatchTaskDaoImpl : AbstractDao(), DispatchTaskDao {
                 rs.getString("str_host"),
                 script,
                 Json.Mapper.readValue(rs.getString("json_env")),
-                globalArgs
+                globalArgs,
+                "projects/$projId/logs/$id-${rs.getInt("int_run_count")}"
             )
         }
 
@@ -136,7 +138,8 @@ class DispatchTaskDaoImpl : AbstractDao(), DispatchTaskDao {
                 "task.int_state," +
                 "task.int_run_count," +
                 "task.json_script, " +
-                "task.str_host " +
+                "task.str_host, " +
+                "task.int_run_count " +
                 "FROM " +
                 "task " +
                 "INNER JOIN job ON job.pk_job = task.pk_job " +

@@ -18,6 +18,7 @@ import boonai.archivist.domain.FileStorage
 import boonai.archivist.domain.ProjectDirLocator
 import boonai.archivist.domain.ProjectStorageLocator
 import boonai.archivist.domain.ProjectStorageSpec
+import boonai.archivist.domain.Task
 import boonai.archivist.service.IndexRoutingService
 import boonai.archivist.util.FileUtils
 import boonai.archivist.util.randomString
@@ -150,6 +151,10 @@ class AwsProjectStorageService constructor(
         } catch (e: Exception) {
             ResponseEntity.noContent().build()
         }
+    }
+
+    override fun streamLogs(task: Task): ResponseEntity<Resource> {
+        return this.stream(task.getLogFileLocation())
     }
 
     override fun fetch(locator: ProjectStorageLocator): ByteArray {

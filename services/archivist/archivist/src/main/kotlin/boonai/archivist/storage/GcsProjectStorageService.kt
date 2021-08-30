@@ -4,10 +4,13 @@ import boonai.archivist.domain.FileStorage
 import boonai.archivist.domain.ProjectDirLocator
 import boonai.archivist.domain.ProjectStorageLocator
 import boonai.archivist.domain.ProjectStorageSpec
+import boonai.archivist.domain.Task
 import boonai.archivist.service.IndexRoutingService
 import boonai.archivist.util.FileUtils
 import boonai.archivist.util.loadGcpCredentials
 import boonai.common.util.Json
+import com.google.cloud.logging.Logging
+import com.google.cloud.logging.LoggingOptions
 import com.google.cloud.storage.BlobId
 import com.google.cloud.storage.BlobInfo
 import com.google.cloud.storage.CopyWriter
@@ -37,6 +40,8 @@ class GcsProjectStorageService constructor(
     val options: StorageOptions = StorageOptions.newBuilder()
         .setCredentials(loadGcpCredentials()).build()
     val gcs: Storage = options.service
+
+    val loggingService: Logging = LoggingOptions.newBuilder().build().service
 
     @PostConstruct
     fun initialize() {
@@ -80,6 +85,20 @@ class GcsProjectStorageService constructor(
         }
     }
 
+    override fun streamLogs(task: Task): ResponseEntity<Resource> {
+        val locator = task.getLogFileLocation()
+        val blob = gcs.get(getBlobId(locator))
+
+        // Retrieve logs from file in bucket
+        return if (blob.exists()) {
+            this.stream(locator)
+        } else {
+            ResponseEntity.ok()
+                .contentType(MediaType.TEXT_PLAIN)
+                .body(InputStreamResource(GcpLogInputStream(loggingService, task.logName)))
+        }
+    }
+
     override fun copy(src: String, dst: String): Long {
         val srcBlob = gcs.get(properties.bucket, src)
         val copyWriter: CopyWriter = srcBlob.copyTo(properties.bucket, dst)
@@ -96,6 +115,7 @@ class GcsProjectStorageService constructor(
         val path = locator.getPath()
         return "gs://${properties.bucket}/$path"
     }
+
     override fun getNativeUri(locator: ProjectDirLocator): String {
         val path = locator.getPath()
         return "gs://${properties.bucket}/$path"
