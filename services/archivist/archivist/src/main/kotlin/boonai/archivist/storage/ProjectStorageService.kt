@@ -3,10 +3,11 @@ package boonai.archivist.storage
 import boonai.archivist.domain.ArchivistException
 import boonai.archivist.domain.FileStorage
 import boonai.archivist.domain.ProjectDirLocator
-import boonai.common.service.logging.LogAction
-import boonai.common.service.logging.LogObject
 import boonai.archivist.domain.ProjectStorageLocator
 import boonai.archivist.domain.ProjectStorageSpec
+import boonai.archivist.domain.Task
+import boonai.common.service.logging.LogAction
+import boonai.common.service.logging.LogObject
 import boonai.common.service.logging.event
 import org.slf4j.LoggerFactory
 import org.springframework.boot.context.properties.ConfigurationProperties
@@ -52,7 +53,7 @@ interface ProjectStorageService {
      * Stream logs from a file in a bucket or from a cloud log service.  This is used for serving
      * the resource via the HTTP server.
      */
-    fun streamLogs(locator: ProjectStorageLocator): ResponseEntity<Resource>
+    fun streamLogs(task: Task): ResponseEntity<Resource>
 
     /**
      * Fetch the bytes for the given file.

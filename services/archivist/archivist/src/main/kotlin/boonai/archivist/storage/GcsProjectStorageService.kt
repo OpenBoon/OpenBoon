@@ -4,6 +4,7 @@ import boonai.archivist.domain.FileStorage
 import boonai.archivist.domain.ProjectDirLocator
 import boonai.archivist.domain.ProjectStorageLocator
 import boonai.archivist.domain.ProjectStorageSpec
+import boonai.archivist.domain.Task
 import boonai.archivist.service.IndexRoutingService
 import boonai.archivist.util.FileUtils
 import boonai.archivist.util.loadGcpCredentials
@@ -84,8 +85,8 @@ class GcsProjectStorageService constructor(
         }
     }
 
-    override fun streamLogs(locator: ProjectStorageLocator): ResponseEntity<Resource> {
-
+    override fun streamLogs(task: Task): ResponseEntity<Resource> {
+        val locator = task.getLogFileLocation()
         val blob = gcs.get(getBlobId(locator))
 
         // Retrieve logs from file in bucket
@@ -94,7 +95,7 @@ class GcsProjectStorageService constructor(
         } else {
             ResponseEntity.ok()
                 .contentType(MediaType.TEXT_PLAIN)
-                .body(InputStreamResource(GcpLogInputStream(loggingService, locator.getFileId())))
+                .body(InputStreamResource(GcpLogInputStream(loggingService, task.logName)))
         }
     }
 
