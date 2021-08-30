@@ -1,6 +1,6 @@
 package boonai.archivist.service
 
-import boonai.archivist.clients.RestClient
+import boonai.archivist.clients.AnalystClient
 import boonai.archivist.domain.Analyst
 import boonai.archivist.domain.AnalystFilter
 import boonai.archivist.domain.AnalystSpec
@@ -15,7 +15,6 @@ import boonai.common.service.logging.LogAction
 import boonai.common.service.logging.LogObject
 import boonai.common.service.logging.event
 import boonai.common.service.logging.warnEvent
-import boonai.common.util.Json
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -34,7 +33,7 @@ interface AnalystService {
     fun getUnresponsive(state: AnalystState, duration: Duration): List<Analyst>
     fun delete(analyst: Analyst): Boolean
     fun setState(analyst: Analyst, state: AnalystState): Boolean
-    fun getClient(endpoint: String): RestClient
+    fun getClient(endpoint: String): AnalystClient
     fun killTask(endpoint: String, taskId: UUID, reason: String, newState: TaskState): Boolean
     fun setTaskId(analyst: Analyst, taskId: UUID?): Boolean
     fun findOne(filter: AnalystFilter): Analyst
@@ -125,12 +124,8 @@ class AnalystServicImpl @Autowired constructor(
     @Transactional(propagation = Propagation.SUPPORTS)
     override fun killTask(endpoint: String, taskId: UUID, reason: String, newState: TaskState): Boolean {
         return try {
-            val client = RestClient(endpoint)
-            val result = client.delete(
-                "/kill/$taskId",
-                mapOf("reason" to reason, "newState" to newState.name), Json.GENERIC_MAP
-            )
-
+            val client = AnalystClient(endpoint)
+            val result = client.killTask(taskId, reason, newState)
             return if (result["status"] as Boolean) {
                 logger.event(LogObject.TASK, LogAction.KILL, mapOf("reason" to reason, "taskId" to taskId))
                 true
@@ -167,8 +162,8 @@ class AnalystServicImpl @Autowired constructor(
         return analystDao.delete(analyst)
     }
 
-    override fun getClient(endpoint: String): RestClient {
-        return RestClient(endpoint)
+    override fun getClient(endpoint: String): AnalystClient {
+        return AnalystClient(endpoint)
     }
 
     companion object {

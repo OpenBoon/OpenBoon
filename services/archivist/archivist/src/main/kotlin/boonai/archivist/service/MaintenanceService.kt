@@ -159,8 +159,8 @@ class MaintenanceServiceImpl @Autowired constructor(
 
     override fun runAll() {
         handleExpiredJobs()
-        handleUnresponsiveAnalysts()
         handleOrphanTasks()
+        handleUnresponsiveAnalysts()
     }
 
     override fun handleExpiredJobs() {
