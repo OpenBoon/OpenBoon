@@ -460,3 +460,24 @@ class TestLabelingEndpoints:
                        kwargs={'project_pk': project.id, 'pk': dataset_id})
         response = check_response(api_client.get(f'{path}?assetId={asset.id}'))
         assert response == {'count': 0, 'results': []}
+
+    def test_add_labels_by_search(self, login, project, api_client, monkeypatch, snapshot):
+        def put_response(*args, **kwargs):
+            snapshot.assert_match(args[2])
+            return {'type': 'asset',
+                    'op': '_batch_label_by_search',
+                    'submitted': 10,
+                    'errors': 0}
+
+        monkeypatch.setattr(BoonClient, 'put', put_response)
+        dataset_id = '287baa12-8f80-1a31-9273-76fd36c58a09'
+        path = reverse('dataset-add-labels-by-search-filters',
+                       kwargs={'project_pk': project.id, 'pk': dataset_id})
+        body = {'filters': [{'type': 'range',
+                             'attribute': 'media.size',
+                             'values': {'min': 1, 'max': 20000}},
+                            {'type': 'limit',
+                             'values': {'maxAssets': 5}}],
+                'label': 'Cool Label',
+                'scope': 'TRAIN'}
+        check_response(api_client.put(path, body))

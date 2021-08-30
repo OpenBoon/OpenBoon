@@ -83,7 +83,7 @@ class BaseFilter(object):
             if 'values' not in self.data:
                 self.errors.append({'values': 'This value is required.'})
             for key in self.required_query_keys:
-                if key not in self.data['values']:
+                if key not in self.data.get('values', {}):
                     self.errors.append({key: 'This value is required.'})
 
         if self.errors:
@@ -110,11 +110,15 @@ class BaseFilter(object):
         """Gives the `clip` query for the current filter values."""
         return {}
 
-    def add_to_query(self, query):
+    def add_to_query(self, query, request):
         """Adds the given filters information to a pre-existing query.
 
         Adds this query to a prebuilt query. Every clause will be appended to the list
         of existing `bool` clauses if they exist, in an additive manner.
+
+        Args:
+            query (dict): The current query to add to
+            request (Request): The incoming DRF request to modify if needed
         """
         this_query = self.get_es_query()
         if not this_query:
@@ -642,6 +646,8 @@ class LimitFilter(BaseFilter):
     def max_assets(self):
         return self.data.get('values', {}).get('maxAssets')
 
-    def add_to_query(self, query):
-        """Should not be added to the query in any way."""
+    def add_to_query(self, query, request):
+        # Set the max_assets value on the given request rather than modifying anything
+        # in the query
+        request.max_assets = self.max_assets
         return query
