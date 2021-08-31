@@ -6,11 +6,10 @@ import org.slf4j.LoggerFactory
 import java.io.InputStream
 
 class GcpLogInputStream(
-    val loggingService: Logging,
-    val logName: String,
+    loggingService: Logging,
+    logName: String,
 ) : InputStream() {
 
-    // var page: Page<LogEntry>? = null
     val buffer: StringBuilder = StringBuilder(4096)
     var index = -1
 
