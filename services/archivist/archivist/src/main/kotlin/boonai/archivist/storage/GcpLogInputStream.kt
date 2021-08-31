@@ -18,6 +18,7 @@ class GcpLogInputStream(
     var index = -1
 
     init {
+        logger.info("Pulling logs for $logName")
         pullNextPage(null)
     }
 
