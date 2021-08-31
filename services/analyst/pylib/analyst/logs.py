@@ -1,8 +1,9 @@
 import logging
 import os
-from google.cloud import logging as gc_logging
-import requests
 
+import requests
+import google.cloud.logging
+from google.cloud.logging_v2.handlers import CloudLoggingHandler
 
 task_logger = logging.getLogger('task')
 logger = logging.getLogger(__name__)
@@ -42,7 +43,8 @@ class LogFileRotator:
 
         # If we're not in local dev setup the GCP log handler.
         if os.environ.get('ENVIRONMENT') != 'localdev':
-            self.gc_logs_handler = GCLogHandler(self.task['logName'])
+            client = google.cloud.logging.Client()
+            self.gc_logs_handler.handler = CloudLoggingHandler(client)
             self.gc_logs_handler.setLevel(logging.INFO)
             task_logger.addHandler(self.gc_logs_handler)
 
@@ -111,27 +113,3 @@ class LogFileRotator:
         The task id.
         """
         return self.task['taskId']
-
-
-class CustomCloudLogHandler(logging.StreamHandler):
-
-    def __init__(self, topic):
-        super(CustomCloudLogHandler, self).__init__()
-        self.topic = topic
-
-    def emit(self, record):
-        msg = self.format(record)
-        self.produce(msg)
-
-    def produce(self, msg):
-        raise NotImplementedError("Not implemented")
-
-
-class GCLogHandler(CustomCloudLogHandler):
-
-    def __init__(self, topic):
-        super(GCLogHandler, self).__init__(topic)
-        self.logger = gc_logging.Client().logger(topic)
-
-    def produce(self, msg):
-        self.logger.log_text(msg)
