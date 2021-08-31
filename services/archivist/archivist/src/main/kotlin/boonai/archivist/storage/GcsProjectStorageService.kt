@@ -9,6 +9,7 @@ import boonai.archivist.service.IndexRoutingService
 import boonai.archivist.util.FileUtils
 import boonai.archivist.util.loadGcpCredentials
 import boonai.common.util.Json
+import com.google.cloud.ServiceOptions
 import com.google.cloud.logging.Logging
 import com.google.cloud.logging.LoggingOptions
 import com.google.cloud.storage.BlobId
@@ -43,6 +44,8 @@ class GcsProjectStorageService constructor(
 
     val loggingService: Logging = LoggingOptions.newBuilder()
         .setCredentials(loadGcpCredentials()).build().service
+
+    val gcpProj = ServiceOptions.getDefaultProjectId() ?: "localdev"
 
     @PostConstruct
     fun initialize() {
@@ -94,9 +97,10 @@ class GcsProjectStorageService constructor(
         return if (blob != null && blob.exists()) {
             this.stream(locator)
         } else {
+            val logName = "projects/$gcpProj/logs/${task.logName}"
             ResponseEntity.ok()
                 .contentType(MediaType.TEXT_PLAIN)
-                .body(InputStreamResource(GcpLogInputStream(loggingService, task.logName)))
+                .body(InputStreamResource(GcpLogInputStream(loggingService, logName)))
         }
     }
 

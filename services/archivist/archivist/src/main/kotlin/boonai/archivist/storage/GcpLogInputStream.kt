@@ -10,24 +10,15 @@ import java.io.InputStream
 
 class GcpLogInputStream(
     val loggingService: Logging,
-    logName: String,
-    logPath: String? = null
+    val logName: String,
 ) : InputStream() {
 
     var page: Page<LogEntry>? = null
     val buffer: StringBuilder = StringBuilder(4096)
     var index = -1
-    val fullLogName: String
 
     init {
         pullNextPage(null)
-
-        fullLogName = if (logPath != null) {
-            "$logPath/$logName"
-        } else {
-            val gcpProj = ServiceOptions.getDefaultProjectId() ?: "localdev"
-            "projects/$gcpProj/logs/$logName"
-        }
     }
 
     /**
@@ -35,7 +26,7 @@ class GcpLogInputStream(
      */
     fun pullNextPage(curpage: Page<LogEntry>?): Boolean {
         page = if (curpage == null) {
-            loggingService.listLogEntries(Logging.EntryListOption.filter("logName=$fullLogName"))
+            loggingService.listLogEntries(Logging.EntryListOption.filter("logName=$logName"))
         } else if (curpage.hasNextPage()) {
             curpage.nextPage
         } else {
