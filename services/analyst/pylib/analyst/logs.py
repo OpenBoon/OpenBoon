@@ -44,7 +44,7 @@ class LogFileRotator:
         # If we're not in local dev setup the GCP log handler.
         if os.environ.get('ENVIRONMENT') != 'localdev':
             client = google.cloud.logging.Client()
-            self.gc_logs_handler.handler = CloudLoggingHandler(client)
+            self.gc_logs_handler = CloudLoggingHandler(client)
             self.gc_logs_handler.setLevel(logging.INFO)
             task_logger.addHandler(self.gc_logs_handler)
 
