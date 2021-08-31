@@ -1,7 +1,6 @@
 package boonai.archivist.storage
 
 import com.google.api.gax.paging.Page
-import com.google.cloud.ServiceOptions
 import com.google.cloud.logging.LogEntry
 import com.google.cloud.logging.Logging
 import com.google.cloud.logging.Payload
