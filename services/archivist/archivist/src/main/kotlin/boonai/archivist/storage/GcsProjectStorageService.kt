@@ -41,7 +41,8 @@ class GcsProjectStorageService constructor(
         .setCredentials(loadGcpCredentials()).build()
     val gcs: Storage = options.service
 
-    val loggingService: Logging = LoggingOptions.newBuilder().build().service
+    val loggingService: Logging = LoggingOptions.newBuilder()
+        .setCredentials(loadGcpCredentials()).build().service
 
     @PostConstruct
     fun initialize() {
