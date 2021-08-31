@@ -40,6 +40,33 @@ describe('AssetLabeling', () => {
     expect(component.toJSON()).toMatchSnapshot()
   })
 
+  it('should render properly with bulk labeling selected', async () => {
+    const query = btoa(
+      JSON.stringify([
+        {
+          type: 'limit',
+          attribute: 'utility.Search Results Limit',
+          values: { maxAssets: 10_000 },
+        },
+      ]),
+    )
+
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/visualizer',
+      query: { projectId: PROJECT_ID, query },
+    })
+
+    const component = TestRenderer.create(<AssetLabeling />)
+
+    act(() => {
+      component.root
+        .findByProps({ children: 'Label All Assets in Search' })
+        .props.onClick()
+    })
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
   it('should render properly with an asset selected', async () => {
     const mockRouterPush = jest.fn()
 

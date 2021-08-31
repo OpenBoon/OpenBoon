@@ -4,3 +4,4 @@ psutil
 gevent
 zmq
 docker
+google-cloud-logging

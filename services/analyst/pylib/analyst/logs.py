@@ -2,7 +2,8 @@ import logging
 import os
 
 import requests
-
+import google.cloud.logging
+from google.cloud.logging_v2.handlers import CloudLoggingHandler
 
 task_logger = logging.getLogger('task')
 logger = logging.getLogger(__name__)
@@ -18,6 +19,7 @@ class LogFileRotator:
         Create a new LogFileRotator
         """
         self.handler = None
+        self.gc_logs_handler = None
         self.task = None
 
     def start_task_logging(self, task):
@@ -29,13 +31,22 @@ class LogFileRotator:
 
         """
         self.task = task
-        self.handler = logging.FileHandler(self.log_path)
+
         # The log file is intended for customer use and thus
         # is not set to debug level.  Debug gives away underlying
         # software, versions, and internal communications protocol
         # which is a security risk.
+
+        self.handler = logging.FileHandler(self.log_path)
         self.handler.setLevel(logging.INFO)
         task_logger.addHandler(self.handler)
+
+        # If we're not in local dev setup the GCP log handler.
+        if os.environ.get('ENVIRONMENT') != 'localdev':
+            client = google.cloud.logging.Client()
+            self.gc_logs_handler.handler = CloudLoggingHandler(client)
+            self.gc_logs_handler.setLevel(logging.INFO)
+            task_logger.addHandler(self.gc_logs_handler)
 
         logger.info(f'Set up task log for {self.task_id}')
 
@@ -52,6 +63,8 @@ class LogFileRotator:
             logger.info(f'Closing task log for {self.task_id}')
             self.handler.close()
             task_logger.removeHandler(self.handler)
+            self.gc_logs_handler.close()
+            task_logger.removeHandler(self.gc_logs_handler)
             self.upload_log_file()
         except Exception:
             logger.exception(f'Failed to publish task log for {self.task_id}')

@@ -252,11 +252,11 @@ class FilterBuddy(object):
 
         return Filter(raw_filter, request)
 
-    def reduce_filters_to_query(self, filters):
+    def reduce_filters_to_query(self, filters, request):
         """Takes a list of Filters and combines their separate queries into one."""
         query = {}
         for _filter in filters:
-            query = _filter.add_to_query(query)
+            query = _filter.add_to_query(query, request)
         return query
 
     def reduce_filters_to_clip_query(self, filters):
@@ -266,14 +266,34 @@ class FilterBuddy(object):
             query = _filter.add_to_clip_query(query)
         return query
 
-    def validate_filters(self, filters, request):
+    def validate_filters(self, filters):
         """Ensures every filter was valid, while also catching the Limit filter and
         setting the max_assets value on the overall request object."""
         for _filter in filters:
-            if _filter.type == 'limit':
-                # If a limit filter was found we ignore it in regards to the query
-                # and then set it directly on the request so that the pagination class
-                # can handle restricting the assets returned
-                request.max_assets = _filter.max_assets
-            else:
-                _filter.is_valid(query=True, raise_exception=True)
+            _filter.is_valid(query=True, raise_exception=True)
+
+    def finalize_query_from_filters_and_request(self, filters, request):
+        """Converts a list of filters and request into a usable query with updated request.
+
+        Validates given filters, builds an ES query from them, and updates the given request
+        with additional attributes for certain filters that affect it.
+
+        Args:
+            filters (list): Set of Filter objects to convert to a query
+            request (Request): Current request object to modify, if needed
+
+        Raises:
+            ValidationError: If any given filters are not properly configured
+
+        Returns:
+            (dict): The final ES query generated from the given filters
+        """
+        self.validate_filters(filters)
+        query = self.reduce_filters_to_query(filters, request)
+
+        # If there's no specific query at this point, let's sort by the created date
+        # to make thye visual display in Visualizer more useful
+        if not query:
+            query['sort'] = {'system.timeCreated': {'order': 'desc'}}
+
+        return query

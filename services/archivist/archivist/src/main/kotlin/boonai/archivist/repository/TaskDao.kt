@@ -301,6 +301,7 @@ class TaskDaoImpl : AbstractDao(), TaskDao {
                 rs.getLong("time_ping"),
                 buildAssetCounts(rs),
                 rs.getInt("int_progress"),
+                rs.getInt("int_run_count"),
                 rs.getString("str_status")
             )
         }

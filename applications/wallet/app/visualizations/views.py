@@ -91,7 +91,7 @@ class VisualizationViewSet(CamelCaseRendererMixin,
         _filters = filter_buddy.get_filters_from_request(request)
         for _filter in _filters:
             _filter.is_valid(query=True, raise_exception=True)
-        query = filter_buddy.reduce_filters_to_query(_filters)
+        query = filter_buddy.reduce_filters_to_query(_filters, None)
 
         # Determine the Visualizations we need to load data for
         viz_buddy = VizBuddy(filter_query=query)

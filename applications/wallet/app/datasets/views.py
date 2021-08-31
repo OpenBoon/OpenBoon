@@ -141,12 +141,12 @@ class DatasetsViewSet(ZmlpCreateMixin,
         # Get the search
         raw_search_json = data['filters']
         filter_buddy = FilterBuddy()
+        # Get filters from the JSON
         _filters = []
         for raw_filter in raw_search_json:
             _filters.append(filter_buddy.get_filter_from_json(raw_filter, request))
-        # Validate and apply Limit Filter to Request
-        filter_buddy.validate_filters(_filters, request)
-        query = filter_buddy.reduce_filters_to_query(_filters)
+        # Get final query and update the request if necessary
+        query = filter_buddy.finalize_query_from_filters_and_request(_filters, request)
 
         # Create the label
         label = {
