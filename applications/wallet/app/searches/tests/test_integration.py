@@ -234,7 +234,7 @@ class TestFieldsAction:
         assert content['analysis']['knn-quality'] == ['labelConfidence',
                                                       'predictionCount',
                                                       'exists']
-        assert content['media']['type'] == ['facet', 'exists']
+        assert content['media']['type'] == ['facet', 'exists', 'simpleSort']
         assert content['labels']['313e28b1-9f0e-1595-a6c0-ea38f4c81474'] == ['label']
         assert content['aux'] == ['exists']
         assert content['tmp'] == ['exists']
@@ -252,8 +252,8 @@ class TestFieldsAction:
         monkeypatch.setattr(BoonClient, 'get', mock_response)
         response = api_client.get(reverse('search-fields', kwargs={'project_pk': project.id}))
         content = check_response(response)
-        assert content['analysis']['analyis_underscore']['tinyProxy'] == ['exists']
-        assert content['media']['type'] == ['facet', 'exists']
+        assert content['analysis']['analyis_underscore']['tinyProxy'] == ['exists', 'simpleSort']
+        assert content['media']['type'] == ['facet', 'exists', 'simpleSort']
         assert content['aux'] == ['exists']
         assert content['tmp'] == ['exists']
 

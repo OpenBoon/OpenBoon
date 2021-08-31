@@ -8,7 +8,7 @@ from searches.schemas import (SimilarityAnalysisSchema, ContentAnalysisSchema,
                               LabelsAnalysisSchema, FIELD_TYPE_FILTER_MAPPING)
 from searches.filters import (ExistsFilter, FacetFilter, RangeFilter, LabelConfidenceFilter,
                               TextContentFilter, SimilarityFilter, LabelFilter, DateFilter,
-                              PredictionCountFilter, LimitFilter)
+                              PredictionCountFilter, LimitFilter, SimpleSortFilter)
 
 
 ANALYSIS_SCHEMAS = [SimilarityAnalysisSchema, ContentAnalysisSchema, LabelsAnalysisSchema]
@@ -155,7 +155,8 @@ class FilterBuddy(object):
                LabelFilter,
                DateFilter,
                PredictionCountFilter,
-               LimitFilter]
+               LimitFilter,
+               SimpleSortFilter]
 
     def get_filter_from_request(self, request):
         """Gets Filter object from a requests querystring.
