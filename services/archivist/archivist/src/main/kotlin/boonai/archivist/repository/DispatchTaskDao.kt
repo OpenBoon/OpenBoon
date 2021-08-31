@@ -109,7 +109,9 @@ class DispatchTaskDaoImpl : AbstractDao(), DispatchTaskDao {
                 script,
                 Json.Mapper.readValue(rs.getString("json_env")),
                 globalArgs,
-                "$id-${rs.getInt("int_run_count")}"
+                // Plus for the fact the run count is base 1
+                // So if this tasks does start, the log name will be accurate.
+                "$id-${rs.getInt("int_run_count") + 1}"
             )
         }
 
