@@ -5,7 +5,7 @@ from rest_framework.exceptions import ParseError, ValidationError
 
 from wallet.exceptions import InvalidRequestError
 from searches.utils import FieldUtility, FilterBuddy
-from searches.filters import RangeFilter, FacetFilter, LimitFilter
+from searches.filters import RangeFilter, FacetFilter, LimitFilter, SimpleSortFilter
 from wallet.utils import convert_json_to_base64
 
 
@@ -577,6 +577,23 @@ class TestFilterBoy:
     def test_finalize_query_only_limit_filter(self, filter_boy, snapshot):
         _filters = [LimitFilter({'type': 'limit',
                                  'values': {'maxAssets': 20}})]
+        request = Mock()
+        query = filter_boy.finalize_query_from_filters_and_request(_filters, request)
+        snapshot.assert_match(query)
+        assert request.max_assets == 20
+
+    def test_finalize_query_with_multiple_simple_sort(self, filter_boy, snapshot):
+        _filters = [LimitFilter({'type': 'limit',
+                                 'values': {'maxAssets': 20}}),
+                    SimpleSortFilter({'type': 'simpleSort',
+                                      'attribute': 'media.length',
+                                      'values': {'order': 'asc'}}),
+                    SimpleSortFilter({'type': 'simpleSort',
+                                      'attribute': 'media.size',
+                                      'values': {'order': 'desc'}}),
+                    SimpleSortFilter({'type': 'simpleSort',
+                                      'attribute': 'system.name',
+                                      'values': {'order': 'asc'}})]
         request = Mock()
         query = filter_boy.finalize_query_from_filters_and_request(_filters, request)
         snapshot.assert_match(query)

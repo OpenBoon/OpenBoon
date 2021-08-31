@@ -125,23 +125,34 @@ class BaseFilter(object):
             # Catches the case where a filter doesn't have a relevant query to add
             return query
 
-        bool_clauses = this_query['query'].get('bool', {})
+        # Add the "query" section of this filters query
+        if 'query' in this_query:
+            if 'query' not in query:
+                # If the query key doesn't exist at all, add this filters whole query to it
+                query['query'] = this_query['query']
+            elif 'bool' not in query['query']:
+                # If this query is not setup as a bool, then add this filters bool section to it
+                query['query']['bool'] = this_query['query']['bool']
+            else:
+                # Check that every clause (ex. 'filter', 'must_not', 'should', etc) in
+                # this filter's query gets added if it's missing, or extends what is
+                # already existing
+                bool_clauses = this_query['query'].get('bool', {})
+                for clause in bool_clauses:
+                    if clause not in query['query']['bool']:
+                        query['query']['bool'][clause] = this_query['query']['bool'][clause]
+                    else:
+                        query['query']['bool'][clause].extend(this_query['query']['bool'][clause])
 
-        if 'query' not in query:
-            # If the query key doesn't exist at all, add this filters whole query to it
-            query.update(this_query)
-        elif 'bool' not in query['query']:
-            # If this query is not setup as a bool, then add this filters bool section to it
-            query['query']['bool'] = this_query['query']['bool']
-        else:
-            # Check that every clause (ex. 'filter', 'must_not', 'should', etc) in
-            # this filter's query gets added if it's missing, or extends what is
-            # already existing
-            for clause in bool_clauses:
-                if clause not in query['query']['bool']:
-                    query['query']['bool'][clause] = this_query['query']['bool'][clause]
-                else:
-                    query['query']['bool'][clause].extend(this_query['query']['bool'][clause])
+        # Add the "sort" section of this filters query
+        if 'sort' in this_query:
+            if 'sort' not in query:
+                # If the query doesn't have a sort, just add the whole thing
+                query['sort'] = this_query['sort']
+            else:
+                # Append all elements in this queries sort to the current
+                # list of sort clauses that exist
+                query['sort'].extend(this_query['sort'])
 
         return query
 
@@ -651,3 +662,23 @@ class LimitFilter(BaseFilter):
         # in the query
         request.max_assets = self.max_assets
         return query
+
+
+class SimpleSortFilter(BaseFilter):
+    """The SimpleSortFilter has no agg, but will add to the query.
+
+    Possible `order` values are 'asc' and 'desc'.
+    """
+
+    type = 'simpleSort'
+    required_agg_keys = ['attribute']
+    required_query_keys = ['order']
+
+    # No agg needed to load the UI for this filter
+
+    def get_es_query(self):
+        order_direction = self.data['values']['order']
+        attribute = self.data['attribute']
+        return {
+            'sort': [{attribute: {'order': order_direction}}]
+        }
