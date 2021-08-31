@@ -15,6 +15,7 @@ import boonai.common.service.logging.LogAction
 import boonai.common.service.logging.LogObject
 import boonai.common.service.logging.event
 import boonai.common.service.logging.warnEvent
+import boonai.common.util.Json
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -126,6 +127,7 @@ class AnalystServicImpl @Autowired constructor(
         return try {
             val client = AnalystClient(endpoint)
             val result = client.killTask(taskId, reason, newState)
+
             return if (result["status"] as Boolean) {
                 logger.event(LogObject.TASK, LogAction.KILL, mapOf("reason" to reason, "taskId" to taskId))
                 true
@@ -134,6 +136,7 @@ class AnalystServicImpl @Autowired constructor(
                     LogObject.TASK, LogAction.KILL, "Failed to kill task",
                     mapOf("taskId" to taskId, "analyst" to endpoint)
                 )
+                logger.warn(Json.prettyString(result))
                 false
             }
         } catch (e: Exception) {

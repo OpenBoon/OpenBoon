@@ -90,7 +90,7 @@ class GcsProjectStorageService constructor(
         val blob = gcs.get(getBlobId(locator))
 
         // Retrieve logs from file in bucket
-        return if (blob.exists()) {
+        return if (blob != null && blob.exists()) {
             this.stream(locator)
         } else {
             ResponseEntity.ok()

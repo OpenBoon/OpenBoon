@@ -1,6 +1,7 @@
 package boonai.archivist.storage
 
 import com.google.api.gax.paging.Page
+import com.google.cloud.ServiceOptions
 import com.google.cloud.logging.LogEntry
 import com.google.cloud.logging.Logging
 import com.google.cloud.logging.Payload
@@ -9,15 +10,24 @@ import java.io.InputStream
 
 class GcpLogInputStream(
     val loggingService: Logging,
-    val logName: String
+    logName: String,
+    logPath: String? = null
 ) : InputStream() {
 
     var page: Page<LogEntry>? = null
     val buffer: StringBuilder = StringBuilder(4096)
     var index = -1
+    val fullLogName: String
 
     init {
         pullNextPage(null)
+
+        fullLogName = if (logPath != null) {
+            "$logPath/$logName"
+        } else {
+            val gcpProj = ServiceOptions.getDefaultProjectId() ?: "localdev"
+            "projects/$gcpProj/logs/$logName"
+        }
     }
 
     /**
@@ -25,7 +35,7 @@ class GcpLogInputStream(
      */
     fun pullNextPage(curpage: Page<LogEntry>?): Boolean {
         page = if (curpage == null) {
-            loggingService.listLogEntries(Logging.EntryListOption.filter("logName=$logName"))
+            loggingService.listLogEntries(Logging.EntryListOption.filter("logName=$fullLogName"))
         } else if (curpage.hasNextPage()) {
             curpage.nextPage
         } else {
