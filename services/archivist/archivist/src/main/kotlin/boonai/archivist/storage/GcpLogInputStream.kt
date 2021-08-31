@@ -9,7 +9,7 @@ import java.io.InputStream
 
 class GcpLogInputStream(
     val loggingService: Logging,
-    val logName: String
+    val logName: String,
 ) : InputStream() {
 
     var page: Page<LogEntry>? = null
@@ -17,6 +17,7 @@ class GcpLogInputStream(
     var index = -1
 
     init {
+        logger.info("Pulling logs for $logName")
         pullNextPage(null)
     }
 

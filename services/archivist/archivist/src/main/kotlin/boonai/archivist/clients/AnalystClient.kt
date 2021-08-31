@@ -36,10 +36,12 @@ class AnalystClient(val baseUri: String) {
 
     private inline fun <reified T> delete(path: String, body: Map<String, Any>? = null): T {
         val rbody = RequestBody.create(MEDIA_TYPE_JSON, Json.Mapper.writeValueAsString(body))
-        val req = Request.Builder().url("$baseUri/$path".replace("//", "/"))
+        val url = "$baseUri/$path".replace("//", "/")
+        val req = Request.Builder().url(url)
             .delete(rbody)
             .build()
 
+        logger.info("Calling Analyst URL: $url")
         client.newCall(req).execute().use { rsp ->
             if (rsp.code() >= 400) {
                 throw AuthServerClientException("AuthServerClient failure, rsp code: ${rsp.code()}")

@@ -159,7 +159,7 @@ open class Task(
 
 ) : InternalTask(id, jobId, projectId, dataSourceId, name, state) {
 
-    val logName = "projects/$projectId/logs/$id-$runCount}"
+    val logName = "$id-$runCount"
 }
 
 /**
