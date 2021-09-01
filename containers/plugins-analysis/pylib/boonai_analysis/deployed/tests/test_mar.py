@@ -162,7 +162,7 @@ class TorchModelArchiveDetectorTests(PluginUnitTestCase):
     @patch.object(file_storage.projects, "localize_file")
     @patch("boonflow.base.get_proxy_level_path")
     @patch.object(TorchModelArchiveDetector, "predict")
-    def test_image_classifier(self, predict_patch, proxy_patch, file_patch, model_patch):
+    def test_detector(self, predict_patch, proxy_patch, file_patch, model_patch):
         name = "custom-object-detection"
         model_patch.return_value = Model(
             {
