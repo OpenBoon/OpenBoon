@@ -305,7 +305,7 @@ class ProcessorWrapper:
                 self.instance.preprocess(assets)
                 total_time = round(time.monotonic() - start_time, 2)
                 self.instance.logger.info(
-                    "completed {} preprocess in {0:.2f}".format(self.class_name, total_time))
+                    "completed {0} preprocess in {1:.2f}".format(self.class_name, total_time))
             else:
                 logger.warning(
                     "The processor {} has no instance, the class was not found".format(
