@@ -9,7 +9,7 @@ from boonsdk import BoonApp, BoonClient
 from searches.filters import (BaseFilter, RangeFilter, ExistsFilter, FacetFilter,
                               LabelConfidenceFilter, TextContentFilter,
                               SimilarityFilter, LabelFilter, DateFilter,
-                              PredictionCountFilter, LimitFilter)
+                              PredictionCountFilter, LimitFilter, SimpleSortFilter)
 
 
 class MockFilter(BaseFilter):
@@ -942,3 +942,31 @@ class TestLimitFilter(FilterBaseTestCase):
         filter.add_to_query(query, request)
         assert query == original_query
         assert request.max_assets == 20
+
+
+class TestSimpleSort(FilterBaseTestCase):
+
+    Filter = SimpleSortFilter
+
+    @pytest.fixture
+    def mock_data(self):
+        return {
+            'type': 'simpleSort',
+            'attribute': 'media.length',
+            'values': {'order': 'asc'}
+        }
+
+    def test_vad_validation(self, mock_data):
+        del(mock_data['values'])
+        filter = self.Filter(mock_data)
+        with pytest.raises(ValidationError):
+            filter.is_valid(query=True, raise_exception=True)
+
+    def test_add_to_query(self, mock_data):
+        filter = self.Filter(mock_data)
+        query = {'bool': {'stuff': 'in here'},
+                 'sort': [{'cool': {'sort': 'desc'}}]}
+        filter.add_to_query(query, Mock())
+        assert query == {'bool': {'stuff': 'in here'},
+                         'sort': [{'cool': {'sort': 'desc'}},
+                                  {'media.length': {'order': 'asc'}}]}

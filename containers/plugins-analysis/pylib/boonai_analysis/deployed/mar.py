@@ -1,6 +1,8 @@
+import logging
 import os
 import tempfile
 
+import backoff
 import numpy as np
 import requests
 from PIL import Image, ImageColor
@@ -10,6 +12,29 @@ from boonflow import Argument, file_storage, proxy, clips, video, Prediction, Fi
 from boonflow.analysis import LabelDetectionAnalysis
 from boonflow.base import ImageInputStream
 from ..custom.base import CustomModelProcessor
+
+logger = logging.getLogger(__name__)
+
+
+@backoff.on_exception(backoff.expo,
+                      requests.exceptions.RequestException,
+                      max_time=20)
+def make_request(endpoint, stream):
+    """
+    Make request to the the hosted model endpoint.
+
+    Args:
+        endpoint (str): The request endpoinnt
+        stream (IOBase): An IO stream to
+
+    Returns:
+        mixed: The results of the inference.
+
+    """
+    logger.info(f'Making request to {endpoint}')
+    rsp = requests.post(endpoint, data=stream)
+    rsp.raise_for_status()
+    return rsp.json()
 
 
 class TorchModelBase(CustomModelProcessor):
@@ -130,10 +155,8 @@ class TorchModelArchiveClassifier(TorchModelBase):
             list: A list of tuples containing predictions
 
         """
-        rsp = requests.post(self.endpoint, data=stream)
-        rsp.raise_for_status()
-
-        return [(k, v) for k, v in rsp.json().items()]
+        result = make_request(self.endpoint, stream)
+        return [(k, v) for k, v in result.items()]
 
 
 class TorchModelArchiveDetector(TorchModelBase):
@@ -176,11 +199,10 @@ class TorchModelArchiveDetector(TorchModelBase):
             list: A list of tuples containing predictions
 
         """
-        rsp = requests.post(self.endpoint, data=stream)
-        rsp.raise_for_status()
+        result = make_request(self.endpoint, stream)
 
         preds = []
-        for pred in rsp.json():
+        for pred in result:
             keys = list(pred.keys())
             keys.remove("score")
             label = keys[0]
@@ -247,10 +269,8 @@ class TorchModelTextClassifier(TorchModelBase):
             list: A list of tuples containing predictions
 
         """
-        rsp = requests.post(self.endpoint, data=stream)
-        rsp.raise_for_status()
-
-        return [(k, v) for k, v in rsp.json().items()]
+        result = make_request(self.endpoint, stream)
+        return [(k, v) for k, v in result.items()]
 
 
 class TorchModelImageSegmenter(CustomModelProcessor):
@@ -315,9 +335,7 @@ class TorchModelImageSegmenter(CustomModelProcessor):
             list: A list of tuples containing predictions
 
         """
-        rsp = requests.post(self.endpoint, data=image.read())
-        rsp.raise_for_status()
-        return rsp.json()
+        return make_request(self.endpoint, image.read())
 
     def get_label(self, idx):
         """

@@ -28,7 +28,8 @@ class RekognitionLabelDetectionProcessorTests(PluginUnitTestCase):
         analysis = frame.asset.get_analysis('aws-label-detection')
         assert 'Plant' in get_prediction_labels(analysis)
         assert 'Daisy' in get_prediction_labels(analysis)
-        assert analysis['count'] == 2
+        assert 'Cat' in get_prediction_labels(analysis)
+        assert analysis['count'] == 3
 
 
 expected_results = [
@@ -54,6 +55,10 @@ class MockAWSClient:
                 {
                     'Name': 'Daisy',
                     'Confidence': 99.59
+                },
+                {
+                    'Name': 'Cat',
+                    'Confidence': 101
                 }
             ]
         }
