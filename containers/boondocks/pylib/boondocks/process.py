@@ -353,7 +353,7 @@ class ProcessorWrapper:
                         # No need to log, this is normal.
                         return processed
 
-            self.instance.logger.info("started {}".format(self.class_name))
+            self.instance.logger.info("started processor")
 
             retval = self.instance.process(frame)
             # a -1 means the processor was skipped internally.
@@ -387,7 +387,7 @@ class ProcessorWrapper:
         finally:
             # Always show metrics even if it was skipped because otherwise
             # the pipeline checksums don't work.
-            logger.info("completed {} in {0:.2f}".format(self.class_name, total_time))
+            self.instance.logger.info("completed processor in {0:.2f}".format(total_time))
             self.apply_metrics(frame.asset, processed, total_time, error)
             self.reactor.write_event("asset", {
                 "asset": frame.asset.for_json(),
