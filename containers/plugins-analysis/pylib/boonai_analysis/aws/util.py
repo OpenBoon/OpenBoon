@@ -106,7 +106,7 @@ class CustomWaiter:
 
     """
 
-    def __init__(self, name, operation, argument, acceptors, client, delay=10, max_tries=60):
+    def __init__(self, name, operation, argument, acceptors, client, delay=10, max_tries=1000):
         """ Subclasses should pass specific operations, arguments, and acceptors to
         their super class.
 
