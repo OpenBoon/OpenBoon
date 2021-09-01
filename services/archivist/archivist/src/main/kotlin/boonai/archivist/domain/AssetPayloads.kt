@@ -260,8 +260,6 @@ class BatchIndexResponse(
     @ApiModelProperty("A list of failures")
     val failed: List<BatchIndexFailure>,
 
-    @ApiModelProperty("Transient deletion status")
-    val transient: List<String>
 )
 
 @ApiModel(

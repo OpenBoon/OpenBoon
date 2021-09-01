@@ -622,34 +622,6 @@ class AssetServiceTests : AbstractTest() {
     }
 
     @Test
-    fun testBatchIndexAssetsWithTemporaryAssets() {
-        val batchCreate = BatchCreateAssetsRequest(
-            assets = listOf(
-                AssetSpec("gs://cats/large-brown-deleted-cat.jpg"),
-                AssetSpec("gs://cats/large-brown-not-deleted-cat.jpg")
-            )
-        )
-
-        val createRsp = assetService.batchCreate(batchCreate)
-
-        // Delete only the first
-        var assets = assetService.getAll(createRsp.created)
-        assets[0].setAttr("tmp.transient", true)
-
-        val batchIndex = assets.associate { it.id to it.document }
-        val indexRsp = assetService.batchIndex(batchIndex)
-
-        assertTrue(indexRsp.failed.isEmpty())
-        assertEquals(2, indexRsp.indexed.size)
-
-        assertNotNull(assetService.getAsset(createRsp.created[1]))
-        assertEquals(1, indexRsp.transient.size)
-        assertThrows<EmptyResultDataAccessException> {
-            assetService.getAsset(createRsp.created[0])
-        }
-    }
-
-    @Test
     fun testBatchIndexAssetsWithTempFields() {
         val batchCreate = BatchCreateAssetsRequest(
             assets = listOf(AssetSpec("gs://cats/large-brown-cat.jpg"))

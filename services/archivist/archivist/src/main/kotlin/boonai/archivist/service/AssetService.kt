@@ -589,27 +589,19 @@ class AssetServiceImpl : AssetService {
                     postTimelines[id] = timelines
                 }
 
-                val tmpAsset = asset.getAttr("tmp.transient", Boolean::class.java) ?: false
-                if (tmpAsset) {
-                    tempAssets.add(id)
-                }
-
                 prepAssetForUpdate(asset)
                 if (setAnalyzed && !asset.isAnalyzed()) {
                     asset.setAttr("system.state", AssetState.Analyzed.name)
                     stateChangedIds.add(id)
                 }
 
-                if (tmpAsset) {
-                    bulk.add(rest.newDeleteRequest(id))
-                } else {
-                    bulk.add(
-                        rest.newIndexRequest(id)
-                            .create(id in notFound)
-                            .source(doc)
-                            .opType(DocWriteRequest.OpType.INDEX)
-                    )
-                }
+                bulk.add(
+                    rest.newIndexRequest(id)
+                        .create(id in notFound)
+                        .source(doc)
+                        .opType(DocWriteRequest.OpType.INDEX)
+                )
+
             } catch (ex: Exception) {
                 failedAssets.add(
                     BatchIndexFailure(id, asset.getAttr("source.path"), ex.message ?: "Unknown error")
@@ -673,24 +665,6 @@ class AssetServiceImpl : AssetService {
             if (stateChangedIds.isNotEmpty()) {
                 incrementProjectIngestCounters(stateChangedIds.intersect(indexedIds), docs)
             }
-
-            /**
-             logger.info("Post processing ${postTimelines.size} assets for deep video search.")
-             if (postTimelines.isNotEmpty() and properties.getBoolean("archivist.deep-video-analysis.enabled")) {
-             val jobId = getZmlpActor().getAttr("jobId")
-             if (jobId == null) {
-             logger.warn("There was post timelines to process but not jobId was found.")
-             } else {
-             logger.info("Launching deep video analysis on ${postTimelines.size} assets.")
-             jobLaunchService.addMultipleTimelineAnalysisTask(
-             UUID.fromString(jobId), postTimelines
-             )
-             }
-             }
-             **/
-
-            // Delete associated files with the transient assets.
-            deleteAssociatedFiles(tempAssets)
 
             BatchIndexResponse(indexedIds, failedAssets, tempAssets)
         } else {

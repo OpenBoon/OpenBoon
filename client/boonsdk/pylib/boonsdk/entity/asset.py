@@ -236,13 +236,12 @@ class FileImport:
     An FileImport is used to import a new file and metadata into Boon AI.
     """
 
-    def __init__(self, uri, transient=False, custom=None, page=None, label=None):
+    def __init__(self, uri, custom=None, page=None, label=None):
         """
         Construct an FileImport instance which can point to a remote URI.
 
         Args:
             uri (str): a URI locator to the file asset.
-            transient (bool): File will be deleted after processing
             custom (dict): Values for custom metadata fields.
             page (int): The specific page to import if any.
             label (Label): An optional Label which will add the file to
@@ -253,12 +252,7 @@ class FileImport:
         self.custom = custom or {}
         self.page = page
         self.label = label
-        self.tmp = self.__build_tmp_dict(transient)
-
-    def __build_tmp_dict(self, transient):
-        return {
-            'transient': transient
-        }
+        self.tmp = {}
 
     def for_json(self):
         """Returns a dictionary suitable for JSON encoding.
@@ -295,20 +289,19 @@ class FileUpload(FileImport):
     FileUpload instances point to a local file that will be uploaded for analysis.
     """
 
-    def __init__(self, path, transient=False, custom=None, page=None, label=None):
+    def __init__(self, path, custom=None, page=None, label=None):
         """
         Create a new FileUpload instance.
 
         Args:
             path (str): A path to a file, the file must exist.
-            transient (bool): File will be deleted after processing
             custom (dict): Values for pre-created custom metadata fields.
             page (int): The specific page to import if any.
             label (Label): An optional Label which will add the file to
                 a Model training set.
         """
         super(FileUpload, self).__init__(
-            os.path.normpath(os.path.abspath(path)), transient, custom, page, label)
+            os.path.normpath(os.path.abspath(path)), custom, page, label)
 
         if not os.path.exists(path):
             raise ValueError('The path "{}" does not exist'.format(path))
