@@ -265,7 +265,7 @@ class RekognitionLabelDetection(AbstractVideoDetectProcessor):
 
                 label = detection['Label']
                 name = label['Name']
-                confidence = label['Confidence'] / 100.0
+                confidence = min(label['Confidence'] / 100.0, 1.0)
 
                 labels[name] = confidence
                 analysis.add_label_and_score(name, confidence)
@@ -316,7 +316,7 @@ class RekognitionUnsafeDetection(AbstractVideoDetectProcessor):
 
                 content = detection['ModerationLabel']
                 name = content['Name']
-                confidence = content['Confidence'] / 100.0
+                confidence = min(content['Confidence'] / 100.0, 1.0)
 
                 labels[name] = confidence
                 analysis.add_label_and_score(name, confidence)
@@ -368,7 +368,7 @@ class RekognitionCelebrityDetection(AbstractVideoDetectProcessor):
 
                 content = detection['Celebrity']
                 name = content['Name']
-                confidence = content['Confidence'] / 100.0
+                confidence = min(content['Confidence'] / 100.0, 1.0)
 
                 labels[name] = confidence
                 analysis.add_label_and_score(name, confidence)
@@ -430,7 +430,7 @@ class SegmentVideoDetectProcessor(AbstractVideoDetectProcessor):
                 if segment['Type'] == 'TECHNICAL_CUE':
                     segment_type = segment['TechnicalCueSegment']['Type']
                     if segment_type == self.cue:
-                        confidence = segment['TechnicalCueSegment']['Confidence'] / 100.0
+                        confidence = min(segment['TechnicalCueSegment']['Confidence'] / 100.0, 1.0)
                         start_time = segment['StartTimestampMillis'] / 1000.0  # ms to s
                         track = self.cue_map.get(self.cue, self.cue)
 
