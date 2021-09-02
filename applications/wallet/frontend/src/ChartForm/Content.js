@@ -69,6 +69,7 @@ const ChartFormContent = ({
 
       <Listbox
         label="Metadata Type"
+        inputLabel="Filter types"
         value={state.attribute}
         placeholder={shortenedAttribute || 'Select Type'}
         options={filteredFields}

@@ -1014,7 +1014,9 @@ exports[`<ChartHistogram /> should render properly without an attribute 1`] = `
               }
               className="emotion-9"
             >
-              Select Type
+              <span>
+                Select Type
+              </span>
             </ListboxButton>
             <ListboxPopover
               className="emotion-10"
@@ -1029,7 +1031,7 @@ exports[`<ChartHistogram /> should render properly without an attribute 1`] = `
                     className="emotion-13"
                   >
                     <input
-                      aria-label="Filter Types"
+                      aria-label="Filter types"
                       className="emotion-14"
                       onChange={[Function]}
                       placeholder="Filter types"

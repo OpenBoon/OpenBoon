@@ -72,6 +72,7 @@ const ModelMatrixRow = ({ matrix, settings, label, index, dispatch }) => {
         }}
       >
         <span
+          title={`${label} (${rowTotal})`}
           css={{
             overflow: 'hidden',
             textOverflow: 'ellipsis',
