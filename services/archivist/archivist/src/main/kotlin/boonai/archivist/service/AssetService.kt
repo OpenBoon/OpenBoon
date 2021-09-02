@@ -1400,8 +1400,8 @@ class AssetServiceImpl : AssetService {
      * A cache to store parent assets so we don't load them over and over again.
      */
     private val parentAssetCache = CacheBuilder.newBuilder()
-        .maximumSize(50)
-        .initialCapacity(10)
+        .maximumSize(100)
+        .initialCapacity(20)
         .concurrencyLevel(4)
         .expireAfterWrite(5, TimeUnit.MINUTES)
         .build(object : CacheLoader<String, Asset>() {
