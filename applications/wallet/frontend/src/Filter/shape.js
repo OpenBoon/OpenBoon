@@ -12,6 +12,7 @@ const filterShape = {
     'date',
     'label',
     'limit',
+    'simpleSort',
   ]),
   attribute: PropTypes.string.isRequired,
   values: PropTypes.shape({}),

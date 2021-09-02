@@ -10,7 +10,6 @@ from datetime import datetime
 # python3 setup.py sdist bdist_wheel
 
 requirements = [
-    "boonsdk",
     "minio",
     "google-cloud-storage>=1.20.0",
     "backoff",
@@ -27,7 +26,8 @@ requirements = [
     "youtube-dl",
     "flask",
     "numpy",
-    "deprecation"
+    "deprecation",
+    "langcodes"
 ]
 
 setup(

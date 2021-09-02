@@ -323,6 +323,25 @@ class ModelControllerTests : MockMvcTest() {
     }
 
     @Test
+    fun testPatchModelInvalidTrainingArguments() {
+        val modelSpec = ModelSpec("Dolphin Breeds", ModelType.TORCH_MAR_IMAGE_SEGMENTER)
+        val model = modelService.createModel(modelSpec)
+        val args = mapOf(
+            "labels" to "Animal",
+            "colors" to "Black"
+        )
+
+        mvc.perform(
+            MockMvcRequestBuilders.patch("/api/v3/models/${model.id}/_training_args")
+                .headers(admin())
+                .content(Json.serialize(args))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isBadRequest)
+            .andReturn()
+    }
+
+    @Test
     fun testGetModelArgSchema() {
         val modelSpec = ModelSpec("Dog Breeds2", ModelType.TF_CLASSIFIER)
         val model = modelService.createModel(modelSpec)

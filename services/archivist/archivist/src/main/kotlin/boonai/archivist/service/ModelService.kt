@@ -418,6 +418,7 @@ class ModelServiceImpl(
     }
 
     override fun patchTrainingArgs(model: Model, patch: Map<String, Any>) {
+        argValidationService.validateArgs("training/${model.type.name}", patch)
         val args = Asset(model.trainingArgs.toMutableMap())
         for ((k, v) in patch) {
             args.setAttr(k, v)

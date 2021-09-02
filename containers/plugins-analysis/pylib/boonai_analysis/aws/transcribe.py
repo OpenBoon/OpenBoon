@@ -8,6 +8,7 @@ from botocore.exceptions import ClientError
 from boonai_analysis.aws.util import TranscribeCompleteWaiter, AwsEnv
 from boonai_analysis.utils.prechecks import Prechecks
 from boonflow import file_storage, FileTypes, Argument, AssetProcessor
+from boonflow.lang import LanguageCodes
 from boonflow.env import BoonEnv
 from boonflow.analysis import ContentDetectionAnalysis
 from boonflow.audio import has_audio_channel
@@ -24,7 +25,7 @@ class AmazonTranscribeProcessor(AssetProcessor):
         super(AmazonTranscribeProcessor, self).__init__()
         self.add_arg(Argument('languages', 'list',
                               toolTip='List of languages to auto-detect',
-                              default=['en-US', 'en-GB', 'fr-FR', 'es-US']))
+                              default=LanguageCodes.lang_defaults))
 
         self.transcribe_client = None
         self.s3_client = None
@@ -66,7 +67,7 @@ class AmazonTranscribeProcessor(AssetProcessor):
         # get audio s3 uri
         s3_uri = f's3://{bucket_name}/{bucket_file}'
 
-        job_name, audio_result = self.recognize_speech(s3_uri)
+        job_name, audio_result = self.recognize_speech(s3_uri, asset)
         try:
             if audio_result['results']:
                 self.set_analysis(asset, audio_result)
@@ -116,7 +117,7 @@ class AmazonTranscribeProcessor(AssetProcessor):
         analysis.add_content(' '.join(content))
         asset.add_analysis(self.namespace, analysis)
 
-    def recognize_speech(self, audio_uri):
+    def recognize_speech(self, audio_uri, asset):
         """
         Call Amazon Transcribe and wait for the result.
 
@@ -125,7 +126,7 @@ class AmazonTranscribeProcessor(AssetProcessor):
         Returns:
             (dict) AWS Transcribe response
         """
-        job = self.start_job(audio_uri)
+        job = self.start_job(audio_uri, asset)
         job_name = job['TranscriptionJobName']
         transcribe_waiter = TranscribeCompleteWaiter(self.transcribe_client)
 
@@ -133,7 +134,7 @@ class AmazonTranscribeProcessor(AssetProcessor):
         job = self.get_job(job_name)
         return job_name, requests.get(job['Transcript']['TranscriptFileUri']).json()
 
-    def start_job(self, media_uri):
+    def start_job(self, media_uri, asset):
         """
 
         Args:
@@ -150,7 +151,7 @@ class AmazonTranscribeProcessor(AssetProcessor):
                 'Media': {'MediaFileUri': media_uri},
                 'MediaFormat': media_format,
                 'IdentifyLanguage': True,
-                'LanguageOptions': self.arg_value('languages')
+                'LanguageOptions': self.get_languages(asset)
             }
 
             self.logger.info('Starting transcription job %s.', job_name)
@@ -159,6 +160,20 @@ class AmazonTranscribeProcessor(AssetProcessor):
         except ClientError:
             self.logger.exception('Couldn\'t start transcription job %s.', job_name)
             raise
+
+    def get_languages(self, asset):
+        """
+        Get list of languages to pass to transcribe.
+        Args:
+            asset: (Asset): The asset which may define languagess
+
+        Returns:
+            list: A list of languagee codes.
+        """
+        langs = asset.get_attr('media.languages')
+        if not langs:
+            langs = self.arg_value('languages')
+        return langs
 
     def get_job(self, job_name):
         """ Gets details about a transcription job.

@@ -473,6 +473,11 @@ class AssetAppTests(unittest.TestCase):
         assert "/foo/bar.jpg" == res.uri
 
     @patch.object(BoonClient, 'put')
+    def test_set_languages(self, put):
+        put.return_value = {}
+        self.app.assets.set_languages('12345', ['en-US'])
+
+    @patch.object(BoonClient, 'put')
     def test_label_search(self, put_patch):
         put_patch.return_value = {'count': 100}
         search = {"match_all": {}}

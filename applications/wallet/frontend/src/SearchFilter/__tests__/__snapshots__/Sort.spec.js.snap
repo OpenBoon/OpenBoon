@@ -1,0 +1,841 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SearchFilterSort /> should render properly with a sort filter selected 1`] = `
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-0 label {
+  width: 100%;
+}
+
+.emotion-0 label div:first-of-type {
+  display: none;
+}
+
+.emotion-0 label [data-reach-listbox-input] {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.emotion-0 label span[role=button] {
+  padding: 12px;
+}
+
+.emotion-1 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  margin-right: 1px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  z-index: 10;
+}
+
+.emotion-1,
+.emotion-1:hover,
+.emotion-1:visited,
+.emotion-1 .noop {
+  background-color: #808080;
+}
+
+.emotion-1:hover,
+.emotion-1 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #b3b3b3;
+}
+
+.emotion-1[aria-disabled=true],
+.emotion-1 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-2 {
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+
+.emotion-3 [data-reach-listbox-input][data-state="expanded"] {
+  box-shadow: 0 2px 6px 0 #000000;
+}
+
+.emotion-4 {
+  padding-bottom: 8px;
+  color: #ffffff;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+}
+
+.emotion-5 {
+  width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  background-color: #808080;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border-radius: 2px;
+}
+
+.emotion-6 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  border: none;
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+  padding: 8px;
+}
+
+.emotion-7 {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+}
+
+.emotion-7:focus-within {
+  outline: none;
+  box-shadow: none;
+}
+
+.emotion-8 {
+  overflow-y: hidden;
+  padding: 8px;
+  padding-top: 0;
+  margin: -8px;
+  margin-bottom: 0;
+}
+
+.emotion-9 {
+  border-bottom-right-radius: 2px;
+  border-bottom-left-radius: 2px;
+  background-color: #808080;
+  box-shadow: 0 2px 6px 0 #000000;
+}
+
+.emotion-10 {
+  padding: 4px;
+}
+
+.emotion-11 {
+  width: 100%;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding: 12px;
+  padding-left: 32px;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  color: #e0e0e0;
+  background-repeat: no-repeat,repeat;
+  -webkit-background-position: left 8px top 50%;
+  background-position: left 8px top 50%;
+  -webkit-background-size: 20px;
+  background-size: 20px;
+  background-color: #ffffff;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
+}
+
+.emotion-11::-webkit-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-11::-moz-placeholder {
+  font-style: italic;
+}
+
+.emotion-11:-ms-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-11::placeholder {
+  font-style: italic;
+}
+
+.emotion-11:hover {
+  border: 1px solid #808080;
+}
+
+.emotion-11:focus {
+  outline: 1px solid transparent;
+  border: 1px solid #3A5DFF;
+  color: #191919;
+  background-color: #ffffff;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
+}
+
+.emotion-12 {
+  border-bottom-right-radius: 2px;
+  border-bottom-left-radius: 2px;
+  margin: 0;
+  overflow: auto;
+  max-height: 350px;
+  background-color: #808080;
+  color: #ffffff;
+  font-weight: 500;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.emotion-13 {
+  list-style: none;
+  padding-left: 0;
+  padding-bottom: 8px;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+}
+
+.emotion-14 {
+  padding-bottom: 2px;
+}
+
+.emotion-15 {
+  padding-left: 8px;
+}
+
+.emotion-16 {
+  padding: 0;
+}
+
+.emotion-17 {
+  padding-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 24px;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 400;
+}
+
+.emotion-17:hover {
+  background: #b3b3b3;
+  cursor: pointer;
+}
+
+.emotion-18 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  margin-left: 4px;
+}
+
+.emotion-18,
+.emotion-18:hover,
+.emotion-18:visited,
+.emotion-18 .noop {
+  background-color: #808080;
+}
+
+.emotion-18:hover,
+.emotion-18 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #b3b3b3;
+}
+
+.emotion-18[aria-disabled=true],
+.emotion-18 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+<div
+  className="emotion-0"
+>
+  <button
+    aria-label="Change sort direction"
+    className="emotion-1"
+    onClick={[Function]}
+    type="button"
+  >
+    <svg
+      className="emotion-2"
+      data-file-name="back.svg"
+      height={20}
+    />
+  </button>
+  <label
+    className="emotion-3"
+  >
+    <div
+      className="emotion-4"
+    >
+      Sort by
+    </div>
+    <ListboxInput
+      className="emotion-5"
+      defaultValue="location.city"
+      onChange={[Function]}
+    >
+      <ListboxButton
+        arrow={
+          <Unknown
+            color="#ffffff"
+            height={20}
+          />
+        }
+        className="emotion-6"
+      >
+        <span>
+          city
+        </span>
+      </ListboxButton>
+      <ListboxPopover
+        className="emotion-7"
+      >
+        <div
+          className="emotion-8"
+        >
+          <div
+            className="emotion-9"
+          >
+            <div
+              className="emotion-10"
+            >
+              <input
+                aria-label="Filter sort options"
+                className="emotion-11"
+                onChange={[Function]}
+                placeholder="Filter sort options"
+                type="search"
+                value=""
+              />
+            </div>
+            <ListboxList
+              className="emotion-12"
+            >
+              <ul
+                aria-labelledby="Location"
+                className="emotion-13"
+                role="group"
+              >
+                <li
+                  className="emotion-14"
+                  role="presentation"
+                >
+                  <span
+                    className="emotion-15"
+                  >
+                    Location
+                  </span>
+                  <ul
+                    className="emotion-16"
+                  >
+                    <ListboxOption
+                      className="emotion-17"
+                      value="location.city"
+                    >
+                      city
+                    </ListboxOption>
+                  </ul>
+                </li>
+              </ul>
+            </ListboxList>
+          </div>
+        </div>
+      </ListboxPopover>
+    </ListboxInput>
+  </label>
+  <button
+    aria-label="Clear sort"
+    className="emotion-18"
+    onClick={[Function]}
+    type="button"
+  >
+    <svg
+      data-file-name="cross.svg"
+      height={20}
+    />
+  </button>
+</div>
+`;
+
+exports[`<SearchFilterSort /> should render properly without a sort filter selected 1`] = `
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-0 label {
+  width: 100%;
+}
+
+.emotion-0 label div:first-of-type {
+  display: none;
+}
+
+.emotion-0 label [data-reach-listbox-input] {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.emotion-0 label span[role=button] {
+  padding: 12px;
+}
+
+.emotion-1 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: not-allowed;
+  color: #ffffff;
+  background-color: transparent;
+  margin-right: 1px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  z-index: 10;
+}
+
+.emotion-1,
+.emotion-1:hover,
+.emotion-1:visited,
+.emotion-1 .noop {
+  background-color: #808080;
+}
+
+.emotion-1:hover,
+.emotion-1 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #b3b3b3;
+}
+
+.emotion-1[aria-disabled=true],
+.emotion-1 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-2 {
+  -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+}
+
+.emotion-3 [data-reach-listbox-input][data-state="expanded"] {
+  box-shadow: 0 2px 6px 0 #000000;
+}
+
+.emotion-4 {
+  padding-bottom: 8px;
+  color: #ffffff;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+}
+
+.emotion-5 {
+  width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  background-color: #808080;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border-radius: 2px;
+}
+
+.emotion-6 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  border: none;
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+  padding: 8px;
+}
+
+.emotion-7 {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+}
+
+.emotion-7:focus-within {
+  outline: none;
+  box-shadow: none;
+}
+
+.emotion-8 {
+  overflow-y: hidden;
+  padding: 8px;
+  padding-top: 0;
+  margin: -8px;
+  margin-bottom: 0;
+}
+
+.emotion-9 {
+  border-bottom-right-radius: 2px;
+  border-bottom-left-radius: 2px;
+  background-color: #808080;
+  box-shadow: 0 2px 6px 0 #000000;
+}
+
+.emotion-10 {
+  padding: 4px;
+}
+
+.emotion-11 {
+  width: 100%;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding: 12px;
+  padding-left: 32px;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  color: #e0e0e0;
+  background-repeat: no-repeat,repeat;
+  -webkit-background-position: left 8px top 50%;
+  background-position: left 8px top 50%;
+  -webkit-background-size: 20px;
+  background-size: 20px;
+  background-color: #ffffff;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
+}
+
+.emotion-11::-webkit-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-11::-moz-placeholder {
+  font-style: italic;
+}
+
+.emotion-11:-ms-input-placeholder {
+  font-style: italic;
+}
+
+.emotion-11::placeholder {
+  font-style: italic;
+}
+
+.emotion-11:hover {
+  border: 1px solid #808080;
+}
+
+.emotion-11:focus {
+  outline: 1px solid transparent;
+  border: 1px solid #3A5DFF;
+  color: #191919;
+  background-color: #ffffff;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
+}
+
+.emotion-12 {
+  border-bottom-right-radius: 2px;
+  border-bottom-left-radius: 2px;
+  margin: 0;
+  overflow: auto;
+  max-height: 350px;
+  background-color: #808080;
+  color: #ffffff;
+  font-weight: 500;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.emotion-13 {
+  list-style: none;
+  padding-left: 0;
+  padding-bottom: 8px;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+}
+
+.emotion-14 {
+  padding-bottom: 2px;
+}
+
+.emotion-15 {
+  padding-left: 8px;
+}
+
+.emotion-16 {
+  padding: 0;
+}
+
+.emotion-17 {
+  padding-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 24px;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 400;
+}
+
+.emotion-17:hover {
+  background: #b3b3b3;
+  cursor: pointer;
+}
+
+.emotion-18 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: not-allowed;
+  color: #ffffff;
+  background-color: transparent;
+  margin-left: 4px;
+}
+
+.emotion-18,
+.emotion-18:hover,
+.emotion-18:visited,
+.emotion-18 .noop {
+  background-color: #808080;
+}
+
+.emotion-18:hover,
+.emotion-18 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #b3b3b3;
+}
+
+.emotion-18[aria-disabled=true],
+.emotion-18 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+<div
+  className="emotion-0"
+>
+  <button
+    aria-disabled={true}
+    aria-label="Change sort direction"
+    className="emotion-1"
+    onClick={[Function]}
+    type="button"
+  >
+    <svg
+      className="emotion-2"
+      data-file-name="back.svg"
+      height={20}
+    />
+  </button>
+  <label
+    className="emotion-3"
+  >
+    <div
+      className="emotion-4"
+    >
+      Sort by
+    </div>
+    <ListboxInput
+      className="emotion-5"
+      defaultValue=""
+      onChange={[Function]}
+    >
+      <ListboxButton
+        arrow={
+          <Unknown
+            color="#ffffff"
+            height={20}
+          />
+        }
+        className="emotion-6"
+      >
+        <span>
+          Select sort option
+        </span>
+      </ListboxButton>
+      <ListboxPopover
+        className="emotion-7"
+      >
+        <div
+          className="emotion-8"
+        >
+          <div
+            className="emotion-9"
+          >
+            <div
+              className="emotion-10"
+            >
+              <input
+                aria-label="Filter sort options"
+                className="emotion-11"
+                onChange={[Function]}
+                placeholder="Filter sort options"
+                type="search"
+                value=""
+              />
+            </div>
+            <ListboxList
+              className="emotion-12"
+            >
+              <ul
+                aria-labelledby="Location"
+                className="emotion-13"
+                role="group"
+              >
+                <li
+                  className="emotion-14"
+                  role="presentation"
+                >
+                  <span
+                    className="emotion-15"
+                  >
+                    Location
+                  </span>
+                  <ul
+                    className="emotion-16"
+                  >
+                    <ListboxOption
+                      className="emotion-17"
+                      value="location.city"
+                    >
+                      city
+                    </ListboxOption>
+                  </ul>
+                </li>
+              </ul>
+            </ListboxList>
+          </div>
+        </div>
+      </ListboxPopover>
+    </ListboxInput>
+  </label>
+  <button
+    aria-disabled={true}
+    aria-label="Clear sort"
+    className="emotion-18"
+    onClick={[Function]}
+    type="button"
+  >
+    <svg
+      data-file-name="cross.svg"
+      height={20}
+    />
+  </button>
+</div>
+`;

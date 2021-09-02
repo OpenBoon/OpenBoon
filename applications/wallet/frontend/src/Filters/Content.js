@@ -1,5 +1,6 @@
 /* eslint-disable react/no-array-index-key */
 import PropTypes from 'prop-types'
+import useSWR from 'swr'
 
 import filterShape from '../Filter/shape'
 
@@ -33,6 +34,10 @@ const FiltersContent = ({
   setIsMenuOpen,
 }) => {
   const hasFilters = filters.length > 0
+
+  const { data: fields } = useSWR(
+    `/api/v1/projects/${projectId}/searches/fields/`,
+  )
 
   return (
     <>
@@ -97,6 +102,7 @@ const FiltersContent = ({
           projectId={projectId}
           assetId={assetId}
           filters={filters}
+          fields={fields}
         />
       </div>
 

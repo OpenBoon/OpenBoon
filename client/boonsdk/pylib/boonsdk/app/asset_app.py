@@ -553,6 +553,23 @@ class AssetApp:
         }
         return Asset(self.app.client.post('/ml/v1/modules/apply-to-asset', body))
 
+    def set_languages(self, asset, languages):
+        """
+        Set the languages for the Asset.  This property is for various types
+        of processing where knowing the language is important for accurate metadata.
+        Setting multiple languages is ok.  If no language is set, BoonAI will try
+        to auto-detect it from the media.
+
+        Args:
+            asset (Asset): The Asset or the asset's unique ID.
+            languages (list): A list of BCP-47 language codes. (ex: en-US)
+        Returns:
+            dict: A update status dict.
+        """
+        asset_id = as_id(asset)
+        body = as_collection(languages)
+        return self.app.client.put(f'/api/v3/assets/{asset_id}/_set_languages', body)
+
 
 """
 A named tuple to define a ReprocessSearchResponse
