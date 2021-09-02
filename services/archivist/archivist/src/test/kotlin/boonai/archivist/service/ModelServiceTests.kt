@@ -1,6 +1,7 @@
 package boonai.archivist.service
 
 import boonai.archivist.AbstractTest
+import boonai.archivist.domain.ArgTypeException
 import boonai.archivist.domain.Asset
 import boonai.archivist.domain.AssetSpec
 import boonai.archivist.domain.BatchCreateAssetsRequest
@@ -394,6 +395,35 @@ class ModelServiceTests : AbstractTest() {
             model,
             mapOf("epochs" to 20)
         )
+    }
+
+    @Test(expected = ArgTypeException::class)
+    fun testPatchInvalidArgs() {
+        pipelineModService.updateStandardMods()
+        val model1 = create(type = ModelType.TORCH_MAR_IMAGE_SEGMENTER)
+        modelService.patchTrainingArgs(
+            model1,
+            mapOf(
+                "labels" to "Animal",
+                "colors" to "Black"
+            )
+        )
+    }
+
+    @Test
+    fun testPatchValidArgs() {
+        pipelineModService.updateStandardMods()
+        val model1 = create(type = ModelType.TORCH_MAR_IMAGE_SEGMENTER)
+        val args = mapOf(
+            "labels" to listOf("1" to "Person", "2" to "Animal"),
+            "colors" to listOf("Person" to "Black", "Animal" to "White")
+        )
+        modelService.patchTrainingArgs(
+            model1,
+            args
+        )
+        val model = modelService.getModel(model1.id)
+        assertEquals(Json.serializeToString(args), Json.serializeToString(model.trainingArgs))
     }
 
     fun assertModel(model: Model) {
