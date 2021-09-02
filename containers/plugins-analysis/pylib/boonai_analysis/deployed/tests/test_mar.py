@@ -178,8 +178,10 @@ class TorchModelArchiveDetectorTests(PluginUnitTestCase):
             }
         )
         make_request_patch.return_value = [
-            {'person': [104.5685806274414, 3.214049816131592, 320.3063049316406, 339.0], 'score': 0.9994246959686279},
-            {'person': [258.7762451171875, 0.0, 438.7398681640625, 329.4570617675781], 'score': 0.9975128173828125}
+            {'person': [104.5685806274414, 3.214049816131592, 320.3063049316406, 339.0],
+             'score': 0.9994246959686279},
+            {'person': [258.7762451171875, 0.0, 438.7398681640625, 329.4570617675781],
+             'score': 0.9975128173828125}
         ]
 
         args = {
@@ -341,8 +343,10 @@ class TorchModelArchiveTextClassificationTests(PluginUnitTestCase):
                 "moduleName": self.name
             }
         )
-        make_request_patch.return_value = {'World': 0.010638430714607239, 'Sports': 4.3774482037406415e-05,
-                                           'Business': 0.44048723578453064, 'Sci/Tec': 0.548830509185791}
+        make_request_patch.return_value = {'World': 0.010638430714607239,
+                                           'Sports': 4.3774482037406415e-05,
+                                           'Business': 0.44048723578453064,
+                                           'Sci/Tec': 0.548830509185791}
         args_patch.return_value = {}
 
         args = {
