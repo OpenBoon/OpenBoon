@@ -1140,6 +1140,11 @@ class AssetServiceImpl : AssetService {
                 return true
             }
 
+            if (pipeline.any { m -> m.force }) {
+                logger.info("Reprocessing asset ${asset.id}, forced modules detected.")
+                return true
+            }
+
             // Now comes the slow check.  Compare the new processing to the metrics
             // and determine if new processing needs to be done
             val existing = oldPipeline.map { m -> "${m.processor}${m.checksum}" }.toSet()
