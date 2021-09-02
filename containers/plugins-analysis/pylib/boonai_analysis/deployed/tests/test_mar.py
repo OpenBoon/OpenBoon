@@ -28,8 +28,8 @@ class TorchModelArchiveTests(PluginUnitTestCase):
     @patch.object(ModelApp, "get_model")
     @patch.object(file_storage.projects, "localize_file")
     @patch("boonflow.base.get_proxy_level_path")
-    @patch.object(TorchModelArchiveClassifier, "predict")
-    def test_image_classifier(self, predict_patch, proxy_patch, file_patch, model_patch):
+    @patch("boonai_analysis.deployed.mar.make_request")
+    def test_image_classifier(self, make_request_patch, proxy_patch, file_patch, model_patch):
         name = "custom-flowers-label-detection-tf2-xfer-mobilenet2"
         model_patch.return_value = Model(
             {
@@ -40,10 +40,13 @@ class TorchModelArchiveTests(PluginUnitTestCase):
                 "moduleName": name
             }
         )
-        predict_patch.return_value = [
-            ("daisy", 0.998),
-            ("cat", 0.222)
-        ]
+        make_request_patch.return_value = {
+            'toucan': 0.9993595480918884,
+            'hornbill': 0.0003122082562185824,
+            'anemone_fish': 0.00015631545102223754,
+            'king_penguin': 6.56733027426526e-05,
+            'macaw': 4.006339440820739e-05
+        }
 
         args = {
             "model_id": self.model_id,
@@ -60,8 +63,8 @@ class TorchModelArchiveTests(PluginUnitTestCase):
         )
         processor.process(frame)
         analysis = frame.asset.get_analysis(name)
-        assert len(analysis['predictions']) == 2
-        assert analysis['predictions'][0]['label'] == 'daisy'
+        assert len(analysis['predictions']) == 1
+        assert analysis['predictions'][0]['label'] == 'toucan'
 
 
 @pytest.mark.skip(reason='dont run automatically')
@@ -90,6 +93,7 @@ class TorchModelArchiveIntegrationTests(PluginUnitTestCase):
             "model_id": self.model_id,
             "tag": "latest",
             "endpoint": "http://127.0.0.1:8080",
+            "endpoint_path": "/predictions/resnet152",
             "model": "resnet152"
         }
 
@@ -161,8 +165,8 @@ class TorchModelArchiveDetectorTests(PluginUnitTestCase):
     @patch.object(ModelApp, "get_model")
     @patch.object(file_storage.projects, "localize_file")
     @patch("boonflow.base.get_proxy_level_path")
-    @patch.object(TorchModelArchiveDetector, "predict")
-    def test_detector(self, predict_patch, proxy_patch, file_patch, model_patch):
+    @patch("boonai_analysis.deployed.mar.make_request")
+    def test_detector(self, make_request_patch, proxy_patch, file_patch, model_patch):
         name = "custom-object-detection"
         model_patch.return_value = Model(
             {
@@ -173,15 +177,16 @@ class TorchModelArchiveDetectorTests(PluginUnitTestCase):
                 "moduleName": name
             }
         )
-        predict_patch.return_value = [
-            ("person", 0.998, [1.0, 1.0, 2.0, 2.0]),
-            ("cat", 0.222, [2.0, 2.0, 3.0, 3.0])
+        make_request_patch.return_value = [
+            {'person': [104.5685806274414, 3.214049816131592, 320.3063049316406, 339.0], 'score': 0.9994246959686279},
+            {'person': [258.7762451171875, 0.0, 438.7398681640625, 329.4570617675781], 'score': 0.9975128173828125}
         ]
 
         args = {
             "model_id": self.model_id,
             "tag": "latest",
-            "endpoint": "http://127.0.0.1:8080"
+            "endpoint": "http://127.0.0.1:8080",
+            "endpoint_path": "/predictions/maskrcnn",
         }
 
         path = test_path("images/set01/faces.jpg")
@@ -228,6 +233,7 @@ class TorchModelArchiveDetectorIntegrationTests(PluginUnitTestCase):
             "model_id": self.model_id,
             "tag": "latest",
             "endpoint": "http://127.0.0.1:8080",
+            "endpoint_path": "/predictions/maskrcnn",
             "model": self.torch_model_name
         }
 
@@ -324,8 +330,8 @@ class TorchModelArchiveTextClassificationTests(PluginUnitTestCase):
     @patch.object(ModelApp, 'get_training_args')
     @patch.object(ModelApp, "get_model")
     @patch.object(file_storage.projects, "localize_file")
-    @patch.object(TorchModelTextClassifier, "predict")
-    def test_text_classifier_from_default(self, predict_patch, _, model_patch, args_patch):
+    @patch("boonai_analysis.deployed.mar.make_request")
+    def test_text_classifier_from_default(self, make_request_patch, _, model_patch, args_patch):
         model_patch.return_value = Model(
             {
                 "id": self.model_id,
@@ -335,9 +341,8 @@ class TorchModelArchiveTextClassificationTests(PluginUnitTestCase):
                 "moduleName": self.name
             }
         )
-        predict_patch.return_value = [
-            ("Business", 0.999)
-        ]
+        make_request_patch.return_value = {'World': 0.010638430714607239, 'Sports': 4.3774482037406415e-05,
+                                           'Business': 0.44048723578453064, 'Sci/Tec': 0.548830509185791}
         args_patch.return_value = {}
 
         args = {
@@ -357,15 +362,15 @@ class TorchModelArchiveTextClassificationTests(PluginUnitTestCase):
         processor.process(frame)
 
         analysis = frame.asset.get_analysis(self.name)
-        assert len(analysis['predictions']) == 1
-        assert analysis['count'] == 1
-        assert analysis['predictions'][0]['label'] == 'Business'
-        assert analysis['predictions'][0]['score'] == 0.999
+        assert len(analysis['predictions']) == 2
+        assert analysis['count'] == 2
+        assert analysis['predictions'][0]['label'] == 'Sci/Tec'
+        assert analysis['predictions'][0]['score'] == 0.549
 
     @patch.object(ModelApp, 'get_training_args')
     @patch.object(ModelApp, "get_model")
     @patch.object(file_storage.projects, "localize_file")
-    @patch.object(TorchModelTextClassifier, "predict")
+    @patch.object(TorchModelTextClassifier, "predict")  # fix
     def test_text_classifier_from_custom_field(self, predict_patch, _, model_patch, args_patch):
         model_patch.return_value = Model(
             {
@@ -402,6 +407,51 @@ class TorchModelArchiveTextClassificationTests(PluginUnitTestCase):
         assert analysis['count'] == 1
         assert analysis['predictions'][0]['label'] == 'Business'
         assert analysis['predictions'][0]['score'] == 0.999
+
+
+@pytest.mark.skip(reason='dont run automatically')
+class TorchModelArchiveTextClassificationIntegrationTests(PluginUnitTestCase):
+    model_id = "model-id-34568"
+    name = "custom-label"
+    torch_model_name = "my_tc"
+
+    @patch.object(ModelApp, 'get_training_args')
+    @patch.object(ModelApp, "get_model")
+    def test_text_classifier(self, model_patch, args_patch):
+        model_patch.return_value = Model(
+            {
+                "id": self.model_id,
+                "type": "TORCH_MAR_TEXT_CLASSIFIER",
+                "fileId": "models/{}/foo/bar".format(self.model_id),
+                "name": self.name,
+                "moduleName": self.name
+            }
+        )
+
+        args_patch.return_value = {}
+
+        args = {
+            "model_id": self.model_id,
+            "tag": "latest",
+            "endpoint": "http://127.0.0.1:8080",
+            "endpoint_path": "/predictions/my_tc",
+            "model": self.torch_model_name
+        }
+
+        text = 'Bloomberg has decided to publish a new report on global economic situation.'
+
+        frame = Frame(TestAsset(attrs={"media.content": text}))
+
+        processor = self.init_processor(
+            TorchModelTextClassifier(), args
+        )
+        processor.process(frame)
+
+        analysis = frame.asset.get_analysis(self.name)
+        assert len(analysis['predictions']) == 2
+        assert analysis['count'] == 2
+        assert analysis['predictions'][0]['label'] == 'Sci/Tec'
+        assert analysis['predictions'][0]['score'] == 0.549
 
 
 class TorchModelImageSegmentTests(PluginUnitTestCase):
