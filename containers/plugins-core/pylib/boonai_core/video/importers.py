@@ -4,6 +4,7 @@ from pathlib import Path
 
 from boonsdk import ProjectTier
 from boonflow.storage import file_storage
+from boonflow.lang import LanguageCodes
 from boonflow.base import AssetProcessor, ProcessorException, FileTypes, \
     FatalProcessorException
 import boonflow.video as video
@@ -61,10 +62,34 @@ class VideoImporter(AssetProcessor):
             for key in ['description', 'title', 'timeCreated']:
                 asset.set_attr("media.{}".format(key), probe.get(key))
 
+            self.detect_and_set_language(asset, probe)
+
             set_resolution_attrs(asset, probe.get('width'), probe.get('height'))
 
             # Set this last.
             asset.set_attr('media.type', 'video')
+
+    def detect_and_set_language(self, asset, probe):
+        """
+        Detect the language for the video.
+        Args
+            asset (Asset): The Asst
+            probe (dict): Results of FFPROBE
+        """
+        # If we already have languages then don't detect.
+        if asset.get_attr("media.languages"):
+            return
+
+        # detect from filename. This takes precedence over the tags in the file.
+        lang = LanguageCodes.detect_in_string(asset.get_attr("source.path"))
+        if lang:
+            asset.set_attr("media.languages", lang)
+
+        # detect from metadata
+        if probe.get("language"):
+            lang = LanguageCodes.to_bcp47(probe.get("language"))
+            if lang:
+                asset.set_attr("media.languages", lang)
 
     def _create_proxy_source_image(self, asset):
         """Creates a source image to be used by the ProxyIngestor.

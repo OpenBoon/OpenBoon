@@ -73,7 +73,10 @@ class AssetSpec(
     var custom: Map<String, Any>? = null,
 
     @ApiModelProperty("Temp unindexed attributes that get removed after the asset is processed.")
-    var tmp: Map<String, Any>? = null
+    var tmp: Map<String, Any>? = null,
+
+    @ApiModelProperty("A list of languages to use for language specific ops")
+    var languages: List<String>? = null
 
 ) {
     @JsonIgnore

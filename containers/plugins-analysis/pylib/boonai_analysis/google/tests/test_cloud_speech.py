@@ -108,3 +108,24 @@ class AsyncSpeechToTextProcessorTestCase(PluginUnitTestCase):
         asset.set_attr('media.length', 15.0)
         frame = Frame(asset)
         self.processor.process(frame)
+
+    @patch('boonai_analysis.google.cloud_speech.initialize_gcp_client')
+    def test_speech_get_language_defaults(self, speech_patch):
+        speech_patch.return_value = MockSpeechToTextClient()
+
+        asset = TestAsset('gs://boonai-dev-data/video/no_audio.mp4')
+        asset.set_attr('media.length', 15.0)
+        frame = Frame(asset)
+        langs = self.processor.get_languages(frame.asset)
+        assert langs == ['en-US', 'fr-FR', 'es-US', 'pt-BR']
+
+    @patch('boonai_analysis.google.cloud_speech.initialize_gcp_client')
+    def test_speech_get_language_by_asset(self, speech_patch):
+        speech_patch.return_value = MockSpeechToTextClient()
+
+        asset = TestAsset('gs://boonai-dev-data/video/no_audio.mp4')
+        asset.set_attr('media.length', 15.0)
+        asset.set_attr("media.languages", ['pt-BR'])
+        frame = Frame(asset)
+        langs = self.processor.get_languages(frame.asset)
+        assert langs == ['pt-BR']

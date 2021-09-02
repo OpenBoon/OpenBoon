@@ -236,7 +236,7 @@ class FileImport:
     An FileImport is used to import a new file and metadata into Boon AI.
     """
 
-    def __init__(self, uri, custom=None, page=None, label=None):
+    def __init__(self, uri, custom=None, page=None, label=None, languages=None):
         """
         Construct an FileImport instance which can point to a remote URI.
 
@@ -246,12 +246,14 @@ class FileImport:
             page (int): The specific page to import if any.
             label (Label): An optional Label which will add the file to
                 a Model training set.
+            languages (list): A list of BCP-47 language codes.
         """
         super(FileImport, self).__init__()
         self.uri = uri
         self.custom = custom or {}
         self.page = page
         self.label = label
+        self.languages = as_collection(languages)
         self.tmp = {}
 
     def for_json(self):
@@ -269,6 +271,7 @@ class FileImport:
             "page": self.page,
             "label": self.label,
             "tmp": self.tmp,
+            "languages": self.languages
         }
 
     def __setitem__(self, field, value):
@@ -289,7 +292,7 @@ class FileUpload(FileImport):
     FileUpload instances point to a local file that will be uploaded for analysis.
     """
 
-    def __init__(self, path, custom=None, page=None, label=None):
+    def __init__(self, path, custom=None, page=None, label=None, languages=None):
         """
         Create a new FileUpload instance.
 
@@ -299,9 +302,10 @@ class FileUpload(FileImport):
             page (int): The specific page to import if any.
             label (Label): An optional Label which will add the file to
                 a Model training set.
+            languages (list): A list of BCP47 language codes.s
         """
         super(FileUpload, self).__init__(
-            os.path.normpath(os.path.abspath(path)), custom, page, label)
+            os.path.normpath(os.path.abspath(path)), custom, page, label, languages)
 
         if not os.path.exists(path):
             raise ValueError('The path "{}" does not exist'.format(path))
@@ -320,7 +324,8 @@ class FileUpload(FileImport):
             "page": self.page,
             "label": self.label,
             "custom": self.custom,
-            "tmp": self.tmp
+            "tmp": self.tmp,
+            "languages": self.languages
         }
 
     def __str__(self):

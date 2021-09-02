@@ -36,10 +36,8 @@ import boonai.archivist.util.FileUtils
 import boonai.common.util.Json
 import org.elasticsearch.client.ResponseException
 import org.junit.Test
-import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.DataRetrievalFailureException
-import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.mock.web.MockMultipartFile
 import java.io.File
 import java.math.BigDecimal

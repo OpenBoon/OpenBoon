@@ -4,7 +4,7 @@ from unittest.mock import patch
 
 from boonai_core.video.importers import VideoImporter
 from boonflow import Frame, ProcessorException, FatalProcessorException
-from boonflow.testing import TestAsset, PluginUnitTestCase, test_data
+from boonflow.testing import TestAsset, PluginUnitTestCase, test_path
 from boonsdk.app import ProjectApp
 from boonsdk import Project
 
@@ -15,7 +15,7 @@ class VideoImporterUnitTestCase(PluginUnitTestCase):
     def setUp(self, get_project_patch):
         get_project_patch.return_value = Project(
             {"id": "1234", "name": "foo", "tier": "PREMIER"})
-        self.movie_path = test_data('video/sample_ipad.m4v')
+        self.movie_path = test_path('video/sample_ipad.m4v')
         self.frame = Frame(TestAsset(self.movie_path))
         self.processor = self.init_processor(VideoImporter(), {})
 
@@ -25,11 +25,13 @@ class VideoImporterUnitTestCase(PluginUnitTestCase):
         expected_media = {
             'description': u'A short description of luke sledding in winter.',
             'title': u'Luke crashes sled', 'length': 15.048367,
-            'height': 360, 'width': 640,
+            'height': 360,
+            'languages': ['en-US'],
+            'width': 640,
             'orientation': 'landscape',
             'aspect': 1.78, 'type': 'video',
             'videoCodec': 'h264',
-            'timeCreated': '2016-04-08T15:02:31.000000Z'
+            'timeCreated': '2016-04-08T15:02:31.000000Z',
         }
 
         assert asset.get_attr('media') == expected_media
@@ -52,7 +54,7 @@ class VideoImporterUnitTestCase(PluginUnitTestCase):
         assert Path(asset.get_attr('tmp.proxy_source_image')).suffix == '.jpg'
 
     def test_create_proxy_source_failure(self):
-        path = test_data('office/simple.pdf')
+        path = test_path('office/simple.pdf')
         asset = Frame(TestAsset(path)).asset
         self.assertRaises(ProcessorException, self.processor._create_proxy_source_image, asset)
 
@@ -63,7 +65,7 @@ class VideoImporterUnitTestCase(PluginUnitTestCase):
         assert Path(self.frame.asset.get_attr('tmp.proxy_source_image')).suffix == '.jpg'
 
     def test_single_frame_movie(self):
-        movie_path = test_data('video/1324_CAPS_23.0_030.00_15_MISC.mov')
+        movie_path = test_path('video/1324_CAPS_23.0_030.00_15_MISC.mov')
         frame = Frame(TestAsset(movie_path))
         self.processor.process(frame)
 
@@ -72,7 +74,7 @@ class VideoImporterUnitTestCase(PluginUnitTestCase):
         assert path.suffix == '.jpg'
 
     def test_process_mxf(self):
-        movie_path = test_data('mxf/freeMXF-mxf1.mxf')
+        movie_path = test_path('mxf/freeMXF-mxf1.mxf')
         asset = TestAsset(movie_path)
         frame = Frame(asset)
         self.processor.process(frame)
@@ -87,12 +89,19 @@ class VideoImporterUnitTestCase(PluginUnitTestCase):
         # Verify proxy source is created.
         assert Path(asset.get_attr('tmp.proxy_source_image')).suffix == '.jpg'
 
+    def test_process_with_lang(self):
+        movie_path = test_path('video/mustang.mp4')
+        asset = TestAsset(movie_path)
+        frame = Frame(asset)
+        self.processor.process(frame)
+        assert asset.get_attr('media.languages') == ['en-US']
+
     @patch.object(ProjectApp, 'get_project')
     def test_process_fail_on_premier_check(self, get_project_patch):
         get_project_patch.return_value = Project(
             {"id": "1234", "name": "foo", "tier": "ESSENTIALS"})
 
-        movie_path = test_data('mxf/freeMXF-mxf1.mxf')
+        movie_path = test_path('mxf/freeMXF-mxf1.mxf')
         asset = TestAsset(movie_path)
         frame = Frame(asset)
         processor = self.init_processor(VideoImporter(), {})

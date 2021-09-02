@@ -601,7 +601,6 @@ class AssetServiceImpl : AssetService {
                         .source(doc)
                         .opType(DocWriteRequest.OpType.INDEX)
                 )
-
             } catch (ex: Exception) {
                 failedAssets.add(
                     BatchIndexFailure(id, asset.getAttr("source.path"), ex.message ?: "Unknown error")
@@ -666,9 +665,9 @@ class AssetServiceImpl : AssetService {
                 incrementProjectIngestCounters(stateChangedIds.intersect(indexedIds), docs)
             }
 
-            BatchIndexResponse(indexedIds, failedAssets, tempAssets)
+            BatchIndexResponse(indexedIds, failedAssets)
         } else {
-            BatchIndexResponse(emptyList(), failedAssets, emptyList())
+            BatchIndexResponse(emptyList(), failedAssets)
         }
     }
 
@@ -994,6 +993,7 @@ class AssetServiceImpl : AssetService {
             asset.setAttr(k, v)
         }
 
+        // Set temp vars
         spec.tmp?.forEach { (k, v) ->
             val key = if (k.startsWith("tmp.")) {
                 k
@@ -1001,6 +1001,16 @@ class AssetServiceImpl : AssetService {
                 "tmp.$k"
             }
             asset.setAttr(key, v)
+        }
+
+        // Set language
+        spec.languages?.let {
+            it.forEach { lang ->
+                if (!lang.matches(Regex("^[a-z]{2}-[A-Z]{2}$"))) {
+                    throw IllegalArgumentException("Invalid language code format: $lang")
+                }
+            }
+            asset.setAttr("media.languages", it)
         }
 
         val time = java.time.Clock.systemUTC().instant().toString()
