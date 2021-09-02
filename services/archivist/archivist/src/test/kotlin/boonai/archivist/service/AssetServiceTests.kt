@@ -38,6 +38,7 @@ import org.elasticsearch.client.ResponseException
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.DataRetrievalFailureException
+import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.mock.web.MockMultipartFile
 import java.io.File
 import java.math.BigDecimal
@@ -904,7 +905,7 @@ class AssetServiceTests : AbstractTest() {
     }
 
     @Test
-    fun testLabelAssetsBySeaarch() {
+    fun testLabelAssetsBySearch() {
         val ds = datasetService.createDataset(DatasetSpec("test", DatasetType.Classification))
         val label = ds.makeLabel("cat")
 
@@ -929,5 +930,64 @@ class AssetServiceTests : AbstractTest() {
         for (asset in getSample(2)) {
             print(asset.getAttr("labels"))
         }
+    }
+
+    @Test
+    fun testSetLanguage() {
+        val batchCreate = BatchCreateAssetsRequest(
+            assets = listOf(
+                AssetSpec("gs://cats/large-brown-deleted-cat.jpg"),
+            ),
+            state = AssetState.Analyzed
+        )
+        assetService.batchCreate(batchCreate)
+        refreshElastic()
+
+        var asset = this.getSample(1)[0]
+        val rsp = assetService.setLanguages(asset.id, listOf("en-US"))
+        assertTrue(rsp)
+
+        refreshElastic()
+        asset = assetService.getAsset(asset.id)
+        assertEquals(listOf("en-US"), (asset.getAttr("media.languages")))
+    }
+
+    @Test(expected = IllegalArgumentException::class)
+    fun testSetLanguageErrorBadLanguage() {
+        val batchCreate = BatchCreateAssetsRequest(
+            assets = listOf(
+                AssetSpec("gs://cats/large-brown-deleted-cat.jpg"),
+            ),
+            state = AssetState.Analyzed
+        )
+        assetService.batchCreate(batchCreate)
+        refreshElastic()
+
+        var asset = this.getSample(1)[0]
+        assetService.setLanguages(asset.id, listOf("eng"))
+    }
+
+    @Test(expected = EmptyResultDataAccessException::class)
+    fun testSetLanguageErrorMissingAsset() {
+        assertFalse(assetService.setLanguages("1234", listOf("en-US")))
+    }
+
+    @Test
+    fun testSetLanguageToNull() {
+        val batchCreate = BatchCreateAssetsRequest(
+            assets = listOf(
+                AssetSpec("gs://cats/large-brown-deleted-cat.jpg"),
+            ),
+            state = AssetState.Analyzed
+        )
+        assetService.batchCreate(batchCreate)
+        refreshElastic()
+
+        var asset = this.getSample(1)[0]
+        assetService.setLanguages(asset.id, listOf("en-US"))
+        assetService.setLanguages(asset.id, null)
+
+        asset = assetService.getAsset(asset.id)
+        assertNull(asset.getAttr("media.languages"))
     }
 }
