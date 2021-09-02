@@ -218,87 +218,6 @@ Array [
   height: 4px;
 }
 
-.emotion-12 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.emotion-13 {
-  width: 100%;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  padding: 12px;
-  padding-left: 32px;
-  border: 1px solid transparent;
-  border-radius: 2px;
-  color: #e0e0e0;
-  background-repeat: no-repeat,repeat;
-  -webkit-background-position: left 8px top 50%;
-  background-position: left 8px top 50%;
-  -webkit-background-size: 20px;
-  background-size: 20px;
-  background-color: #2e2e2e;
-  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjNGE0YTRhIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
-  background-color: #191919;
-}
-
-.emotion-13::-webkit-input-placeholder {
-  font-style: italic;
-}
-
-.emotion-13::-moz-placeholder {
-  font-style: italic;
-}
-
-.emotion-13:-ms-input-placeholder {
-  font-style: italic;
-}
-
-.emotion-13::placeholder {
-  font-style: italic;
-}
-
-.emotion-13:hover {
-  border: 1px solid #808080;
-}
-
-.emotion-13:focus {
-  outline: 1px solid transparent;
-  border: 1px solid #3A5DFF;
-  color: #191919;
-  background-color: #ffffff;
-  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
-}
-
-.emotion-14 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  width: 42px;
-  margin-left: 4px;
-  border-radius: 2px;
-  background-color: #808080;
-  padding: 0;
-  border: 0;
-  cursor: not-allowed;
-}
-
-.emotion-15 {
-  color: #3b3b3b;
-}
-
 <div
     className="emotion-0"
   >
@@ -362,37 +281,20 @@ Array [
     <div
       className="emotion-11"
     />
-    <form
-      action=""
-      method="post"
-      onSubmit={[Function]}
-    >
-      <div
-        className="emotion-12"
-      >
-        <input
-          aria-label="Add Simple Text Filter"
-          className="emotion-13"
-          onChange={[Function]}
-          placeholder="Type here to create a simple text filter"
-          type="search"
-          value=""
-        />
-        <button
-          aria-disabled={true}
-          aria-label="Search"
-          className="emotion-14"
-          onClick={[Function]}
-          type="submit"
-        >
-          <svg
-            className="emotion-15"
-            data-file-name="plus.svg"
-            height={20}
-          />
-        </button>
-      </div>
-    </form>
+    <SearchFilter
+      assetId=""
+      filters={
+        Array [
+          Object {
+            "attribute": "analysis.boonai-label-detection",
+            "type": "predictionCount",
+            "values": Object {},
+          },
+        ]
+      }
+      pathname="/[projectId]/visualizer"
+      projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+    />
   </div>,
   .emotion-0 {
   overflow: auto;
@@ -1104,87 +1006,6 @@ Array [
   height: 4px;
 }
 
-.emotion-12 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.emotion-13 {
-  width: 100%;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  padding: 12px;
-  padding-left: 32px;
-  border: 1px solid transparent;
-  border-radius: 2px;
-  color: #e0e0e0;
-  background-repeat: no-repeat,repeat;
-  -webkit-background-position: left 8px top 50%;
-  background-position: left 8px top 50%;
-  -webkit-background-size: 20px;
-  background-size: 20px;
-  background-color: #2e2e2e;
-  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjNGE0YTRhIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
-  background-color: #191919;
-}
-
-.emotion-13::-webkit-input-placeholder {
-  font-style: italic;
-}
-
-.emotion-13::-moz-placeholder {
-  font-style: italic;
-}
-
-.emotion-13:-ms-input-placeholder {
-  font-style: italic;
-}
-
-.emotion-13::placeholder {
-  font-style: italic;
-}
-
-.emotion-13:hover {
-  border: 1px solid #808080;
-}
-
-.emotion-13:focus {
-  outline: 1px solid transparent;
-  border: 1px solid #3A5DFF;
-  color: #191919;
-  background-color: #ffffff;
-  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
-}
-
-.emotion-14 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  width: 42px;
-  margin-left: 4px;
-  border-radius: 2px;
-  background-color: #808080;
-  padding: 0;
-  border: 0;
-  cursor: not-allowed;
-}
-
-.emotion-15 {
-  color: #3b3b3b;
-}
-
 <div
     className="emotion-0"
   >
@@ -1248,37 +1069,28 @@ Array [
     <div
       className="emotion-11"
     />
-    <form
-      action=""
-      method="post"
-      onSubmit={[Function]}
-    >
-      <div
-        className="emotion-12"
-      >
-        <input
-          aria-label="Add Simple Text Filter"
-          className="emotion-13"
-          onChange={[Function]}
-          placeholder="Type here to create a simple text filter"
-          type="search"
-          value=""
-        />
-        <button
-          aria-disabled={true}
-          aria-label="Search"
-          className="emotion-14"
-          onClick={[Function]}
-          type="submit"
-        >
-          <svg
-            className="emotion-15"
-            data-file-name="plus.svg"
-            height={20}
-          />
-        </button>
-      </div>
-    </form>
+    <SearchFilter
+      assetId=""
+      fields={
+        Object {
+          "results": Object {
+            "maxAsString": "2020-06-10",
+            "minAsString": "2020-05-04",
+          },
+        }
+      }
+      filters={
+        Array [
+          Object {
+            "attribute": "system.timeCreated",
+            "type": "date",
+            "values": Object {},
+          },
+        ]
+      }
+      pathname="/[projectId]/visualizer"
+      projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+    />
   </div>,
   .emotion-0 {
   overflow: auto;
@@ -2060,87 +1872,6 @@ Array [
   height: 4px;
 }
 
-.emotion-12 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.emotion-13 {
-  width: 100%;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  padding: 12px;
-  padding-left: 32px;
-  border: 1px solid transparent;
-  border-radius: 2px;
-  color: #e0e0e0;
-  background-repeat: no-repeat,repeat;
-  -webkit-background-position: left 8px top 50%;
-  background-position: left 8px top 50%;
-  -webkit-background-size: 20px;
-  background-size: 20px;
-  background-color: #2e2e2e;
-  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjNGE0YTRhIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
-  background-color: #191919;
-}
-
-.emotion-13::-webkit-input-placeholder {
-  font-style: italic;
-}
-
-.emotion-13::-moz-placeholder {
-  font-style: italic;
-}
-
-.emotion-13:-ms-input-placeholder {
-  font-style: italic;
-}
-
-.emotion-13::placeholder {
-  font-style: italic;
-}
-
-.emotion-13:hover {
-  border: 1px solid #808080;
-}
-
-.emotion-13:focus {
-  outline: 1px solid transparent;
-  border: 1px solid #3A5DFF;
-  color: #191919;
-  background-color: #ffffff;
-  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
-}
-
-.emotion-14 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  width: 42px;
-  margin-left: 4px;
-  border-radius: 2px;
-  background-color: #808080;
-  padding: 0;
-  border: 0;
-  cursor: not-allowed;
-}
-
-.emotion-15 {
-  color: #3b3b3b;
-}
-
 <div
     className="emotion-0"
   >
@@ -2204,37 +1935,20 @@ Array [
     <div
       className="emotion-11"
     />
-    <form
-      action=""
-      method="post"
-      onSubmit={[Function]}
-    >
-      <div
-        className="emotion-12"
-      >
-        <input
-          aria-label="Add Simple Text Filter"
-          className="emotion-13"
-          onChange={[Function]}
-          placeholder="Type here to create a simple text filter"
-          type="search"
-          value=""
-        />
-        <button
-          aria-disabled={true}
-          aria-label="Search"
-          className="emotion-14"
-          onClick={[Function]}
-          type="submit"
-        >
-          <svg
-            className="emotion-15"
-            data-file-name="plus.svg"
-            height={20}
-          />
-        </button>
-      </div>
-    </form>
+    <SearchFilter
+      assetId=""
+      fields={Object {}}
+      filters={
+        Array [
+          Object {
+            "attribute": "location.point",
+            "type": "exists",
+          },
+        ]
+      }
+      pathname="/[projectId]/visualizer"
+      projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+    />
   </div>,
   .emotion-0 {
   overflow: auto;
@@ -2917,87 +2631,6 @@ Array [
   height: 4px;
 }
 
-.emotion-12 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.emotion-13 {
-  width: 100%;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  padding: 12px;
-  padding-left: 32px;
-  border: 1px solid transparent;
-  border-radius: 2px;
-  color: #e0e0e0;
-  background-repeat: no-repeat,repeat;
-  -webkit-background-position: left 8px top 50%;
-  background-position: left 8px top 50%;
-  -webkit-background-size: 20px;
-  background-size: 20px;
-  background-color: #2e2e2e;
-  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjNGE0YTRhIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
-  background-color: #191919;
-}
-
-.emotion-13::-webkit-input-placeholder {
-  font-style: italic;
-}
-
-.emotion-13::-moz-placeholder {
-  font-style: italic;
-}
-
-.emotion-13:-ms-input-placeholder {
-  font-style: italic;
-}
-
-.emotion-13::placeholder {
-  font-style: italic;
-}
-
-.emotion-13:hover {
-  border: 1px solid #808080;
-}
-
-.emotion-13:focus {
-  outline: 1px solid transparent;
-  border: 1px solid #3A5DFF;
-  color: #191919;
-  background-color: #ffffff;
-  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
-}
-
-.emotion-14 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  width: 42px;
-  margin-left: 4px;
-  border-radius: 2px;
-  background-color: #808080;
-  padding: 0;
-  border: 0;
-  cursor: not-allowed;
-}
-
-.emotion-15 {
-  color: #3b3b3b;
-}
-
 <div
     className="emotion-0"
   >
@@ -3061,37 +2694,58 @@ Array [
     <div
       className="emotion-11"
     />
-    <form
-      action=""
-      method="post"
-      onSubmit={[Function]}
-    >
-      <div
-        className="emotion-12"
-      >
-        <input
-          aria-label="Add Simple Text Filter"
-          className="emotion-13"
-          onChange={[Function]}
-          placeholder="Type here to create a simple text filter"
-          type="search"
-          value=""
-        />
-        <button
-          aria-disabled={true}
-          aria-label="Search"
-          className="emotion-14"
-          onClick={[Function]}
-          type="submit"
-        >
-          <svg
-            className="emotion-15"
-            data-file-name="plus.svg"
-            height={20}
-          />
-        </button>
-      </div>
-    </form>
+    <SearchFilter
+      assetId=""
+      fields={
+        Object {
+          "count": 574,
+          "results": Object {
+            "buckets": Array [
+              Object {
+                "docCount": 3,
+                "key": "Tyngsboro",
+              },
+              Object {
+                "docCount": 2,
+                "key": "Brooklyn",
+              },
+              Object {
+                "docCount": 1,
+                "key": "Cát Bà",
+              },
+              Object {
+                "docCount": 1,
+                "key": "La Habana Vieja",
+              },
+              Object {
+                "docCount": 1,
+                "key": "North Glendale",
+              },
+              Object {
+                "docCount": 1,
+                "key": "Saalfelden am Steinernen Meer",
+              },
+              Object {
+                "key": "Zermatt",
+              },
+            ],
+            "docCountErrorUpperBound": 0,
+            "sumOtherDocCount": 0,
+          },
+        }
+      }
+      filters={
+        Array [
+          Object {
+            "attribute": "location.city",
+            "type": "facet",
+            "values": Object {},
+          },
+        ]
+      }
+      pathname="/[projectId]/visualizer"
+      projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+    />
   </div>,
   .emotion-0 {
   overflow: auto;
@@ -4145,87 +3799,6 @@ Array [
   height: 4px;
 }
 
-.emotion-12 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.emotion-13 {
-  width: 100%;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  padding: 12px;
-  padding-left: 32px;
-  border: 1px solid transparent;
-  border-radius: 2px;
-  color: #e0e0e0;
-  background-repeat: no-repeat,repeat;
-  -webkit-background-position: left 8px top 50%;
-  background-position: left 8px top 50%;
-  -webkit-background-size: 20px;
-  background-size: 20px;
-  background-color: #2e2e2e;
-  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjNGE0YTRhIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
-  background-color: #191919;
-}
-
-.emotion-13::-webkit-input-placeholder {
-  font-style: italic;
-}
-
-.emotion-13::-moz-placeholder {
-  font-style: italic;
-}
-
-.emotion-13:-ms-input-placeholder {
-  font-style: italic;
-}
-
-.emotion-13::placeholder {
-  font-style: italic;
-}
-
-.emotion-13:hover {
-  border: 1px solid #808080;
-}
-
-.emotion-13:focus {
-  outline: 1px solid transparent;
-  border: 1px solid #3A5DFF;
-  color: #191919;
-  background-color: #ffffff;
-  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
-}
-
-.emotion-14 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  width: 42px;
-  margin-left: 4px;
-  border-radius: 2px;
-  background-color: #808080;
-  padding: 0;
-  border: 0;
-  cursor: not-allowed;
-}
-
-.emotion-15 {
-  color: #3b3b3b;
-}
-
 <div
     className="emotion-0"
   >
@@ -4289,37 +3862,455 @@ Array [
     <div
       className="emotion-11"
     />
-    <form
-      action=""
-      method="post"
-      onSubmit={[Function]}
-    >
-      <div
-        className="emotion-12"
-      >
-        <input
-          aria-label="Add Simple Text Filter"
-          className="emotion-13"
-          onChange={[Function]}
-          placeholder="Type here to create a simple text filter"
-          type="search"
-          value=""
-        />
-        <button
-          aria-disabled={true}
-          aria-label="Search"
-          className="emotion-14"
-          onClick={[Function]}
-          type="submit"
-        >
-          <svg
-            className="emotion-15"
-            data-file-name="plus.svg"
-            height={20}
-          />
-        </button>
-      </div>
-    </form>
+    <SearchFilter
+      assetId=""
+      fields={
+        Object {
+          "count": 604,
+          "results": Object {
+            "buckets": Array [
+              Object {
+                "docCount": 134,
+                "key": "web_site",
+              },
+              Object {
+                "docCount": 75,
+                "key": "alp",
+              },
+              Object {
+                "docCount": 56,
+                "key": "sports_car",
+              },
+              Object {
+                "docCount": 45,
+                "key": "menu",
+              },
+              Object {
+                "docCount": 27,
+                "key": "convertible",
+              },
+              Object {
+                "docCount": 27,
+                "key": "racer",
+              },
+              Object {
+                "docCount": 26,
+                "key": "valley",
+              },
+              Object {
+                "docCount": 23,
+                "key": "cab",
+              },
+              Object {
+                "docCount": 23,
+                "key": "envelope",
+              },
+              Object {
+                "docCount": 22,
+                "key": "tabby",
+              },
+              Object {
+                "docCount": 20,
+                "key": "minivan",
+              },
+              Object {
+                "docCount": 17,
+                "key": "beach_wagon",
+              },
+              Object {
+                "docCount": 16,
+                "key": "volcano",
+              },
+              Object {
+                "docCount": 14,
+                "key": "Egyptian_cat",
+              },
+              Object {
+                "docCount": 13,
+                "key": "tiger_cat",
+              },
+              Object {
+                "docCount": 11,
+                "key": "grille",
+              },
+              Object {
+                "docCount": 10,
+                "key": "Model_T",
+              },
+              Object {
+                "docCount": 10,
+                "key": "pickup",
+              },
+              Object {
+                "docCount": 9,
+                "key": "fire_engine",
+              },
+              Object {
+                "docCount": 8,
+                "key": "car_wheel",
+              },
+              Object {
+                "docCount": 7,
+                "key": "tow_truck",
+              },
+              Object {
+                "docCount": 6,
+                "key": "jeep",
+              },
+              Object {
+                "docCount": 5,
+                "key": "book_jacket",
+              },
+              Object {
+                "docCount": 4,
+                "key": "Siamese_cat",
+              },
+              Object {
+                "docCount": 4,
+                "key": "pillow",
+              },
+              Object {
+                "docCount": 3,
+                "key": "Band_Aid",
+              },
+              Object {
+                "docCount": 3,
+                "key": "geyser",
+              },
+              Object {
+                "docCount": 3,
+                "key": "half_track",
+              },
+              Object {
+                "docCount": 3,
+                "key": "jigsaw_puzzle",
+              },
+              Object {
+                "docCount": 3,
+                "key": "lakeside",
+              },
+              Object {
+                "docCount": 3,
+                "key": "refrigerator",
+              },
+              Object {
+                "docCount": 3,
+                "key": "rotisserie",
+              },
+              Object {
+                "docCount": 3,
+                "key": "seashore",
+              },
+              Object {
+                "docCount": 2,
+                "key": "amphibian",
+              },
+              Object {
+                "docCount": 2,
+                "key": "cowboy_boot",
+              },
+              Object {
+                "docCount": 2,
+                "key": "crossword_puzzle",
+              },
+              Object {
+                "docCount": 2,
+                "key": "leopard",
+              },
+              Object {
+                "docCount": 2,
+                "key": "plastic_bag",
+              },
+              Object {
+                "docCount": 2,
+                "key": "promontory",
+              },
+              Object {
+                "docCount": 2,
+                "key": "scoreboard",
+              },
+              Object {
+                "docCount": 2,
+                "key": "toilet_seat",
+              },
+              Object {
+                "docCount": 2,
+                "key": "totem_pole",
+              },
+              Object {
+                "docCount": 2,
+                "key": "window_screen",
+              },
+              Object {
+                "docCount": 1,
+                "key": "American_alligator",
+              },
+              Object {
+                "docCount": 1,
+                "key": "Indian_elephant",
+              },
+              Object {
+                "docCount": 1,
+                "key": "Persian_cat",
+              },
+              Object {
+                "docCount": 1,
+                "key": "West_Highland_white_terrier",
+              },
+              Object {
+                "docCount": 1,
+                "key": "ambulance",
+              },
+              Object {
+                "docCount": 1,
+                "key": "balloon",
+              },
+              Object {
+                "docCount": 1,
+                "key": "ballplayer",
+              },
+              Object {
+                "docCount": 1,
+                "key": "barn",
+              },
+              Object {
+                "docCount": 1,
+                "key": "bib",
+              },
+              Object {
+                "docCount": 1,
+                "key": "bison",
+              },
+              Object {
+                "docCount": 1,
+                "key": "bottlecap",
+              },
+              Object {
+                "docCount": 1,
+                "key": "bubble",
+              },
+              Object {
+                "docCount": 1,
+                "key": "cannon",
+              },
+              Object {
+                "docCount": 1,
+                "key": "cleaver",
+              },
+              Object {
+                "docCount": 1,
+                "key": "cliff",
+              },
+              Object {
+                "docCount": 1,
+                "key": "corn",
+              },
+              Object {
+                "docCount": 1,
+                "key": "crutch",
+              },
+              Object {
+                "docCount": 1,
+                "key": "desk",
+              },
+              Object {
+                "docCount": 1,
+                "key": "digital_clock",
+              },
+              Object {
+                "docCount": 1,
+                "key": "dishwasher",
+              },
+              Object {
+                "docCount": 1,
+                "key": "file",
+              },
+              Object {
+                "docCount": 1,
+                "key": "flagpole",
+              },
+              Object {
+                "docCount": 1,
+                "key": "football_helmet",
+              },
+              Object {
+                "docCount": 1,
+                "key": "fountain",
+              },
+              Object {
+                "docCount": 1,
+                "key": "go-kart",
+              },
+              Object {
+                "docCount": 1,
+                "key": "great_white_shark",
+              },
+              Object {
+                "docCount": 1,
+                "key": "hoopskirt",
+              },
+              Object {
+                "docCount": 1,
+                "key": "horse_cart",
+              },
+              Object {
+                "docCount": 1,
+                "key": "killer_whale",
+              },
+              Object {
+                "docCount": 1,
+                "key": "lynx",
+              },
+              Object {
+                "docCount": 1,
+                "key": "macaw",
+              },
+              Object {
+                "docCount": 1,
+                "key": "meerkat",
+              },
+              Object {
+                "docCount": 1,
+                "key": "megalith",
+              },
+              Object {
+                "docCount": 1,
+                "key": "minibus",
+              },
+              Object {
+                "docCount": 1,
+                "key": "moving_van",
+              },
+              Object {
+                "docCount": 1,
+                "key": "notebook",
+              },
+              Object {
+                "docCount": 1,
+                "key": "ocarina",
+              },
+              Object {
+                "docCount": 1,
+                "key": "oscilloscope",
+              },
+              Object {
+                "docCount": 1,
+                "key": "otter",
+              },
+              Object {
+                "docCount": 1,
+                "key": "overskirt",
+              },
+              Object {
+                "docCount": 1,
+                "key": "oxcart",
+              },
+              Object {
+                "docCount": 1,
+                "key": "parking_meter",
+              },
+              Object {
+                "docCount": 1,
+                "key": "picket_fence",
+              },
+              Object {
+                "docCount": 1,
+                "key": "police_van",
+              },
+              Object {
+                "docCount": 1,
+                "key": "prayer_rug",
+              },
+              Object {
+                "docCount": 1,
+                "key": "quilt",
+              },
+              Object {
+                "docCount": 1,
+                "key": "rapeseed",
+              },
+              Object {
+                "docCount": 1,
+                "key": "sandbar",
+              },
+              Object {
+                "docCount": 1,
+                "key": "sarong",
+              },
+              Object {
+                "docCount": 1,
+                "key": "snowmobile",
+              },
+              Object {
+                "docCount": 1,
+                "key": "speedboat",
+              },
+              Object {
+                "docCount": 1,
+                "key": "stretcher",
+              },
+              Object {
+                "docCount": 1,
+                "key": "studio_couch",
+              },
+              Object {
+                "docCount": 1,
+                "key": "stupa",
+              },
+              Object {
+                "docCount": 1,
+                "key": "tailed_frog",
+              },
+              Object {
+                "docCount": 1,
+                "key": "toucan",
+              },
+              Object {
+                "docCount": 1,
+                "key": "trilobite",
+              },
+              Object {
+                "docCount": 1,
+                "key": "unicycle",
+              },
+              Object {
+                "docCount": 1,
+                "key": "vacuum",
+              },
+              Object {
+                "docCount": 1,
+                "key": "vending_machine",
+              },
+              Object {
+                "docCount": 1,
+                "key": "water_buffalo",
+              },
+              Object {
+                "docCount": 1,
+                "key": "window_shade",
+              },
+              Object {
+                "docCount": 1,
+                "key": "yurt",
+              },
+            ],
+            "docCountErrorUpperBound": 0,
+            "sumOtherDocCount": 0,
+          },
+        }
+      }
+      filters={
+        Array [
+          Object {
+            "attribute": "analysis.boonai-label-detection",
+            "type": "labelConfidence",
+            "values": Object {},
+          },
+        ]
+      }
+      pathname="/[projectId]/visualizer"
+      projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+    />
   </div>,
   .emotion-0 {
   overflow: auto;
@@ -9316,87 +9307,6 @@ Array [
   height: 4px;
 }
 
-.emotion-12 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.emotion-13 {
-  width: 100%;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  padding: 12px;
-  padding-left: 32px;
-  border: 1px solid transparent;
-  border-radius: 2px;
-  color: #e0e0e0;
-  background-repeat: no-repeat,repeat;
-  -webkit-background-position: left 8px top 50%;
-  background-position: left 8px top 50%;
-  -webkit-background-size: 20px;
-  background-size: 20px;
-  background-color: #2e2e2e;
-  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjNGE0YTRhIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
-  background-color: #191919;
-}
-
-.emotion-13::-webkit-input-placeholder {
-  font-style: italic;
-}
-
-.emotion-13::-moz-placeholder {
-  font-style: italic;
-}
-
-.emotion-13:-ms-input-placeholder {
-  font-style: italic;
-}
-
-.emotion-13::placeholder {
-  font-style: italic;
-}
-
-.emotion-13:hover {
-  border: 1px solid #808080;
-}
-
-.emotion-13:focus {
-  outline: 1px solid transparent;
-  border: 1px solid #3A5DFF;
-  color: #191919;
-  background-color: #ffffff;
-  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
-}
-
-.emotion-14 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  width: 42px;
-  margin-left: 4px;
-  border-radius: 2px;
-  background-color: #808080;
-  padding: 0;
-  border: 0;
-  cursor: not-allowed;
-}
-
-.emotion-15 {
-  color: #3b3b3b;
-}
-
 <div
     className="emotion-0"
   >
@@ -9460,37 +9370,51 @@ Array [
     <div
       className="emotion-11"
     />
-    <form
-      action=""
-      method="post"
-      onSubmit={[Function]}
-    >
-      <div
-        className="emotion-12"
-      >
-        <input
-          aria-label="Add Simple Text Filter"
-          className="emotion-13"
-          onChange={[Function]}
-          placeholder="Type here to create a simple text filter"
-          type="search"
-          value=""
-        />
-        <button
-          aria-disabled={true}
-          aria-label="Search"
-          className="emotion-14"
-          onClick={[Function]}
-          type="submit"
-        >
-          <svg
-            className="emotion-15"
-            data-file-name="plus.svg"
-            height={20}
-          />
-        </button>
-      </div>
-    </form>
+    <SearchFilter
+      assetId=""
+      fields={
+        Object {
+          "count": 5,
+          "results": Object {
+            "buckets": Array [
+              Object {
+                "docCount": 5,
+                "key": "Ford",
+              },
+              Object {
+                "docCount": 4,
+                "key": "Chevrolet",
+              },
+              Object {
+                "docCount": 3,
+                "key": "Peugeot",
+              },
+              Object {
+                "docCount": 2,
+                "key": "Audi",
+              },
+              Object {
+                "key": "Toyota",
+              },
+            ],
+            "docCountErrorUpperBound": 0,
+            "sumOtherDocCount": 0,
+          },
+        }
+      }
+      filters={
+        Array [
+          Object {
+            "attribute": "labels.console",
+            "datasetId": "4b0b10a8-cec1-155c-b12f-ee2bc8787e06",
+            "type": "label",
+            "values": Object {},
+          },
+        ]
+      }
+      pathname="/[projectId]/visualizer"
+      projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+    />
   </div>,
   .emotion-0 {
   overflow: auto;
@@ -10555,87 +10479,6 @@ Array [
   height: 4px;
 }
 
-.emotion-12 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.emotion-13 {
-  width: 100%;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  padding: 12px;
-  padding-left: 32px;
-  border: 1px solid transparent;
-  border-radius: 2px;
-  color: #e0e0e0;
-  background-repeat: no-repeat,repeat;
-  -webkit-background-position: left 8px top 50%;
-  background-position: left 8px top 50%;
-  -webkit-background-size: 20px;
-  background-size: 20px;
-  background-color: #2e2e2e;
-  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjNGE0YTRhIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
-  background-color: #191919;
-}
-
-.emotion-13::-webkit-input-placeholder {
-  font-style: italic;
-}
-
-.emotion-13::-moz-placeholder {
-  font-style: italic;
-}
-
-.emotion-13:-ms-input-placeholder {
-  font-style: italic;
-}
-
-.emotion-13::placeholder {
-  font-style: italic;
-}
-
-.emotion-13:hover {
-  border: 1px solid #808080;
-}
-
-.emotion-13:focus {
-  outline: 1px solid transparent;
-  border: 1px solid #3A5DFF;
-  color: #191919;
-  background-color: #ffffff;
-  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
-}
-
-.emotion-14 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  width: 42px;
-  margin-left: 4px;
-  border-radius: 2px;
-  background-color: #808080;
-  padding: 0;
-  border: 0;
-  cursor: not-allowed;
-}
-
-.emotion-15 {
-  color: #3b3b3b;
-}
-
 <div
     className="emotion-0"
   >
@@ -10699,37 +10542,23 @@ Array [
     <div
       className="emotion-11"
     />
-    <form
-      action=""
-      method="post"
-      onSubmit={[Function]}
-    >
-      <div
-        className="emotion-12"
-      >
-        <input
-          aria-label="Add Simple Text Filter"
-          className="emotion-13"
-          onChange={[Function]}
-          placeholder="Type here to create a simple text filter"
-          type="search"
-          value=""
-        />
-        <button
-          aria-disabled={true}
-          aria-label="Search"
-          className="emotion-14"
-          onClick={[Function]}
-          type="submit"
-        >
-          <svg
-            className="emotion-15"
-            data-file-name="plus.svg"
-            height={20}
-          />
-        </button>
-      </div>
-    </form>
+    <SearchFilter
+      assetId=""
+      fields={Object {}}
+      filters={
+        Array [
+          Object {
+            "attribute": "utility.Search Results Limit",
+            "type": "limit",
+            "values": Object {
+              "maxAssets": 10000,
+            },
+          },
+        ]
+      }
+      pathname="/[projectId]/visualizer"
+      projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+    />
   </div>,
   .emotion-0 {
   overflow: auto;
@@ -11440,87 +11269,6 @@ Array [
   height: 4px;
 }
 
-.emotion-12 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.emotion-13 {
-  width: 100%;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  padding: 12px;
-  padding-left: 32px;
-  border: 1px solid transparent;
-  border-radius: 2px;
-  color: #e0e0e0;
-  background-repeat: no-repeat,repeat;
-  -webkit-background-position: left 8px top 50%;
-  background-position: left 8px top 50%;
-  -webkit-background-size: 20px;
-  background-size: 20px;
-  background-color: #2e2e2e;
-  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjNGE0YTRhIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
-  background-color: #191919;
-}
-
-.emotion-13::-webkit-input-placeholder {
-  font-style: italic;
-}
-
-.emotion-13::-moz-placeholder {
-  font-style: italic;
-}
-
-.emotion-13:-ms-input-placeholder {
-  font-style: italic;
-}
-
-.emotion-13::placeholder {
-  font-style: italic;
-}
-
-.emotion-13:hover {
-  border: 1px solid #808080;
-}
-
-.emotion-13:focus {
-  outline: 1px solid transparent;
-  border: 1px solid #3A5DFF;
-  color: #191919;
-  background-color: #ffffff;
-  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
-}
-
-.emotion-14 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  width: 42px;
-  margin-left: 4px;
-  border-radius: 2px;
-  background-color: #808080;
-  padding: 0;
-  border: 0;
-  cursor: not-allowed;
-}
-
-.emotion-15 {
-  color: #3b3b3b;
-}
-
 <div
     className="emotion-0"
   >
@@ -11584,37 +11332,32 @@ Array [
     <div
       className="emotion-11"
     />
-    <form
-      action=""
-      method="post"
-      onSubmit={[Function]}
-    >
-      <div
-        className="emotion-12"
-      >
-        <input
-          aria-label="Add Simple Text Filter"
-          className="emotion-13"
-          onChange={[Function]}
-          placeholder="Type here to create a simple text filter"
-          type="search"
-          value=""
-        />
-        <button
-          aria-disabled={true}
-          aria-label="Search"
-          className="emotion-14"
-          onClick={[Function]}
-          type="submit"
-        >
-          <svg
-            className="emotion-15"
-            data-file-name="plus.svg"
-            height={20}
-          />
-        </button>
-      </div>
-    </form>
+    <SearchFilter
+      assetId=""
+      fields={
+        Object {
+          "count": 584,
+          "results": Object {
+            "avg": 899.5689655172414,
+            "count": 580,
+            "max": 8525,
+            "min": 180,
+            "sum": 521750,
+          },
+        }
+      }
+      filters={
+        Array [
+          Object {
+            "attribute": "clip.length",
+            "type": "range",
+            "values": Object {},
+          },
+        ]
+      }
+      pathname="/[projectId]/visualizer"
+      projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+    />
   </div>,
   .emotion-0 {
   overflow: auto;
@@ -12348,87 +12091,6 @@ Array [
   height: 4px;
 }
 
-.emotion-12 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.emotion-13 {
-  width: 100%;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  padding: 12px;
-  padding-left: 32px;
-  border: 1px solid transparent;
-  border-radius: 2px;
-  color: #e0e0e0;
-  background-repeat: no-repeat,repeat;
-  -webkit-background-position: left 8px top 50%;
-  background-position: left 8px top 50%;
-  -webkit-background-size: 20px;
-  background-size: 20px;
-  background-color: #2e2e2e;
-  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjNGE0YTRhIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
-  background-color: #191919;
-}
-
-.emotion-13::-webkit-input-placeholder {
-  font-style: italic;
-}
-
-.emotion-13::-moz-placeholder {
-  font-style: italic;
-}
-
-.emotion-13:-ms-input-placeholder {
-  font-style: italic;
-}
-
-.emotion-13::placeholder {
-  font-style: italic;
-}
-
-.emotion-13:hover {
-  border: 1px solid #808080;
-}
-
-.emotion-13:focus {
-  outline: 1px solid transparent;
-  border: 1px solid #3A5DFF;
-  color: #191919;
-  background-color: #ffffff;
-  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
-}
-
-.emotion-14 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  width: 42px;
-  margin-left: 4px;
-  border-radius: 2px;
-  background-color: #808080;
-  padding: 0;
-  border: 0;
-  cursor: not-allowed;
-}
-
-.emotion-15 {
-  color: #3b3b3b;
-}
-
 <div
     className="emotion-0"
   >
@@ -12492,37 +12154,184 @@ Array [
     <div
       className="emotion-11"
     />
-    <form
-      action=""
-      method="post"
-      onSubmit={[Function]}
-    >
-      <div
-        className="emotion-12"
-      >
-        <input
-          aria-label="Add Simple Text Filter"
-          className="emotion-13"
-          onChange={[Function]}
-          placeholder="Type here to create a simple text filter"
-          type="search"
-          value=""
-        />
-        <button
-          aria-disabled={true}
-          aria-label="Search"
-          className="emotion-14"
-          onClick={[Function]}
-          type="submit"
-        >
-          <svg
-            className="emotion-15"
-            data-file-name="plus.svg"
-            height={20}
-          />
-        </button>
-      </div>
-    </form>
+    <SearchFilter
+      assetId=""
+      fields={
+        Object {
+          "id": "vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C",
+          "metadata": Object {
+            "analysis": Object {
+              "boonai-image-similarity": Object {
+                "simhash": "PNCEFPPECJCPOEMPIPPHKFHOIAPPCPPPGPCPPHMPDKBOFPCGPGAMFCLPPCPPNPLCDPCGAGPDKHDPPGPPCLDPLPGPLJPAOODPHIJBPKMJHAJPOPFHGLFDIIPPPHPBHIPGNPPIPCNICBFIPAPCPPPALIPNDKPNOBDPPPPPPPGKKCFABLDGFFJPPPPPEEPPPGOPBPEPOAPAPBJEEPPEPBAAEMAPHPMPJAPPPPHKBPKIBDICPPMHMPDPJPCPPPPPPCIPPPPFPPPPINAAGDMGPDMFPNHGAFMMPMANBCHGPPFJPBGHIPEDPKPAPAPLPPADFFPHGBGGCPIPPGGOJDPPPDMAPIALGMNPOEPMPPFPPCAPOPGHPODMGECNEEPHPNHAPPDEEPBHPKPLCDKPBELPPGFPDLFPLPFKDPPPBPPAAFEPGCCMBAHGMPGPPFPPAAPHCPPGHPJPMPNEPFPDPDPBKDBILAPLJPPOPAKPKKPPPPPDBBNEBGMBDAPJAPKMPMPFABCPKFMJPPLDAPNEPKGAAPKPPDPPCPPEIGBPPKPIPEBCDPIPKIFEHLCCLCPALCPPPPHBPDPFFFLPAPPCHPEKAEPBAKPEPPEPCDPMPAPAPPPPLDMGPPHPFPBFBGFPFLFOBLFPPLOACAABFICPPDBPFAFLCKJJPBEDPDJPFPDPMBPGCCPPEIIPAFPPPBFMPMGCPMPNAFPCPMBMPECAAONDPAPPKAFPEPPGBJPPPPPPBBCPPBDLGDBPJAMEOFAPGGPCPLGHHPDPPEDOCFHLFOAPDPKHKEIPPGBIJLDPLIIFELPPADPBBMBFNAEAKGPAEPLPPNPEPHPKMPNPPPPAMAHPBNPDPFDCIIAIOPPPPKAPPKLAHPAAPDCPPPPACKHILPPHMPNLPCPEPFDJFAABBNIBCCFCPLBKPPHGBCPHPMAOABPLPMPFPNCGEKPLNCIPAPAPOEKABCDJINDPAEDPEJPEPPDPAGKAPMGAAHPPPPPPAPOEGKHDABDFOPBBFEPPCCFOPKHPGPBPPEPPPDDPDFAAPAPEPDPBHEPFPFJDCPOPPMCJAHPLDDEPPIIMAAAPPPJAHPPDIIOPPPKLLLFAPDBBAHPCBPAEKAPPPDHBPPPIPAEPACNPPGCLBDAGLEPFMGFDFKPEDIJPBAAEAEHIHOIPAAPPAADEPHPHPPNJHPPPMKPPDAOKDPAABNIBBIAFPGLPPCPIHDFDAIAJDAPEAPAPCNGIDPCPAKLKLKPKEAFPDPACBPBPDPAPEBPCCPPPNEPPEFABEPFBFBGFNPDKOACPMADPPEBOCJPPNABDPPBCHBJKBPEDPKPCIPEPIANIFCPAIPPHPPPPPBPEAAABHPAPGPFDIMPKOADAILDPANLPBAPEPIFMHIABAPAAEAAPPBLPBGAPPPDPEBDFPPPPPPLLPHPPBPPGPKPGDPGDLNPOGEPPJAHPLCCPHLCPDEPPPPANFEBNDCPPPLLAPPPPPJPEPAIBAPJFNBBKPDAPAPAPPBPENEIJLDPLLIOIDPPAPPADKJAKPPPIFPGONMGLPCLEPDPHPOKBPPIBDEANPCPKKDPPPMPBNPEPHHPLKKADFAPPPPFACNDJKBCPBFBEEPDPPAGDGNMJPAPPGILHJLDLPPAABGCBKLAPPBACBPMPEDPPAPPPHDPJOGAPPIPHMFPPPGPDPABPFCCPFBEIPCFIPPHJKHPEPPCIPAPEFPGFPDCPBPHEEPPBPPAAPCPHABPOPPPBKEAPCPPAPNAHPKDPPPDMPBPCPEPPLKPPPBPPPPJHPPPBOAEHIPCPPBIPACPEPPMBCDLPPDKIEHLMEAGACCALMDBBGNOPPKMJPJHIBJGIOHPPFFBOFPKCGEKDCCHAAAONCMDJBAPJBPLFLPLPPELPACLHPPPPEPAPJGPIPLNBBDMCNBPPGDDAEPHOPGECKPMLPPPPNGCPMNNMPPIKBCAPHPFFODPAPBGMCJFPOJHEDPGPPPPFNPPFHGPKLEAEODDGDACAPKIFAGPDPAPDJGCKPGPJBHDPPPAPBPPHDGFFGPBP",
+                "type": "similarity",
+              },
+              "knn-surface-defects": Object {
+                "count": 1,
+                "predictions": Array [
+                  Object {
+                    "label": "scratches",
+                    "score": 0.415,
+                  },
+                ],
+                "type": "labels",
+              },
+            },
+            "clip": Object {
+              "length": 1,
+              "pile": "pUn6wBxUN7x9JxOxLkvruOyNdYA",
+              "sourceAssetId": "vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C",
+              "start": 1,
+              "stop": 1,
+              "type": "page",
+            },
+            "custom": Object {
+              "numbers": Array [
+                1,
+                2,
+                3,
+              ],
+            },
+            "files": Array [
+              Object {
+                "attrs": Object {
+                  "height": 434,
+                  "width": 650,
+                },
+                "category": "proxy",
+                "mimetype": "image/jpeg",
+                "name": "image_650x434.jpg",
+                "size": 89643,
+                "url": "https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_650x434.jpg",
+              },
+              Object {
+                "attrs": Object {
+                  "height": 341,
+                  "width": 512,
+                },
+                "category": "proxy",
+                "mimetype": "image/jpeg",
+                "name": "image_512x341.jpg",
+                "size": 60713,
+                "url": "https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_512x341.jpg",
+              },
+              Object {
+                "attrs": Object {
+                  "height": 213,
+                  "width": 320,
+                },
+                "category": "proxy",
+                "mimetype": "image/jpeg",
+                "name": "image_320x213.jpg",
+                "size": 30882,
+                "url": "https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/category/proxy/name/image_320x213.jpg",
+              },
+              Object {
+                "attrs": Object {},
+                "category": "gcp",
+                "id": "assets/josv8dw1_3lw_eGb1rMCE2K0WG4zGstB/gcp/dlp.dat",
+                "mimetype": "application/octet-stream",
+                "name": "dlp.dat",
+                "size": 1500,
+              },
+            ],
+            "labels": Array [
+              Object {
+                "label": "Space",
+                "modelId": "621bf774-89d9-1244-9596-d6df43f1ede5",
+                "scope": "TRAIN",
+              },
+              Object {
+                "label": "Outside",
+                "modelId": "621bf774-89d9-9596-1244-d6df43f1ede5",
+                "scope": "TRAIN",
+              },
+            ],
+            "media": Object {
+              "aspect": 1.5,
+              "height": 434,
+              "length": 1,
+              "orientation": "landscape",
+              "type": "image",
+              "width": 650,
+            },
+            "metrics": Object {
+              "pipeline": Array [
+                Object {
+                  "checksum": 1621235190,
+                  "executionDate": "2020-03-03T21:22:27.694149",
+                  "executionTime": 0.11,
+                  "module": "standard",
+                  "processor": "boonai_core.core.processors.PreCacheSourceFileProcessor",
+                },
+                Object {
+                  "checksum": 1426657387,
+                  "executionDate": "2020-03-03T21:22:28.215069",
+                  "executionTime": 0.26,
+                  "module": "standard",
+                  "processor": "boonai_core.image.importers.ImageImporter",
+                },
+                Object {
+                  "checksum": 2001473853,
+                  "executionTime": 0,
+                  "module": "standard",
+                  "processor": "boonai_core.office.importers.OfficeImporter",
+                },
+                Object {
+                  "checksum": 3310423168,
+                  "executionTime": 0,
+                  "module": "standard",
+                  "processor": "boonai_core.video.VideoImporter",
+                },
+                Object {
+                  "checksum": 1841569083,
+                  "executionDate": "2020-03-03T21:22:29.654215",
+                  "executionTime": 0,
+                  "module": "standard",
+                  "processor": "boonai_core.core.processors.AssertAttributesProcessor",
+                },
+              ],
+            },
+            "similarity": Object {
+              "simhash": "NMGPEKEACJCHEDDBCHFAPBAHNPPPKMPOPCMODAPNFPCPOPBNEPCPPBHPPCBPDBPJHBGPPPNKOMBHBPNPAHLFCPPPFPGBKPPFDPPHDFAADNKGADBGPFFFGKABGPDLFPPLPPNPPPAAJBPPPLDPKAMCKANPAGCBPBPCEPEAKMHEHPBLKIIFJPOPBPPMGONPPGPFDPCJNPPMPIPPPPHPPCBJPHPGJDNBMGBAPAEBCFDPLPPAJLKANAPPACCPPEAMPADJMCAIPIKNNPDAPMPPCAAOPBADBDJPHGEKFGIDBPHDPPAMPPHLBGPPPHPEPPNAPPPAHOPCLAKPPPFAAHCPFCFPAPBPILPADJAFMJDPCPMCKBBBFBGPLPJMEDDMHPGHMMJPPABAJCAGCFJFNJPBPEPCPCINFEHPHCCPLPGPOIPPMPNIPNDDELAPILCEAPPAIPPDPPBGEFPJLFPJPIECMAEPABALFGLPPLFDPGDABPLMJDPDGBHFPPBPPCPFDPPDFJPAPCDGGGPPGPCPPFIKCHPPPBPLJBPPJIPHLPPKGKDPBCCLNGMAPFHACDINFPPEPBHDLCPGPFPPKPDAJPBEPPPPGPIADNAPABCKHIKPBDLPBPHPLAPFPPDBBEPEHPPPPFBJFANJPMPCFHMDEPDPMNIBDPPAHDBPPNECHLJAIDJFPOLPPBHLABEHPGPPKBAKIPJPBOPPBPHCBIPPAOPIPBAJHBMPPCMADHMPMFKPDEDOPBBAGNNACAADPHDCEKPDPGKHPBFPGJLPPINPPPBPPEANCPPAPBKBFGPAIPEFPFDJGPHAPCPIJHLCBEPPMPPCFPNEPIAPAAEPDHFBMHCNACPFFFDPBLMPPHEMAAIJODGCGCHIGDMAPHDNFEFMHPLPPBAKFBPPAPFPCGJNEDBOBPCLNIIIAEFGAGPGIEAFNPCCCBPKIDIPAPPPPOBPFPADEPPDCECMBFJPAKOEHPBKPGEOBFLNPFAIPPCKPCPHPAIPLPPLEJFFIMICPAPMEPKDNBDOFPJEPCAJEJKEMLHCGENAPEPACPPNPCCLDINPHCDBPHADKIFEPCIPKJIOFOPDEPGEDEPPGPDMBJKPBEHBEPLPFNPJGPJPBPHJHGHPAAEKDIEEAEAGJFPCGLPELPILCAPCFPELIICCPCLPJHCADFIPIGCFLIKPGPJGDCALPBDJPPEGCPLJFGEPBHDPPBPPPIKGDEEDENMBLLIGNECBPEFPBMJKCGPDPJOCNDNLANPKAPPPGPLBBBAJIGEADBEJFFNEGPNKPPPBPGEAELPKLDEGAANIFCLBPPPPNDJGDAFEEACPNEPKKPPKGAHLPDPGPBKPFBDIDDAMPPAIHPHHAPAEGOPCPJEABPPPBAKPLABPCPHNPAEMDPPPPDAJANPPDMPEGFIDEEAAJLGPHPHPCLDPDPFIDCAPPPHIPPPPEDHJDBBPHFKBAOPPPFGEPJPLPCDPBAJCPPDPEFGBFECPIAOGHAPEPAMPNPCPBAPODHNDCIPAGPPPFCPPDMFCLCEHPHAEACACIPCDPPPOMLAKMPPBGDPLFDBMFAPCMIKPHFPPCPPDFPPBPPKPPPPPFECBFIPKKEIPPPPBCKPLEPDEPKCHEPCEJDEKABHBOPPAAPIKABKHBPHPGPDBPHAPJKEDBPBBPLCPFDEEKHEPDFNPGJPAPPOPCCCJPPKPAEDIFPADNADAPDPPEMFPMPPLMPIPIADLPPPFINEPBBBAFBKIFPDPPPEBNPFBEMPFCCEGHEJIMACOCCPHBJPPNKPIPACDPBJPFKPAPIDNPCIGGIPHJGPCKELBLAAPLBBHHHPPCBHPLFAPPJPEEPLHPGPFAOOPPFPJHILPDECMJACKHHAPANLPGALJBNAFODHMJCPPFPJICDPOJBGPKFFPGIJPOHPJAIEPBBKCBIIMIPFPPPAGDDHHHIGGKHFJPPPPEKBGHDCHDPAGEPPIPDPIKALNPHJBGIPPNFINIDPPPEPPCBPPLMFCLGGPDGGLKINGBGKEPHPBPBFHAOBGAHCDGNEBDDCGPDCP",
+            },
+            "source": Object {
+              "checksum": 1867533868,
+              "extension": "tiff",
+              "filename": "TIFF_1MB.tiff",
+              "filesize": 1131930,
+              "mimetype": "image/tiff",
+              "path": "gs://zorroa-dev-data/image/TIFF_1MB.tiff",
+              "url": "https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/files/source/TIFF_1MB.tiff",
+            },
+            "system": Object {
+              "dataSourceId": "10509c20-5d95-11ea-baea-364023b135f5",
+              "jobId": "106d4be1-5d95-11ea-baea-364023b135f5",
+              "projectId": "89382033-bcbb-4c8f-81a9-3d0883298a81",
+              "state": "Analyzed",
+              "taskId": "106e0f32-5d95-11ea-baea-364023b135f5",
+              "timeCreated": "2020-03-03T21:22:24.922700Z",
+              "timeModified": "2020-03-03T21:22:47.575195Z",
+            },
+          },
+          "url": "https://localhost:3000/api/v1/projects/89382033-bcbb-4c8f-81a9-3d0883298a81/assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/",
+        }
+      }
+      filters={
+        Array [
+          Object {
+            "attribute": "analysis.boonai-image-similarity",
+            "type": "similarity",
+            "values": Object {
+              "ids": Array [
+                "vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C",
+              ],
+            },
+          },
+        ]
+      }
+      pathname="/[projectId]/visualizer"
+      projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+    />
   </div>,
   .emotion-0 {
   overflow: auto;
@@ -13193,87 +13002,6 @@ Array [
   height: 4px;
 }
 
-.emotion-12 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.emotion-13 {
-  width: 100%;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  padding: 12px;
-  padding-left: 32px;
-  border: 1px solid transparent;
-  border-radius: 2px;
-  color: #e0e0e0;
-  background-repeat: no-repeat,repeat;
-  -webkit-background-position: left 8px top 50%;
-  background-position: left 8px top 50%;
-  -webkit-background-size: 20px;
-  background-size: 20px;
-  background-color: #2e2e2e;
-  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjNGE0YTRhIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
-  background-color: #191919;
-}
-
-.emotion-13::-webkit-input-placeholder {
-  font-style: italic;
-}
-
-.emotion-13::-moz-placeholder {
-  font-style: italic;
-}
-
-.emotion-13:-ms-input-placeholder {
-  font-style: italic;
-}
-
-.emotion-13::placeholder {
-  font-style: italic;
-}
-
-.emotion-13:hover {
-  border: 1px solid #808080;
-}
-
-.emotion-13:focus {
-  outline: 1px solid transparent;
-  border: 1px solid #3A5DFF;
-  color: #191919;
-  background-color: #ffffff;
-  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
-}
-
-.emotion-14 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  width: 42px;
-  margin-left: 4px;
-  border-radius: 2px;
-  background-color: #808080;
-  padding: 0;
-  border: 0;
-  cursor: not-allowed;
-}
-
-.emotion-15 {
-  color: #3b3b3b;
-}
-
 <div
     className="emotion-0"
   >
@@ -13337,37 +13065,21 @@ Array [
     <div
       className="emotion-11"
     />
-    <form
-      action=""
-      method="post"
-      onSubmit={[Function]}
-    >
-      <div
-        className="emotion-12"
-      >
-        <input
-          aria-label="Add Simple Text Filter"
-          className="emotion-13"
-          onChange={[Function]}
-          placeholder="Type here to create a simple text filter"
-          type="search"
-          value=""
-        />
-        <button
-          aria-disabled={true}
-          aria-label="Search"
-          className="emotion-14"
-          onClick={[Function]}
-          type="submit"
-        >
-          <svg
-            className="emotion-15"
-            data-file-name="plus.svg"
-            height={20}
-          />
-        </button>
-      </div>
-    </form>
+    <SearchFilter
+      assetId=""
+      fields={Object {}}
+      filters={
+        Array [
+          Object {
+            "attribute": "analysis.boonai-text-content",
+            "type": "textContent",
+            "values": Object {},
+          },
+        ]
+      }
+      pathname="/[projectId]/visualizer"
+      projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+    />
   </div>,
   .emotion-0 {
   overflow: auto;
@@ -13947,87 +13659,6 @@ Array [
   height: 4px;
 }
 
-.emotion-12 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.emotion-13 {
-  width: 100%;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  padding: 12px;
-  padding-left: 32px;
-  border: 1px solid transparent;
-  border-radius: 2px;
-  color: #e0e0e0;
-  background-repeat: no-repeat,repeat;
-  -webkit-background-position: left 8px top 50%;
-  background-position: left 8px top 50%;
-  -webkit-background-size: 20px;
-  background-size: 20px;
-  background-color: #2e2e2e;
-  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjNGE0YTRhIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
-  background-color: #191919;
-}
-
-.emotion-13::-webkit-input-placeholder {
-  font-style: italic;
-}
-
-.emotion-13::-moz-placeholder {
-  font-style: italic;
-}
-
-.emotion-13:-ms-input-placeholder {
-  font-style: italic;
-}
-
-.emotion-13::placeholder {
-  font-style: italic;
-}
-
-.emotion-13:hover {
-  border: 1px solid #808080;
-}
-
-.emotion-13:focus {
-  outline: 1px solid transparent;
-  border: 1px solid #3A5DFF;
-  color: #191919;
-  background-color: #ffffff;
-  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
-}
-
-.emotion-14 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  width: 42px;
-  margin-left: 4px;
-  border-radius: 2px;
-  background-color: #808080;
-  padding: 0;
-  border: 0;
-  cursor: not-allowed;
-}
-
-.emotion-15 {
-  color: #3b3b3b;
-}
-
 <div
     className="emotion-0"
   >
@@ -14091,37 +13722,20 @@ Array [
     <div
       className="emotion-11"
     />
-    <form
-      action=""
-      method="post"
-      onSubmit={[Function]}
-    >
-      <div
-        className="emotion-12"
-      >
-        <input
-          aria-label="Add Simple Text Filter"
-          className="emotion-13"
-          onChange={[Function]}
-          placeholder="Type here to create a simple text filter"
-          type="search"
-          value=""
-        />
-        <button
-          aria-disabled={true}
-          aria-label="Search"
-          className="emotion-14"
-          onClick={[Function]}
-          type="submit"
-        >
-          <svg
-            className="emotion-15"
-            data-file-name="plus.svg"
-            height={20}
-          />
-        </button>
-      </div>
-    </form>
+    <SearchFilter
+      assetId=""
+      fields={Object {}}
+      filters={
+        Array [
+          Object {
+            "attribute": "",
+            "values": Object {},
+          },
+        ]
+      }
+      pathname="/[projectId]/visualizer"
+      projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+    />
   </div>,
   .emotion-0 {
   overflow: auto;

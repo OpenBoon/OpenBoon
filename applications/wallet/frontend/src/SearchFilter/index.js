@@ -1,22 +1,32 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
 
-import { colors, spacing, constants } from '../Styles'
+import { colors, spacing, constants, typography } from '../Styles'
+
 import PlusSvg from '../Icons/plus.svg'
 
 import { dispatch, ACTIONS } from '../Filters/helpers'
-
 import InputSearch, { VARIANTS as INPUT_SEARCH_VARIANTS } from '../Input/Search'
 
-const BUTTON_SIZE = 42
+import SearchFilterSort from './Sort'
 
-const SearchFilter = ({ pathname, projectId, assetId, filters }) => {
+const SearchFilter = ({ pathname, projectId, assetId, filters, fields }) => {
   const [searchString, setSearchString] = useState('')
 
   const hasSearch = searchString !== ''
 
   return (
     <form action="" method="post" onSubmit={(event) => event.preventDefault()}>
+      <SearchFilterSort
+        pathname={pathname}
+        projectId={projectId}
+        assetId={assetId}
+        filters={filters}
+        fields={fields}
+      />
+
+      <div css={{ height: spacing.small }} />
+
       <div css={{ display: 'flex' }}>
         <InputSearch
           aria-label="Add Simple Text Filter"
@@ -24,8 +34,12 @@ const SearchFilter = ({ pathname, projectId, assetId, filters }) => {
           value={searchString}
           onChange={({ value }) => setSearchString(value)}
           variant={INPUT_SEARCH_VARIANTS.DARK}
-          style={{ backgroundColor: colors.structure.coal }}
+          style={{
+            backgroundColor: colors.structure.coal,
+            lineHeight: typography.height.small,
+          }}
         />
+
         <button
           type="submit"
           aria-disabled={!searchString}
@@ -56,7 +70,7 @@ const SearchFilter = ({ pathname, projectId, assetId, filters }) => {
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            width: BUTTON_SIZE,
+            width: constants.default,
             marginLeft: spacing.small,
             borderRadius: constants.borderRadius.small,
             backgroundColor: hasSearch
@@ -72,7 +86,7 @@ const SearchFilter = ({ pathname, projectId, assetId, filters }) => {
             css={{
               color: hasSearch
                 ? colors.structure.white
-                : colors.structure.smoke,
+                : colors.structure.mattGrey,
             }}
           />
         </button>
@@ -86,6 +100,7 @@ SearchFilter.propTypes = {
   projectId: PropTypes.string.isRequired,
   assetId: PropTypes.string.isRequired,
   filters: PropTypes.arrayOf(PropTypes.shape({}).isRequired).isRequired,
+  fields: PropTypes.shape({}).isRequired,
 }
 
 export default SearchFilter

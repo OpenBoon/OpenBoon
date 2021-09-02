@@ -15,6 +15,7 @@ const DATASET_ID = '4b0b10a8-cec1-155c-b12f-ee2bc8787e06'
 const ASSET_ID = asset.id
 
 jest.mock('../../Filter/Reset', () => 'FilterReset')
+jest.mock('../../SearchFilter', () => 'SearchFilter')
 
 describe('<FiltersContent />', () => {
   it('should render the "Exists" filter', () => {

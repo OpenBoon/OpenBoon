@@ -41,9 +41,13 @@ const BulkAssetLabeling = ({ projectId, query, setIsBulkLabeling }) => {
   )
 }
 
+BulkAssetLabeling.defaultProps = {
+  query: '',
+}
+
 BulkAssetLabeling.propTypes = {
   projectId: PropTypes.string.isRequired,
-  query: PropTypes.string.isRequired,
+  query: PropTypes.string,
   setIsBulkLabeling: PropTypes.func.isRequired,
 }
 
