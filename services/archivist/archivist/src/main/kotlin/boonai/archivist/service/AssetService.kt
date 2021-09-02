@@ -1140,6 +1140,11 @@ class AssetServiceImpl : AssetService {
                 return true
             }
 
+            if (pipeline.any { m -> m.force }) {
+                logger.info("Reprocessing asset ${asset.id}, forced modules detected.")
+                return true
+            }
+
             // Now comes the slow check.  Compare the new processing to the metrics
             // and determine if new processing needs to be done
             val existing = oldPipeline.map { m -> "${m.processor}${m.checksum}" }.toSet()
@@ -1400,8 +1405,8 @@ class AssetServiceImpl : AssetService {
      * A cache to store parent assets so we don't load them over and over again.
      */
     private val parentAssetCache = CacheBuilder.newBuilder()
-        .maximumSize(50)
-        .initialCapacity(10)
+        .maximumSize(100)
+        .initialCapacity(20)
         .concurrencyLevel(4)
         .expireAfterWrite(5, TimeUnit.MINUTES)
         .build(object : CacheLoader<String, Asset>() {
