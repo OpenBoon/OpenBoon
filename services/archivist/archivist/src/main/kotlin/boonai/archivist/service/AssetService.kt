@@ -14,6 +14,7 @@ import boonai.archivist.domain.BatchCreateAssetsResponse
 import boonai.archivist.domain.BatchDeleteAssetResponse
 import boonai.archivist.domain.BatchIndexFailure
 import boonai.archivist.domain.BatchIndexResponse
+import boonai.archivist.domain.BatchLabelBySearchRequest
 import boonai.archivist.domain.BatchUpdateCustomFieldsRequest
 import boonai.archivist.domain.BatchUpdateResponse
 import boonai.archivist.domain.BatchUploadAssetsRequest
@@ -22,7 +23,6 @@ import boonai.archivist.domain.FileExtResolver
 import boonai.archivist.domain.FileStorage
 import boonai.archivist.domain.InternalTask
 import boonai.archivist.domain.Job
-import boonai.archivist.domain.BatchLabelBySearchRequest
 import boonai.archivist.domain.ProcessorRef
 import boonai.archivist.domain.ProjectDirLocator
 import boonai.archivist.domain.ProjectFileLocator
@@ -56,7 +56,9 @@ import com.google.pubsub.v1.PubsubMessage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import org.elasticsearch.ElasticsearchStatusException
 import org.elasticsearch.action.DocWriteRequest
+import org.elasticsearch.action.DocWriteResponse
 import org.elasticsearch.action.bulk.BackoffPolicy
 import org.elasticsearch.action.bulk.BulkProcessor
 import org.elasticsearch.action.bulk.BulkRequest
@@ -215,6 +217,11 @@ interface AssetService {
     fun updateLabels(req: UpdateAssetLabelsRequest): BulkResponse
     fun updateLabelsV4(req: UpdateAssetLabelsRequestV4): BulkResponse
     fun batchLabelAssetsBySearch(lreq: BatchLabelBySearchRequest): Int
+
+    /**
+     * Manually set languages on an existing asset.
+     */
+    fun setLanguages(id: String, languages: List<String>?): Boolean
 }
 
 @Service
@@ -375,6 +382,27 @@ class AssetServiceImpl : AssetService {
         val r = rest.client.search(req, RequestOptions.DEFAULT)
         return r.hits.map {
             Asset(it.id, it.sourceAsMap)
+        }
+    }
+
+    override fun setLanguages(id: String, languages: List<String>?): Boolean {
+        validateLanguages(languages)
+        val rest = indexRoutingService.getProjectRestClient()
+        val req = rest.newUpdateRequest(id)
+
+        // Don't allow empty lists.
+        val langs = if (languages.isNullOrEmpty()) {
+            null
+        } else {
+            languages
+        }
+
+        req.doc(mapOf("media" to mapOf("languages" to langs)))
+        return try {
+            rest.client.update(req, RequestOptions.DEFAULT).result == DocWriteResponse.Result.UPDATED
+        } catch (e: ElasticsearchStatusException) {
+            logger.warn("Failed to update language for Asset ID: $id", e)
+            throw EmptyResultDataAccessException("The Asset $id was not found", 1)
         }
     }
 
@@ -589,27 +617,18 @@ class AssetServiceImpl : AssetService {
                     postTimelines[id] = timelines
                 }
 
-                val tmpAsset = asset.getAttr("tmp.transient", Boolean::class.java) ?: false
-                if (tmpAsset) {
-                    tempAssets.add(id)
-                }
-
                 prepAssetForUpdate(asset)
                 if (setAnalyzed && !asset.isAnalyzed()) {
                     asset.setAttr("system.state", AssetState.Analyzed.name)
                     stateChangedIds.add(id)
                 }
 
-                if (tmpAsset) {
-                    bulk.add(rest.newDeleteRequest(id))
-                } else {
-                    bulk.add(
-                        rest.newIndexRequest(id)
-                            .create(id in notFound)
-                            .source(doc)
-                            .opType(DocWriteRequest.OpType.INDEX)
-                    )
-                }
+                bulk.add(
+                    rest.newIndexRequest(id)
+                        .create(id in notFound)
+                        .source(doc)
+                        .opType(DocWriteRequest.OpType.INDEX)
+                )
             } catch (ex: Exception) {
                 failedAssets.add(
                     BatchIndexFailure(id, asset.getAttr("source.path"), ex.message ?: "Unknown error")
@@ -674,27 +693,9 @@ class AssetServiceImpl : AssetService {
                 incrementProjectIngestCounters(stateChangedIds.intersect(indexedIds), docs)
             }
 
-            /**
-             logger.info("Post processing ${postTimelines.size} assets for deep video search.")
-             if (postTimelines.isNotEmpty() and properties.getBoolean("archivist.deep-video-analysis.enabled")) {
-             val jobId = getZmlpActor().getAttr("jobId")
-             if (jobId == null) {
-             logger.warn("There was post timelines to process but not jobId was found.")
-             } else {
-             logger.info("Launching deep video analysis on ${postTimelines.size} assets.")
-             jobLaunchService.addMultipleTimelineAnalysisTask(
-             UUID.fromString(jobId), postTimelines
-             )
-             }
-             }
-             **/
-
-            // Delete associated files with the transient assets.
-            deleteAssociatedFiles(tempAssets)
-
-            BatchIndexResponse(indexedIds, failedAssets, tempAssets)
+            BatchIndexResponse(indexedIds, failedAssets)
         } else {
-            BatchIndexResponse(emptyList(), failedAssets, emptyList())
+            BatchIndexResponse(emptyList(), failedAssets)
         }
     }
 
@@ -1020,6 +1021,7 @@ class AssetServiceImpl : AssetService {
             asset.setAttr(k, v)
         }
 
+        // Set temp vars
         spec.tmp?.forEach { (k, v) ->
             val key = if (k.startsWith("tmp.")) {
                 k
@@ -1027,6 +1029,12 @@ class AssetServiceImpl : AssetService {
                 "tmp.$k"
             }
             asset.setAttr(key, v)
+        }
+
+        // Set language
+        spec.languages?.let {
+            validateLanguages(it)
+            asset.setAttr("media.languages", it)
         }
 
         val time = java.time.Clock.systemUTC().instant().toString()
@@ -1378,6 +1386,14 @@ class AssetServiceImpl : AssetService {
             counters.count(Asset(it, docs.getValue(it)))
         }
         projectService.incrementQuotaCounters(counters)
+    }
+
+    fun validateLanguages(langs: List<String>?) {
+        langs?.forEach {
+            if (!it.matches(Regex("^[a-z]{2}-[A-Z]{2}$"))) {
+                throw IllegalArgumentException("Invalid language code format: $it")
+            }
+        }
     }
 
     /**

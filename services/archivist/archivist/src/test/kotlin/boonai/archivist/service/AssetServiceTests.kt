@@ -36,7 +36,6 @@ import boonai.archivist.util.FileUtils
 import boonai.common.util.Json
 import org.elasticsearch.client.ResponseException
 import org.junit.Test
-import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.DataRetrievalFailureException
 import org.springframework.dao.EmptyResultDataAccessException
@@ -622,34 +621,6 @@ class AssetServiceTests : AbstractTest() {
     }
 
     @Test
-    fun testBatchIndexAssetsWithTemporaryAssets() {
-        val batchCreate = BatchCreateAssetsRequest(
-            assets = listOf(
-                AssetSpec("gs://cats/large-brown-deleted-cat.jpg"),
-                AssetSpec("gs://cats/large-brown-not-deleted-cat.jpg")
-            )
-        )
-
-        val createRsp = assetService.batchCreate(batchCreate)
-
-        // Delete only the first
-        var assets = assetService.getAll(createRsp.created)
-        assets[0].setAttr("tmp.transient", true)
-
-        val batchIndex = assets.associate { it.id to it.document }
-        val indexRsp = assetService.batchIndex(batchIndex)
-
-        assertTrue(indexRsp.failed.isEmpty())
-        assertEquals(2, indexRsp.indexed.size)
-
-        assertNotNull(assetService.getAsset(createRsp.created[1]))
-        assertEquals(1, indexRsp.transient.size)
-        assertThrows<EmptyResultDataAccessException> {
-            assetService.getAsset(createRsp.created[0])
-        }
-    }
-
-    @Test
     fun testBatchIndexAssetsWithTempFields() {
         val batchCreate = BatchCreateAssetsRequest(
             assets = listOf(AssetSpec("gs://cats/large-brown-cat.jpg"))
@@ -934,7 +905,7 @@ class AssetServiceTests : AbstractTest() {
     }
 
     @Test
-    fun testLabelAssetsBySeaarch() {
+    fun testLabelAssetsBySearch() {
         val ds = datasetService.createDataset(DatasetSpec("test", DatasetType.Classification))
         val label = ds.makeLabel("cat")
 
@@ -959,5 +930,64 @@ class AssetServiceTests : AbstractTest() {
         for (asset in getSample(2)) {
             print(asset.getAttr("labels"))
         }
+    }
+
+    @Test
+    fun testSetLanguage() {
+        val batchCreate = BatchCreateAssetsRequest(
+            assets = listOf(
+                AssetSpec("gs://cats/large-brown-deleted-cat.jpg"),
+            ),
+            state = AssetState.Analyzed
+        )
+        assetService.batchCreate(batchCreate)
+        refreshElastic()
+
+        var asset = this.getSample(1)[0]
+        val rsp = assetService.setLanguages(asset.id, listOf("en-US"))
+        assertTrue(rsp)
+
+        refreshElastic()
+        asset = assetService.getAsset(asset.id)
+        assertEquals(listOf("en-US"), (asset.getAttr("media.languages")))
+    }
+
+    @Test(expected = IllegalArgumentException::class)
+    fun testSetLanguageErrorBadLanguage() {
+        val batchCreate = BatchCreateAssetsRequest(
+            assets = listOf(
+                AssetSpec("gs://cats/large-brown-deleted-cat.jpg"),
+            ),
+            state = AssetState.Analyzed
+        )
+        assetService.batchCreate(batchCreate)
+        refreshElastic()
+
+        var asset = this.getSample(1)[0]
+        assetService.setLanguages(asset.id, listOf("eng"))
+    }
+
+    @Test(expected = EmptyResultDataAccessException::class)
+    fun testSetLanguageErrorMissingAsset() {
+        assertFalse(assetService.setLanguages("1234", listOf("en-US")))
+    }
+
+    @Test
+    fun testSetLanguageToNull() {
+        val batchCreate = BatchCreateAssetsRequest(
+            assets = listOf(
+                AssetSpec("gs://cats/large-brown-deleted-cat.jpg"),
+            ),
+            state = AssetState.Analyzed
+        )
+        assetService.batchCreate(batchCreate)
+        refreshElastic()
+
+        var asset = this.getSample(1)[0]
+        assetService.setLanguages(asset.id, listOf("en-US"))
+        assetService.setLanguages(asset.id, null)
+
+        asset = assetService.getAsset(asset.id)
+        assertNull(asset.getAttr("media.languages"))
     }
 }

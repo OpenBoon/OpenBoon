@@ -1,0 +1,15 @@
+{
+  "description": "Add media.language",
+  "patch": {
+    "properties": {
+      "media": {
+        "dynamic": "strict",
+        "properties": {
+          "languages": {
+            "type": "keyword"
+          }
+        }
+      }
+    }
+  }
+}
