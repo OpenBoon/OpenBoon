@@ -434,8 +434,7 @@ class TestQuery(BaseFiltersTestCase):
     def test_empty_query_sorts(self, login, api_client, project):
         def mock_list(*args, **kwargs):
             query = kwargs['search_filter']
-            assert query == {'sort': {'system.timeCreated': {'order': 'desc'}},
-                             '_source': ['id',
+            assert query == {'_source': ['id',
                                          'source*',
                                          'files*',
                                          'media*'],
@@ -449,8 +448,7 @@ class TestQuery(BaseFiltersTestCase):
     def test_fields_querystring_parsed(self, login, api_client, project):
         def mock_list(*args, **kwargs):
             query = kwargs['search_filter']
-            assert query == {'sort': {'system.timeCreated': {'order': 'desc'}},
-                             '_source': ['id',
+            assert query == {'_source': ['id',
                                          'source*',
                                          'files*',
                                          'media*',

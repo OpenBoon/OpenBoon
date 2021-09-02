@@ -764,8 +764,14 @@ class AssetServiceTests : AbstractTest() {
         // No processing, checksum match
         metrics = AssetMetrics(listOf(ProcessorMetric("foo.Bar", "bing", 281740160, null)))
         asset.setAttr("metrics", metrics)
-        val ref = ProcessorRef("foo.Bar", "core")
+        var ref = ProcessorRef("foo.Bar", "core")
         assertFalse(assetService.assetNeedsReprocessing(asset, listOf(ref)))
+
+        // processing, checksum match but forced!
+        metrics = AssetMetrics(listOf(ProcessorMetric("foo.Bar", "bing", 281740160, null)))
+        asset.setAttr("metrics", metrics)
+        ref = ProcessorRef("foo.Bar", "core").apply { force = true }
+        assertTrue(assetService.assetNeedsReprocessing(asset, listOf(ref)))
 
         // processing, checksum does not match
         metrics = AssetMetrics(listOf(ProcessorMetric("foo.Bar", "bing", 1, null)))
