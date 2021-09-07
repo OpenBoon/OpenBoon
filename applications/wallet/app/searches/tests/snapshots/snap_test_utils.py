@@ -32,13 +32,7 @@ snapshots['TestFilterBoy.test_finalize_query_normal_filters 1'] = {
     }
 }
 
-snapshots['TestFilterBoy.test_finalize_query_only_limit_filter 1'] = {
-    'sort': {
-        'system.timeCreated': {
-            'order': 'desc'
-        }
-    }
-}
+snapshots['TestFilterBoy.test_finalize_query_only_limit_filter 1'] = {}
 
 snapshots['TestFilterBoy.test_finalize_query_with_multiple_simple_sort 1'] = {
     'sort': [

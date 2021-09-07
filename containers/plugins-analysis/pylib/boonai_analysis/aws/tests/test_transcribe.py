@@ -143,12 +143,12 @@ class AmazonTranscribeProcessorTestCase(PluginUnitTestCase):
         asset.set_attr('media.length', 15.0)
         frame = Frame(asset)
         langs = self.processor.get_languages(frame.asset)
-        assert langs == ['en-US', 'en-GB', 'fr-FR', 'es-US']
+        assert langs == ['en-US', 'fr-FR', 'es-US', 'pt-BR']
 
     def test_get_asset_languages(self):
         asset = TestAsset('gs://boonai-dev-data/video/no_audio.mp4')
         asset.set_attr('media.length', 15.0)
-        asset.set_attr('media.language', ['fr-FR'])
+        asset.set_attr('media.languages', ['fr-FR'])
         frame = Frame(asset)
         langs = self.processor.get_languages(frame.asset)
         assert langs == ['fr-FR']

@@ -92,13 +92,17 @@ Array [
 }
 
 .emotion-6 {
+  height: 4px;
+}
+
+.emotion-7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
 }
 
-.emotion-7 {
+.emotion-8 {
   width: 100%;
   -webkit-flex: 1;
   -ms-flex: 1;
@@ -116,29 +120,30 @@ Array [
   background-color: #2e2e2e;
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjNGE0YTRhIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
   background-color: #191919;
+  line-height: 18px;
 }
 
-.emotion-7::-webkit-input-placeholder {
+.emotion-8::-webkit-input-placeholder {
   font-style: italic;
 }
 
-.emotion-7::-moz-placeholder {
+.emotion-8::-moz-placeholder {
   font-style: italic;
 }
 
-.emotion-7:-ms-input-placeholder {
+.emotion-8:-ms-input-placeholder {
   font-style: italic;
 }
 
-.emotion-7::placeholder {
+.emotion-8::placeholder {
   font-style: italic;
 }
 
-.emotion-7:hover {
+.emotion-8:hover {
   border: 1px solid #808080;
 }
 
-.emotion-7:focus {
+.emotion-8:focus {
   outline: 1px solid transparent;
   border: 1px solid #3A5DFF;
   color: #191919;
@@ -146,7 +151,7 @@ Array [
   background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgICA8cGF0aCBmaWxsPSIjYjNiM2IzIiBkPSJNMTMuODU3IDEyLjMxNGgtLjgyM2wtLjMwOC0uMzA4YTYuNDM4IDYuNDM4IDAgMDAxLjY0NS00LjMyQTYuNjcyIDYuNjcyIDAgMDA3LjY4NiAxIDYuNjcyIDYuNjcyIDAgMDAxIDcuNjg2YTYuNjcyIDYuNjcyIDAgMDA2LjY4NiA2LjY4NSA2LjQzOCA2LjQzOCAwIDAwNC4zMi0xLjY0NWwuMzA4LjMwOHYuODIzTDE3LjQ1NyAxOSAxOSAxNy40NTdsLTUuMTQzLTUuMTQzem0tNi4xNzEgMGE0LjYxIDQuNjEgMCAwMS00LjYyOS00LjYyOCA0LjYxIDQuNjEgMCAwMTQuNjI5LTQuNjI5IDQuNjEgNC42MSAwIDAxNC42MjggNC42MjkgNC42MSA0LjYxIDAgMDEtNC42MjggNC42Mjh6Ii8+Cjwvc3ZnPg==');
 }
 
-.emotion-8 {
+.emotion-9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -159,7 +164,7 @@ Array [
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  width: 42px;
+  width: 44px;
   margin-left: 4px;
   border-radius: 2px;
   background-color: #808080;
@@ -168,8 +173,8 @@ Array [
   cursor: not-allowed;
 }
 
-.emotion-9 {
-  color: #3b3b3b;
+.emotion-10 {
+  color: #2e2e2e;
 }
 
 <div
@@ -207,12 +212,241 @@ Array [
       method="post"
       onSubmit={[Function]}
     >
+      <SearchFilterSort
+        assetId=""
+        fields={
+          Object {
+            "analysis": Object {
+              "boonai": Object {
+                "tinyProxy": Array [
+                  "facet",
+                  "text",
+                  "exists",
+                ],
+              },
+              "boonai-face-detection": Array [
+                "labelConfidence",
+                "exists",
+              ],
+              "boonai-image-similarity": Array [
+                "similarity",
+                "exists",
+              ],
+              "boonai-object-detection": Object {
+                "count": Array [
+                  "range",
+                  "exists",
+                ],
+                "predictions": Array [],
+              },
+            },
+            "aux": Array [
+              "exists",
+            ],
+            "clip": Object {
+              "length": Array [
+                "range",
+                "exists",
+              ],
+              "pile": Array [
+                "facet",
+                "text",
+                "exists",
+              ],
+              "sourceAssetId": Array [
+                "facet",
+                "text",
+                "exists",
+              ],
+              "start": Array [
+                "range",
+                "exists",
+              ],
+              "stop": Array [
+                "range",
+                "exists",
+              ],
+              "timeline": Array [
+                "facet",
+                "text",
+                "exists",
+              ],
+              "type": Array [
+                "facet",
+                "text",
+                "exists",
+              ],
+            },
+            "datasets": Array [
+              "exists",
+            ],
+            "files": Array [
+              "exists",
+            ],
+            "location": Object {
+              "city": Array [
+                "facet",
+                "text",
+                "exists",
+                "simpleSort",
+              ],
+              "code": Array [
+                "facet",
+                "text",
+                "exists",
+              ],
+              "country": Array [
+                "facet",
+                "text",
+                "exists",
+              ],
+              "point": Array [
+                "exists",
+              ],
+            },
+            "media": Object {
+              "aspect": Array [
+                "range",
+                "exists",
+              ],
+              "author": Array [
+                "facet",
+                "text",
+                "exists",
+              ],
+              "content": Array [
+                "facet",
+                "text",
+                "exists",
+              ],
+              "description": Array [
+                "facet",
+                "text",
+                "exists",
+              ],
+              "height": Array [
+                "range",
+                "exists",
+              ],
+              "keywords": Array [
+                "facet",
+                "text",
+                "exists",
+              ],
+              "length": Array [
+                "range",
+                "exists",
+              ],
+              "orientation": Array [
+                "facet",
+                "text",
+                "exists",
+              ],
+              "timeCreated": Array [
+                "exists",
+              ],
+              "title": Array [
+                "facet",
+                "text",
+                "exists",
+              ],
+              "type": Array [
+                "facet",
+                "text",
+                "exists",
+              ],
+              "width": Array [
+                "range",
+                "exists",
+              ],
+            },
+            "metrics": Object {
+              "pipeline": Array [
+                "exists",
+              ],
+            },
+            "source": Object {
+              "checksum": Array [
+                "range",
+                "exists",
+              ],
+              "extension": Array [
+                "facet",
+                "text",
+                "exists",
+              ],
+              "filename": Array [
+                "facet",
+                "text",
+                "exists",
+              ],
+              "filesize": Array [
+                "range",
+                "exists",
+              ],
+              "mimetype": Array [
+                "facet",
+                "text",
+                "exists",
+              ],
+              "path": Array [
+                "facet",
+                "text",
+                "exists",
+              ],
+            },
+            "system": Object {
+              "dataSourceId": Array [
+                "facet",
+                "text",
+                "exists",
+              ],
+              "jobId": Array [
+                "facet",
+                "text",
+                "exists",
+              ],
+              "projectId": Array [
+                "facet",
+                "text",
+                "exists",
+              ],
+              "state": Array [
+                "facet",
+                "text",
+                "exists",
+              ],
+              "taskId": Array [
+                "facet",
+                "text",
+                "exists",
+              ],
+              "timeCreated": Array [
+                "exists",
+                "date",
+              ],
+              "timeModified": Array [
+                "exists",
+              ],
+            },
+            "tmp": Array [
+              "exists",
+            ],
+          }
+        }
+        filters={Array []}
+        pathname="/[projectId]/visualizer"
+        projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+      />
       <div
         className="emotion-6"
+      />
+      <div
+        className="emotion-7"
       >
         <input
           aria-label="Add Simple Text Filter"
-          className="emotion-7"
+          className="emotion-8"
           onChange={[Function]}
           placeholder="Type here to create a simple text filter"
           type="search"
@@ -221,12 +455,12 @@ Array [
         <button
           aria-disabled={true}
           aria-label="Search"
-          className="emotion-8"
+          className="emotion-9"
           onClick={[Function]}
           type="submit"
         >
           <svg
-            className="emotion-9"
+            className="emotion-10"
             data-file-name="plus.svg"
             height={20}
           />

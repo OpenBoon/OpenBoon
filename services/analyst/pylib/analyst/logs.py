@@ -63,9 +63,15 @@ class LogFileRotator:
             logger.info(f'Closing task log for {self.task_id}')
             self.handler.close()
             task_logger.removeHandler(self.handler)
-            self.gc_logs_handler.close()
-            task_logger.removeHandler(self.gc_logs_handler)
             self.upload_log_file()
+
+            if os.environ.get('ENVIRONMENT') != 'localdev':
+                task_logger.removeHandler(self.gc_logs_handler)
+                try:
+                    self.gc_logs_handler.close()
+                except Exception as e:
+                    logger.warning("Failed to close GC log handler", e)
+
         except Exception:
             logger.exception(f'Failed to publish task log for {self.task_id}')
         finally:

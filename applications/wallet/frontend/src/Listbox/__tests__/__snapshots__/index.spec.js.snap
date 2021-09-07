@@ -157,7 +157,9 @@ exports[`Listbox should render properly 1`] = `
       }
       className="emotion-3"
     >
-      Select Type
+      <span>
+        Select Type
+      </span>
     </ListboxButton>
     <ListboxPopover
       className="emotion-4"
@@ -172,7 +174,7 @@ exports[`Listbox should render properly 1`] = `
             className="emotion-7"
           >
             <input
-              aria-label="Filter Types"
+              aria-label="Filter types"
               className="emotion-8"
               onChange={[Function]}
               placeholder="Filter types"
@@ -384,7 +386,9 @@ exports[`Listbox should render properly 2`] = `
       }
       className="emotion-3"
     >
-      Select Type
+      <span>
+        Select Type
+      </span>
     </ListboxButton>
     <ListboxPopover
       className="emotion-4"
@@ -399,7 +403,7 @@ exports[`Listbox should render properly 2`] = `
             className="emotion-7"
           >
             <input
-              aria-label="Filter Types"
+              aria-label="Filter types"
               className="emotion-8"
               onChange={[Function]}
               placeholder="Filter types"
@@ -576,7 +580,9 @@ exports[`Listbox should render properly 3`] = `
       }
       className="emotion-3"
     >
-      Select Type
+      <span>
+        Select Type
+      </span>
     </ListboxButton>
     <ListboxPopover
       className="emotion-4"
@@ -591,7 +597,7 @@ exports[`Listbox should render properly 3`] = `
             className="emotion-7"
           >
             <input
-              aria-label="Filter Types"
+              aria-label="Filter types"
               className="emotion-8"
               onChange={[Function]}
               placeholder="Filter types"
@@ -777,7 +783,9 @@ exports[`Listbox should render properly 4`] = `
       }
       className="emotion-3"
     >
-      Select Type
+      <span>
+        Select Type
+      </span>
     </ListboxButton>
     <ListboxPopover
       className="emotion-4"
@@ -792,7 +800,7 @@ exports[`Listbox should render properly 4`] = `
             className="emotion-7"
           >
             <input
-              aria-label="Filter Types"
+              aria-label="Filter types"
               className="emotion-8"
               onChange={[Function]}
               placeholder="Filter types"
@@ -978,7 +986,9 @@ exports[`Listbox should render properly with existing attribute 1`] = `
       }
       className="emotion-3"
     >
-      timeline
+      <span>
+        timeline
+      </span>
     </ListboxButton>
     <ListboxPopover
       className="emotion-4"
@@ -993,7 +1003,7 @@ exports[`Listbox should render properly with existing attribute 1`] = `
             className="emotion-7"
           >
             <input
-              aria-label="Filter Types"
+              aria-label="Filter types"
               className="emotion-8"
               onChange={[Function]}
               placeholder="Filter types"

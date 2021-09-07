@@ -224,6 +224,16 @@ class SearchViewSet(CreateModelMixin,
                 }
             }
 
+        SimpleSort:
+
+            {
+                "type": "simpleSort",
+                "attribute": "$metadata_attribute_dot_path"
+                "values": {
+                    "order": "asc"  # or "desc"
+                }
+            }
+
         """
         path = 'api/v3/assets'
         fields = ['id',

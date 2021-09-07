@@ -21,6 +21,8 @@ import java.util.UUID
 import javax.persistence.EntityManager
 import javax.persistence.PersistenceContext
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
 class PipelineResolverServiceTests : AbstractTest() {
 
@@ -47,6 +49,26 @@ class PipelineResolverServiceTests : AbstractTest() {
             )
         )
         assertEquals(7, pipeline.execute.size)
+    }
+
+    @Test
+    fun testResolveModularWithForce() {
+        pipelineModService.updateStandardMods()
+        val pipeline = pipelineResolverService.resolveModular(
+            listOf(
+                "+gcp-speech-to-text",
+                "+aws-transcribe",
+                "gcp-label-detection"
+            )
+        )
+        val force1 = pipeline.execute.filter { it.module == "gcp-speech-to-text" }.map { it.force }[0]
+        assertTrue(force1)
+
+        val force2 = pipeline.execute.filter { it.module == "aws-transcribe" }.map { it.force }[0]
+        assertTrue(force2)
+
+        val force3 = pipeline.execute.filter { it.module == "gcp-label-detection" }.map { it.force }[0]
+        assertFalse(force3)
     }
 
     @Test
@@ -112,21 +134,6 @@ class PipelineResolverServiceTests : AbstractTest() {
 
         val rpipeline = pipelineResolverService.resolve(pipeline.name, listOf("boonai-label-detection"))
         Json.prettyPrint(rpipeline)
-    }
-
-    @Test
-    fun resolveUsingPipelineNameAndMinusModules() {
-        pipelineModService.updateStandardMods()
-
-        val pspec = PipelineSpec("test", modules = listOf("boonai-extract-pages"))
-        val pipeline = pipelineService.create(pspec)
-
-        val rpipeline = pipelineResolverService.resolve(pipeline.name, listOf("-boonai-extract-pages"))
-        val resolved = rpipeline.execute
-        val last = resolved.last()
-
-        assertEquals(last.className, "boonai_analysis.boonai.ZviSimilarityProcessor")
-        assertEquals(last.image, "boonai/plugins-analysis")
     }
 
     @Test

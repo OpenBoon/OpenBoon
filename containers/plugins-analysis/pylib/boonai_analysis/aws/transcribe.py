@@ -136,10 +136,12 @@ class AmazonTranscribeProcessor(AssetProcessor):
 
     def start_job(self, media_uri, asset):
         """
+        Start the Transcribe job.
 
         Args:
             media_uri (str): The URI where the audio file is stored. This is typically in an
             Amazon S3 bucket
+            asset (Asset): The asset.
         Returns:
             (dict) Data about the job
         """
@@ -149,10 +151,16 @@ class AmazonTranscribeProcessor(AssetProcessor):
             job_args = {
                 'TranscriptionJobName': job_name,
                 'Media': {'MediaFileUri': media_uri},
-                'MediaFormat': media_format,
-                'IdentifyLanguage': True,
-                'LanguageOptions': self.get_languages(asset)
+                'MediaFormat': media_format
             }
+
+            # If we only have 1 lang, that is passed in differently
+            langs = self.get_languages(asset)
+            if len(langs) > 1:
+                job_args['LanguageOptions'] = langs
+                job_args['IdentifyLanguage'] = True
+            else:
+                job_args['LanguageCode'] = langs[0]
 
             self.logger.info('Starting transcription job %s.', job_name)
             response = self.transcribe_client.start_transcription_job(**job_args)
@@ -168,7 +176,7 @@ class AmazonTranscribeProcessor(AssetProcessor):
             asset: (Asset): The asset which may define languagess
 
         Returns:
-            list: A list of languagee codes.
+            list: A list of language codes.
         """
         langs = asset.get_attr('media.languages')
         if not langs:
