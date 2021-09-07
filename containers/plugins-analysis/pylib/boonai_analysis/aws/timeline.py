@@ -58,20 +58,22 @@ def save_transcribe_webvtt(asset, audio_result):
     return webvtt.path, sf
 
 
-def save_transcribe_timeline(asset, audio_result):
+def save_transcribe_timeline(asset, audio_result, default_lang):
     """
     Save the results of Transcribe to a timeline.
 
     Args:
         asset (Asset): The asset to register the file to.
         audio_result (obj): The speech to text result.
+        default_lang (str): Tbe default language if no language is set on the result, which
+            will be the case if only 1 language is passed to Transcribe.
 
     Returns:
         Timeline: The generated timeline.
     """
     timeline = TimelineBuilder(asset, 'aws-transcribe')
     results = audio_result['results']
-    track = 'Language {}'.format(results.get('language_code', 'en-US'))
+    track = 'Language {}'.format(results.get('language_code', default_lang))
 
     for segment in generate_transcribe_sentences(audio_result):
         timeline.add_clip(
