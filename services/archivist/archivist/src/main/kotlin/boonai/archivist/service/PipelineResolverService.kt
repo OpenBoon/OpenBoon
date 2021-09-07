@@ -288,13 +288,16 @@ class RecursivePipelineBuilder(
         return result
     }
 
-    fun parsePipelineFragment(module: String, frag: Any?): List<ProcessorRef> {
+    fun parsePipelineFragment(module: String, frag: Any?, force: Boolean): List<ProcessorRef> {
         if (frag == null) {
             return emptyList()
         }
         val result = Json.Mapper.convertValue<List<ProcessorRef>>(frag)
         // Sets the module name
-        result.forEach { it.module = module }
+        result.forEach {
+            it.module = module
+            it.force = force
+        }
         return result
     }
 
@@ -323,25 +326,25 @@ class RecursivePipelineBuilder(
                         ModOpType.ADD_AFTER -> {
                             newPipeline.add(ref)
                             op.apply?.let {
-                                newPipeline.addAll(parsePipelineFragment(module.name, it))
+                                newPipeline.addAll(parsePipelineFragment(module.name, it, module.force))
                             }
                         }
                         ModOpType.ADD_BEFORE -> {
                             op.apply?.let {
-                                newPipeline.addAll(parsePipelineFragment(module.name, it))
+                                newPipeline.addAll(parsePipelineFragment(module.name, it, module.force))
                             }
                             newPipeline.add(ref)
                         }
                         ModOpType.LAST -> {
                             newPipeline.add(ref)
                             op.apply?.let {
-                                last.addAll(parsePipelineFragment(module.name, it))
+                                last.addAll(parsePipelineFragment(module.name, it, module.force))
                             }
                         }
                         ModOpType.APPEND -> {
                             newPipeline.add(ref)
                             op.apply?.let {
-                                append.addAll(parsePipelineFragment(module.name, it))
+                                append.addAll(parsePipelineFragment(module.name, it, module.force))
                             }
                         }
                         ModOpType.APPEND_MERGE -> {
@@ -353,7 +356,7 @@ class RecursivePipelineBuilder(
                                 )
                             // Iterate procs in the fragment and add ones that don't exist,
                             // and merge args for the ones that do.
-                            val frag = parsePipelineFragment(module.name, op.apply)
+                            val frag = parsePipelineFragment(module.name, op.apply, module.force)
                             for (proc in frag) {
                                 if (proc.className !in names) {
                                     append.add(proc)
@@ -370,7 +373,7 @@ class RecursivePipelineBuilder(
                         ModOpType.PREPEND -> {
                             newPipeline.add(ref)
                             op.apply?.let {
-                                prepend.addAll(parsePipelineFragment(module.name, it))
+                                prepend.addAll(parsePipelineFragment(module.name, it, module.force))
                             }
                         }
                         ModOpType.REMOVE -> {
@@ -378,7 +381,7 @@ class RecursivePipelineBuilder(
                         }
                         ModOpType.REPLACE -> {
                             op.apply?.let {
-                                newPipeline.addAll(parsePipelineFragment(module.name, it))
+                                newPipeline.addAll(parsePipelineFragment(module.name, it, module.force))
                             }
                         }
                         ModOpType.SET_ARGS -> {

@@ -13,6 +13,7 @@ describe('Listbox', () => {
     const component = TestRenderer.create(
       <Listbox
         label="Metadata Type"
+        inputLabel="Filter types"
         options={options}
         onChange={mockOnChange}
         value=""
@@ -54,6 +55,7 @@ describe('Listbox', () => {
     const component = TestRenderer.create(
       <Listbox
         label="Metadata Type"
+        inputLabel="Filter types"
         options={options}
         onChange={mockOnChange}
         value="clip.timeline"

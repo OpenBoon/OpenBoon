@@ -12,6 +12,7 @@ const ASSET_ID = 'vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C'
 
 jest.mock('../MenuSection', () => 'FiltersMenuSection')
 jest.mock('../CopyQuery', () => 'FiltersCopyQuery')
+jest.mock('../../SearchFilter/Sort', () => 'SearchFilterSort')
 
 describe('<Filters />', () => {
   it('should render properly', () => {

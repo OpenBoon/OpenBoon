@@ -1,6 +1,6 @@
 import { Global, css } from '@emotion/react'
 
-import { colors, constants, typography, spacing } from '.'
+import { colors, constants, typography, spacing, zIndex } from '.'
 
 const StylesReset = () => (
   <>
@@ -85,6 +85,13 @@ const StylesReset = () => (
         },
         '[data-reach-combobox-popover]': {
           fontSize: '100%',
+        },
+        '[data-reach-listbox-popover]': {
+          zIndex: zIndex.reset,
+        },
+        '[data-reach-listbox-arrow]': {
+          display: 'flex',
+          alignItems: 'center',
         },
       }}
     />

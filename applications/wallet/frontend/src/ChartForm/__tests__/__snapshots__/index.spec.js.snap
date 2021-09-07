@@ -248,6 +248,7 @@ exports[`<ChartForm /> should cancel properly when editing 1`] = `
           className="emotion-5"
         />
         <Listbox
+          inputLabel="Filter types"
           label="Metadata Type"
           onChange={[Function]}
           options={
@@ -604,6 +605,7 @@ exports[`<ChartForm /> should render properly without attribute 1`] = `
           className="emotion-5"
         />
         <Listbox
+          inputLabel="Filter types"
           label="Metadata Type"
           onChange={[Function]}
           options={
@@ -960,6 +962,7 @@ exports[`<ChartForm /> should render properly without attribute 2`] = `
           className="emotion-5"
         />
         <Listbox
+          inputLabel="Filter types"
           label="Metadata Type"
           onChange={[Function]}
           options={

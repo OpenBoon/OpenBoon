@@ -52,6 +52,12 @@ class PipelineMod(
     val actorModified: String
 ) {
 
+    /**
+     * Used internally for pipeline resolution.
+     */
+    @JsonIgnore
+    var force: Boolean = false
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is PipelineMod) return false

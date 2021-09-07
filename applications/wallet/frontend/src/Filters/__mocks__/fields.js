@@ -18,7 +18,7 @@ const fields = {
   datasets: ['exists'],
   files: ['exists'],
   location: {
-    city: ['facet', 'text', 'exists'],
+    city: ['facet', 'text', 'exists', 'simpleSort'],
     code: ['facet', 'text', 'exists'],
     country: ['facet', 'text', 'exists'],
     point: ['exists'],
