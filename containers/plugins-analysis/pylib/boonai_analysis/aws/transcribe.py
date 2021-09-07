@@ -151,14 +151,14 @@ class AmazonTranscribeProcessor(AssetProcessor):
             job_args = {
                 'TranscriptionJobName': job_name,
                 'Media': {'MediaFileUri': media_uri},
-                'MediaFormat': media_format,
-                'IdentifyLanguage': True
+                'MediaFormat': media_format
             }
 
             # If we only have 1 lang, that is passed in differently
             langs = self.get_languages(asset)
             if len(langs) > 1:
                 job_args['LanguageOptions'] = langs
+                job_args['IdentifyLanguage'] = True
             else:
                 job_args['LanguageCode'] = langs[0]
 
