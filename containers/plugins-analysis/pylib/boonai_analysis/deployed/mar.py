@@ -42,13 +42,15 @@ class TorchModelBase(CustomModelProcessor):
     def __init__(self):
         super(TorchModelBase, self).__init__()
         self.add_arg(Argument("endpoint", "str", required=True))
+        self.add_arg(Argument("endpoint_path", "str", required=False))
         self.endpoint = None
-        self.endpoint_path = '/predictions/model1'
+        self.endpoint_path = None
 
     def init(self):
         """Init constructor """
         # get model by model id
         self.load_app_model()
+        self.endpoint_path = self.arg_value("endpoint_path") or '/predictions/model1'
         self.endpoint = self.arg_value('endpoint') + self.endpoint_path
 
     def process_image(self, frame):
