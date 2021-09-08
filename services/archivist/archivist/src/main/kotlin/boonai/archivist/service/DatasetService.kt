@@ -89,8 +89,7 @@ class DatasetServiceImpl(
             actor.toString()
         )
 
-        datasetDao.saveAndFlush(ds)
-        return ds
+        return datasetDao.save(ds)
     }
 
     @Transactional(readOnly = true)

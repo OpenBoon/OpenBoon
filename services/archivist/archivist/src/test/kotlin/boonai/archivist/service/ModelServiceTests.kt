@@ -36,6 +36,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.EmptyResultDataAccessException
 import java.io.FileInputStream
 import java.nio.file.Paths
+import java.util.UUID
 import javax.persistence.EntityManager
 import javax.persistence.PersistenceContext
 import kotlin.test.assertEquals
@@ -97,16 +98,57 @@ class ModelServiceTests : AbstractTest() {
     }
 
     @Test
+    fun testCreateModelValidDataset() {
+        val ds = datasetService.createDataset(DatasetSpec("pets", DatasetType.Classification))
+        val model = create(ds = ds)
+
+        assertEquals(ds.id, model.datasetId)
+        assertEquals(
+            1,
+            jdbc.queryForObject(
+                "select int_model_count from dataset where pk_dataset = ?", Int::class.java, ds.id
+            )
+        )
+    }
+
+    @Test
     fun testUpdateModel() {
         val ds = datasetService.createDataset(DatasetSpec("foo", DatasetType.Classification))
         val model = create()
 
         val update = ModelUpdateRequest("bing", ds.id, listOf())
         val umod = modelService.updateModel(model.id, update)
+
+        entityManager.refresh(ds)
         assertEquals(ds.id, umod.datasetId)
         assertEquals("bing", umod.name)
-
+        assertEquals(1, ds.modelCount)
         assertNull(pipelineModService.findByName(model.moduleName, false))
+    }
+
+    @Test
+    fun testPatchModel() {
+        val ds1 = datasetService.createDataset(DatasetSpec("foo", DatasetType.Classification))
+        val ds2 = datasetService.createDataset(DatasetSpec("bar", DatasetType.Classification))
+        val model = create(ds = ds1)
+
+        assertEquals(1, getModelCount(ds1.id))
+        assertEquals(0, getModelCount(ds2.id))
+
+        val modelPatchRequestV2 = ModelPatchRequestV2()
+        modelPatchRequestV2.setDatasetId(ds2.id)
+        val umod = modelService.patchModel(model.id, modelPatchRequestV2)
+
+        assertEquals(ds2.id, umod.datasetId)
+        assertNull(pipelineModService.findByName(model.moduleName, false))
+    }
+
+    private fun getModelCount(pk_dataset: UUID): Int {
+        return jdbc.queryForObject(
+            "select int_model_count from dataset where pk_dataset = ?",
+            Int::class.java,
+            pk_dataset
+        )
     }
 
     @Test
@@ -283,6 +325,7 @@ class ModelServiceTests : AbstractTest() {
         val shouldBeFace = pipe.execute.last { it.className == "boonai_analysis.boonai.ZviFaceDetectionProcessor" }
         assertEquals("boonai_analysis.boonai.ZviFaceDetectionProcessor", shouldBeFace.className)
     }
+
     @Test
     fun testPublishModelUpdate() {
         val model1 = create()
@@ -381,9 +424,15 @@ class ModelServiceTests : AbstractTest() {
 
     @Test
     fun testDeleteModel() {
-        val model = create()
+        val ds = datasetService.createDataset(DatasetSpec("foo", DatasetType.Classification))
+        val model = create(ds = ds)
+        entityManager.refresh(ds)
+        assertEquals(1, ds.modelCount)
         modelService.deleteModel(model)
+        entityManager.refresh(ds)
+
         assertNull(pipelineModService.findByName(model.moduleName, false))
+        assertEquals(0, ds.modelCount)
     }
 
     @Test

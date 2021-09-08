@@ -64,7 +64,8 @@ class DatasetJdbcDaoImpl : AbstractDao(), DatasetJdbcDao {
 
     private fun sumValueDatasetModelCount(datasetPk: UUID, value: Int): Boolean {
         return jdbc.update(
-            "UPDATE dataset SET int_model_count = int_model_count + $value WHERE pk_dataset  = ?",
+            "UPDATE dataset SET int_model_count = int_model_count + (?) WHERE pk_dataset  = ?",
+            value,
             datasetPk
         ) == 1
     }

@@ -154,7 +154,7 @@ class ModelServiceImpl(
             )
         )
 
-        return modelDao.saveAndFlush(model)
+        return modelDao.save(model)
     }
 
     override fun updateModel(id: UUID, update: ModelUpdateRequest): Model {
@@ -190,8 +190,8 @@ class ModelServiceImpl(
             update.datasetId?.let {
                 validateDatasetType(it, model.type)
             }
-            model.datasetId = update.datasetId
             updateDatasetsModelCount(model.datasetId, update.datasetId)
+            model.datasetId = update.datasetId
         }
 
         if (update.isFieldSet("name")) {
