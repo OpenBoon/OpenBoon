@@ -255,17 +255,19 @@ open class Asset(
         setAttr("labels", allLabels)
     }
 
-    fun addLabel(label: Label): LabelResponse {
+    fun addLabel(label: Label): LabelResult {
         val allLabels = getAttr("labels", Label.SET_OF) ?: mutableSetOf()
         // Remove the labels first because if the label value
         // changes then it won't get added.  This basically
         // replaces a label for an existing tag.
+
+        // TODO: This doesn't work for labels with BBOXES currently.
         val rsp = if (allLabels.any { it.label == label.label && it.datasetId == label.datasetId }) {
-            LabelResponse.Duplicate
+            LabelResult.Duplicate
         } else if (allLabels.any { it.datasetId == it.datasetId }) {
-            LabelResponse.Updated
+            LabelResult.Updated
         } else {
-            LabelResponse.Created
+            LabelResult.Created
         }
 
         allLabels.remove(label)

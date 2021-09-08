@@ -25,7 +25,7 @@ import boonai.archivist.domain.FileStorage
 import boonai.archivist.domain.InternalTask
 import boonai.archivist.domain.Job
 import boonai.archivist.domain.Label
-import boonai.archivist.domain.LabelResponse
+import boonai.archivist.domain.LabelResult
 import boonai.archivist.domain.LabelScope
 import boonai.archivist.domain.ProcessorRef
 import boonai.archivist.domain.ProjectDirLocator
@@ -1327,7 +1327,6 @@ class AssetServiceImpl : AssetService {
         val ds = datasetService.getDataset(lreq.datasetId)
         val testLabel = Label(ds.id, lreq.label, LabelScope.TEST)
         val trainLabel = Label(ds.id, lreq.label, LabelScope.TRAIN)
-
         val rest = indexRoutingService.getProjectRestClient()
 
         // Make sure not to touch the sort or else you'll end up
@@ -1388,7 +1387,7 @@ class AssetServiceImpl : AssetService {
             }
 
             val labelRsp = asset.addLabel(label)
-            if (labelRsp == LabelResponse.Duplicate) {
+            if (labelRsp == LabelResult.Duplicate) {
                 dupCount += 1
             } else {
                 bulk.add(rest.newUpdateRequest(asset.id).doc(asset.document))

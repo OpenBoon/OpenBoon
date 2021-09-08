@@ -187,9 +187,20 @@ class UpdateLabelRequest(
 /**
  * The response for when adding a label to an Asset.
  */
-enum class LabelResponse {
+enum class LabelResult {
+    /**
+     * The label was created.
+     */
     Created,
+
+    /**
+     * The label was updated.
+     */
     Updated,
+
+    /**
+     * The label was a duplicate.
+     */
     Duplicate
 }
 
