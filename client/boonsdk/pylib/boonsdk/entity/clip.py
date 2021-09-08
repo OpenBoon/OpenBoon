@@ -116,18 +116,18 @@ class TimelineBuilder:
     can be overlapping.  Duplicate clips are automatically compacted to the highest score.
     """
 
-    def __init__(self, asset, name, deep_analysis=True):
+    def __init__(self, asset, name, replace=False):
         """
         Create a new timeline instance.
         Args:
             asset (Asset): An Asset or its unqique Id.
             name (str): The name of the Timeline.
-            deep_analysis (bool): Launch a deep analysis job on timeline content.
+            replace (bool): Replace all tracks of existing timeline.
         """
         self.asset = as_id(asset)
         self.name = name
         self.tracks = {}
-        self.deep_analysis = deep_analysis
+        self.replace = replace
 
     def add_clip(self, track_name, start, stop, content, score=1, tags=None, bbox=None):
         """
@@ -173,5 +173,5 @@ class TimelineBuilder:
             'name': self.name,
             'assetId': self.asset,
             'tracks': [track for track in self.tracks.values() if track['clips']],
-            'deepAnalysis': self.deep_analysis
+            'replace': self.replace
         }

@@ -71,7 +71,7 @@ def save_transcribe_timeline(asset, audio_result, default_lang):
     Returns:
         Timeline: The generated timeline.
     """
-    timeline = TimelineBuilder(asset, 'aws-transcribe')
+    timeline = TimelineBuilder(asset, 'aws-transcribe', replace=True)
     results = audio_result['results']
     track = 'Language {}'.format(results.get('language_code', default_lang))
 
