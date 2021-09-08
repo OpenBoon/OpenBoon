@@ -62,7 +62,7 @@ def test_save_transcribe_timeline(save_patch):
     asset = TestAsset()
     result = load_results('transcribe.pk')
 
-    tlb = timeline.save_transcribe_timeline(asset, result)
+    tlb = timeline.save_transcribe_timeline(asset, result, 'en-US')
     track = tlb.tracks['Language en-US']
     assert track['name'] == 'Language en-US'
     assert len(track['clips']) == 2
