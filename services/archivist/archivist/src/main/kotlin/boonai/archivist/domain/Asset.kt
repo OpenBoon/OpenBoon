@@ -14,6 +14,7 @@ import org.elasticsearch.action.search.SearchResponse
 import org.elasticsearch.action.search.SearchScrollRequest
 import org.elasticsearch.client.RequestOptions
 import org.elasticsearch.client.RestHighLevelClient
+import org.elasticsearch.search.SearchHit
 import org.slf4j.LoggerFactory
 import java.nio.ByteBuffer
 import java.security.MessageDigest
@@ -143,6 +144,8 @@ open class Asset(
 
     constructor(document: MutableMap<String, Any>) :
         this(randomString(24), document)
+
+    constructor(hit: SearchHit) : this(hit.id, hit.sourceAsMap)
 
     /**
      * Remove an attribute.  If the attr cannot be remove it is set to null.
