@@ -1,12 +1,12 @@
 package boonai.archivist.domain
 
+import boonai.archivist.security.getProjectId
+import boonai.archivist.util.randomString
+import boonai.common.util.Json
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.module.kotlin.convertValue
 import com.google.common.hash.Hashing
-import boonai.archivist.security.getProjectId
-import boonai.archivist.util.randomString
-import boonai.common.util.Json
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 import org.elasticsearch.action.search.ClearScrollRequest
@@ -255,14 +255,23 @@ open class Asset(
         setAttr("labels", allLabels)
     }
 
-    fun addLabel(label: Label) {
+    fun addLabel(label: Label): LabelResponse {
         val allLabels = getAttr("labels", Label.SET_OF) ?: mutableSetOf()
         // Remove the labels first because if the label value
         // changes then it won't get added.  This basically
         // replaces a label for an existing tag.
+        val rsp = if (allLabels.any { it.label == label.label && it.datasetId == label.datasetId }) {
+            LabelResponse.Duplicate
+        } else if (allLabels.any { it.datasetId == it.datasetId }) {
+            LabelResponse.Updated
+        } else {
+            LabelResponse.Created
+        }
+
         allLabels.remove(label)
         allLabels.add(label)
         setAttr("labels", allLabels)
+        return rsp
     }
 
     /**

@@ -15,6 +15,7 @@ import boonai.archivist.domain.BatchDeleteAssetResponse
 import boonai.archivist.domain.BatchIndexFailure
 import boonai.archivist.domain.BatchIndexResponse
 import boonai.archivist.domain.BatchLabelBySearchRequest
+import boonai.archivist.domain.BatchLabelBySearchResponse
 import boonai.archivist.domain.BatchUpdateCustomFieldsRequest
 import boonai.archivist.domain.BatchUpdateResponse
 import boonai.archivist.domain.BatchUploadAssetsRequest
@@ -24,6 +25,7 @@ import boonai.archivist.domain.FileStorage
 import boonai.archivist.domain.InternalTask
 import boonai.archivist.domain.Job
 import boonai.archivist.domain.Label
+import boonai.archivist.domain.LabelResponse
 import boonai.archivist.domain.LabelScope
 import boonai.archivist.domain.ProcessorRef
 import boonai.archivist.domain.ProjectDirLocator
@@ -218,7 +220,7 @@ interface AssetService {
      */
     fun updateLabels(req: UpdateAssetLabelsRequest): BulkResponse
     fun updateLabelsV4(req: UpdateAssetLabelsRequestV4): BulkResponse
-    fun batchLabelAssetsBySearch(lreq: BatchLabelBySearchRequest): Int
+    fun batchLabelAssetsBySearch(lreq: BatchLabelBySearchRequest): BatchLabelBySearchResponse
 
     /**
      * Manually set languages on an existing asset.
@@ -1316,7 +1318,7 @@ class AssetServiceImpl : AssetService {
         return result
     }
 
-    override fun batchLabelAssetsBySearch(lreq: BatchLabelBySearchRequest): Int {
+    override fun batchLabelAssetsBySearch(lreq: BatchLabelBySearchRequest): BatchLabelBySearchResponse {
 
         if (lreq.maxAssets > 10000 || lreq.maxAssets < 1) {
             throw IllegalArgumentException("Invalid maxAssets value, must be between 1 and 10000")
@@ -1366,35 +1368,39 @@ class AssetServiceImpl : AssetService {
         )
         val bulk = builder.build()
         val rsp = rest.client.search(req, RequestOptions.DEFAULT)
-        var trainCount = 0.0
-        var testCount = 0.0
-        var totalCount = 0.0
 
-        var count = 0
+        var testCount = 0
+        var totalCount = 0
+        var dupCount = 0
+
         for (
             asset in AssetIterator(
                 rest.client,
                 rsp, lreq.maxAssets.toLong()
             )
         ) {
-            val label = if (trainCount == 0.0) {
-                totalCount += 1
+            val label = if (totalCount == 0) {
                 trainLabel
-            } else if (testCount / trainCount < lreq.testRatio) {
-                testCount += 1
-                totalCount += 1
+            } else if (testCount / totalCount.toDouble() < lreq.testRatio) {
                 testLabel
             } else {
-                totalCount += 1
                 trainLabel
             }
 
-            asset.addLabel(label)
-            bulk.add(rest.newUpdateRequest(asset.id).doc(asset.document))
-            count += 1
+            val labelRsp = asset.addLabel(label)
+            if (labelRsp == LabelResponse.Duplicate) {
+                dupCount += 1
+            } else {
+                bulk.add(rest.newUpdateRequest(asset.id).doc(asset.document))
+                if (label.scope == LabelScope.TEST) {
+                    testCount += 1
+                }
+                totalCount += 1
+            }
         }
         bulk.close()
-        return count
+
+        return BatchLabelBySearchResponse(totalCount, totalCount - testCount, testCount, dupCount)
     }
 
     /**
