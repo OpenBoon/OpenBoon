@@ -175,7 +175,9 @@ class AssetControllerTests : MockMvcTest() {
 
         val req = BatchLabelBySearchRequest(
             search = mapOf("match_all" to emptyMap<String, Any>()),
-            label = ds.makeLabel("cat")
+            ds.id,
+            "cat",
+            0.2
         )
         refreshElastic()
 

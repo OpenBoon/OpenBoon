@@ -913,7 +913,6 @@ class AssetServiceTests : AbstractTest() {
     @Test
     fun testLabelAssetsBySearch() {
         val ds = datasetService.createDataset(DatasetSpec("test", DatasetType.Classification))
-        val label = ds.makeLabel("cat")
 
         val batchCreate = BatchCreateAssetsRequest(
             assets = listOf(
@@ -928,7 +927,7 @@ class AssetServiceTests : AbstractTest() {
         val search = mapOf(
             "query" to mapOf("match_all" to emptyMap<String, Any>())
         )
-        val req = BatchLabelBySearchRequest(search, label, 100)
+        val req = BatchLabelBySearchRequest(search, ds.id, "cat", 0.2, 100)
         assetService.batchLabelAssetsBySearch(req)
         Thread.sleep(2000)
         refreshElastic()

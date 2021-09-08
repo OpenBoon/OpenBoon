@@ -23,6 +23,8 @@ import boonai.archivist.domain.FileExtResolver
 import boonai.archivist.domain.FileStorage
 import boonai.archivist.domain.InternalTask
 import boonai.archivist.domain.Job
+import boonai.archivist.domain.Label
+import boonai.archivist.domain.LabelScope
 import boonai.archivist.domain.ProcessorRef
 import boonai.archivist.domain.ProjectDirLocator
 import boonai.archivist.domain.ProjectFileLocator
@@ -585,7 +587,6 @@ class AssetServiceImpl : AssetService {
         val stateChangedIds = mutableSetOf<String>()
         val failedAssets = mutableListOf<BatchIndexFailure>()
         val postTimelines = mutableMapOf<String, List<String>>()
-        val tempAssets = mutableListOf<String>()
         val assetMetrics = mutableMapOf<String, AssetMetricsEvent>()
 
         docs.forEach { (id, doc) ->
@@ -708,12 +709,6 @@ class AssetServiceImpl : AssetService {
             .build()
 
         publisherService.publish("metrics", msg)
-    }
-
-    private fun deleteTemporaryAssets(
-        indexedIds: Set<String>
-    ): BatchDeleteAssetResponse {
-        return batchDelete(indexedIds.toSet())
     }
 
     override fun batchDelete(ids: Set<String>): BatchDeleteAssetResponse {
@@ -1324,8 +1319,12 @@ class AssetServiceImpl : AssetService {
     override fun batchLabelAssetsBySearch(lreq: BatchLabelBySearchRequest): Int {
 
         if (lreq.maxAssets > 10000 || lreq.maxAssets < 1) {
-            throw IllegalArgumentException("Invalid maxAsssts value, must be between 1 and 10000")
+            throw IllegalArgumentException("Invalid maxAssets value, must be between 1 and 10000")
         }
+
+        val ds = datasetService.getDataset(lreq.datasetId)
+        val testLabel = Label(ds.id, lreq.label, LabelScope.TEST)
+        val trainLabel = Label(ds.id, lreq.label, LabelScope.TRAIN)
 
         val rest = indexRoutingService.getProjectRestClient()
 
@@ -1366,15 +1365,31 @@ class AssetServiceImpl : AssetService {
                 .constantBackoff(TimeValue.timeValueSeconds(1L), 3)
         )
         val bulk = builder.build()
+        val rsp = rest.client.search(req, RequestOptions.DEFAULT)
+        var trainCount = 0.0
+        var testCount = 0.0
+        var totalCount = 0.0
 
         var count = 0
         for (
             asset in AssetIterator(
                 rest.client,
-                rest.client.search(req, RequestOptions.DEFAULT), lreq.maxAssets.toLong()
+                rsp, lreq.maxAssets.toLong()
             )
         ) {
-            asset.addLabel(lreq.label)
+            val label = if (trainCount == 0.0) {
+                totalCount += 1
+                trainLabel
+            } else if (testCount / trainCount < lreq.testRatio) {
+                testCount += 1
+                totalCount += 1
+                testLabel
+            } else {
+                totalCount += 1
+                trainLabel
+            }
+
+            asset.addLabel(label)
             bulk.add(rest.newUpdateRequest(asset.id).doc(asset.document))
             count += 1
         }
