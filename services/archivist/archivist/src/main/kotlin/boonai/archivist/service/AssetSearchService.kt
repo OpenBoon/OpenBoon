@@ -1,6 +1,6 @@
 package boonai.archivist.service
 
-import boonai.archivist.domain.TrainingSetQuery
+import boonai.archivist.domain.DataSetQuery
 import boonai.archivist.security.getProjectId
 import boonai.common.util.Json
 import com.fasterxml.jackson.module.kotlin.convertValue
@@ -115,7 +115,7 @@ class AssetSearchServiceImpl : AssetSearchService {
         outerQuery.filter(QueryBuilders.termQuery("system.state", "Analyzed"))
 
         // exclude training sets
-        val excludeLabeled = search.getOrDefault("exclude_training_sets", false) as Boolean
+        val excludeLabeled = search.getOrDefault("exclude_all_datasets", false) as Boolean
         if (excludeLabeled) {
             outerQuery.mustNot(
                 QueryBuilders.nestedQuery(
@@ -125,16 +125,37 @@ class AssetSearchServiceImpl : AssetSearchService {
             )
         }
 
-        // Training set query
-        if (search.containsKey("training_set")) {
-            val tsq = Json.Mapper.convertValue<TrainingSetQuery>(search.getValue("training_set"))
+        if (search.containsKey("exclude_dataset")) {
+            val tsq = Json.Mapper.convertValue<DataSetQuery>(search.getValue("exclude_dataset"))
             val innerBool = QueryBuilders.boolQuery()
-            innerBool.filter(QueryBuilders.termQuery("labels.datasetId", tsq.datasetId.toString()))
+            innerBool.must(QueryBuilders.termQuery("labels.datasetId", tsq.datasetId.toString()))
             if (tsq.scopes != null) {
-                innerBool.filter(QueryBuilders.termsQuery("labels.scope", tsq.scopes.map { it.toString() }))
+                innerBool.must(QueryBuilders.termsQuery("labels.scope", tsq.scopes.map { it.toString() }))
             }
             if (tsq.labels != null) {
-                innerBool.filter(QueryBuilders.termsQuery("labels.label", tsq.labels.map { it }))
+                innerBool.must(QueryBuilders.termsQuery("labels.label", tsq.labels.map { it }))
+            }
+
+            outerQuery.mustNot(
+                QueryBuilders.nestedQuery(
+                    "labels",
+                    innerBool,
+                    ScoreMode.None
+                )
+            )
+        }
+
+        // Training set query
+        if (search.containsKey("dataset")) {
+
+            val tsq = Json.Mapper.convertValue<DataSetQuery>(search.getValue("dataset"))
+            val innerBool = QueryBuilders.boolQuery()
+            innerBool.must(QueryBuilders.termQuery("labels.datasetId", tsq.datasetId.toString()))
+            if (tsq.scopes != null) {
+                innerBool.must(QueryBuilders.termsQuery("labels.scope", tsq.scopes.map { it.toString() }))
+            }
+            if (tsq.labels != null) {
+                innerBool.must(QueryBuilders.termsQuery("labels.label", tsq.labels.map { it }))
             }
 
             outerQuery.filter(

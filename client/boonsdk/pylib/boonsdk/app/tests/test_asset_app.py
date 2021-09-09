@@ -8,7 +8,7 @@ from unittest.mock import patch
 import pytest
 
 from boonsdk import Asset, BoonClient, app_from_env, \
-    FileImport, FileUpload, StoredFile, BoonSdkException, Dataset, TrainingSetFilter
+    FileImport, FileUpload, StoredFile, BoonSdkException, Dataset, DatasetFilter
 from .util import get_test_file
 
 
@@ -235,7 +235,7 @@ class AssetAppTests(unittest.TestCase):
         search = {
             'query': {'match_all': {}}
         }
-        filt = TrainingSetFilter('abc123')
+        filt = DatasetFilter('abc123')
         rsp = self.app.assets.search(search=search, filters=filt)
         path = rsp.raw_response['hits']['hits'][0]['_source']['source']['path']
         assert path == 'https://i.imgur.com/SSN26nN.jpg'
