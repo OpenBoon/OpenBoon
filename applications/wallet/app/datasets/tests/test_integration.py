@@ -479,5 +479,5 @@ class TestLabelingEndpoints:
                             {'type': 'limit',
                              'values': {'maxAssets': 5}}],
                 'label': 'Cool Label',
-                'scope': 'TRAIN'}
+                'testRatio': 0.7}
         check_response(api_client.put(path, body))

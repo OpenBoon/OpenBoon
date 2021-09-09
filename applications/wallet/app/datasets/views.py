@@ -128,9 +128,7 @@ class DatasetsViewSet(ZmlpCreateMixin,
             {
                 "filters": [<list of JSON filters>],
                 "label": "Label Name",
-                "bbox": [0.313, 0.439, 0.394, 0.571],  # Optional
-                "simhash": "The sim hash",  # Optional
-                "scope": "TRAIN",  # or TEST, optional, default is TRAIN
+                "testRatio": 0.70
             }
         """
         boon_endpoint = '/api/v3/assets/_batch_label_by_search'
@@ -148,24 +146,12 @@ class DatasetsViewSet(ZmlpCreateMixin,
         # Get final query and update the request if necessary
         query = filter_buddy.finalize_query_from_filters_and_request(_filters, request)
 
-        # Create the label
-        label = {
-            'datasetId': pk,
-            'label': data['label'],
-            'scope': self._get_label_scope(data['scope']).name
-        }
-        # Include bbox and simhash if they exist
-        bbox = data.get('bbox')
-        if bbox:
-            label['bbox'] = bbox
-        simhash = data.get('simhash')
-        if simhash:
-            label['simhash'] = simhash
-
         # Send batch label request to Boon
         request_body = {
             'search': query,
-            'label': label,
+            'datasetId': pk,
+            'label': data['label'],
+            'testRatio': data['testRatio']
         }
         # Include the max assets if it exists
         if hasattr(request, 'max_assets'):
