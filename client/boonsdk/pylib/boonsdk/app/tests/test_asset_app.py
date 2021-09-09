@@ -7,7 +7,6 @@ from unittest.mock import patch
 
 import pytest
 
-import boonsdk
 from boonsdk import Asset, BoonClient, app_from_env, \
     FileImport, FileUpload, StoredFile, BoonSdkException, Dataset, TrainingSetFilter
 from .util import get_test_file
@@ -479,11 +478,16 @@ class AssetAppTests(unittest.TestCase):
 
     @patch.object(BoonClient, 'put')
     def test_label_search(self, put_patch):
-        put_patch.return_value = {'count': 100}
+        put_patch.return_value = {'total': 100}
         search = {"match_all": {}}
-        label = boonsdk.Label("abc123", "cat")
-        res = self.app.assets.label_search(search, label)
-        assert res['count'] == 100
+        res = self.app.assets.label_search(search, Dataset({"id": "abc123"}), "cat")
+        assert res['total'] == 100
+
+    def test_label_search_bad_ratio(self):
+        search = {"match_all": {}}
+        pytest.raises(ValueError,
+                      self.app.assets.label_search, search,
+                      Dataset({"id": "abc123"}), "cat", test_ratio=1.5)
 
     @patch.object(BoonClient, 'send_data')
     def test_analyze_file(self, post_patch):
