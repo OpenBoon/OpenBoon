@@ -922,7 +922,7 @@ class AssetServiceTests : AbstractTest() {
         )
         val req = BatchLabelBySearchRequest(search, ds.id, "cat", 0.2, 100)
         var rsp = assetService.batchLabelAssetsBySearch(req)
-        refreshIndex(500)
+        refreshElastic()
 
         assertEquals(20, rsp.total)
         assertEquals(4, rsp.test)
