@@ -503,6 +503,7 @@ Array [
         "labels": Object {},
         "lastLabel": "",
         "lastScope": "TRAIN",
+        "trainPct": 50,
       }
     }
   />,
@@ -519,7 +520,7 @@ exports[`AssetLabeling should render properly with bulk labeling selected 1`] = 
 exports[`AssetLabeling should render properly with bulk labeling selected 2`] = `
 <BulkAssetLabeling
   projectId="76917058-b147-4556-987a-0a0f11e46d9b"
-  query="W3sidHlwZSI6ImxpbWl0IiwiYXR0cmlidXRlIjoidXRpbGl0eS5TZWFyY2ggUmVzdWx0cyBMaW1pdCIsInZhbHVlcyI6eyJtYXhBc3NldHMiOjEwMDAwfX1d"
+  query="W3sidHlwZSI6ImxpbWl0IiwiYXR0cmlidXRlIjoidXRpbGl0eS5TZWFyY2ggUmVzdWx0cyBMaW1pdCIsInZhbHVlcyI6eyJtYXhBc3NldHMiOjEwMDAwfX0seyJ0eXBlIjoiZmFjZXQiLCJhdHRyaWJ1dGUiOiJtZWRpYS50eXBlIiwidmFsdWVzIjp7ImZhY2V0cyI6WyJpbWFnZSIsImRvY3VtZW50Il19fV0="
   setIsBulkLabeling={[Function]}
 />
 `;
