@@ -1381,8 +1381,7 @@ class AssetServiceImpl : AssetService {
             val label = if (totalCount == 0) {
                 if (lreq.testRatio > .5) {
                     testLabel
-                }
-                else {
+                } else {
                     trainLabel
                 }
             } else if (testCount / totalCount.toDouble() < lreq.testRatio) {
