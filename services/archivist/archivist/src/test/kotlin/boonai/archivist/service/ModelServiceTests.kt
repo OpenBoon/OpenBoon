@@ -429,10 +429,14 @@ class ModelServiceTests : AbstractTest() {
 
     @Test
     fun testDeleteModel() {
-        val ds = datasetService.createDataset(DatasetSpec("foo", DatasetType.Classification))
+        var ds = datasetService.createDataset(DatasetSpec("foo", DatasetType.Classification))
         val model = create(ds = ds)
-        entityManager.refresh(ds)
+
+        entityManager.clear()
+        ds = datasetService.getDataset(ds.id)
+
         assertEquals(1, ds.modelCount)
+
         modelService.deleteModel(model)
         entityManager.refresh(ds)
 
