@@ -82,6 +82,7 @@ class ModelServiceTests : AbstractTest() {
             datasetId = ds?.id,
             applySearch = Json.Mapper.readValue(testSearch, Json.GENERIC_MAP)
         )
+
         return modelService.createModel(mspec)
     }
 
@@ -113,7 +114,8 @@ class ModelServiceTests : AbstractTest() {
 
     @Test
     fun testUpdateModel() {
-        val ds = datasetService.createDataset(DatasetSpec("foo", DatasetType.Classification))
+        var ds = datasetService.createDataset(DatasetSpec("foo", DatasetType.Classification))
+        ds = datasetService.getDataset(ds.id)
         val model = create()
 
         val update = ModelUpdateRequest("bing", ds.id, listOf())
@@ -244,6 +246,7 @@ class ModelServiceTests : AbstractTest() {
             ids = listOf(model1.id),
             types = listOf(model1.type)
         )
+        entityManager.flush()
         val model2 = modelService.findOne(filter)
         assertEquals(model1, model2)
         assertModel(model2)
@@ -252,12 +255,14 @@ class ModelServiceTests : AbstractTest() {
     @Test
     fun testFind() {
         val model1 = create()
+
         val filter = ModelFilter(
             names = listOf(model1.name),
             ids = listOf(model1.id),
             types = listOf(model1.type)
         )
         filter.sort = filter.sortMap.keys.map { "$it:a" }
+        entityManager.flush()
         val all = modelService.find(filter)
         assertEquals(1, all.size())
         assertEquals(model1, all.list[0])

@@ -89,9 +89,8 @@ class DatasetServiceImpl(
             actor.toString()
         )
 
-        return datasetDao.save(ds)
+        return datasetDao.saveAndFlush(ds)
     }
-
     @Transactional(readOnly = true)
     override fun getDataset(id: UUID): Dataset {
         return datasetDao.getOneByProjectIdAndId(getProjectId(), id)
