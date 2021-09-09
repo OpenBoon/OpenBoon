@@ -175,7 +175,9 @@ class AssetControllerTests : MockMvcTest() {
 
         val req = BatchLabelBySearchRequest(
             search = mapOf("match_all" to emptyMap<String, Any>()),
-            label = ds.makeLabel("cat")
+            ds.id,
+            "cat",
+            0.2
         )
         refreshElastic()
 
@@ -186,8 +188,9 @@ class AssetControllerTests : MockMvcTest() {
                 .content(Json.serialize(req))
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
-            .andExpect(MockMvcResultMatchers.jsonPath("$.submitted", CoreMatchers.equalTo(1)))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.errors", CoreMatchers.equalTo(0)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.total", CoreMatchers.equalTo(1)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.train", CoreMatchers.equalTo(1)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.test", CoreMatchers.equalTo(0)))
             .andReturn()
 
         Thread.sleep(2000)
