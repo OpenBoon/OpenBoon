@@ -15,7 +15,6 @@ import boonai.archivist.domain.FileExtResolver
 import boonai.archivist.domain.Project
 import boonai.archivist.domain.ProjectSize
 import boonai.archivist.domain.ProjectSpec
-import boonai.archivist.repository.KDaoFilter
 import boonai.archivist.security.AnalystAuthentication
 import boonai.archivist.security.getAuthentication
 import boonai.archivist.service.AssetService

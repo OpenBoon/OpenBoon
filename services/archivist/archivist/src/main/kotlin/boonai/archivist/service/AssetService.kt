@@ -220,7 +220,7 @@ interface AssetService {
      */
     fun updateLabels(req: UpdateAssetLabelsRequest): BulkResponse
     fun updateLabelsV4(req: UpdateAssetLabelsRequestV4): BulkResponse
-    fun batchLabelAssetsBySearch(lreq: BatchLabelBySearchRequest): BatchLabelBySearchResponse
+    fun batchLabelAssetsBySearch(lreq: BatchLabelBySearchRequest, wait: Boolean = false): BatchLabelBySearchResponse
 
     /**
      * Manually set languages on an existing asset.
@@ -1318,7 +1318,7 @@ class AssetServiceImpl : AssetService {
         return result
     }
 
-    override fun batchLabelAssetsBySearch(lreq: BatchLabelBySearchRequest): BatchLabelBySearchResponse {
+    override fun batchLabelAssetsBySearch(lreq: BatchLabelBySearchRequest, wait: Boolean): BatchLabelBySearchResponse {
 
         if (lreq.maxAssets > 10000 || lreq.maxAssets < 1) {
             throw IllegalArgumentException("Invalid maxAssets value, must be between 1 and 10000")
@@ -1363,6 +1363,7 @@ class AssetServiceImpl : AssetService {
             { request, bulkListener -> rest.client.bulkAsync(request, RequestOptions.DEFAULT, bulkListener) },
             listener
         )
+
         builder.setBulkActions(100)
         builder.setConcurrentRequests(2)
         builder.setBackoffPolicy(
@@ -1405,7 +1406,12 @@ class AssetServiceImpl : AssetService {
                 totalCount += 1
             }
         }
-        bulk.close()
+
+        if (wait) {
+            bulk.awaitClose(10, TimeUnit.SECONDS)
+        } else {
+            bulk.close()
+        }
 
         return BatchLabelBySearchResponse(totalCount, totalCount - testCount, testCount, dupCount)
     }
