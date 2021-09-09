@@ -1,7 +1,7 @@
 from enum import Enum
 
 from .base import BaseEntity
-from ..filters import TrainingSetFilter
+from ..filters import DatasetFilter
 from ..util import as_id
 
 __all__ = [
@@ -80,16 +80,16 @@ class Dataset(BaseEntity):
 
     def asset_search_filter(self, scopes=None, labels=None):
         """
-        Create and return a TrainingSetFilter for filtering Assets by this particular label.
+        Create and return a DatasetFilter for filtering Assets by this particular label.
 
         Args:
             scopes (list): A optional list of LabelScopes to filter by.
             labels (list): A optional list of labels to filter by.
 
         Returns:
-            TrainingSetFilter: A preconfigured TrainingSetFilter
+            DatasetFilter: A preconfigured DatasetFilter
         """
-        return TrainingSetFilter(self.id, scopes=scopes, labels=labels)
+        return DatasetFilter(self.id, scopes=scopes, labels=labels)
 
     def make_label_from_prediction(self, prediction, scope=None, label=None):
         """
@@ -201,9 +201,9 @@ class Label:
 
     def asset_search_filter(self):
         """
-        Create and return a TrainingSetFilter for filtering Assets by this particular label.
+        Create and return a DatasetFilter for filtering Assets by this particular label.
 
         Returns:
-            TrainingSetFilter: A preconfigured TrainingSetFilter
+            DatasetFilter: A preconfigured DatasetFilter
         """
-        return TrainingSetFilter(self.dataset_id, scopes=[self.scope], labels=[self.label])
+        return DatasetFilter(self.dataset_id, scopes=[self.scope], labels=[self.label])

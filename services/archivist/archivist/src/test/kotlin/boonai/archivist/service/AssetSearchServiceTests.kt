@@ -292,7 +292,7 @@ class AssetSearchServiceTests : AbstractTest() {
     }
 
     @Test
-    fun textExcludeTrainingSetsFilter() {
+    fun textExcludeAllDataSetsFilter() {
         val mspec = DatasetSpec(
             "animals",
             DatasetType.Classification
@@ -314,14 +314,45 @@ class AssetSearchServiceTests : AbstractTest() {
         val results = assetSearchService.search(
             mapOf(
                 "size" to 10,
-                "query" to mapOf("match_all" to mapOf<String, Any>()), "exclude_training_sets" to true
+                "query" to mapOf("match_all" to mapOf<String, Any>()), "exclude_all_datasets" to true
             )
         )
-        assertEquals(results.hits.totalHits.value, 1)
+        assertEquals(1, results.hits.totalHits.value)
     }
 
     @Test
-    fun textTrainingSetFilter() {
+    fun textExcludeDataSetFilter() {
+        val mspec = DatasetSpec(
+            "animals",
+            DatasetType.Classification
+        )
+
+        val ds = datasetService.createDataset(mspec)
+        val dataset = listOf(
+            AssetSpec("https://i.imgur.com/a.jpg", label = ds.makeLabel("horse")),
+            AssetSpec("https://i.imgur.com/b.jpg", label = ds.makeLabel("horse")),
+            AssetSpec("https://i.imgur.com/c.jpg", label = ds.makeLabel("horse")),
+            AssetSpec("https://i.imgur.com/d.jpg", label = ds.makeLabel("sheep"))
+        )
+
+        assetService.batchCreate(
+            BatchCreateAssetsRequest(dataset, state = AssetState.Analyzed)
+        )
+        refreshElastic()
+
+        val results = assetSearchService.search(
+            mapOf(
+                "size" to 10,
+                "query" to mapOf("match_all" to mapOf<String, Any>()),
+                "exclude_dataset" to mapOf("datasetId" to ds.id.toString())
+            )
+        )
+        Json.prettyPrint(results.hits)
+        assertEquals(1, results.hits.totalHits.value)
+    }
+
+    @Test
+    fun testDataSetFilter() {
         val mspec = DatasetSpec(
             "animals",
             DatasetType.Classification
@@ -344,7 +375,7 @@ class AssetSearchServiceTests : AbstractTest() {
             mapOf(
                 "size" to 10,
                 "query" to mapOf("match_all" to mapOf<String, Any>()),
-                "training_set" to mapOf(
+                "dataset" to mapOf(
                     "datasetId" to ds.id.toString(),
                     "labels" to listOf("horse"),
                     "scopes" to listOf("TRAIN")
