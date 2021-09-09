@@ -15,6 +15,7 @@ import boonai.archivist.domain.FileExtResolver
 import boonai.archivist.domain.Project
 import boonai.archivist.domain.ProjectSize
 import boonai.archivist.domain.ProjectSpec
+import boonai.archivist.repository.KDaoFilter
 import boonai.archivist.security.AnalystAuthentication
 import boonai.archivist.security.getAuthentication
 import boonai.archivist.service.AssetService
@@ -344,7 +345,9 @@ abstract class AbstractTest {
 
         val r = rest.client.search(req, RequestOptions.DEFAULT)
         return r.hits.map {
-            Json.prettyPrint(it.sourceAsMap)
+            if (logger.isDebugEnabled) {
+                logger.debug(Json.prettyString(it.sourceAsMap))
+            }
             Asset(it.id, it.sourceAsMap)
         }
     }

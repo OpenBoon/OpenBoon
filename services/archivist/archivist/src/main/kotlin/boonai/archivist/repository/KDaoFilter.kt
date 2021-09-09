@@ -68,7 +68,6 @@ abstract class KDaoFilter {
             sortRaw?.forEach {
                 order.append(it)
                 order.append(",")
-                println(order)
             }
 
             sort?.forEach { e ->
