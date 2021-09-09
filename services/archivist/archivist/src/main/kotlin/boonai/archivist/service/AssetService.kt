@@ -1324,6 +1324,10 @@ class AssetServiceImpl : AssetService {
             throw IllegalArgumentException("Invalid maxAssets value, must be between 1 and 10000")
         }
 
+        if (lreq.testRatio < 0 || lreq.testRatio > 1) {
+            throw IllegalArgumentException("Invalid testRatio, must be between 0 and 1")
+        }
+
         val ds = datasetService.getDataset(lreq.datasetId)
         val testLabel = Label(ds.id, lreq.label, LabelScope.TEST)
         val trainLabel = Label(ds.id, lreq.label, LabelScope.TRAIN)
@@ -1384,7 +1388,7 @@ class AssetServiceImpl : AssetService {
                 } else {
                     trainLabel
                 }
-            } else if (testCount / totalCount.toDouble() < lreq.testRatio) {
+            } else if (lreq.testRatio >= 1.0 || testCount / totalCount.toDouble() < lreq.testRatio) {
                 testLabel
             } else {
                 trainLabel
