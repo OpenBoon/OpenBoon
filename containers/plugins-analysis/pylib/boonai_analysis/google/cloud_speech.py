@@ -56,7 +56,7 @@ class AsyncSpeechToTextProcessor(AssetProcessor):
             return
 
         audio_uri = get_audio_proxy_uri(asset, auto_create=True)
-        audio_result = self.recognize_speech(audio_uri, )
+        audio_result = self.recognize_speech(audio_uri, self.get_languages(asset))
 
         if audio_result.results:
             self.set_analysis(asset, audio_result)
