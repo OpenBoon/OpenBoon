@@ -2,7 +2,7 @@ import TestRenderer from 'react-test-renderer'
 
 import Input, { VARIANTS } from '..'
 
-const noop = () => () => {}
+import { noop } from '../Range'
 
 describe('<Input />', () => {
   it('should render properly with an error and disabled', () => {
@@ -22,5 +22,9 @@ describe('<Input />', () => {
     )
 
     expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  it('noop should do nothing', () => {
+    expect(noop()()).toBe(undefined)
   })
 })

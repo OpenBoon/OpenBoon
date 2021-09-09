@@ -7,9 +7,8 @@ import AllSvg from '../Icons/all.svg'
 
 import FlashMessageErrors from '../FlashMessage/Errors'
 import Combobox from '../Combobox'
-import RadioGroup from '../Radio/Group'
-
-import { SCOPE_OPTIONS } from '../AssetLabeling/helpers'
+import Slider from '../Slider'
+import InputRange, { VARIANTS } from '../Input/Range'
 
 const CLASSIFICATION = 'Classification'
 
@@ -69,10 +68,6 @@ const BulkAssetLabelingForm = ({ projectId, datasetType, state, dispatch }) => {
           css={{
             display: 'flex',
             padding: spacing.normal,
-            borderBottom: constants.borders.regular.smoke,
-            '&:last-of-type': {
-              borderBottom: 'none',
-            },
           }}
         >
           <AllSvg
@@ -80,32 +75,146 @@ const BulkAssetLabelingForm = ({ projectId, datasetType, state, dispatch }) => {
             css={{ color: colors.structure.iron, marginRight: spacing.normal }}
           />
 
-          <div>
-            <Combobox
-              key={count}
-              label="Label:"
-              options={options}
-              value={state.lastLabel}
-              onChange={({ value }) => {
-                dispatch({ lastLabel: value, lastScope: state.lastScope })
-              }}
-              hasError={state.errors.label !== undefined}
-              errorMessage={state.errors.label}
-            />
+          <Combobox
+            key={count}
+            label="Label:"
+            options={options}
+            value={state.lastLabel}
+            onChange={({ value }) => {
+              dispatch({ lastLabel: value, trainPct: state.trainPct })
+            }}
+            hasError={state.errors.label !== undefined}
+            errorMessage={state.errors.label}
+          />
+        </div>
 
-            <div css={{ height: spacing.base }} />
+        <div
+          css={{
+            margin: spacing.normal,
+            marginTop: 0,
+            marginBottom: 0,
+            borderBottom: constants.borders.regular.smoke,
+          }}
+        />
 
-            <RadioGroup
-              legend="Select Scope"
-              options={SCOPE_OPTIONS.map((option) => ({
-                ...option,
-                legend: '',
-                initialValue: state.lastScope === option.value,
-              }))}
-              onClick={({ value }) => {
-                dispatch({ lastLabel: state.lastLabel, lastScope: value })
+        <div css={{ padding: spacing.normal }}>
+          <div css={{ fontWeight: typography.weight.bold }}>
+            Set Scope Type Ratio
+          </div>
+
+          <div css={{ height: spacing.normal }} />
+
+          <div css={{ display: 'flex', alignItems: 'flex-end' }}>
+            <div
+              css={{
+                position: 'relative',
+                flex: 1,
+                label: {
+                  flexDirection: 'column',
+                  alignItems: 'flex-start',
+                  color: colors.structure.zinc,
+                  fontFamily: typography.family.condensed,
+                  input: {
+                    width: '100%',
+                    marginTop: spacing.base,
+                    paddingTop: spacing.base,
+                    paddingBottom: spacing.base,
+                  },
+                },
               }}
-            />
+            >
+              <InputRange
+                label="TRAIN"
+                value={state.trainPct}
+                onChange={
+                  /* istanbul ignore next */ ({ target: { value } }) => {
+                    dispatch({
+                      lastLabel: state.lastLabel,
+                      trainPct: value,
+                    })
+                  }
+                }
+                variant={VARIANTS.PRIMARY}
+              />
+              <div
+                css={{
+                  position: 'absolute',
+                  right: '15%',
+                  bottom: spacing.base,
+                }}
+              >
+                %
+              </div>
+            </div>
+
+            <div css={{ flex: 3, padding: spacing.normal }}>
+              <Slider
+                mode="sides"
+                step={1}
+                domain={[0, 100]}
+                values={[state.trainPct]}
+                isMuted={false}
+                isDisabled={false}
+                onUpdate={
+                  /* istanbul ignore next */ ([value]) => {
+                    dispatch({
+                      lastLabel: state.lastLabel,
+                      trainPct: value,
+                    })
+                  }
+                }
+                onChange={
+                  /* istanbul ignore next */ ([value]) => {
+                    dispatch({
+                      lastLabel: state.lastLabel,
+                      trainPct: value,
+                    })
+                  }
+                }
+              />
+            </div>
+
+            <div
+              css={{
+                position: 'relative',
+                flex: 1,
+                label: {
+                  flexDirection: 'column',
+                  alignItems: 'flex-start',
+                  color: colors.structure.zinc,
+                  fontFamily: typography.family.condensed,
+                  input: {
+                    width: '100%',
+                    marginTop: spacing.base,
+                    paddingTop: spacing.base,
+                    paddingBottom: spacing.base,
+                  },
+                },
+              }}
+            >
+              <InputRange
+                label="TEST"
+                value={100 - state.trainPct}
+                onChange={
+                  /* istanbul ignore next */ ({ target: { value } }) => {
+                    dispatch({
+                      lastLabel: state.lastLabel,
+                      trainPct: 100 - value,
+                    })
+                  }
+                }
+                variant={VARIANTS.PRIMARY}
+              />
+              <div
+                css={{
+                  position: 'absolute',
+                  right: '15%',
+                  bottom: spacing.base,
+                }}
+              >
+                %
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -119,7 +228,7 @@ BulkAssetLabelingForm.propTypes = {
   state: PropTypes.shape({
     datasetId: PropTypes.string.isRequired,
     lastLabel: PropTypes.string.isRequired,
-    lastScope: PropTypes.string.isRequired,
+    trainPct: PropTypes.number.isRequired,
     errors: PropTypes.shape({
       label: PropTypes.string,
     }).isRequired,

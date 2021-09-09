@@ -25,7 +25,7 @@ describe('BulkAssetLabelingForm', () => {
         state={{
           datasetId: DATASET_ID,
           lastLabel: '',
-          lastScope: 'TRAIN',
+          trainPct: 50,
           errors: {},
         }}
         dispatch={mockDispatch}
@@ -43,19 +43,7 @@ describe('BulkAssetLabelingForm', () => {
 
     expect(mockDispatch).toHaveBeenLastCalledWith({
       lastLabel: 'cat',
-      lastScope: 'TRAIN',
-    })
-
-    // Select Scope
-    act(() => {
-      component.root
-        .findByProps({ legend: 'Select Scope' })
-        .props.onClick({ value: 'TEST' })
-    })
-
-    expect(mockDispatch).toHaveBeenLastCalledWith({
-      lastLabel: '',
-      lastScope: 'TEST',
+      trainPct: 50,
     })
   })
 
@@ -76,7 +64,7 @@ describe('BulkAssetLabelingForm', () => {
         state={{
           datasetId: DATASET_ID,
           lastLabel: '',
-          lastScope: 'TRAIN',
+          trainPct: 50,
           errors: {},
         }}
         dispatch={mockDispatch}

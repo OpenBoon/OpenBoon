@@ -824,6 +824,7 @@ Array [
           "labels": Object {},
           "lastLabel": "",
           "lastScope": "TRAIN",
+          "trainPct": 50,
         }
       }
     />
@@ -1426,6 +1427,7 @@ Array [
           "labels": Object {},
           "lastLabel": "cat",
           "lastScope": "TRAIN",
+          "trainPct": 50,
         }
       }
     />

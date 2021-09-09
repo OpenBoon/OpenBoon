@@ -138,7 +138,7 @@ describe('BulkAssetLabeling', () => {
       body: JSON.stringify({
         filters: [],
         label: 'cat',
-        scope: 'TRAIN',
+        testRatio: 0.5,
       }),
     })
   })
