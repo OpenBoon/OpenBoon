@@ -49,8 +49,8 @@ class TimelineSpec(
     @ApiModelProperty("A list of tracks.")
     val tracks: List<TrackSpec>,
 
-    @ApiModelProperty("If the thumbnails should be generated for the timeline.")
-    val deepAnalysis: Boolean
+    @ApiModelProperty("Replace all tracks for the timeline with this new timeline.")
+    val replace: Boolean
 )
 
 @ApiModel("CreateClipFailure", description = "A clip creation error.")

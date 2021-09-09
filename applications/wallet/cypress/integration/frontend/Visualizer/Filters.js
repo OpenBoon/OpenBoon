@@ -187,8 +187,6 @@ describe('Visualizer', function () {
 
       cy.contains('exists').get('select').select('date')
 
-      cy.contains('Reset').click()
-
       cy.selectFirstAsset()
     })
   })

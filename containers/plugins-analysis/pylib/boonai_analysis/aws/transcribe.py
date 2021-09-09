@@ -72,7 +72,7 @@ class AmazonTranscribeProcessor(AssetProcessor):
             if audio_result['results']:
                 self.set_analysis(asset, audio_result)
                 save_raw_transcribe_result(asset, audio_result)
-                save_transcribe_timeline(asset, audio_result)
+                save_transcribe_timeline(asset, audio_result, self.get_languages(asset)[0])
                 save_transcribe_webvtt(asset, audio_result)
         finally:
             self.cleanup_aws_resources(bucket_file, job_name)
@@ -173,7 +173,7 @@ class AmazonTranscribeProcessor(AssetProcessor):
         """
         Get list of languages to pass to transcribe.
         Args:
-            asset: (Asset): The asset which may define languagess
+            asset: (Asset): The asset which may define languages.
 
         Returns:
             list: A list of language codes.

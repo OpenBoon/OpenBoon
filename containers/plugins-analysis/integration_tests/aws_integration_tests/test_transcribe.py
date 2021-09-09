@@ -29,7 +29,7 @@ class AmazonTranscribeProcessorTestCase(PluginUnitTestCase):
 
         os.environ['BOONAI_AWS_KEY'] = access_key_id
         os.environ['BOONAI_AWS_SECRET'] = secret_access_key
-        os.environ['BOONAI_AWS_BUCKET'] = 'boonai-integration-tests'
+        os.environ['BOONAI_AWS_BUCKET'] = 'boonai-integration-tests2'
         os.environ['BOONAI_AWS_REGION'] = 'us-east-1'
         os.environ['BOONAI_PROJECT_ID'] = '00000000-0000-0000-0000-000000000001'
 
@@ -61,7 +61,24 @@ class AmazonTranscribeProcessorTestCase(PluginUnitTestCase):
         get_prx_patch.return_value = 0
         get_vid_patch.return_value = test_path("video/ted_talk.mp4")
 
-        processor = self.init_processor(AmazonTranscribeProcessor(), {'language': 'en-US'})
+        processor = self.init_processor(AmazonTranscribeProcessor(),
+                                        {'languages': ['en-US']})
+        frame = Frame(self.asset)
+        processor.process(frame)
+
+        assert 'poop' in self.asset.get_attr('analysis.aws-transcribe.content')
+
+    @patch("boonai_analysis.aws.transcribe.save_transcribe_timeline", return_value={})
+    @patch("boonai_analysis.aws.transcribe.save_raw_transcribe_result", return_value={})
+    @patch("boonai_analysis.aws.transcribe.save_transcribe_webvtt", return_value={})
+    @patch('boonai_analysis.aws.transcribe.get_video_proxy')
+    @patch('boonai_analysis.aws.transcribe.get_audio_proxy')
+    def test_process_video_proxy_multi_lang(self, get_prx_patch, get_vid_patch, _, __, ___):
+        get_prx_patch.return_value = 0
+        get_vid_patch.return_value = test_path("video/ted_talk.mp4")
+
+        processor = self.init_processor(AmazonTranscribeProcessor(),
+                                        {'languages': ['nl-NL', 'en-US']})
         frame = Frame(self.asset)
         processor.process(frame)
 

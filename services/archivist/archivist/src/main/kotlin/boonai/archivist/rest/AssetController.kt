@@ -209,11 +209,7 @@ class AssetController @Autowired constructor(
     @PutMapping(value = ["/api/v3/assets/_batch_label_by_search"])
     @ResponseBody
     fun updateLabelsBySearch(@RequestBody req: BatchLabelBySearchRequest): Any {
-        val count = assetService.batchLabelAssetsBySearch(req)
-        return RestUtils.batchSubmitted(
-            LogObject.ASSET,
-            "_batch_label_by_search", count, 0
-        )
+        return assetService.batchLabelAssetsBySearch(req)
     }
 
     @PreAuthorize("hasAuthority('AssetsRead')")

@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 import org.elasticsearch.index.query.QueryBuilder
 import org.elasticsearch.index.query.QueryBuilders
+import org.elasticsearch.search.SearchHit
 import java.math.BigDecimal
 
 @ApiModel(
@@ -44,6 +45,10 @@ class Clip(
     val files: List<FileStorage>? = null
 ) {
     companion object {
+
+        fun fromHit(hit: SearchHit): Clip {
+            return fromMap(hit.id, hit.sourceAsMap.get("clip") as Map<String, Any>)
+        }
 
         fun fromMap(id: String, map: Map<String, Any>): Clip {
             return Clip(

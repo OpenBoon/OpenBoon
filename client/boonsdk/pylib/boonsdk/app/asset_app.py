@@ -257,22 +257,30 @@ class AssetApp:
         rsp = self.app.client.post('/api/v3/assets/_search/reprocess', body)
         return ReprocessSearchResponse(rsp['assetCount'], Job(rsp['job']))
 
-    def label_search(self, search, label, max_assets=10000):
+    def label_search(self, search, dataset, label, max_assets=10000, test_ratio=0.0):
         """
         Label up to 10000 assets in a given search.
 
         Args:
             search (dict): An ElasticSearch search.
-            label (Label): The label
+            dataset (Dataset): The Dataset to add the assets to.
             max_assets (int): The maximum # of assets to label.
+            test_ratio (float): A number between 0-1 that defines the percentage of assets
+                to label as test vs train.  For example a value of .2 would ensure at least
+                20% of the assets would be labeled as test assets.
 
         Returns:
-            dict: A status dict with the number of assets labeled.
+            dict: A dict with counts for total, test, train, and duplicates.
         """
+        if test_ratio < 0.0 or test_ratio > 1.0:
+            raise ValueError('The test_ratio must be between 0 ad 1')
+
         body = {
             'search': search,
+            'datasetId': as_id(dataset),
             'label': label,
-            'maxAssets': max_assets
+            'maxAssets': max_assets,
+            'testRatio': test_ratio
         }
         return self.app.client.put('/api/v3/assets/_batch_label_by_search', body)
 
