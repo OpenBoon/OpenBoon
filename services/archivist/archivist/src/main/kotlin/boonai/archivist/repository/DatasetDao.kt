@@ -21,8 +21,8 @@ interface DatasetJdbcDao {
     fun findOne(filter: DatasetFilter): Dataset
     fun delete(dataset: Dataset): Boolean
     fun find(filter: DatasetFilter): KPagedList<Dataset>
-    fun incrementModelCount(datasetPk: UUID?): Boolean
-    fun decrementModelCount(datasetPk: UUID?): Boolean
+    fun incrementModelCount(datasetPk: UUID): Boolean
+    fun decrementModelCount(datasetPk: UUID): Boolean
 }
 
 @Repository
@@ -54,12 +54,12 @@ class DatasetJdbcDaoImpl : AbstractDao(), DatasetJdbcDao {
         return KPagedList(count(filter), filter.page, jdbc.query(query, MAPPER, *values))
     }
 
-    override fun incrementModelCount(datasetPk: UUID?): Boolean {
-        return datasetPk?.let { sumValueDatasetModelCount(it, 1) } ?: false
+    override fun incrementModelCount(datasetPk: UUID): Boolean {
+        return sumValueDatasetModelCount(datasetPk, 1)
     }
 
-    override fun decrementModelCount(datasetPk: UUID?): Boolean {
-        return datasetPk?.let { sumValueDatasetModelCount(it, -1) } ?: false
+    override fun decrementModelCount(datasetPk: UUID): Boolean {
+        return sumValueDatasetModelCount(datasetPk, -1)
     }
 
     private fun sumValueDatasetModelCount(datasetPk: UUID, value: Int): Boolean {

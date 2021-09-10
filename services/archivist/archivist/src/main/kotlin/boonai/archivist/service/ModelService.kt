@@ -144,7 +144,10 @@ class ModelServiceImpl(
             actor.toString(),
             null, null, null, null, null, null, null, null, null, null
         )
-        datasetJdbcDao.incrementModelCount(model.datasetId)
+
+        model.datasetId?.let {
+            datasetJdbcDao.incrementModelCount(it)
+        }
 
         logger.event(
             LogObject.MODEL, LogAction.CREATE,
@@ -441,7 +444,9 @@ class ModelServiceImpl(
         )
 
         modelJdbcDao.delete(model)
-        datasetJdbcDao.decrementModelCount(model.datasetId)
+        model.datasetId?.let {
+            datasetJdbcDao.decrementModelCount(it)
+        }
 
         pipelineModService.findByName(model.moduleName, false)?.let {
             pipelineModService.delete(it.id)
@@ -570,8 +575,8 @@ class ModelServiceImpl(
 
     private fun updateDatasetsModelCount(oldDatasetId: UUID?, newDatasetId: UUID?) {
         if (oldDatasetId != newDatasetId) {
-            datasetJdbcDao.decrementModelCount(oldDatasetId)
-            datasetJdbcDao.incrementModelCount(newDatasetId)
+            oldDatasetId?.let { datasetJdbcDao.decrementModelCount(it) }
+            newDatasetId?.let { datasetJdbcDao.incrementModelCount(it) }
         }
     }
 
