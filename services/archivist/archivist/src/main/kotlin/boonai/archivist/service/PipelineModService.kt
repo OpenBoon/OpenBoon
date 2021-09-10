@@ -118,10 +118,8 @@ class PipelineModServiceImpl(
         val actor = getZmlpActor().toString()
 
         val projectId = if (spec.standard) {
-            logger.info("Creating standard module: {}", spec.name)
             null
         } else {
-            logger.info("Creating project module: {}", id)
             getProjectId()
         }
 

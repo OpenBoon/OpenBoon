@@ -19,7 +19,7 @@ export const onSave = async ({ projectId, query, state, dispatch }) => {
       body: JSON.stringify({
         filters: decode({ query: cleanup({ query }) }),
         label: state.lastLabel,
-        scope: state.lastScope,
+        testRatio: (100 - state.trainPct) / 100,
       }),
     })
 

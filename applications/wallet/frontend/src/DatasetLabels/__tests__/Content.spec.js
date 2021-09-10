@@ -152,7 +152,7 @@ describe('<DatasetLabelsContent />', () => {
 
     expect(spy).toHaveBeenLastCalledWith(
       `AssetLabelingContent.${PROJECT_ID}`,
-      `{"datasetId":"${DATASET_ID}","lastLabel":"cat","lastScope":"TEST","labels":{},"isLoading":false,"errors":{}}`,
+      `{"datasetId":"${DATASET_ID}","lastLabel":"cat","lastScope":"TEST","trainPct":50,"labels":{},"isLoading":false,"errors":{}}`,
     )
   })
 
@@ -194,7 +194,7 @@ describe('<DatasetLabelsContent />', () => {
 
     expect(spy).toHaveBeenLastCalledWith(
       `AssetLabelingContent.${PROJECT_ID}`,
-      `{"datasetId":"${DATASET_ID}","lastLabel":"","lastScope":"TRAIN","labels":{},"isLoading":false,"errors":{}}`,
+      `{"datasetId":"${DATASET_ID}","lastLabel":"","lastScope":"TRAIN","trainPct":50,"labels":{},"isLoading":false,"errors":{}}`,
     )
   })
 })

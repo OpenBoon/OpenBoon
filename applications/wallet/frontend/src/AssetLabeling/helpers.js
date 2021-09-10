@@ -10,6 +10,7 @@ const INITIAL_STATE = {
   datasetId: '',
   lastLabel: '',
   lastScope: 'TRAIN',
+  trainPct: 50,
   labels: {},
   isLoading: false,
   errors: {},

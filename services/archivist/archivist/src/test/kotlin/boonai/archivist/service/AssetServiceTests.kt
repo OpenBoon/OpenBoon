@@ -921,16 +921,15 @@ class AssetServiceTests : AbstractTest() {
             "query" to mapOf("match_all" to emptyMap<String, Any>())
         )
         val req = BatchLabelBySearchRequest(search, ds.id, "cat", 0.2, 100)
-        var rsp = assetService.batchLabelAssetsBySearch(req)
+        var rsp = assetService.batchLabelAssetsBySearch(req, wait = true)
         refreshElastic()
 
         assertEquals(20, rsp.total)
         assertEquals(4, rsp.test)
         assertEquals(16, rsp.train)
         assertEquals(0, rsp.duplicates)
-        refreshIndex(500)
 
-        rsp = assetService.batchLabelAssetsBySearch(req)
+        rsp = assetService.batchLabelAssetsBySearch(req, wait = true)
         assertEquals(0, rsp.total)
         assertEquals(0, rsp.test)
         assertEquals(0, rsp.train)

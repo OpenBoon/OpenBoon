@@ -2,6 +2,8 @@ import PropTypes from 'prop-types'
 
 import { constants, spacing, colors } from '../Styles'
 
+export const noop = () => () => {}
+
 const INPUT_WIDTH = 52
 
 const BASE = {
@@ -67,12 +69,17 @@ const InputRange = ({
   )
 }
 
+InputRange.defaultProps = {
+  onKeyPress: noop,
+  onBlur: noop,
+}
+
 InputRange.propTypes = {
   label: PropTypes.string.isRequired,
   value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
   onChange: PropTypes.func.isRequired,
-  onKeyPress: PropTypes.func.isRequired,
-  onBlur: PropTypes.func.isRequired,
+  onKeyPress: PropTypes.func,
+  onBlur: PropTypes.func,
   variant: PropTypes.oneOf(Object.keys(VARIANTS)).isRequired,
 }
 

@@ -81,6 +81,10 @@ describe('<SearchFilterSort />', () => {
   })
 
   it('should render properly with a sort filter selected', () => {
+    const mockRouterPush = jest.fn()
+
+    require('next/router').__setMockPushFunction(mockRouterPush)
+
     const component = TestRenderer.create(
       <SearchFilterSort
         pathname="/[projectId]/visualizer"
@@ -98,6 +102,28 @@ describe('<SearchFilterSort />', () => {
     )
 
     expect(component.toJSON()).toMatchSnapshot()
+
+    // Select attribute
+    act(() => {
+      component.root
+        .findByProps({ label: 'Sort by' })
+        .props.onChange({ value: 'source.filesize' })
+    })
+
+    const query = btoa(
+      JSON.stringify([
+        {
+          type: 'simpleSort',
+          attribute: 'source.filesize',
+          values: { order: 'asc' },
+        },
+      ]),
+    )
+
+    expect(mockRouterPush).toHaveBeenCalledWith(
+      `/[projectId]/visualizer?assetId=${ASSET_ID}&query=${query}`,
+      `/${PROJECT_ID}/visualizer?assetId=${ASSET_ID}&query=${query}`,
+    )
 
     // Select sort direction
     act(() => {

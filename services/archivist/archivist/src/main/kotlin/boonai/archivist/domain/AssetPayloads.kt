@@ -8,7 +8,7 @@ import org.springframework.web.multipart.MultipartFile
 import java.util.UUID
 
 @ApiModel("TrainingSetQuery", description = "A simple query for a training set.")
-class TrainingSetQuery(
+class DataSetQuery(
     @ApiModelProperty("The Dataset Id")
     val datasetId: UUID,
     @ApiModelProperty("LabelScopes to filer by.")

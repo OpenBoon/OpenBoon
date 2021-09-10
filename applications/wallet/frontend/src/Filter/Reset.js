@@ -86,13 +86,15 @@ const FilterReset = ({
             },
           }}
         >
-          {options.map((option) => {
-            return (
-              <option key={option} value={option}>
-                {formatOptions({ option })}
-              </option>
-            )
-          })}
+          {options
+            .filter((option) => option !== 'simpleSort')
+            .map((option) => {
+              return (
+                <option key={option} value={option}>
+                  {formatOptions({ option })}
+                </option>
+              )
+            })}
         </select>
       )}
 

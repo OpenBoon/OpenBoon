@@ -344,7 +344,9 @@ abstract class AbstractTest {
 
         val r = rest.client.search(req, RequestOptions.DEFAULT)
         return r.hits.map {
-            Json.prettyPrint(it.sourceAsMap)
+            if (logger.isDebugEnabled) {
+                logger.debug(Json.prettyString(it.sourceAsMap))
+            }
             Asset(it.id, it.sourceAsMap)
         }
     }

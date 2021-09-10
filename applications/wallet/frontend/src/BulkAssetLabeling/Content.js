@@ -121,6 +121,8 @@ const BulkAssetLabelingContent = ({
               onClick={async () => {
                 await dispatch({
                   datasetId: '',
+                  lastLabel: '',
+                  trainPct: 50,
                   labels: {},
                   isLoading: false,
                   errors: {},
@@ -139,9 +141,7 @@ const BulkAssetLabelingContent = ({
               onClick={() => {
                 setConfirmModalOpen(true)
               }}
-              isDisabled={
-                !state.datasetId || !state.lastLabel || !state.lastScope
-              }
+              isDisabled={!state.datasetId || !state.lastLabel}
               style={{ flex: 1 }}
             >
               Save
