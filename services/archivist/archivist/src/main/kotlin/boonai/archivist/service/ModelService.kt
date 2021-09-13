@@ -113,6 +113,7 @@ class ModelServiceImpl(
         validateModelName(spec.name)
         spec.datasetId?.let {
             validateDatasetType(it, spec.type)
+            datasetJdbcDao.incrementModelCount(it)
         }
 
         argValidationService.validateArgsUnknownOnly("training/${spec.type.name}", spec.trainingArgs)
@@ -144,10 +145,6 @@ class ModelServiceImpl(
             actor.toString(),
             null, null, null, null, null, null, null, null, null, null
         )
-
-        model.datasetId?.let {
-            datasetJdbcDao.incrementModelCount(it)
-        }
 
         logger.event(
             LogObject.MODEL, LogAction.CREATE,
