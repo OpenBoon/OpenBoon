@@ -528,15 +528,27 @@ exports[`AssetLabeling should render properly with bulk labeling selected 2`] = 
 exports[`AssetLabeling should render properly with no asset selected 1`] = `
 .emotion-0 {
   padding: 16px;
-  color: #ffffff;
+  color: #b3b3b3;
   font-style: italic;
 }
 
 .emotion-1 {
-  height: 16px;
+  margin: 0;
+  font-size: 15px;
+  line-height: 19px;
 }
 
 .emotion-2 {
+  margin-top: 0;
+  font-size: 15px;
+  line-height: 19px;
+}
+
+.emotion-6 {
+  height: 16px;
+}
+
+.emotion-7 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -567,22 +579,22 @@ exports[`AssetLabeling should render properly with no asset selected 1`] = `
   background-color: transparent;
 }
 
-.emotion-2,
-.emotion-2:hover,
-.emotion-2:visited,
-.emotion-2 .noop {
+.emotion-7,
+.emotion-7:hover,
+.emotion-7:visited,
+.emotion-7 .noop {
   background-color: #3A5DFF;
 }
 
-.emotion-2:hover,
-.emotion-2 .noop {
+.emotion-7:hover,
+.emotion-7 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #6088FE;
 }
 
-.emotion-2[aria-disabled=true],
-.emotion-2 .noop {
+.emotion-7[aria-disabled=true],
+.emotion-7 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -590,16 +602,49 @@ exports[`AssetLabeling should render properly with no asset selected 1`] = `
 <div
   className="emotion-0"
 >
-  Select an asset to the left to label a single asset or click the button below to label all assets in the current search.
-  <div
+  <h5
     className="emotion-1"
+  >
+    Label a Single Asset:
+  </h5>
+  <p
+    className="emotion-2"
+  >
+    Select an asset in the asset viewer to the left to label individually.
+     
+  </p>
+  <h5
+    className="emotion-1"
+  >
+    Label All Assets in Search:
+  </h5>
+  <p
+    className="emotion-1"
+  >
+    Click the button below to label all assets in search. Video assets will be excluded from labeling and a maximum of 10,000 assets can be labeled at once.
+  </p>
+  <p
+    className="emotion-2"
+  >
+    Filters automatically added:
+  </p>
+  <ul>
+    <li>
+      File Type (video deselected)
+    </li>
+    <li>
+      Search limit
+    </li>
+  </ul>
+  <div
+    className="emotion-6"
   />
   <button
-    className="emotion-2"
+    className="emotion-7"
     onClick={[Function]}
     type="button"
   >
-    Label All Assets in Search
+    Bulk Label All Images & Documents in Search
   </button>
 </div>
 `;
