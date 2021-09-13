@@ -29,6 +29,7 @@ import boonai.archivist.domain.ProjectStorageEntity
 import boonai.archivist.domain.ProjectStorageSpec
 import boonai.archivist.domain.ReprocessAssetSearchRequest
 import boonai.archivist.domain.StandardContainers
+import boonai.archivist.repository.DatasetJdbcDao
 import boonai.archivist.repository.KPagedList
 import boonai.archivist.repository.ModelDao
 import boonai.archivist.repository.ModelJdbcDao
@@ -88,7 +89,8 @@ class ModelServiceImpl(
     val argValidationService: ArgValidationService,
     val datasetService: DatasetService,
     val environment: Environment,
-    val publisherService: PublisherService
+    val publisherService: PublisherService,
+    val datasetJdbcDao: DatasetJdbcDao
 ) : ModelService {
 
     val topic = "model-events"
@@ -111,6 +113,7 @@ class ModelServiceImpl(
         validateModelName(spec.name)
         spec.datasetId?.let {
             validateDatasetType(it, spec.type)
+            datasetJdbcDao.incrementModelCount(it)
         }
 
         argValidationService.validateArgsUnknownOnly("training/${spec.type.name}", spec.trainingArgs)
@@ -151,7 +154,7 @@ class ModelServiceImpl(
             )
         )
 
-        return modelDao.saveAndFlush(model)
+        return modelDao.save(model)
     }
 
     override fun updateModel(id: UUID, update: ModelUpdateRequest): Model {
@@ -163,13 +166,13 @@ class ModelServiceImpl(
         if (update.name != model.name) {
             validateModelName(update.name)
         }
+        updateDatasetsModelCount(model.datasetId, update.datasetId)
 
         model.name = update.name
         model.datasetId = update.datasetId
         model.dependencies = update.dependencies
         model.timeModified = System.currentTimeMillis()
         model.actorModified = getZmlpActor().toString()
-
         logger.event(
             LogObject.MODEL, LogAction.UPDATE,
             mapOf(
@@ -187,6 +190,7 @@ class ModelServiceImpl(
             update.datasetId?.let {
                 validateDatasetType(it, model.type)
             }
+            updateDatasetsModelCount(model.datasetId, update.datasetId)
             model.datasetId = update.datasetId
         }
 
@@ -437,6 +441,9 @@ class ModelServiceImpl(
         )
 
         modelJdbcDao.delete(model)
+        model.datasetId?.let {
+            datasetJdbcDao.decrementModelCount(it)
+        }
 
         pipelineModService.findByName(model.moduleName, false)?.let {
             pipelineModService.delete(it.id)
@@ -560,6 +567,13 @@ class ModelServiceImpl(
                     "Model names cannot start with a reserved prefix."
                 )
             }
+        }
+    }
+
+    private fun updateDatasetsModelCount(oldDatasetId: UUID?, newDatasetId: UUID?) {
+        if (oldDatasetId != newDatasetId) {
+            oldDatasetId?.let { datasetJdbcDao.decrementModelCount(it) }
+            newDatasetId?.let { datasetJdbcDao.incrementModelCount(it) }
         }
     }
 

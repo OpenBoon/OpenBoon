@@ -8,6 +8,8 @@ import boonai.archivist.domain.ModelType
 import boonai.archivist.service.ModelService
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
+import javax.persistence.EntityManager
+import javax.persistence.PersistenceContext
 import kotlin.test.assertEquals
 
 class ModelDaoTests : AbstractTest() {
@@ -18,9 +20,14 @@ class ModelDaoTests : AbstractTest() {
     @Autowired
     lateinit var modelJdbcDao: ModelJdbcDao
 
+    @PersistenceContext
+    lateinit var entityManager: EntityManager
+
     @Test
     fun setEndpoint() {
         val model = modelService.createModel(ModelSpec("foo", ModelType.TF_CLASSIFIER))
+        entityManager.flush()
+
         modelJdbcDao.setEndpoint(model.id, "https://foo/bar")
 
         var endpoint = jdbc.queryForObject(
@@ -32,6 +39,8 @@ class ModelDaoTests : AbstractTest() {
     @Test
     fun testUpdateState() {
         val model1 = modelService.createModel(ModelSpec("test1", ModelType.TF_CLASSIFIER))
+        entityManager.flush()
+
         for (state in ModelState.values()) {
             modelJdbcDao.updateState(model1.id, state)
         }
@@ -44,6 +53,7 @@ class ModelDaoTests : AbstractTest() {
         val model2 = modelService.createModel(ModelSpec("test2", ModelType.TF_CLASSIFIER))
         Thread.sleep(100)
         val model3 = modelService.createModel(ModelSpec("test3", ModelType.TF_CLASSIFIER))
+        entityManager.flush()
 
         val find = modelJdbcDao.find(ModelFilter())
 
