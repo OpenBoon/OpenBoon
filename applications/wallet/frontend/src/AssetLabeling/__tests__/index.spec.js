@@ -48,6 +48,11 @@ describe('AssetLabeling', () => {
           attribute: 'utility.Search Results Limit',
           values: { maxAssets: 10_000 },
         },
+        {
+          type: 'facet',
+          attribute: 'media.type',
+          values: { facets: ['image', 'document'] },
+        },
       ]),
     )
 

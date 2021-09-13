@@ -3,6 +3,7 @@ package boonai.archivist.service
 import boonai.archivist.AbstractTest
 import boonai.archivist.domain.Asset
 import boonai.archivist.domain.BatchUpdateClipProxyRequest
+import boonai.archivist.domain.Clip
 import boonai.archivist.domain.UpdateClipProxyRequest
 import boonai.archivist.domain.ClipSpec
 import boonai.archivist.domain.TimelineClipSpec
@@ -94,6 +95,51 @@ class ClipServiceTests : AbstractTest() {
         assertEquals(asset.id, rsp.assetId)
         assertEquals(3, rsp.created)
         assertTrue(rsp.failed.isEmpty())
+    }
+
+    @Test
+    fun createAndReplaceClipsFromTimeline() {
+        val clips = listOf(
+            TimelineClipSpec(BigDecimal.ONE, BigDecimal.TEN, listOf("dog"), 0.5),
+            TimelineClipSpec(BigDecimal(20), BigDecimal(30), listOf("dog"), 0.5),
+            TimelineClipSpec(BigDecimal(40), BigDecimal(50), listOf("dog"), 0.2)
+        )
+        val track = TrackSpec("dogs", clips)
+        val timeline2 = TimelineSpec(asset.id, "boonai-label-detection", listOf(track), replace = true)
+        clipService.createClips(timeline2)
+        refreshElastic()
+
+        val search = clipService.searchClips(asset, mapOf(), mapOf())
+        assertEquals(3, search.hits.hits.size)
+
+        val clip = Clip.fromHit(search.hits.hits[0])
+        assertEquals(clip.content, listOf("dog"))
+    }
+
+    @Test
+    fun deleteClipsByTimeline() {
+        val clips = listOf(
+            TimelineClipSpec(BigDecimal.ONE, BigDecimal.TEN, listOf("dog"), 0.5),
+            TimelineClipSpec(BigDecimal(20), BigDecimal(30), listOf("dog"), 0.5),
+            TimelineClipSpec(BigDecimal(40), BigDecimal(50), listOf("dog"), 0.2)
+        )
+        val track = TrackSpec("dogs", clips)
+        val asset2 = getSample(2, "video")[1]
+        val timeline2 = TimelineSpec(
+            asset2.id,
+            "boonai-label-detection", listOf(track), replace = true
+        )
+        clipService.createClips(timeline2)
+
+        assertEquals(3, clipService.deleteClipsByTimeline(asset, "boonai-label-detection"))
+        refreshElastic()
+
+        var search = clipService.searchClips(asset, mapOf(), mapOf())
+        assertEquals(0, search.hits.hits.size)
+
+        // Make sure we don't delete other asset timelines.
+        search = clipService.searchClips(asset2, mapOf(), mapOf())
+        assertEquals(3, search.hits.hits.size)
     }
 
     @Test

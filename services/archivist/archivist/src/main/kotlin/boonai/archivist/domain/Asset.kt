@@ -1,12 +1,12 @@
 package boonai.archivist.domain
 
+import boonai.archivist.security.getProjectId
+import boonai.archivist.util.randomString
+import boonai.common.util.Json
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.module.kotlin.convertValue
 import com.google.common.hash.Hashing
-import boonai.archivist.security.getProjectId
-import boonai.archivist.util.randomString
-import boonai.common.util.Json
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 import org.elasticsearch.action.search.ClearScrollRequest
@@ -14,6 +14,7 @@ import org.elasticsearch.action.search.SearchResponse
 import org.elasticsearch.action.search.SearchScrollRequest
 import org.elasticsearch.client.RequestOptions
 import org.elasticsearch.client.RestHighLevelClient
+import org.elasticsearch.search.SearchHit
 import org.slf4j.LoggerFactory
 import java.nio.ByteBuffer
 import java.security.MessageDigest
@@ -144,6 +145,8 @@ open class Asset(
     constructor(document: MutableMap<String, Any>) :
         this(randomString(24), document)
 
+    constructor(hit: SearchHit) : this(hit.id, hit.sourceAsMap)
+
     /**
      * Remove an attribute.  If the attr cannot be remove it is set to null.
      *
@@ -255,14 +258,25 @@ open class Asset(
         setAttr("labels", allLabels)
     }
 
-    fun addLabel(label: Label) {
+    fun addLabel(label: Label): LabelResult {
         val allLabels = getAttr("labels", Label.SET_OF) ?: mutableSetOf()
         // Remove the labels first because if the label value
         // changes then it won't get added.  This basically
         // replaces a label for an existing tag.
+
+        // TODO: This doesn't work for labels with BBOXES currently.
+        val rsp = if (allLabels.any { it.label == label.label && it.datasetId == label.datasetId }) {
+            LabelResult.Duplicate
+        } else if (allLabels.any { it.datasetId == it.datasetId }) {
+            LabelResult.Updated
+        } else {
+            LabelResult.Created
+        }
+
         allLabels.remove(label)
         allLabels.add(label)
         setAttr("labels", allLabels)
+        return rsp
     }
 
     /**

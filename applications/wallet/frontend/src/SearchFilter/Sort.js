@@ -91,21 +91,40 @@ const SearchFilterSort = ({
         placeholder={shortenedAttribute || 'Select sort option'}
         options={filteredFields}
         onChange={({ value }) => {
-          dispatch({
-            type: ACTIONS.UPDATE_FILTER,
-            payload: {
-              pathname,
-              projectId,
-              assetId,
-              filters,
-              updatedFilter: {
-                type: 'simpleSort',
-                attribute: value,
-                values: { order: sortFilter?.values?.order || 'desc' },
+          if (filterIndex === -1) {
+            dispatch({
+              type: ACTIONS.ADD_FILTERS,
+              payload: {
+                pathname,
+                projectId,
+                assetId,
+                filters,
+                newFilters: [
+                  {
+                    type: 'simpleSort',
+                    attribute: value,
+                    values: { order: sortFilter?.values?.order || 'desc' },
+                  },
+                ],
               },
-              filterIndex,
-            },
-          })
+            })
+          } else {
+            dispatch({
+              type: ACTIONS.UPDATE_FILTER,
+              payload: {
+                pathname,
+                projectId,
+                assetId,
+                filters,
+                updatedFilter: {
+                  type: 'simpleSort',
+                  attribute: value,
+                  values: { order: sortFilter?.values?.order },
+                },
+                filterIndex,
+              },
+            })
+          }
         }}
       />
 

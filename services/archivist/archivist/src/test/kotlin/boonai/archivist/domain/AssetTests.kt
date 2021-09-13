@@ -26,4 +26,14 @@ class AssetTests {
 
         assertEquals(2, asset.getAttr("labels", Label.SET_OF)?.size)
     }
+
+    @Test
+    fun testAddLabel() {
+        val ds1 = UUID.randomUUID()
+        val asset = Asset()
+
+        assertEquals(LabelResult.Created, asset.addLabel(Label(ds1, "frog")))
+        assertEquals(LabelResult.Duplicate, asset.addLabel(Label(ds1, "frog")))
+        assertEquals(LabelResult.Updated, asset.addLabel(Label(ds1, "cat")))
+    }
 }

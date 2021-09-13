@@ -15,6 +15,7 @@ import boonai.archivist.domain.BatchDeleteAssetResponse
 import boonai.archivist.domain.BatchIndexFailure
 import boonai.archivist.domain.BatchIndexResponse
 import boonai.archivist.domain.BatchLabelBySearchRequest
+import boonai.archivist.domain.BatchLabelBySearchResponse
 import boonai.archivist.domain.BatchUpdateCustomFieldsRequest
 import boonai.archivist.domain.BatchUpdateResponse
 import boonai.archivist.domain.BatchUploadAssetsRequest
@@ -23,6 +24,9 @@ import boonai.archivist.domain.FileExtResolver
 import boonai.archivist.domain.FileStorage
 import boonai.archivist.domain.InternalTask
 import boonai.archivist.domain.Job
+import boonai.archivist.domain.Label
+import boonai.archivist.domain.LabelResult
+import boonai.archivist.domain.LabelScope
 import boonai.archivist.domain.ProcessorRef
 import boonai.archivist.domain.ProjectDirLocator
 import boonai.archivist.domain.ProjectFileLocator
@@ -216,7 +220,7 @@ interface AssetService {
      */
     fun updateLabels(req: UpdateAssetLabelsRequest): BulkResponse
     fun updateLabelsV4(req: UpdateAssetLabelsRequestV4): BulkResponse
-    fun batchLabelAssetsBySearch(lreq: BatchLabelBySearchRequest): Int
+    fun batchLabelAssetsBySearch(lreq: BatchLabelBySearchRequest, wait: Boolean = false): BatchLabelBySearchResponse
 
     /**
      * Manually set languages on an existing asset.
@@ -585,7 +589,6 @@ class AssetServiceImpl : AssetService {
         val stateChangedIds = mutableSetOf<String>()
         val failedAssets = mutableListOf<BatchIndexFailure>()
         val postTimelines = mutableMapOf<String, List<String>>()
-        val tempAssets = mutableListOf<String>()
         val assetMetrics = mutableMapOf<String, AssetMetricsEvent>()
 
         docs.forEach { (id, doc) ->
@@ -708,12 +711,6 @@ class AssetServiceImpl : AssetService {
             .build()
 
         publisherService.publish("metrics", msg)
-    }
-
-    private fun deleteTemporaryAssets(
-        indexedIds: Set<String>
-    ): BatchDeleteAssetResponse {
-        return batchDelete(indexedIds.toSet())
     }
 
     override fun batchDelete(ids: Set<String>): BatchDeleteAssetResponse {
@@ -1321,12 +1318,19 @@ class AssetServiceImpl : AssetService {
         return result
     }
 
-    override fun batchLabelAssetsBySearch(lreq: BatchLabelBySearchRequest): Int {
+    override fun batchLabelAssetsBySearch(lreq: BatchLabelBySearchRequest, wait: Boolean): BatchLabelBySearchResponse {
 
         if (lreq.maxAssets > 10000 || lreq.maxAssets < 1) {
-            throw IllegalArgumentException("Invalid maxAsssts value, must be between 1 and 10000")
+            throw IllegalArgumentException("Invalid maxAssets value, must be between 1 and 10000")
         }
 
+        if (lreq.testRatio < 0 || lreq.testRatio > 1) {
+            throw IllegalArgumentException("Invalid testRatio, must be between 0 and 1")
+        }
+
+        val ds = datasetService.getDataset(lreq.datasetId)
+        val testLabel = Label(ds.id, lreq.label, LabelScope.TEST)
+        val trainLabel = Label(ds.id, lreq.label, LabelScope.TRAIN)
         val rest = indexRoutingService.getProjectRestClient()
 
         // Make sure not to touch the sort or else you'll end up
@@ -1359,6 +1363,7 @@ class AssetServiceImpl : AssetService {
             { request, bulkListener -> rest.client.bulkAsync(request, RequestOptions.DEFAULT, bulkListener) },
             listener
         )
+
         builder.setBulkActions(100)
         builder.setConcurrentRequests(2)
         builder.setBackoffPolicy(
@@ -1366,20 +1371,49 @@ class AssetServiceImpl : AssetService {
                 .constantBackoff(TimeValue.timeValueSeconds(1L), 3)
         )
         val bulk = builder.build()
+        val rsp = rest.client.search(req, RequestOptions.DEFAULT)
 
-        var count = 0
+        var testCount = 0
+        var totalCount = 0
+        var dupCount = 0
+
         for (
             asset in AssetIterator(
                 rest.client,
-                rest.client.search(req, RequestOptions.DEFAULT), lreq.maxAssets.toLong()
+                rsp, lreq.maxAssets.toLong()
             )
         ) {
-            asset.addLabel(lreq.label)
-            bulk.add(rest.newUpdateRequest(asset.id).doc(asset.document))
-            count += 1
+            val label = if (totalCount == 0) {
+                if (lreq.testRatio > .5) {
+                    testLabel
+                } else {
+                    trainLabel
+                }
+            } else if (lreq.testRatio >= 1.0 || testCount / totalCount.toDouble() < lreq.testRatio) {
+                testLabel
+            } else {
+                trainLabel
+            }
+
+            val labelRsp = asset.addLabel(label)
+            if (labelRsp == LabelResult.Duplicate) {
+                dupCount += 1
+            } else {
+                bulk.add(rest.newUpdateRequest(asset.id).doc(asset.document))
+                if (label.scope == LabelScope.TEST) {
+                    testCount += 1
+                }
+                totalCount += 1
+            }
         }
-        bulk.close()
-        return count
+
+        if (wait) {
+            bulk.awaitClose(10, TimeUnit.SECONDS)
+        } else {
+            bulk.close()
+        }
+
+        return BatchLabelBySearchResponse(totalCount, totalCount - testCount, testCount, dupCount)
     }
 
     /**

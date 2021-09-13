@@ -2,7 +2,7 @@ from enum import Enum
 
 from .base import BaseEntity
 from .dataset import DatasetType
-from ..filters import TrainingSetFilter
+from ..filters import DatasetFilter
 
 __all__ = [
     'Model',
@@ -240,7 +240,7 @@ class Model(BaseEntity):
 
     def asset_search_filter(self, scopes=None, labels=None):
         """
-        Create and return a TrainingSetFilter for filtering Assets by the Dataset assigned
+        Create and return a DatasetFilter for filtering Assets by the Dataset assigned
         to this model.
 
         Args:
@@ -251,11 +251,11 @@ class Model(BaseEntity):
             ValueError: If the model does not have a linked dataset.
 
         Returns:
-            TrainingSetFilter: A preconfigured TrainingSetFilter
+            DatasetFilter: A preconfigured DatasetFilter
         """
         if not self.dataset_id:
             raise ValueError('This model does not have an attached Dataset.')
-        return TrainingSetFilter(self.dataset_id, scopes=scopes, labels=labels)
+        return DatasetFilter(self.dataset_id, scopes=scopes, labels=labels)
 
 
 class ModelTypeInfo:

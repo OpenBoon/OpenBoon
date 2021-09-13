@@ -61,5 +61,7 @@ class DestroyLabelSerializer(serializers.Serializer):
     label = serializers.CharField()
 
 
-class AddLabelsBySearchSerializer(RawLabelSerializer):
+class AddLabelsBySearchSerializer(serializers.Serializer):
     filters = serializers.JSONField()
+    label = serializers.CharField()
+    testRatio = serializers.FloatField()

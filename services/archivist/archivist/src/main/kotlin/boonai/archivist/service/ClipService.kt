@@ -14,7 +14,6 @@ import boonai.archivist.domain.TimelineSpec
 import boonai.archivist.domain.UpdateClipProxyRequest
 import boonai.archivist.domain.WebVTTFilter
 import boonai.archivist.security.getProjectId
-import boonai.archivist.security.getZmlpActor
 import boonai.archivist.util.bd
 import boonai.archivist.util.formatDuration
 import boonai.common.service.logging.LogAction
@@ -46,7 +45,6 @@ import org.springframework.stereotype.Service
 import java.io.OutputStream
 import java.math.BigDecimal
 import java.math.RoundingMode
-import java.util.UUID
 import javax.annotation.PostConstruct
 
 interface ClipService {
@@ -115,6 +113,11 @@ interface ClipService {
      * Get a clip by ID
      */
     fun getClip(id: String): Clip
+
+    /**
+     * Delete all clips for an Asset on a given timeline.
+     */
+    fun deleteClipsByTimeline(asset: Asset, name: String): Long
 }
 
 @Service
@@ -140,9 +143,7 @@ class ClipServiceImpl(
     }
 
     override fun createClip(spec: ClipSpec): Clip {
-        val rest = indexRoutingService.getProjectRestClient()
         val asset = assetService.getAsset(spec.assetId)
-
         val start = spec.start.setScale(3, RoundingMode.HALF_UP)
         val stop = spec.stop.setScale(3, RoundingMode.HALF_UP)
         val length = stop.subtract(start)
@@ -165,6 +166,7 @@ class ClipServiceImpl(
             "deepSearch" to mapOf("name" to "clip", "parent" to asset.id)
         )
 
+        val rest = indexRoutingService.getProjectRestClient()
         val id = ClipIdBuilder(asset, spec.timeline, spec.track, start, stop).buildId()
         val req = rest.newIndexRequest(id)
         req.routing(asset.id)
@@ -185,6 +187,10 @@ class ClipServiceImpl(
 
         if (FileExtResolver.getType(asset) != "video") {
             throw IllegalArgumentException("Non-video assets cannot have video clips")
+        }
+
+        if (timeline.replace) {
+            deleteClipsByTimeline(asset, timeline.name)
         }
 
         val response = CreateTimelineResponse(asset.id)
@@ -242,18 +248,6 @@ class ClipServiceImpl(
         if (bulkRequest.numberOfActions() > 0) {
             val rsp = rest.client.bulk(bulkRequest, RequestOptions.DEFAULT)
             response.handleBulkResponse(rsp)
-        }
-
-        if (properties.getBoolean("archivist.deep-video-analysis.enabled") && timeline.deepAnalysis) {
-            val jobId = getZmlpActor().getAttr("jobId")
-            if (jobId != null) {
-                val task =
-                    jobLaunchService.addTimelineAnalysisTask(UUID.fromString(jobId), timeline.assetId, timeline.name)
-                response.taskId = task.id
-            } else {
-                val job = jobLaunchService.launchTimelineAnalysisJob(timeline.assetId, timeline.name)
-                response.jobId = job.id
-            }
         }
 
         return response
@@ -412,6 +406,29 @@ class ClipServiceImpl(
         }
 
         logger.event(LogObject.CLIP, LogAction.DELETE, mapOf("total" to rsp.deleted))
+    }
+
+    override fun deleteClipsByTimeline(asset: Asset, timeline: String): Long {
+        val rest = indexRoutingService.getProjectRestClient()
+        val query = QueryBuilders.boolQuery()
+            .filter(QueryBuilders.termQuery("clip.timeline", timeline))
+            .filter(QueryBuilders.termQuery("clip.assetId", asset.id))
+
+        val rsp = rest.client.deleteByQuery(
+            DeleteByQueryRequest(rest.route.indexName)
+                .setQuery(query),
+            RequestOptions.DEFAULT
+        )
+
+        for (failure in rsp.bulkFailures) {
+            logger.warnEvent(
+                LogObject.CLIP, LogAction.DELETE, failure.message,
+                mapOf("clipId" to failure.id)
+            )
+        }
+
+        logger.event(LogObject.CLIP, LogAction.BATCH_DELETE, mapOf("total" to rsp.deleted))
+        return rsp.deleted
     }
 
     override fun setProxy(id: String, proxy: UpdateClipProxyRequest): Boolean {

@@ -9,6 +9,7 @@ import boonai.archivist.config.ApplicationProperties
 import boonai.archivist.config.ArchivistConfiguration
 import boonai.archivist.domain.Asset
 import boonai.archivist.domain.AssetSpec
+import boonai.archivist.domain.AssetState
 import boonai.archivist.domain.BatchCreateAssetsRequest
 import boonai.archivist.domain.FileExtResolver
 import boonai.archivist.domain.Project
@@ -321,8 +322,11 @@ abstract class AbstractTest {
         addTestAssets(getTestAssets(subdir, analysis, labels))
     }
 
-    fun addTestAssets(assets: List<AssetSpec>) {
+    fun addTestAssets(assets: List<AssetSpec>, analyzed: Boolean = false) {
         val req = BatchCreateAssetsRequest(assets)
+        if (analyzed) {
+            req.state = AssetState.Analyzed
+        }
         assetService.batchCreate(req)
         refreshIndex()
     }
@@ -340,7 +344,9 @@ abstract class AbstractTest {
 
         val r = rest.client.search(req, RequestOptions.DEFAULT)
         return r.hits.map {
-            Json.prettyPrint(it.sourceAsMap)
+            if (logger.isDebugEnabled) {
+                logger.debug(Json.prettyString(it.sourceAsMap))
+            }
             Asset(it.id, it.sourceAsMap)
         }
     }

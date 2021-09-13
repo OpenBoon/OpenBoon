@@ -17,8 +17,7 @@ class ClipTracker:
 
     def __init__(self, asset, timeline_name):
         self.clips = {}
-        # Make a timeline but disable deep analysis.
-        self.timeline = TimelineBuilder(asset, timeline_name, deep_analysis=False)
+        self.timeline = TimelineBuilder(asset, timeline_name)
 
     def append(self, time, predictions):
         """

@@ -8,7 +8,7 @@ import org.springframework.web.multipart.MultipartFile
 import java.util.UUID
 
 @ApiModel("TrainingSetQuery", description = "A simple query for a training set.")
-class TrainingSetQuery(
+class DataSetQuery(
     @ApiModelProperty("The Dataset Id")
     val datasetId: UUID,
     @ApiModelProperty("LabelScopes to filer by.")
@@ -97,7 +97,7 @@ class BatchCreateAssetsRequest(
 
     @JsonIgnore
     @ApiModelProperty("The initial state of the asset", hidden = true)
-    val state: AssetState = AssetState.Pending
+    var state: AssetState = AssetState.Pending
 
 )
 
@@ -206,9 +206,24 @@ class BatchLabelBySearchRequest(
     @ApiModelProperty("The search used o find the assets to label")
     val search: Map<String, Any>,
     @ApiModelProperty("The Label to apply")
-    val label: Label,
+    val datasetId: UUID,
+    @ApiModelProperty("The Label to apply")
+    val label: String,
+    @ApiModelProperty("The ratio of assets to label as TEST vs Train")
+    var testRatio: Double,
     @ApiModelProperty("The maximum number of Assets to label")
-    var maxAssets: Int = 10000
+    var maxAssets: Int = 10000,
+)
+
+class BatchLabelBySearchResponse(
+    @ApiModelProperty("The total # of assets labeled")
+    val total: Int,
+    @ApiModelProperty("The total # of assets labeled for training")
+    val train: Int,
+    @ApiModelProperty("The total # of assets labeled for testing")
+    val test: Int,
+    @ApiModelProperty("Duplicate labels")
+    val duplicates: Int
 )
 
 @ApiModel(

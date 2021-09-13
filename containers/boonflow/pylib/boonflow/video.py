@@ -281,10 +281,6 @@ def save_timeline(asset, timeline):
         dict: A status object.
 
     """
-    # Disable thumbs when creating timelines from processing
-    # These are processed later.
-    timeline.deep_analysis = False
-
     new_timelines = asset.get_attr('tmp.timelines')
     if not new_timelines:
         new_timelines = []

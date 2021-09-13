@@ -912,30 +912,88 @@ class AssetServiceTests : AbstractTest() {
 
     @Test
     fun testLabelAssetsBySearch() {
+        addTestAssets(getTestAssets("images"), analyzed = true)
         val ds = datasetService.createDataset(DatasetSpec("test", DatasetType.Classification))
-        val label = ds.makeLabel("cat")
 
-        val batchCreate = BatchCreateAssetsRequest(
-            assets = listOf(
-                AssetSpec("gs://cats/large-brown-deleted-cat.jpg"),
-                AssetSpec("gs://cats/large-brown-not-deleted-cat.jpg")
-            ),
-            state = AssetState.Analyzed
-        )
-        assetService.batchCreate(batchCreate)
         refreshElastic()
 
         val search = mapOf(
             "query" to mapOf("match_all" to emptyMap<String, Any>())
         )
-        val req = BatchLabelBySearchRequest(search, label, 100)
-        assetService.batchLabelAssetsBySearch(req)
-        Thread.sleep(2000)
+        val req = BatchLabelBySearchRequest(search, ds.id, "cat", 0.2, 100)
+        var rsp = assetService.batchLabelAssetsBySearch(req, wait = true)
         refreshElastic()
 
-        for (asset in getSample(2)) {
-            print(asset.getAttr("labels"))
-        }
+        assertEquals(20, rsp.total)
+        assertEquals(4, rsp.test)
+        assertEquals(16, rsp.train)
+        assertEquals(0, rsp.duplicates)
+
+        rsp = assetService.batchLabelAssetsBySearch(req, wait = true)
+        assertEquals(0, rsp.total)
+        assertEquals(0, rsp.test)
+        assertEquals(0, rsp.train)
+        assertEquals(20, rsp.duplicates)
+    }
+
+    @Test
+    fun testLabelAssetsBySearchAllTrain() {
+        addTestAssets(getTestAssets("images"), analyzed = true)
+        val ds = datasetService.createDataset(DatasetSpec("test", DatasetType.Classification))
+
+        refreshElastic()
+
+        val search = mapOf(
+            "query" to mapOf("match_all" to emptyMap<String, Any>())
+        )
+        val req = BatchLabelBySearchRequest(search, ds.id, "cat", 0.0, 100)
+        var rsp = assetService.batchLabelAssetsBySearch(req)
+        refreshIndex(500)
+
+        assertEquals(20, rsp.total)
+        assertEquals(0, rsp.test)
+        assertEquals(20, rsp.train)
+        assertEquals(0, rsp.duplicates)
+    }
+
+    @Test
+    fun testLabelAssetsBySearchAllTest() {
+        addTestAssets(getTestAssets("images"), analyzed = true)
+        val ds = datasetService.createDataset(DatasetSpec("test", DatasetType.Classification))
+
+        refreshElastic()
+
+        val search = mapOf(
+            "query" to mapOf("match_all" to emptyMap<String, Any>())
+        )
+        val req = BatchLabelBySearchRequest(search, ds.id, "cat", 1.0, 100)
+        var rsp = assetService.batchLabelAssetsBySearch(req)
+        refreshIndex(500)
+
+        assertEquals(20, rsp.total)
+        assertEquals(20, rsp.test)
+        assertEquals(0, rsp.train)
+        assertEquals(0, rsp.duplicates)
+    }
+
+    @Test
+    fun testLabelAssetsBySearchMaxAssets() {
+        addTestAssets(getTestAssets("images"), analyzed = true)
+        val ds = datasetService.createDataset(DatasetSpec("test", DatasetType.Classification))
+
+        refreshElastic()
+
+        val search = mapOf(
+            "query" to mapOf("match_all" to emptyMap<String, Any>())
+        )
+        val req = BatchLabelBySearchRequest(search, ds.id, "cat", 0.0, 10)
+        var rsp = assetService.batchLabelAssetsBySearch(req)
+        refreshIndex(500)
+
+        assertEquals(10, rsp.total)
+        assertEquals(0, rsp.test)
+        assertEquals(10, rsp.train)
+        assertEquals(0, rsp.duplicates)
     }
 
     @Test

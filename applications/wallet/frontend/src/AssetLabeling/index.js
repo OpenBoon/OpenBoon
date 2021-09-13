@@ -60,22 +60,38 @@ const AssetLabeling = () => {
       <Button
         variant={BUTTON_VARIANTS.PRIMARY}
         onClick={() => {
-          if (!filters.find(({ type }) => type === 'limit')) {
-            filterDispatch({
-              type: FILTER_ACTIONS.ADD_VALUE,
-              payload: {
-                pathname,
-                projectId,
-                assetId,
-                filter: {
-                  type: 'limit',
-                  attribute: 'utility.Search Results Limit',
-                  values: { maxAssets: 10_000 },
-                },
-                query,
-              },
-            })
-          }
+          const limitFilter = filters.find(({ type }) => type === 'limit')
+
+          const mediaTypeFilter = filters.find(
+            ({ attribute }) => attribute === 'media.type',
+          )
+
+          filterDispatch({
+            type: FILTER_ACTIONS.ADD_FILTERS,
+            payload: {
+              pathname,
+              projectId,
+              assetId,
+              filters,
+              newFilters: [
+                !limitFilter
+                  ? {
+                      type: 'limit',
+                      attribute: 'utility.Search Results Limit',
+                      values: { maxAssets: 10_000 },
+                    }
+                  : false,
+                !mediaTypeFilter
+                  ? {
+                      type: 'facet',
+                      attribute: 'media.type',
+                      values: { facets: ['image', 'document'] },
+                    }
+                  : false,
+              ].filter(Boolean),
+              query,
+            },
+          })
 
           setIsBulkLabeling(true)
         }}
