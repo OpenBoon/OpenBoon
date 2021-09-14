@@ -18,7 +18,10 @@ const SearchFilterSort = ({
   filters,
   fields,
 }) => {
-  const filteredFields = formatFields({ fields })
+  const filteredFields = {
+    Search: { score: '_score' },
+    ...formatFields({ fields }),
+  }
 
   const filterIndex = filters.findIndex(({ type }) => type === 'simpleSort')
 
@@ -26,6 +29,8 @@ const SearchFilterSort = ({
 
   const splitAttribute = !sortFilter ? [] : sortFilter?.attribute.split('.')
   const shortenedAttribute = splitAttribute[splitAttribute.length - 1]
+  const placeholder =
+    shortenedAttribute === '_score' ? 'score' : shortenedAttribute
 
   return (
     <div
@@ -84,11 +89,11 @@ const SearchFilterSort = ({
       </Button>
 
       <Listbox
-        key={shortenedAttribute}
+        key={placeholder}
         label="Sort by"
         inputLabel="Filter sort options"
         value={sortFilter?.attribute || ''}
-        placeholder={shortenedAttribute || 'Select sort option'}
+        placeholder={placeholder || 'Select sort option'}
         options={filteredFields}
         onChange={({ value }) => {
           if (filterIndex === -1) {

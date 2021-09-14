@@ -93,7 +93,7 @@ describe('<SearchFilterSort />', () => {
         filters={[
           {
             type: 'simpleSort',
-            attribute: 'location.city',
+            attribute: '_score',
             values: { order: 'asc' },
           },
         ]}
