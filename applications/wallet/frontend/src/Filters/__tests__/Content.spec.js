@@ -34,6 +34,28 @@ describe('<FiltersContent />', () => {
     expect(component.toJSON()).toMatchSnapshot()
   })
 
+  it('should render the "LabelsExist" filter', () => {
+    const filters = [
+      {
+        type: 'labelsExist',
+        attribute: 'labels.pets',
+        datasetId: DATASET_ID,
+      },
+    ]
+
+    const component = TestRenderer.create(
+      <FiltersContent
+        pathname="/[projectId]/visualizer"
+        projectId={PROJECT_ID}
+        assetId=""
+        filters={filters}
+        setIsMenuOpen={noop}
+      />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
   it('should render the "Facet" filter', () => {
     const filters = [{ type: 'facet', attribute: 'location.city', values: {} }]
 

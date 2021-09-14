@@ -10261,6 +10261,768 @@ Array [
 ]
 `;
 
+exports[`<FiltersContent /> should render the "LabelsExist" filter 1`] = `
+Array [
+  .emotion-0 {
+  padding: 4px;
+  border-bottom: 1px solid #3b3b3b;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.emotion-2 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.emotion-2,
+.emotion-2:hover,
+.emotion-2:visited,
+.emotion-2 .noop {
+  background-color: #3A5DFF;
+}
+
+.emotion-2:hover,
+.emotion-2 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #6088FE;
+}
+
+.emotion-2[aria-disabled=true],
+.emotion-2 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-right: 4px;
+}
+
+.emotion-5 {
+  width: 4px;
+  min-width: 4px;
+}
+
+.emotion-6 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.emotion-6,
+.emotion-6:hover,
+.emotion-6:visited,
+.emotion-6 .noop {
+  background-color: #808080;
+}
+
+.emotion-6:hover,
+.emotion-6 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #b3b3b3;
+}
+
+.emotion-6[aria-disabled=true],
+.emotion-6 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-8 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 4px;
+}
+
+.emotion-9 {
+  position: relative;
+}
+
+.emotion-10 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 8px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #808080;
+  background-color: transparent;
+}
+
+.emotion-10:hover,
+.emotion-10.focus-visible:focus,
+.emotion-10 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.emotion-10:hover svg,
+.emotion-10.focus-visible:focus svg,
+.emotion-10 .noop svg {
+  opacity: 1;
+}
+
+.emotion-10[aria-disabled=true],
+.emotion-10 .noop {
+  color: #808080;
+}
+
+.emotion-11 {
+  height: 4px;
+}
+
+<div
+    className="emotion-0"
+  >
+    <div
+      className="emotion-1"
+    >
+      <button
+        aria-label="Add Filters"
+        className="emotion-2"
+        onClick={[Function]}
+        type="button"
+      >
+        <div
+          className="emotion-3"
+        >
+          <div
+            className="emotion-4"
+          >
+            <svg
+              data-file-name="plus.svg"
+              height={20}
+            />
+          </div>
+          Add Filters
+        </div>
+      </button>
+      <div
+        className="emotion-5"
+      />
+      <button
+        className="emotion-6"
+        onClick={[Function]}
+        type="button"
+      >
+        Clear All Filters
+      </button>
+      <div
+        className="emotion-5"
+      />
+      <div
+        className="emotion-8"
+      >
+        <div
+          className="emotion-9"
+        >
+          <button
+            aria-label="Copy Search Query to Clipboard"
+            className="emotion-10"
+            onClick={[Function]}
+            title="Copy Search Query to Clipboard"
+            type="button"
+          >
+            <svg
+              data-file-name="copy.svg"
+              height={20}
+            />
+          </button>
+        </div>
+      </div>
+    </div>
+    <div
+      className="emotion-11"
+    />
+    <SearchFilter
+      assetId=""
+      fields={Object {}}
+      filters={
+        Array [
+          Object {
+            "attribute": "labels.pets",
+            "datasetId": "4b0b10a8-cec1-155c-b12f-ee2bc8787e06",
+            "type": "labelsExist",
+          },
+        ]
+      }
+      pathname="/[projectId]/visualizer"
+      projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+    />
+  </div>,
+  .emotion-0 {
+  overflow: auto;
+}
+
+.emotion-1 {
+  border-radius: 2px;
+  background-color: #191919;
+  border-bottom: 1px solid #3b3b3b;
+}
+
+.emotion-1:hover summary svg {
+  opacity: 1;
+}
+
+.emotion-2 {
+  list-style-type: none;
+  padding: 8px;
+  background-color: #252525;
+}
+
+.emotion-2::-webkit-details-marker {
+  display: none;
+}
+
+.emotion-2:hover {
+  cursor: pointer;
+  background-color: #2e2e2e;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-4 {
+  color: #808080;
+}
+
+.emotion-5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-left: 8px;
+}
+
+.emotion-6 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-top: -2px;
+  padding-left: 8px;
+  font-weight: 700;
+  line-height: 18px;
+  padding-right: 4px;
+}
+
+.emotion-7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-8 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 8px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #808080;
+  background-color: transparent;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 4px;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  border-radius: 2px;
+}
+
+.emotion-8:hover,
+.emotion-8.focus-visible:focus,
+.emotion-8 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.emotion-8:hover svg,
+.emotion-8.focus-visible:focus svg,
+.emotion-8 .noop svg {
+  opacity: 1;
+}
+
+.emotion-8[aria-disabled=true],
+.emotion-8 .noop {
+  color: #808080;
+}
+
+.emotion-8:hover,
+.emotion-8.focus-visible:focus {
+  background-color: #3b3b3b;
+}
+
+.emotion-8:hover svg,
+.emotion-8.focus-visible:focus svg {
+  color: #ffffff;
+}
+
+.emotion-9 {
+  opacity: 0;
+}
+
+.emotion-11 {
+  opacity: 0;
+}
+
+.emotion-12 {
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.emotion-13 {
+  padding: 16px;
+}
+
+.emotion-14 {
+  padding-top: 8px;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.emotion-15 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border: 1px solid #808080;
+  border-radius: 2px;
+}
+
+.emotion-16 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 0;
+  padding: 12px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: #808080;
+}
+
+.emotion-16:hover,
+.emotion-16.focus-visible:focus,
+.emotion-16 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.emotion-16:hover svg,
+.emotion-16.focus-visible:focus svg,
+.emotion-16 .noop svg {
+  opacity: 1;
+}
+
+.emotion-16[aria-disabled=true],
+.emotion-16 .noop {
+  color: #808080;
+}
+
+.emotion-17 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-18 {
+  padding-left: 4px;
+}
+
+.emotion-19 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 0;
+  padding: 12px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #808080;
+  background-color: transparent;
+}
+
+.emotion-19:hover,
+.emotion-19.focus-visible:focus,
+.emotion-19 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.emotion-19:hover svg,
+.emotion-19.focus-visible:focus svg,
+.emotion-19 .noop svg {
+  opacity: 1;
+}
+
+.emotion-19[aria-disabled=true],
+.emotion-19 .noop {
+  color: #808080;
+}
+
+.emotion-22 {
+  color: #808080;
+  text-align: center;
+  padding-top: 8px;
+}
+
+<div
+    className="emotion-0"
+  >
+    <details
+      className="emotion-1"
+      onToggle={[Function]}
+      open={true}
+    >
+      <summary
+        aria-label="labels.pets"
+        className="emotion-2"
+      >
+        <div
+          className="emotion-3"
+        >
+          <svg
+            className="emotion-4"
+            data-file-name="chevron.svg"
+            height={20}
+          />
+          <span
+            className="emotion-5"
+          >
+            <svg
+              color="#6088FE"
+              data-file-name="facet.svg"
+              height={20}
+            />
+          </span>
+          <span
+            className="emotion-6"
+          >
+            labels.pets
+          </span>
+          <div
+            className="emotion-7"
+          >
+            <button
+              aria-label="Disable Filter"
+              className="emotion-8"
+              onClick={[Function]}
+              title="Disable Filter"
+              type="button"
+            >
+              <svg
+                className="emotion-9"
+                color="#808080"
+                data-file-name="hidden.svg"
+                height={20}
+              />
+            </button>
+            <button
+              aria-label="Delete Filter"
+              className="emotion-8"
+              onClick={[Function]}
+              title="Delete Filter"
+              type="button"
+            >
+              <svg
+                className="emotion-11"
+                color="#808080"
+                data-file-name="cross.svg"
+                height={20}
+              />
+            </button>
+          </div>
+        </div>
+      </summary>
+      <div
+        className="emotion-12"
+      >
+        <div
+          className="emotion-13"
+        >
+          <FilterReset
+            assetId=""
+            filter={
+              Object {
+                "attribute": "labels.pets",
+                "datasetId": "4b0b10a8-cec1-155c-b12f-ee2bc8787e06",
+                "type": "labelsExist",
+              }
+            }
+            filterIndex={0}
+            filters={
+              Array [
+                Object {
+                  "attribute": "labels.pets",
+                  "datasetId": "4b0b10a8-cec1-155c-b12f-ee2bc8787e06",
+                  "type": "labelsExist",
+                },
+              ]
+            }
+            onReset={[Function]}
+            pathname="/[projectId]/visualizer"
+            projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+          />
+          <div
+            className="emotion-14"
+          >
+            <div
+              className="emotion-15"
+            >
+              <button
+                aria-label="Exists"
+                className="emotion-16"
+                onClick={[Function]}
+                type="button"
+              >
+                <div
+                  className="emotion-17"
+                >
+                  <svg
+                    data-file-name="exists.svg"
+                    height={20}
+                  />
+                  <div
+                    className="emotion-18"
+                  >
+                    Exists
+                  </div>
+                </div>
+              </button>
+              <button
+                aria-label="Missing"
+                className="emotion-19"
+                onClick={[Function]}
+                type="button"
+              >
+                <div
+                  className="emotion-17"
+                >
+                  <svg
+                    data-file-name="missing.svg"
+                    height={20}
+                  />
+                  <div
+                    className="emotion-18"
+                  >
+                    Missing
+                  </div>
+                </div>
+              </button>
+            </div>
+            <div
+              className="emotion-22"
+            >
+              <span>
+                Show assets with a "
+                pets
+                " label
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </details>
+  </div>,
+]
+`;
+
 exports[`<FiltersContent /> should render the "Limit" filter 1`] = `
 Array [
   .emotion-0 {
