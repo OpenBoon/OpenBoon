@@ -389,7 +389,7 @@ class TestFieldUtility:
 
     def test_labels(self, mock_zmlp_client):
         result = self.field_utility.get_filter_map(mock_zmlp_client)
-        assert result['labels'] == {'3500f84e-26f2-1505-9aa6-0242ac13000b': ['label']}
+        assert result['labels'] == {'3500f84e-26f2-1505-9aa6-0242ac13000b': ['label', 'labelsExist']}
 
     def test_utility_fields(self, mock_zmlp_client):
         result = self.field_utility.get_filter_map(mock_zmlp_client)

@@ -9,7 +9,8 @@ from boonsdk import BoonApp, BoonClient
 from searches.filters import (BaseFilter, RangeFilter, ExistsFilter, FacetFilter,
                               LabelConfidenceFilter, TextContentFilter,
                               SimilarityFilter, LabelFilter, DateFilter,
-                              PredictionCountFilter, LimitFilter, SimpleSortFilter)
+                              PredictionCountFilter, LimitFilter, SimpleSortFilter,
+                              LabelsExistFilter)
 
 
 class MockFilter(BaseFilter):
@@ -956,7 +957,7 @@ class TestSimpleSort(FilterBaseTestCase):
             'values': {'order': 'asc'}
         }
 
-    def test_vad_validation(self, mock_data):
+    def test_bad_validation(self, mock_data):
         del(mock_data['values'])
         filter = self.Filter(mock_data)
         with pytest.raises(ValidationError):
@@ -970,3 +971,22 @@ class TestSimpleSort(FilterBaseTestCase):
         assert query == {'bool': {'stuff': 'in here'},
                          'sort': [{'cool': {'sort': 'desc'}},
                                   {'media.length': {'order': 'asc'}}]}
+
+
+class TestLabelsExistFilter(FilterBaseTestCase):
+
+    Filter = LabelsExistFilter
+
+    @pytest.fixture
+    def mock_data(self):
+        return {
+            'type': 'labelsExist',
+            'datasetId': 'asdf-asdf-asdf',
+            'values': {'exists': True}
+        }
+
+    def test_bad_validation(self, mock_data):
+        del (mock_data['values'])
+        filter = self.Filter(mock_data)
+        with pytest.raises(ValidationError):
+            filter.is_valid(query=True, raise_exception=True)

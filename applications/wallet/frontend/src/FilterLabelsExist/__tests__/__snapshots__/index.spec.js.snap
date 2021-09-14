@@ -1,0 +1,931 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<FilterLabelsExist /> should select "Exists" 1`] = `
+.emotion-0 {
+  border-radius: 2px;
+  background-color: #191919;
+  border-bottom: 1px solid #3b3b3b;
+}
+
+.emotion-0:hover summary svg {
+  opacity: 1;
+}
+
+.emotion-1 {
+  list-style-type: none;
+  padding: 8px;
+  background-color: #252525;
+}
+
+.emotion-1::-webkit-details-marker {
+  display: none;
+}
+
+.emotion-1:hover {
+  cursor: pointer;
+  background-color: #2e2e2e;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-3 {
+  color: #808080;
+}
+
+.emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-left: 8px;
+}
+
+.emotion-5 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-top: -2px;
+  padding-left: 8px;
+  font-weight: 700;
+  line-height: 18px;
+  padding-right: 4px;
+}
+
+.emotion-6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-7 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 8px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #808080;
+  background-color: transparent;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 4px;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  border-radius: 2px;
+}
+
+.emotion-7:hover,
+.emotion-7.focus-visible:focus,
+.emotion-7 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.emotion-7:hover svg,
+.emotion-7.focus-visible:focus svg,
+.emotion-7 .noop svg {
+  opacity: 1;
+}
+
+.emotion-7[aria-disabled=true],
+.emotion-7 .noop {
+  color: #808080;
+}
+
+.emotion-7:hover,
+.emotion-7.focus-visible:focus {
+  background-color: #3b3b3b;
+}
+
+.emotion-7:hover svg,
+.emotion-7.focus-visible:focus svg {
+  color: #ffffff;
+}
+
+.emotion-8 {
+  opacity: 0;
+}
+
+.emotion-10 {
+  opacity: 0;
+}
+
+.emotion-11 {
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.emotion-12 {
+  padding: 16px;
+}
+
+.emotion-13 {
+  padding-top: 8px;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.emotion-14 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border: 1px solid #808080;
+  border-radius: 2px;
+}
+
+.emotion-15 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 0;
+  padding: 12px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #808080;
+  background-color: transparent;
+}
+
+.emotion-15:hover,
+.emotion-15.focus-visible:focus,
+.emotion-15 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.emotion-15:hover svg,
+.emotion-15.focus-visible:focus svg,
+.emotion-15 .noop svg {
+  opacity: 1;
+}
+
+.emotion-15[aria-disabled=true],
+.emotion-15 .noop {
+  color: #808080;
+}
+
+.emotion-16 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-17 {
+  padding-left: 4px;
+}
+
+.emotion-18 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 0;
+  padding: 12px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: #808080;
+}
+
+.emotion-18:hover,
+.emotion-18.focus-visible:focus,
+.emotion-18 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.emotion-18:hover svg,
+.emotion-18.focus-visible:focus svg,
+.emotion-18 .noop svg {
+  opacity: 1;
+}
+
+.emotion-18[aria-disabled=true],
+.emotion-18 .noop {
+  color: #808080;
+}
+
+.emotion-21 {
+  color: #808080;
+  text-align: center;
+  padding-top: 8px;
+}
+
+<details
+  className="emotion-0"
+  onToggle={[Function]}
+  open={true}
+>
+  <summary
+    aria-label="labels.pets"
+    className="emotion-1"
+  >
+    <div
+      className="emotion-2"
+    >
+      <svg
+        className="emotion-3"
+        data-file-name="chevron.svg"
+        height={20}
+      />
+      <span
+        className="emotion-4"
+      >
+        <svg
+          color="#6088FE"
+          data-file-name="facet.svg"
+          height={20}
+        />
+      </span>
+      <span
+        className="emotion-5"
+      >
+        labels.pets
+      </span>
+      <div
+        className="emotion-6"
+      >
+        <button
+          aria-label="Disable Filter"
+          className="emotion-7"
+          onClick={[Function]}
+          title="Disable Filter"
+          type="button"
+        >
+          <svg
+            className="emotion-8"
+            color="#808080"
+            data-file-name="hidden.svg"
+            height={20}
+          />
+        </button>
+        <button
+          aria-label="Delete Filter"
+          className="emotion-7"
+          onClick={[Function]}
+          title="Delete Filter"
+          type="button"
+        >
+          <svg
+            className="emotion-10"
+            color="#808080"
+            data-file-name="cross.svg"
+            height={20}
+          />
+        </button>
+      </div>
+    </div>
+  </summary>
+  <div
+    className="emotion-11"
+  >
+    <div
+      className="emotion-12"
+    >
+      <FilterReset
+        assetId=""
+        filter={
+          Object {
+            "attribute": "labels.pets",
+            "datasetId": "4b0b10a8-cec1-155c-b12f-ee2bc8787e06",
+            "type": "labelsExist",
+            "values": Object {
+              "exists": false,
+            },
+          }
+        }
+        filterIndex={0}
+        filters={
+          Array [
+            Object {
+              "attribute": "labels.pets",
+              "datasetId": "4b0b10a8-cec1-155c-b12f-ee2bc8787e06",
+              "type": "labelsExist",
+              "values": Object {
+                "exists": false,
+              },
+            },
+          ]
+        }
+        onReset={[Function]}
+        pathname="/[projectId]/visualizer"
+        projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+      />
+      <div
+        className="emotion-13"
+      >
+        <div
+          className="emotion-14"
+        >
+          <button
+            aria-label="Exists"
+            className="emotion-15"
+            onClick={[Function]}
+            type="button"
+          >
+            <div
+              className="emotion-16"
+            >
+              <svg
+                data-file-name="exists.svg"
+                height={20}
+              />
+              <div
+                className="emotion-17"
+              >
+                Exists
+              </div>
+            </div>
+          </button>
+          <button
+            aria-label="Missing"
+            className="emotion-18"
+            onClick={[Function]}
+            type="button"
+          >
+            <div
+              className="emotion-16"
+            >
+              <svg
+                data-file-name="missing.svg"
+                height={20}
+              />
+              <div
+                className="emotion-17"
+              >
+                Missing
+              </div>
+            </div>
+          </button>
+        </div>
+        <div
+          className="emotion-21"
+        >
+          <span>
+            Show assets 
+            <u>
+              missing
+            </u>
+             a "
+            pets
+            " label
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</details>
+`;
+
+exports[`<FilterLabelsExist /> should select "Missing" 1`] = `
+.emotion-0 {
+  border-radius: 2px;
+  background-color: #191919;
+  border-bottom: 1px solid #3b3b3b;
+}
+
+.emotion-0:hover summary svg {
+  opacity: 1;
+}
+
+.emotion-1 {
+  list-style-type: none;
+  padding: 8px;
+  background-color: #252525;
+}
+
+.emotion-1::-webkit-details-marker {
+  display: none;
+}
+
+.emotion-1:hover {
+  cursor: pointer;
+  background-color: #2e2e2e;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-3 {
+  color: #808080;
+}
+
+.emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-left: 8px;
+}
+
+.emotion-5 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-top: -2px;
+  padding-left: 8px;
+  font-weight: 700;
+  line-height: 18px;
+  padding-right: 4px;
+}
+
+.emotion-6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-7 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 8px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #808080;
+  background-color: transparent;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 4px;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  border-radius: 2px;
+}
+
+.emotion-7:hover,
+.emotion-7.focus-visible:focus,
+.emotion-7 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.emotion-7:hover svg,
+.emotion-7.focus-visible:focus svg,
+.emotion-7 .noop svg {
+  opacity: 1;
+}
+
+.emotion-7[aria-disabled=true],
+.emotion-7 .noop {
+  color: #808080;
+}
+
+.emotion-7:hover,
+.emotion-7.focus-visible:focus {
+  background-color: #3b3b3b;
+}
+
+.emotion-7:hover svg,
+.emotion-7.focus-visible:focus svg {
+  color: #ffffff;
+}
+
+.emotion-8 {
+  opacity: 0;
+}
+
+.emotion-10 {
+  opacity: 0;
+}
+
+.emotion-11 {
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.emotion-12 {
+  padding: 16px;
+}
+
+.emotion-13 {
+  padding-top: 8px;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.emotion-14 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border: 1px solid #808080;
+  border-radius: 2px;
+}
+
+.emotion-15 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 0;
+  padding: 12px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: #808080;
+}
+
+.emotion-15:hover,
+.emotion-15.focus-visible:focus,
+.emotion-15 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.emotion-15:hover svg,
+.emotion-15.focus-visible:focus svg,
+.emotion-15 .noop svg {
+  opacity: 1;
+}
+
+.emotion-15[aria-disabled=true],
+.emotion-15 .noop {
+  color: #808080;
+}
+
+.emotion-16 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-17 {
+  padding-left: 4px;
+}
+
+.emotion-18 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 0;
+  padding: 12px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #808080;
+  background-color: transparent;
+}
+
+.emotion-18:hover,
+.emotion-18.focus-visible:focus,
+.emotion-18 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.emotion-18:hover svg,
+.emotion-18.focus-visible:focus svg,
+.emotion-18 .noop svg {
+  opacity: 1;
+}
+
+.emotion-18[aria-disabled=true],
+.emotion-18 .noop {
+  color: #808080;
+}
+
+.emotion-21 {
+  color: #808080;
+  text-align: center;
+  padding-top: 8px;
+}
+
+<details
+  className="emotion-0"
+  onToggle={[Function]}
+  open={true}
+>
+  <summary
+    aria-label="labels.pets"
+    className="emotion-1"
+  >
+    <div
+      className="emotion-2"
+    >
+      <svg
+        className="emotion-3"
+        data-file-name="chevron.svg"
+        height={20}
+      />
+      <span
+        className="emotion-4"
+      >
+        <svg
+          color="#6088FE"
+          data-file-name="facet.svg"
+          height={20}
+        />
+      </span>
+      <span
+        className="emotion-5"
+      >
+        labels.pets
+      </span>
+      <div
+        className="emotion-6"
+      >
+        <button
+          aria-label="Disable Filter"
+          className="emotion-7"
+          onClick={[Function]}
+          title="Disable Filter"
+          type="button"
+        >
+          <svg
+            className="emotion-8"
+            color="#808080"
+            data-file-name="hidden.svg"
+            height={20}
+          />
+        </button>
+        <button
+          aria-label="Delete Filter"
+          className="emotion-7"
+          onClick={[Function]}
+          title="Delete Filter"
+          type="button"
+        >
+          <svg
+            className="emotion-10"
+            color="#808080"
+            data-file-name="cross.svg"
+            height={20}
+          />
+        </button>
+      </div>
+    </div>
+  </summary>
+  <div
+    className="emotion-11"
+  >
+    <div
+      className="emotion-12"
+    >
+      <FilterReset
+        assetId=""
+        filter={
+          Object {
+            "attribute": "labels.pets",
+            "datasetId": "4b0b10a8-cec1-155c-b12f-ee2bc8787e06",
+            "type": "labelsExist",
+            "values": Object {
+              "labelsExist": true,
+            },
+          }
+        }
+        filterIndex={0}
+        filters={
+          Array [
+            Object {
+              "attribute": "labels.pets",
+              "datasetId": "4b0b10a8-cec1-155c-b12f-ee2bc8787e06",
+              "type": "labelsExist",
+              "values": Object {
+                "labelsExist": true,
+              },
+            },
+          ]
+        }
+        onReset={[Function]}
+        pathname="/[projectId]/visualizer"
+        projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+      />
+      <div
+        className="emotion-13"
+      >
+        <div
+          className="emotion-14"
+        >
+          <button
+            aria-label="Exists"
+            className="emotion-15"
+            onClick={[Function]}
+            type="button"
+          >
+            <div
+              className="emotion-16"
+            >
+              <svg
+                data-file-name="exists.svg"
+                height={20}
+              />
+              <div
+                className="emotion-17"
+              >
+                Exists
+              </div>
+            </div>
+          </button>
+          <button
+            aria-label="Missing"
+            className="emotion-18"
+            onClick={[Function]}
+            type="button"
+          >
+            <div
+              className="emotion-16"
+            >
+              <svg
+                data-file-name="missing.svg"
+                height={20}
+              />
+              <div
+                className="emotion-17"
+              >
+                Missing
+              </div>
+            </div>
+          </button>
+        </div>
+        <div
+          className="emotion-21"
+        >
+          <span>
+            Show assets with a "
+            pets
+            " label
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</details>
+`;

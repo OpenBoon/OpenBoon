@@ -356,6 +356,49 @@ exports[`<FilterReset /> should switch properly 2`] = `
   flex: 1;
 }
 
+.emotion-3 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 4px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #b3b3b3;
+  background-color: #3b3b3b;
+  padding-left: 6px;
+  padding-right: 6px;
+  font-family: Roboto Condensed;
+  text-transform: uppercase;
+}
+
+.emotion-3:hover,
+.emotion-3.focus-visible:focus,
+.emotion-3 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
+}
+
 <div
   className="emotion-0"
 >
@@ -378,5 +421,12 @@ exports[`<FilterReset /> should switch properly 2`] = `
   <div
     className="emotion-2"
   />
+  <button
+    className="emotion-3"
+    onClick={[Function]}
+    type="button"
+  >
+    Reset
+  </button>
 </div>
 `;

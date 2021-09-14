@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 const filterShape = {
   type: PropTypes.oneOf([
     'exists',
+    'labelsExist',
     'range',
     'predictionCount',
     'facet',
