@@ -192,7 +192,7 @@ class ModelViewSet(ZmlpCreateMixin,
 
         # Set the ready/unapplied changes status
         state = model._data.get('state')
-        if state in ('Trained', 'Ready'):
+        if state in ('Trained', 'Deployed'):
             response_data['unappliedChanges'] = False
         else:
             response_data['unappliedChanges'] = True

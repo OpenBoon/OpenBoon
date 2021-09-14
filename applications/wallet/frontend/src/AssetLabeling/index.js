@@ -50,13 +50,64 @@ const AssetLabeling = () => {
     <div
       css={{
         padding: spacing.normal,
-        color: colors.structure.white,
+        color: colors.structure.zinc,
         fontStyle: typography.style.italic,
       }}
     >
-      Select an asset to the left to label a single asset or click the button
-      below to label all assets in the current search.
+      <h5
+        css={{
+          margin: 0,
+          fontSize: typography.size.regular,
+          lineHeight: typography.height.regular,
+        }}
+      >
+        Label a Single Asset:
+      </h5>
+      <p
+        css={{
+          marginTop: 0,
+          fontSize: typography.size.regular,
+          lineHeight: typography.height.regular,
+        }}
+      >
+        Select an asset in the asset viewer to the left to label individually.{' '}
+      </p>
+      <h5
+        css={{
+          margin: 0,
+          fontSize: typography.size.regular,
+          lineHeight: typography.height.regular,
+        }}
+      >
+        Label All Assets in Search:
+      </h5>
+      <p
+        css={{
+          margin: 0,
+          fontSize: typography.size.regular,
+          lineHeight: typography.height.regular,
+        }}
+      >
+        Click the button below to label all assets in search. Video assets will
+        be excluded from labeling and a maximum of 10,000 assets can be labeled
+        at once.
+      </p>
+      <p
+        css={{
+          marginTop: 0,
+          fontSize: typography.size.regular,
+          lineHeight: typography.height.regular,
+        }}
+      >
+        Filters automatically added:
+      </p>
+      <ul>
+        <li>File Type (video deselected)</li>
+        <li>Search limit</li>
+      </ul>
+
       <div css={{ height: spacing.normal }} />
+
       <Button
         variant={BUTTON_VARIANTS.PRIMARY}
         onClick={() => {
@@ -96,7 +147,7 @@ const AssetLabeling = () => {
           setIsBulkLabeling(true)
         }}
       >
-        Label All Assets in Search
+        Bulk Label All Images &amp; Documents in Search
       </Button>
     </div>
   )

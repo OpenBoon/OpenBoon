@@ -33,7 +33,9 @@ describe('AssetLabeling', () => {
 
     act(() => {
       component.root
-        .findByProps({ children: 'Label All Assets in Search' })
+        .findByProps({
+          children: 'Bulk Label All Images & Documents in Search',
+        })
         .props.onClick()
     })
 
@@ -65,7 +67,9 @@ describe('AssetLabeling', () => {
 
     act(() => {
       component.root
-        .findByProps({ children: 'Label All Assets in Search' })
+        .findByProps({
+          children: 'Bulk Label All Images & Documents in Search',
+        })
         .props.onClick()
     })
 
