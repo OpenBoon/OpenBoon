@@ -234,6 +234,16 @@ class SearchViewSet(CreateModelMixin,
                 }
             }
 
+        LabelsExist:
+
+            {
+                "type": "labelsExist",
+                "datasetId": $datasetId,
+                "values": {
+                    "exists": True  # or False
+                }
+            }
+
         """
         path = 'api/v3/assets'
         fields = ['id',
