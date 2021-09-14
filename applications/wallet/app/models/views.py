@@ -53,7 +53,7 @@ def item_modifier(request, item):
     # Remove ready and convert state to unappliedChanges
     del(item['ready'])
     state = item['state']
-    if state in ('Trained', 'Ready'):
+    if state in ('Trained', 'Deployed'):
         item['unappliedChanges'] = False
     else:
         item['unappliedChanges'] = True
@@ -190,7 +190,7 @@ class ModelViewSet(ZmlpCreateMixin,
                 "isMatrixApplicable": True,
                 "datasetId": None}
 
-        # Set the ready/unapplied changes status
+        # Set the unapplied changes status
         state = model._data.get('state')
         if state in ('Trained', 'Deployed'):
             response_data['unappliedChanges'] = False
