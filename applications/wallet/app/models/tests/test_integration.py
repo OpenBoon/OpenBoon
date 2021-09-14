@@ -306,7 +306,7 @@ class TestModelViewSetActions:
                                                                            'moduleName': 'also-test',
                                                                            'datasetId': '12345',
                                                                            'ready': True,
-                                                                           'state': 'Ready'}))
+                                                                           'state': 'Deployed'}))
         model_id = 'b9c52abf-9914-1020-b9f0-0242ac12000a'
 
         # Get the confusion matrix data for a model.
@@ -356,7 +356,7 @@ class TestModelViewSetActions:
                             lambda self, pk: Model({'name': 'test',
                                                     'moduleName': 'also-test',
                                                     'ready': True,
-                                                    'state': 'Ready'}))
+                                                    'state': 'Deployed'}))
         model_id = 'b9c52abf-9914-1020-b9f0-0242ac12000a'
 
         # Try to get the confusion matrix data for a model that does not have a dataset
