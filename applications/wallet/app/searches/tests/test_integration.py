@@ -235,7 +235,7 @@ class TestFieldsAction:
                                                       'predictionCount',
                                                       'exists']
         assert content['media']['type'] == ['facet', 'exists', 'simpleSort']
-        assert content['labels']['313e28b1-9f0e-1595-a6c0-ea38f4c81474'] == ['label']
+        assert content['labels']['313e28b1-9f0e-1595-a6c0-ea38f4c81474'] == ['label', 'labelsExist']
         assert content['aux'] == ['exists']
         assert content['tmp'] == ['exists']
         assert get_patch.call_count == 1

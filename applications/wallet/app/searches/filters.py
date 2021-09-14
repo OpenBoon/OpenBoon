@@ -510,6 +510,73 @@ class SimilarityFilter(BaseFilter):
         return hashes
 
 
+class LabelsExistFilter(BaseFilter):
+
+    type = 'labelsExist'
+    required_agg_keys = ['datasetId']
+    required_query_keys = ['exists']
+
+    # No agg needed to load the UI for this filter
+
+    def get_es_query(self):
+        exists = self.data['values']['exists']
+
+        dataset_id = self.data['datasetId']
+        if exists:
+            query = {
+                "query": {
+                    "nested": {
+                        "path": "labels",
+                        "query": {
+                            "bool": {
+                                "filter": [
+                                    {"term": {"labels.datasetId": dataset_id}}]
+                            }
+                        }
+                    }
+                }
+            }
+        else:
+            query = {
+                'query': {
+                    'bool': {
+                        # Should says one of the following clauses needs to be met (like an OR)
+                        'should': [
+                            # Returns all docs with a missing "labels" nested property
+                            {
+                                'bool': {
+                                    'must_not': [
+                                        {
+                                            'nested': {
+                                                'path': 'labels',
+                                                'query': {
+                                                    'exists': {'field': 'labels'}
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
+                            # Returns all docs where there is a nested property that contains
+                            # an entry/doc with a matching dataset id
+                            {
+                                'nested': {
+                                    'path': 'labels',
+                                    'query': {
+                                        'bool': {
+                                            'must_not': [{"term": {"labels.datasetId": dataset_id}}]
+                                        }
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                }
+            }
+
+        return query
+
+
 class LabelFilter(BaseFilter):
 
     type = 'label'
