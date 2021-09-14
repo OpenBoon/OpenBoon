@@ -256,7 +256,7 @@ exports[`<SearchFilterSort /> should render properly with a sort filter selected
   cursor: pointer;
 }
 
-.emotion-18 {
+.emotion-23 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -288,22 +288,22 @@ exports[`<SearchFilterSort /> should render properly with a sort filter selected
   margin-left: 4px;
 }
 
-.emotion-18,
-.emotion-18:hover,
-.emotion-18:visited,
-.emotion-18 .noop {
+.emotion-23,
+.emotion-23:hover,
+.emotion-23:visited,
+.emotion-23 .noop {
   background-color: #808080;
 }
 
-.emotion-18:hover,
-.emotion-18 .noop {
+.emotion-23:hover,
+.emotion-23 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-18[aria-disabled=true],
-.emotion-18 .noop {
+.emotion-23[aria-disabled=true],
+.emotion-23 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -333,7 +333,7 @@ exports[`<SearchFilterSort /> should render properly with a sort filter selected
     </div>
     <ListboxInput
       className="emotion-5"
-      defaultValue="location.city"
+      defaultValue="_score"
       onChange={[Function]}
     >
       <ListboxButton
@@ -346,7 +346,7 @@ exports[`<SearchFilterSort /> should render properly with a sort filter selected
         className="emotion-6"
       >
         <span>
-          city
+          score
         </span>
       </ListboxButton>
       <ListboxPopover
@@ -373,6 +373,32 @@ exports[`<SearchFilterSort /> should render properly with a sort filter selected
             <ListboxList
               className="emotion-12"
             >
+              <ul
+                aria-labelledby="Search"
+                className="emotion-13"
+                role="group"
+              >
+                <li
+                  className="emotion-14"
+                  role="presentation"
+                >
+                  <span
+                    className="emotion-15"
+                  >
+                    Search
+                  </span>
+                  <ul
+                    className="emotion-16"
+                  >
+                    <ListboxOption
+                      className="emotion-17"
+                      value="_score"
+                    >
+                      score
+                    </ListboxOption>
+                  </ul>
+                </li>
+              </ul>
               <ul
                 aria-labelledby="Location"
                 className="emotion-13"
@@ -407,7 +433,7 @@ exports[`<SearchFilterSort /> should render properly with a sort filter selected
   </label>
   <button
     aria-label="Clear sort"
-    className="emotion-18"
+    className="emotion-23"
     onClick={[Function]}
     type="button"
   >
@@ -675,7 +701,7 @@ exports[`<SearchFilterSort /> should render properly without a sort filter selec
   cursor: pointer;
 }
 
-.emotion-18 {
+.emotion-23 {
   -webkit-flex: 0;
   -ms-flex: 0;
   flex: 0;
@@ -707,22 +733,22 @@ exports[`<SearchFilterSort /> should render properly without a sort filter selec
   margin-left: 4px;
 }
 
-.emotion-18,
-.emotion-18:hover,
-.emotion-18:visited,
-.emotion-18 .noop {
+.emotion-23,
+.emotion-23:hover,
+.emotion-23:visited,
+.emotion-23 .noop {
   background-color: #808080;
 }
 
-.emotion-18:hover,
-.emotion-18 .noop {
+.emotion-23:hover,
+.emotion-23 .noop {
   -webkit-text-decoration: none;
   text-decoration: none;
   background-color: #b3b3b3;
 }
 
-.emotion-18[aria-disabled=true],
-.emotion-18 .noop {
+.emotion-23[aria-disabled=true],
+.emotion-23 .noop {
   color: #2e2e2e;
   background-color: #808080;
 }
@@ -794,6 +820,32 @@ exports[`<SearchFilterSort /> should render properly without a sort filter selec
               className="emotion-12"
             >
               <ul
+                aria-labelledby="Search"
+                className="emotion-13"
+                role="group"
+              >
+                <li
+                  className="emotion-14"
+                  role="presentation"
+                >
+                  <span
+                    className="emotion-15"
+                  >
+                    Search
+                  </span>
+                  <ul
+                    className="emotion-16"
+                  >
+                    <ListboxOption
+                      className="emotion-17"
+                      value="_score"
+                    >
+                      score
+                    </ListboxOption>
+                  </ul>
+                </li>
+              </ul>
+              <ul
                 aria-labelledby="Location"
                 className="emotion-13"
                 role="group"
@@ -828,7 +880,7 @@ exports[`<SearchFilterSort /> should render properly without a sort filter selec
   <button
     aria-disabled={true}
     aria-label="Clear sort"
-    className="emotion-18"
+    className="emotion-23"
     onClick={[Function]}
     type="button"
   >
