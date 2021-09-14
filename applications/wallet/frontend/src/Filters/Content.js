@@ -12,6 +12,7 @@ import SearchFilter from '../SearchFilter'
 import Button, { VARIANTS } from '../Button'
 import FilterText from '../FilterText'
 import FilterExists from '../FilterExists'
+import FilterLabelsExist from '../FilterLabelsExist'
 import FilterFacet from '../FilterFacet'
 import FilterLabel from '../FilterLabel'
 import FilterRange from '../FilterRange'
@@ -112,6 +113,19 @@ const FiltersContent = ({
             case 'exists':
               return (
                 <FilterExists
+                  key={`${filter.type}-${index}`}
+                  pathname={pathname}
+                  projectId={projectId}
+                  assetId={assetId}
+                  filters={filters}
+                  filter={filter}
+                  filterIndex={index}
+                />
+              )
+
+            case 'labelsExist':
+              return (
+                <FilterLabelsExist
                   key={`${filter.type}-${index}`}
                   pathname={pathname}
                   projectId={projectId}
