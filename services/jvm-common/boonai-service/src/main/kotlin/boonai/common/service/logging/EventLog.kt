@@ -43,7 +43,9 @@ enum class LogAction {
     RESOLVE,
     DEPLOY,
     PUBLISH,
-    BUILD
+    BUILD,
+    START,
+    STOP
 }
 
 /**
@@ -74,7 +76,8 @@ enum class LogObject {
     MODEL,
     AUTOML,
     FIELD,
-    CLIP
+    CLIP,
+    PROCESS
 }
 
 /**
