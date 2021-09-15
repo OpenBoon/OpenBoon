@@ -1,29 +1,27 @@
 package boonai.archivist.service
 
-import com.google.common.cache.CacheBuilder
-import com.google.common.cache.CacheLoader
 import boonai.archivist.config.ApplicationProperties
+import boonai.archivist.domain.ArchivistException
+import boonai.archivist.domain.AsyncProcessSpec
+import boonai.archivist.domain.AsyncProcessType
+import boonai.archivist.domain.IndexRoute
+import boonai.archivist.domain.IndexRouteFilter
+import boonai.archivist.domain.IndexRouteSimpleSpec
+import boonai.archivist.domain.Pipeline
+import boonai.archivist.domain.PipelineMode
+import boonai.archivist.domain.PipelineSpec
 import boonai.archivist.domain.Project
-import boonai.archivist.domain.ProjectSpec
 import boonai.archivist.domain.ProjectFilter
+import boonai.archivist.domain.ProjectNameUpdate
 import boonai.archivist.domain.ProjectQuotaCounters
 import boonai.archivist.domain.ProjectQuotas
 import boonai.archivist.domain.ProjectQuotasTimeSeriesEntry
-import boonai.archivist.domain.ProjectNameUpdate
-import boonai.archivist.domain.ProjectTier
 import boonai.archivist.domain.ProjectSize
-import boonai.archivist.domain.IndexRoute
-import boonai.archivist.domain.IndexRouteSimpleSpec
-import boonai.archivist.domain.Pipeline
-import boonai.archivist.domain.PipelineSpec
-import boonai.archivist.domain.IndexRouteFilter
-import boonai.archivist.domain.ArchivistException
-import boonai.archivist.domain.PipelineMode
-import boonai.archivist.queue.publisher.IndexRoutingPublisher
-import boonai.archivist.queue.publisher.ProjectPublisher
+import boonai.archivist.domain.ProjectSpec
+import boonai.archivist.domain.ProjectTier
 import boonai.archivist.repository.KPagedList
-import boonai.archivist.repository.ProjectDao
 import boonai.archivist.repository.ProjectCustomDao
+import boonai.archivist.repository.ProjectDao
 import boonai.archivist.repository.ProjectDeleteDao
 import boonai.archivist.repository.ProjectQuotasDao
 import boonai.archivist.repository.UUIDGen
@@ -40,6 +38,8 @@ import boonai.common.service.logging.LogObject
 import boonai.common.service.logging.event
 import boonai.common.service.storage.SystemStorageService
 import boonai.common.util.Json
+import com.google.common.cache.CacheBuilder
+import com.google.common.cache.CacheLoader
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.EmptyResultDataAccessException
@@ -137,7 +137,7 @@ interface ProjectService {
     /**
      * Delete Project
      */
-    fun delete(project: Project)
+    fun delete(projectId: UUID)
 }
 
 @Service
@@ -150,10 +150,8 @@ class ProjectServiceImpl constructor(
     val systemStorageService: SystemStorageService,
     var projectStorageService: ProjectStorageService,
     val properties: ApplicationProperties,
-    val txEvent: TransactionEventManager,
     val projectDeleteDao: ProjectDeleteDao,
-    val projectPublisher: ProjectPublisher,
-    val indexRoutingPublisher: IndexRoutingPublisher
+    val asyncProcessService: AsyncProcessService
 ) : ProjectService {
 
     @Autowired
@@ -426,16 +424,30 @@ class ProjectServiceImpl constructor(
     }
 
     @Transactional
-    override fun delete(project: Project) {
+    override fun delete(projectId: UUID) {
 
-        logger.warn("Deleting Project ${project.id}")
-        indexRoutingService.closeAndDeleteProjectIndexes(project.id)
-        projectDeleteDao.deleteProjectRelatedObjects(project.id)
+        logger.warn("Deleting Project $projectId")
+        indexRoutingService.closeAndDeleteProjectIndexes(projectId)
+        projectDeleteDao.deleteProjectRelatedObjects(projectId)
 
-        // Publishing to Redis Queue
-        projectPublisher.deleteApiKey(project.id)
-        projectPublisher.deleteStorage(project.id)
-        projectPublisher.deleteSystemStorage(project.id)
+        // Async Process
+        asyncProcessService.createAsyncProcesses(
+            AsyncProcessSpec(
+                projectId,
+                "Deleting Project - Api Key",
+                AsyncProcessType.DELETE_API_KEY
+            ),
+            AsyncProcessSpec(
+                projectId,
+                "Deleting Project - Storage",
+                AsyncProcessType.DELETE_PROJECT_STORAGE
+            ),
+            AsyncProcessSpec(
+                projectId,
+                "Deleting Project - System Storage",
+                AsyncProcessType.DELETE_SYSTEM_STORAGE
+            )
+        )
     }
 
     // This gets called alot so hold onto the values for a while.

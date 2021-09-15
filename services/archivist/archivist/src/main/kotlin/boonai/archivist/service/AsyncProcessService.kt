@@ -10,6 +10,7 @@ import boonai.archivist.repository.UUIDGen
 import boonai.archivist.security.InternalThreadAuthentication
 import boonai.archivist.security.getZmlpActor
 import boonai.archivist.security.withAuth
+import boonai.common.apikey.AuthServerClient
 import boonai.common.service.logging.LogAction
 import boonai.common.service.logging.LogObject
 import boonai.common.service.logging.event
@@ -32,6 +33,7 @@ import kotlin.random.Random
  */
 interface AsyncProcessService {
     fun createAsyncProcess(spec: AsyncProcessSpec): AsyncProcess
+    fun createAsyncProcesses(vararg spec: AsyncProcessSpec)
 }
 
 @Configuration
@@ -75,6 +77,12 @@ class AsyncProcessServiceImpl(val asyncProcessDao: AsyncProcessDao) : AsyncProce
         return proc
     }
 
+    override fun createAsyncProcesses(vararg spec: AsyncProcessSpec) {
+        spec.forEach {
+            createAsyncProcess(it)
+        }
+    }
+
     companion object {
         private val logger = LoggerFactory.getLogger(AsyncProcessService::class.java)
     }
@@ -84,6 +92,9 @@ class AsyncProcessServiceImpl(val asyncProcessDao: AsyncProcessDao) : AsyncProce
 class AsyncProcessHandler(
     val asyncProcessDao: AsyncProcessDao,
     val asyncProcessJdbcDao: AsyncProcessJdbcDao,
+    val indexRoutingService: IndexRoutingService,
+    val projectService: ProjectService,
+    val authServerClient: AuthServerClient,
     val config: AsyncProcessConfiguration
 ) : AbstractScheduledService(), ApplicationListener<ContextRefreshedEvent> {
 
@@ -133,10 +144,19 @@ class AsyncProcessHandler(
             withAuth(InternalThreadAuthentication(proc.projectId, setOf())) {
                 when (proc.type) {
                     AsyncProcessType.DELETE_PROJECT_STORAGE -> {
-                        // call something
+                        projectService.delete(proc.projectId)
                     }
+
                     AsyncProcessType.DELETE_PROJECT_INDEXES -> {
-                        // call something
+                        indexRoutingService.closeAndDeleteProjectIndexes(proc.projectId)
+                    }
+
+                    AsyncProcessType.DELETE_SYSTEM_STORAGE -> {
+                        projectService.deleteProjectSystemStorage(proc.projectId)
+                    }
+
+                    AsyncProcessType.DELETE_API_KEY -> {
+                        authServerClient.deleteProjectApiKeys(proc.projectId)
                     }
                 }
             }

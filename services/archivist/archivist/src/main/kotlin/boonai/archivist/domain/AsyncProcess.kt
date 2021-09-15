@@ -10,7 +10,9 @@ import javax.persistence.Table
 
 enum class AsyncProcessType {
     DELETE_PROJECT_STORAGE,
-    DELETE_PROJECT_INDEXES
+    DELETE_PROJECT_INDEXES,
+    DELETE_SYSTEM_STORAGE,
+    DELETE_API_KEY
 }
 
 enum class AsyncProcessState {

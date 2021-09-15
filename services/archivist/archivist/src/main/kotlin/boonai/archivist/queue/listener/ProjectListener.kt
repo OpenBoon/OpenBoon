@@ -30,10 +30,8 @@ class ProjectListener(
 
     private fun delete(content: String) {
         try {
-            val projectId = UUID.fromString(content)
-            val project = projectService.get(projectId)
-            projectService.delete(project)
-            logger.debug("Deleting project $projectId")
+            projectService.delete(UUID.fromString(content))
+            logger.debug("Deleting project $content")
         } catch (ex: IllegalArgumentException) {
             logger.error("Bad content format")
         }
