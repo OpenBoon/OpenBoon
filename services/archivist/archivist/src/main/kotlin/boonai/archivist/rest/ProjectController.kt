@@ -60,7 +60,8 @@ class ProjectController constructor(
     @DeleteMapping(value = ["/api/v1/projects/{id}"])
     @ApiOperation("Delete Project.")
     fun delete(@PathVariable id: UUID) {
-        return projectService.delete(projectService.get(id))
+        val project = projectService.get(id)
+        return projectService.delete(project.id)
     }
 
     @PreAuthorize("hasAuthority('SystemManage')")
