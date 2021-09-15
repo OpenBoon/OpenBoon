@@ -68,13 +68,13 @@ class AsyncProcessDaoTests : AbstractTest() {
     fun updateRefreshTime() {
         val spec = AsyncProcessSpec(UUID.randomUUID(), "Delete some stuff", AsyncProcessType.DELETE_PROJECT_STORAGE)
         val proc = asyncProcessService.createAsyncProcess(spec)
-        entityManager.flush()
+        println(proc.timeRefresh)
 
-        Thread.sleep(200)
-        assertTrue(asyncProcessJdbcDao.updateRefreshTime(proc.id))
+        val time = System.currentTimeMillis()
+        assertEquals(asyncProcessDao.updateRefreshTime(time, proc.id), 1)
         entityManager.clear()
 
         val proc2 = asyncProcessDao.getOne(proc.id)
-        assertTrue(proc2.timeRefresh > proc.timeRefresh)
+        assertEquals(time, proc2.timeRefresh)
     }
 }

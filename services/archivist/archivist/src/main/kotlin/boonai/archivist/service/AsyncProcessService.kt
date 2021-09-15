@@ -161,7 +161,7 @@ class AsyncProcessHandler(
 
     fun runWatchDog() {
         for (id in running) {
-            if (!asyncProcessJdbcDao.updateRefreshTime(id)) {
+            if (asyncProcessDao.updateRefreshTime(System.currentTimeMillis(), id) != 1) {
                 logger.warn("The AsyncProc $id was in the running list but not in the DB")
             }
         }
