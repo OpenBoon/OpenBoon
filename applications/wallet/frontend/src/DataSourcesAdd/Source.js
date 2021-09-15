@@ -1,9 +1,12 @@
 import PropTypes from 'prop-types'
 
-import { spacing } from '../Styles'
+import { spacing, constants } from '../Styles'
 
 import Input, { VARIANTS as INPUT_VARIANTS } from '../Input'
 import Select, { VARIANTS as SELECT_VARIANTS } from '../Select'
+import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
+
+import RunbookSvg from '../Icons/runbook.svg'
 
 export const SOURCES = {
   AWS: {
@@ -57,32 +60,52 @@ const DataSourcesAddSource = ({
 
   return (
     <div css={{ paddingTop: spacing.base }}>
-      <Select
-        label="Source Type"
-        options={options}
-        onChange={({ value }) => {
-          const requiredCredentials = SOURCES[value].credentials.reduce(
-            (acc, cred) => {
-              const { key, isRequired } = cred
-              acc[key] = { value: '', isRequired }
-              return acc
-            },
-            {},
-          )
+      <div css={{ display: 'flex', alignItems: 'center' }}>
+        <Select
+          label="Source Type"
+          options={options}
+          onChange={({ value }) => {
+            const requiredCredentials = SOURCES[value].credentials.reduce(
+              (acc, cred) => {
+                const { key, isRequired } = cred
+                acc[key] = { value: '', isRequired }
+                return acc
+              },
+              {},
+            )
 
-          return dispatch({
-            source: value,
-            uri: SOURCES[value].uri,
-            credentials: {
-              ...credentials,
-              [value]: { ...requiredCredentials },
-            },
-            errors: { ...stateErrors, uri: '' },
-          })
-        }}
-        variant={SELECT_VARIANTS.COLUMN}
-        isRequired
-      />
+            return dispatch({
+              source: value,
+              uri: SOURCES[value].uri,
+              credentials: {
+                ...credentials,
+                [value]: { ...requiredCredentials },
+              },
+              errors: { ...stateErrors, uri: '' },
+            })
+          }}
+          variant={SELECT_VARIANTS.COLUMN}
+          isRequired
+        />
+
+        <Button
+          href="https://docs.boonai.app/boon-ai-runbooks/creating-data-sources/creating-data-sources"
+          target="_blank"
+          variant={BUTTON_VARIANTS.ICON}
+          css={{
+            marginTop: spacing.normal + spacing.mini,
+            marginLeft: spacing.normal,
+          }}
+        >
+          <div css={{ display: 'flex', alignItems: 'center' }}>
+            <RunbookSvg
+              height={constants.icons.regular}
+              css={{ paddingRight: spacing.base }}
+            />
+            See Runbook
+          </div>
+        </Button>
+      </div>
       &nbsp;
       {source && (
         <>

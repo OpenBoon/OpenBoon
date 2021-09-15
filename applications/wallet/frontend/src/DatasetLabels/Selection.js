@@ -102,6 +102,8 @@ const DatasetLabelsSelection = ({
           isRequired={false}
           variant={SELECT_VARIANTS.ROW}
         />
+
+        <div css={{ width: spacing.normal }} />
       </div>
 
       <div

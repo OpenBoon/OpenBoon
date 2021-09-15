@@ -29,6 +29,7 @@ import boonai.archivist.domain.ProjectStorageEntity
 import boonai.archivist.domain.ProjectStorageSpec
 import boonai.archivist.domain.ReprocessAssetSearchRequest
 import boonai.archivist.domain.StandardContainers
+import boonai.archivist.repository.DatasetJdbcDao
 import boonai.archivist.repository.KPagedList
 import boonai.archivist.repository.ModelDao
 import boonai.archivist.repository.ModelJdbcDao
@@ -36,11 +37,13 @@ import boonai.archivist.repository.PipelineModDao
 import boonai.archivist.repository.UUIDGen
 import boonai.archivist.security.getProjectId
 import boonai.archivist.security.getZmlpActor
+import boonai.archivist.security.getZmlpActorOrNull
 import boonai.archivist.storage.ProjectStorageService
 import boonai.archivist.util.FileUtils
 import boonai.common.service.logging.LogAction
 import boonai.common.service.logging.LogObject
 import boonai.common.service.logging.event
+import boonai.common.util.Json
 import com.google.pubsub.v1.PubsubMessage
 import org.slf4j.LoggerFactory
 import org.springframework.core.env.Environment
@@ -68,6 +71,7 @@ interface ModelService {
     fun updateModel(id: UUID, update: ModelUpdateRequest): Model
     fun patchModel(id: UUID, update: ModelPatchRequestV2): Model
     fun postToModelEventTopic(msg: PubsubMessage)
+    fun checkModelPublishArgs(model: Model, req: ModelPublishRequest): Boolean
 }
 
 @Service
@@ -85,7 +89,8 @@ class ModelServiceImpl(
     val argValidationService: ArgValidationService,
     val datasetService: DatasetService,
     val environment: Environment,
-    val publisherService: PublisherService
+    val publisherService: PublisherService,
+    val datasetJdbcDao: DatasetJdbcDao
 ) : ModelService {
 
     val topic = "model-events"
@@ -108,6 +113,7 @@ class ModelServiceImpl(
         validateModelName(spec.name)
         spec.datasetId?.let {
             validateDatasetType(it, spec.type)
+            datasetJdbcDao.incrementModelCount(it)
         }
 
         argValidationService.validateArgsUnknownOnly("training/${spec.type.name}", spec.trainingArgs)
@@ -132,7 +138,7 @@ class ModelServiceImpl(
             false,
             spec.applySearch, // VALIDATE THIS PARSES.
             spec.trainingArgs,
-            spec.dependsOn.minus(spec.name),
+            (spec.dependencies ?: emptyList()).minus(spec.name),
             time,
             time,
             actor.toString(),
@@ -148,7 +154,7 @@ class ModelServiceImpl(
             )
         )
 
-        return modelDao.saveAndFlush(model)
+        return modelDao.save(model)
     }
 
     override fun updateModel(id: UUID, update: ModelUpdateRequest): Model {
@@ -160,18 +166,20 @@ class ModelServiceImpl(
         if (update.name != model.name) {
             validateModelName(update.name)
         }
+        updateDatasetsModelCount(model.datasetId, update.datasetId)
 
         model.name = update.name
         model.datasetId = update.datasetId
         model.dependencies = update.dependencies
         model.timeModified = System.currentTimeMillis()
         model.actorModified = getZmlpActor().toString()
-
-        val mod = pipelineModDao.findByNameIn(listOf(model.name))
-        if (mod.isNotEmpty()) {
-            publishModel(model, ModelPublishRequest())
-        }
-
+        logger.event(
+            LogObject.MODEL, LogAction.UPDATE,
+            mapOf(
+                "modelId" to id,
+                "modelType" to model.type.name
+            )
+        )
         return model
     }
 
@@ -182,6 +190,7 @@ class ModelServiceImpl(
             update.datasetId?.let {
                 validateDatasetType(it, model.type)
             }
+            updateDatasetsModelCount(model.datasetId, update.datasetId)
             model.datasetId = update.datasetId
         }
 
@@ -199,10 +208,13 @@ class ModelServiceImpl(
         model.timeModified = System.currentTimeMillis()
         model.actorModified = getZmlpActor().toString()
 
-        val mod = pipelineModDao.findByNameIn(listOf(model.name))
-        if (mod.isNotEmpty()) {
-            publishModel(model, ModelPublishRequest())
-        }
+        logger.event(
+            LogObject.MODEL, LogAction.UPDATE,
+            mapOf(
+                "modelId" to id,
+                "modelType" to model.type.name
+            )
+        )
 
         return model
     }
@@ -342,12 +354,13 @@ class ModelServiceImpl(
     }
 
     override fun publishModel(model: Model, req: ModelPublishRequest): PipelineMod {
+
         val mod = pipelineModService.findByName(model.moduleName, false)
         val version = versionUp(model)
         val ops = buildModuleOps(model, req, version)
 
         logger.event(
-            LogObject.MODEL, LogAction.DEPLOY,
+            LogObject.MODEL, LogAction.PUBLISH,
             mapOf("modelId" to model.id, "modelName" to model.name)
         )
 
@@ -381,6 +394,17 @@ class ModelServiceImpl(
         }
     }
 
+    override fun checkModelPublishArgs(model: Model, req: ModelPublishRequest): Boolean {
+        val keys = req.args.keys
+        for (arg in model.type.requiredArgs) {
+            if (arg !in keys) {
+                logger.warn("The model ${model.name} pub request is missing the required arg: '$arg'")
+                return false
+            }
+        }
+        return true
+    }
+
     override fun copyModelTag(model: Model, req: ModelCopyRequest) {
         val modelStorage = ProjectDirLocator(ProjectStorageEntity.MODELS, model.id.toString()).getPath()
         var srcTagPath = "$modelStorage/${req.srcTag}"
@@ -398,6 +422,7 @@ class ModelServiceImpl(
     }
 
     override fun patchTrainingArgs(model: Model, patch: Map<String, Any>) {
+        argValidationService.validateArgs("training/${model.type.name}", patch)
         val args = Asset(model.trainingArgs.toMutableMap())
         for ((k, v) in patch) {
             args.setAttr(k, v)
@@ -416,6 +441,9 @@ class ModelServiceImpl(
         )
 
         modelJdbcDao.delete(model)
+        model.datasetId?.let {
+            datasetJdbcDao.decrementModelCount(it)
+        }
 
         pipelineModService.findByName(model.moduleName, false)?.let {
             pipelineModService.delete(it.id)
@@ -451,6 +479,11 @@ class ModelServiceImpl(
             ops.addAll(mod?.ops ?: emptyList())
         }
          */
+
+        val user = getZmlpActorOrNull() ?: "Unknown"
+        logger.info("$user is building module ops  for ' ${model.name} / ${model.id}")
+        logger.info("Processor: ${model.name} / ${model.id}")
+        logger.info("Args: ${Json.prettyString(req.args)}")
 
         // Add the dependency before.
         if (model.type.dependencies.isNotEmpty()) {
@@ -534,6 +567,13 @@ class ModelServiceImpl(
                     "Model names cannot start with a reserved prefix."
                 )
             }
+        }
+    }
+
+    private fun updateDatasetsModelCount(oldDatasetId: UUID?, newDatasetId: UUID?) {
+        if (oldDatasetId != newDatasetId) {
+            oldDatasetId?.let { datasetJdbcDao.decrementModelCount(it) }
+            newDatasetId?.let { datasetJdbcDao.incrementModelCount(it) }
         }
     }
 

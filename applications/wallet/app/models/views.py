@@ -53,7 +53,7 @@ def item_modifier(request, item):
     # Remove ready and convert state to unappliedChanges
     del(item['ready'])
     state = item['state']
-    if state in ('Trained', 'Ready'):
+    if state in ('Trained', 'Deployed'):
         item['unappliedChanges'] = False
     else:
         item['unappliedChanges'] = True
@@ -145,6 +145,18 @@ class ModelViewSet(ZmlpCreateMixin,
         job = app.models.train_model(model, post_action=post_train_action)
         return Response(status=status.HTTP_200_OK, data=job._data)
 
+    @action(methods=['post'], detail=True)
+    def test(self, request, project_pk, pk):
+        """Tests a model.
+
+        Returns:
+            (Response): Returns a 200 response if the testing job is launched successfully.
+        """
+        app = request.app
+        model = self._get_model(app, pk)
+        job = app.models.test_model(model)
+        return Response(status=status.HTTP_200_OK, data=job._data)
+
     @action(methods=['get'], detail=True)
     def confusion_matrix(self, request, project_pk, pk):
         """Returns data required to construct a confusion matrix for the model.
@@ -178,9 +190,9 @@ class ModelViewSet(ZmlpCreateMixin,
                 "isMatrixApplicable": True,
                 "datasetId": None}
 
-        # Set the ready/unapplied changes status
+        # Set the unapplied changes status
         state = model._data.get('state')
-        if state in ('Trained', 'Ready'):
+        if state in ('Trained', 'Deployed'):
             response_data['unappliedChanges'] = False
         else:
             response_data['unappliedChanges'] = True

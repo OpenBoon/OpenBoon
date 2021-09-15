@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
-import { useRouter } from 'next/router'
 import useSWR from 'swr'
 import Link from 'next/link'
 
@@ -12,28 +11,21 @@ import ItemList from '../Item/List'
 import ItemSeparator from '../Item/Separator'
 import Menu from '../Menu'
 import Button, { VARIANTS as BUTTON_VARIANTS } from '../Button'
-import SectionTitle from '../SectionTitle'
-import ModelUpload from '../ModelUpload'
 
 import KebabSvg from '../Icons/kebab.svg'
 
 import ModelDeleteModal from './DeleteModal'
-import ModelTrain from './Train'
-import ModelsEdit from '../ModelsEdit'
-
-const REQUIRES_UPLOAD = 'RequiresUpload'
+import ModelDetailsStates from './DetailsStates'
 
 const ModelDetails = ({ projectId, model }) => {
   const [error, setError] = useState('')
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false)
 
-  const { pathname } = useRouter()
-
   const {
     data: { results: modelTypes },
   } = useSWR(`/api/v1/projects/${projectId}/models/model_types/`)
 
-  const { name, type, description, runningJobId, state } = model
+  const { name, type, description, runningJobId } = model
 
   const { label } = modelTypes.find(({ name: n }) => n === type) || {
     label: type,
@@ -144,20 +136,12 @@ const ModelDetails = ({ projectId, model }) => {
 
       <ItemSeparator />
 
-      {/* eslint-disable-next-line no-nested-ternary */}
-      {pathname === '/[projectId]/models/[modelId]/edit' ? (
-        <ModelsEdit projectId={projectId} model={model} />
-      ) : state === REQUIRES_UPLOAD ? (
-        <div>
-          <SectionTitle>Upload {label} File</SectionTitle>
-
-          <div css={{ height: spacing.normal }} />
-
-          <ModelUpload />
-        </div>
-      ) : (
-        <ModelTrain projectId={projectId} model={model} setError={setError} />
-      )}
+      <ModelDetailsStates
+        projectId={projectId}
+        model={model}
+        modelTypes={modelTypes}
+        setError={setError}
+      />
     </div>
   )
 }

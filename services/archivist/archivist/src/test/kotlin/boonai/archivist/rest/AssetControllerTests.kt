@@ -5,6 +5,7 @@ import boonai.archivist.domain.AssetSpec
 import boonai.archivist.domain.AssetState
 import boonai.archivist.domain.BatchCreateAssetsRequest
 import boonai.archivist.domain.BatchDeleteAssetsRequest
+import boonai.archivist.domain.BatchLabelBySearchRequest
 import boonai.archivist.domain.DatasetSpec
 import boonai.archivist.domain.DatasetType
 import boonai.archivist.domain.FieldSpec
@@ -164,6 +165,40 @@ class AssetControllerTests : MockMvcTest() {
         authenticate()
         val asset = getSample(1)[0]
         assertEquals("ABCD1234", asset.getAttr("labels", Label.LIST_OF)?.get(0)?.simhash)
+    }
+
+    @Test
+    fun testBatchLabelBySearch() {
+        val ds = datasetService.createDataset(DatasetSpec("test", DatasetType.Classification))
+        val spec = AssetSpec("https://i.imgur.com/SSN26nN.jpg")
+        assetService.batchCreate(BatchCreateAssetsRequest(listOf(spec), state = AssetState.Analyzed))
+
+        val req = BatchLabelBySearchRequest(
+            search = mapOf("match_all" to emptyMap<String, Any>()),
+            ds.id,
+            "cat",
+            0.2
+        )
+        refreshElastic()
+
+        mvc.perform(
+            MockMvcRequestBuilders.put("/api/v3/assets/_batch_label_by_search")
+                .headers(admin())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Json.serialize(req))
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.total", CoreMatchers.equalTo(1)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.train", CoreMatchers.equalTo(1)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.test", CoreMatchers.equalTo(0)))
+            .andReturn()
+
+        Thread.sleep(2000)
+        refreshElastic()
+
+        authenticate()
+        val asset = getSample(1)[0]
+        assertEquals("cat", asset.getAttr("labels", Label.LIST_OF)?.get(0)?.label)
     }
 
     @Test

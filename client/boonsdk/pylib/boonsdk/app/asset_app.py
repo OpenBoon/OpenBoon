@@ -1,10 +1,11 @@
+import datetime
 import os
 from collections import namedtuple
 
 import requests
 from deprecation import deprecated
 
-from ..entity import Asset, StoredFile, FileUpload, FileTypes, Job, VideoClip
+from ..entity import Asset, StoredFile, FileUpload, FileTypes, Job, VideoClip, CsvFileImport
 from ..filters import apply_search_filters
 from ..search import AssetSearchResult, AssetSearchScroller, SimilarityQuery, SearchScroller
 from ..util import as_collection, as_id_collection, as_id
@@ -16,7 +17,7 @@ class AssetApp:
     def __init__(self, app):
         self.app = app
 
-    def batch_import_files(self, files, modules=None):
+    def batch_import_files(self, files, modules=None, job_name=None):
         """
         Import a list of FileImport instances.
 
@@ -29,9 +30,36 @@ class AssetApp:
         """
         body = {
             'assets': as_collection(files),
-            'modules': modules
+            'modules': modules,
+            'jobName': job_name
         }
         return self.app.client.post('/api/v3/assets/_batch_create', body)
+
+    def import_csv(self, csvfile, modules=None, job_name=None):
+        """
+        Import files list in a CSV file.
+
+        Args:
+            csvfile (CsvFileImport): A CsvFileImport to describe the file.
+            modules (list): The list of modules to apply.
+            job_name (str): A job name to import the CSV, will default to a generated name.
+        Returns:
+            dict: The last response from the batch import operation.
+        """
+        if not isinstance(csvfile, CsvFileImport):
+            raise ValueError("The csvfile argument must be an instance of CsvFileImport")
+        if not job_name:
+            job_name = 'CSV import of "{}" at {}'.format(
+                os.path.basename(csvfile.path), datetime.datetime.now())
+
+        results = {'errors': 0, 'created': 0, 'exists': 0}
+        for batch in csvfile:
+            result = self.batch_import_files(batch, modules=modules, job_name=job_name)
+            results['errors'] += len(result.get('failed', []))
+            results['created'] += len(result.get('created', []))
+            results['exists'] += len(result.get('exists', []))
+            results['jobId'] = result.get('jobId')
+        return results
 
     def analyze_file(self, iostream, modules):
         """
@@ -60,6 +88,7 @@ class AssetApp:
         Args:
             files (list of FileUpload):
             modules (list): A list of Pipeline Modules to apply to the data.
+            job_name (str): The job name for the batch.
 
         Returns:
             dict: A dictionary containing failed files and created asset ids.
@@ -227,6 +256,33 @@ class AssetApp:
         }
         rsp = self.app.client.post('/api/v3/assets/_search/reprocess', body)
         return ReprocessSearchResponse(rsp['assetCount'], Job(rsp['job']))
+
+    def label_search(self, search, dataset, label, max_assets=10000, test_ratio=0.0):
+        """
+        Label up to 10000 assets in a given search.
+
+        Args:
+            search (dict): An ElasticSearch search.
+            dataset (Dataset): The Dataset to add the assets to.
+            max_assets (int): The maximum # of assets to label.
+            test_ratio (float): A number between 0-1 that defines the percentage of assets
+                to label as test vs train.  For example a value of .2 would ensure at least
+                20% of the assets would be labeled as test assets.
+
+        Returns:
+            dict: A dict with counts for total, test, train, and duplicates.
+        """
+        if test_ratio < 0.0 or test_ratio > 1.0:
+            raise ValueError('The test_ratio must be between 0 ad 1')
+
+        body = {
+            'search': search,
+            'datasetId': as_id(dataset),
+            'label': label,
+            'maxAssets': max_assets,
+            'testRatio': test_ratio
+        }
+        return self.app.client.put('/api/v3/assets/_batch_label_by_search', body)
 
     def scroll_search_clips(self, asset, search=None, timeout="1m"):
         """
@@ -504,6 +560,23 @@ class AssetApp:
             'index': index
         }
         return Asset(self.app.client.post('/ml/v1/modules/apply-to-asset', body))
+
+    def set_languages(self, asset, languages):
+        """
+        Set the languages for the Asset.  This property is for various types
+        of processing where knowing the language is important for accurate metadata.
+        Setting multiple languages is ok.  If no language is set, BoonAI will try
+        to auto-detect it from the media.
+
+        Args:
+            asset (Asset): The Asset or the asset's unique ID.
+            languages (list): A list of BCP-47 language codes. (ex: en-US)
+        Returns:
+            dict: A update status dict.
+        """
+        asset_id = as_id(asset)
+        body = as_collection(languages)
+        return self.app.client.put(f'/api/v3/assets/{asset_id}/_set_languages', body)
 
 
 """

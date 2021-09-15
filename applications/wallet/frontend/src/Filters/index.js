@@ -29,13 +29,15 @@ const Filters = () => {
       />
     </SuspenseBoundary>
   ) : (
-    <FiltersContent
-      pathname={pathname}
-      projectId={projectId}
-      assetId={assetId}
-      filters={filters}
-      setIsMenuOpen={setIsMenuOpen}
-    />
+    <SuspenseBoundary key={assetId}>
+      <FiltersContent
+        pathname={pathname}
+        projectId={projectId}
+        assetId={assetId}
+        filters={filters}
+        setIsMenuOpen={setIsMenuOpen}
+      />
+    </SuspenseBoundary>
   )
 }
 

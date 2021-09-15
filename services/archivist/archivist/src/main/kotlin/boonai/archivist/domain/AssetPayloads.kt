@@ -8,7 +8,7 @@ import org.springframework.web.multipart.MultipartFile
 import java.util.UUID
 
 @ApiModel("TrainingSetQuery", description = "A simple query for a training set.")
-class TrainingSetQuery(
+class DataSetQuery(
     @ApiModelProperty("The Dataset Id")
     val datasetId: UUID,
     @ApiModelProperty("LabelScopes to filer by.")
@@ -59,7 +59,7 @@ class BatchUploadAssetsRequest(
     @ApiModelProperty("A list of available credentials for the analysis job.")
     val credentials: Set<String>? = null,
 
-    @ApiModelProperty("Name of job to process uploadss")
+    @ApiModelProperty("Name of job to process uploads")
     val jobName: String? = null
 
 ) {
@@ -88,13 +88,16 @@ class BatchCreateAssetsRequest(
     @ApiModelProperty("A list of available credentials for the analysis job.")
     val credentials: Set<String>? = null,
 
+    @ApiModelProperty("The Job name request should be added to.")
+    val jobName: String? = null,
+
     @JsonIgnore
     @ApiModelProperty("The taskId that is creating the assets via expand.", hidden = true)
     val task: InternalTask? = null,
 
     @JsonIgnore
     @ApiModelProperty("The initial state of the asset", hidden = true)
-    val state: AssetState = AssetState.Pending
+    var state: AssetState = AssetState.Pending
 
 )
 
@@ -196,6 +199,34 @@ class UpdateAssetLabelsRequestV4(
 )
 
 @ApiModel(
+    "BatchLabelBySearchRequest",
+    description = "Label a batch of Assets using a search."
+)
+class BatchLabelBySearchRequest(
+    @ApiModelProperty("The search used o find the assets to label")
+    val search: Map<String, Any>,
+    @ApiModelProperty("The Label to apply")
+    val datasetId: UUID,
+    @ApiModelProperty("The Label to apply")
+    val label: String,
+    @ApiModelProperty("The ratio of assets to label as TEST vs Train")
+    var testRatio: Double,
+    @ApiModelProperty("The maximum number of Assets to label")
+    var maxAssets: Int = 10000,
+)
+
+class BatchLabelBySearchResponse(
+    @ApiModelProperty("The total # of assets labeled")
+    val total: Int,
+    @ApiModelProperty("The total # of assets labeled for training")
+    val train: Int,
+    @ApiModelProperty("The total # of assets labeled for testing")
+    val test: Int,
+    @ApiModelProperty("Duplicate labels")
+    val duplicates: Int
+)
+
+@ApiModel(
     "BatchDeleteAssetsRequest",
     description = "Response for batch deleting of assets."
 )
@@ -244,8 +275,6 @@ class BatchIndexResponse(
     @ApiModelProperty("A list of failures")
     val failed: List<BatchIndexFailure>,
 
-    @ApiModelProperty("Transient deletion status")
-    val transient: List<String>
 )
 
 @ApiModel(

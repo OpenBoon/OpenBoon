@@ -1,0 +1,1826 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BulkAssetLabeling should render properly 1`] = `
+Array [
+  .emotion-0 {
+  padding: 8px;
+  padding-left: 16px;
+  border-bottom: 1px solid #3b3b3b;
+  color: #e0e0e0;
+}
+
+<div
+    className="emotion-0"
+  >
+    All Assets in Search
+  </div>,
+  .emotion-0 {
+  padding: 16px;
+  border-bottom: 1px solid #3b3b3b;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+  font-weight: 700;
+}
+
+.emotion-2 {
+  color: #6088FE;
+}
+
+.emotion-3 {
+  height: 8px;
+}
+
+.emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-end;
+  -webkit-box-align: flex-end;
+  -ms-flex-align: flex-end;
+  align-items: flex-end;
+}
+
+.emotion-4 label {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.emotion-5 {
+  color: #b3b3b3;
+}
+
+.emotion-6 {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.emotion-7 {
+  background-color: #3b3b3b;
+  border-radius: 2px;
+  border: none;
+  width: 100%;
+  color: #ffffff;
+  font-size: 15px;
+  line-height: 20px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  padding-left: 12px;
+  padding-right: 32px;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgPHBhdGggZD0iTTE0LjI0MyA3LjU4NkwxMCAxMS44MjggNS43NTcgNy41ODYgNC4zNDMgOSAxMCAxNC42NTcgMTUuNjU3IDlsLTEuNDE0LTEuNDE0eiIgZmlsbD0iI2ZmZmZmZiIgLz4KPC9zdmc+');
+  background-repeat: no-repeat,repeat;
+  -webkit-background-position: right 8px top 50%;
+  background-position: right 8px top 50%;
+  -webkit-background-size: 20px;
+  background-size: 20px;
+}
+
+.emotion-8 {
+  padding-bottom: 8px;
+}
+
+.emotion-9 {
+  position: relative;
+  height: 100%;
+}
+
+.emotion-10 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 8px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: not-allowed;
+  color: #808080;
+  background-color: transparent;
+  margin-bottom: 4px;
+  margin-right: -12px;
+}
+
+.emotion-10:hover,
+.emotion-10.focus-visible:focus,
+.emotion-10 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.emotion-10:hover svg,
+.emotion-10.focus-visible:focus svg,
+.emotion-10 .noop svg {
+  opacity: 1;
+}
+
+.emotion-10[aria-disabled=true],
+.emotion-10 .noop {
+  color: #808080;
+}
+
+<div
+    className="emotion-0"
+  >
+    <div
+      className="emotion-1"
+    >
+      <div>
+        Select a dataset
+      </div>
+      <div>
+        <a
+          className="emotion-2"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/datasets/add"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          + New Data Set
+        </a>
+      </div>
+    </div>
+    <div
+      className="emotion-3"
+    />
+    <div
+      className="emotion-4"
+    >
+      <label
+        className="emotion-5"
+      >
+        Dataset:
+        <div
+          className="emotion-6"
+        >
+          <select
+            className="emotion-7"
+            defaultValue=""
+            disabled={false}
+            onChange={[Function]}
+          >
+            <option
+              disabled={true}
+              value=""
+            >
+              Select an option...
+            </option>
+            <option
+              value="111d0534-7736-135f-8a62-d29da837913f"
+            >
+              faces
+            </option>
+            <option
+              value="4b0b10a8-cec1-155c-b12f-ee2bc8787e06"
+            >
+              cats
+            </option>
+            <option
+              value="1c237c5c-8b64-11eb-882c-a6e78dab3824"
+            >
+              pets
+            </option>
+            <option
+              value="4b0b10a9-cec1-155c-b12f-ee2bc8787e06"
+            >
+              mystery
+            </option>
+          </select>
+        </div>
+      </label>
+      <div
+        className="emotion-8"
+      >
+        <div
+          className="emotion-9"
+        >
+          <button
+            aria-disabled={true}
+            aria-label="Toggle Actions Menu"
+            className="emotion-10"
+            onBlur={[Function]}
+            onClick={[Function]}
+            type="button"
+          >
+            <svg
+              data-file-name="kebab.svg"
+              height={20}
+            />
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>,
+  .emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 470px;
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+  width: 100%;
+  padding: 0;
+  overflow: hidden;
+}
+
+.emotion-1 {
+  padding: 16px;
+  color: #ffffff;
+  font-style: italic;
+  border-bottom: 1px solid #3b3b3b;
+}
+
+.emotion-2 {
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.emotion-3 button,
+.emotion-3 a {
+  margin-right: 16px;
+}
+
+.emotion-3 button:last-child,
+.emotion-3 a:last-child {
+  margin-right: 0;
+}
+
+.emotion-4 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-4,
+.emotion-4:hover,
+.emotion-4:visited,
+.emotion-4 .noop {
+  background-color: #808080;
+}
+
+.emotion-4:hover,
+.emotion-4 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #b3b3b3;
+}
+
+.emotion-4[aria-disabled=true],
+.emotion-4 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-5 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: not-allowed;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-5,
+.emotion-5:hover,
+.emotion-5:visited,
+.emotion-5 .noop {
+  background-color: #3A5DFF;
+}
+
+.emotion-5:hover,
+.emotion-5 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #6088FE;
+}
+
+.emotion-5[aria-disabled=true],
+.emotion-5 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+<form
+    action=""
+    className="emotion-0"
+    method="post"
+    onSubmit={[Function]}
+  >
+    <div
+      className="emotion-1"
+    >
+      Select a dataset to start labeling assets.
+    </div>
+    <div
+      className="emotion-2"
+    >
+      <div
+        className="emotion-3"
+      >
+        <button
+          className="emotion-4"
+          onClick={[Function]}
+          type="button"
+        >
+          Cancel
+        </button>
+        <button
+          aria-disabled={true}
+          className="emotion-5"
+          onClick={[Function]}
+          type="submit"
+        >
+          Save
+        </button>
+      </div>
+    </div>
+  </form>,
+]
+`;
+
+exports[`BulkAssetLabeling should render properly 2`] = `
+Array [
+  .emotion-0 {
+  padding: 8px;
+  padding-left: 16px;
+  border-bottom: 1px solid #3b3b3b;
+  color: #e0e0e0;
+}
+
+<div
+    className="emotion-0"
+  >
+    All Assets in Search
+  </div>,
+  .emotion-0 {
+  padding: 16px;
+  border-bottom: 1px solid #3b3b3b;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+  font-weight: 700;
+}
+
+.emotion-2 {
+  color: #6088FE;
+}
+
+.emotion-3 {
+  height: 8px;
+}
+
+.emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-end;
+  -webkit-box-align: flex-end;
+  -ms-flex-align: flex-end;
+  align-items: flex-end;
+}
+
+.emotion-4 label {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.emotion-5 {
+  color: #b3b3b3;
+}
+
+.emotion-6 {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.emotion-7 {
+  background-color: #3b3b3b;
+  border-radius: 2px;
+  border: none;
+  width: 100%;
+  color: #ffffff;
+  font-size: 15px;
+  line-height: 20px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  padding-left: 12px;
+  padding-right: 32px;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgPHBhdGggZD0iTTE0LjI0MyA3LjU4NkwxMCAxMS44MjggNS43NTcgNy41ODYgNC4zNDMgOSAxMCAxNC42NTcgMTUuNjU3IDlsLTEuNDE0LTEuNDE0eiIgZmlsbD0iI2ZmZmZmZiIgLz4KPC9zdmc+');
+  background-repeat: no-repeat,repeat;
+  -webkit-background-position: right 8px top 50%;
+  background-position: right 8px top 50%;
+  -webkit-background-size: 20px;
+  background-size: 20px;
+}
+
+.emotion-8 {
+  padding-bottom: 8px;
+}
+
+.emotion-9 {
+  position: relative;
+  height: 100%;
+}
+
+.emotion-10 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 8px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #808080;
+  background-color: transparent;
+  margin-bottom: 4px;
+  margin-right: -12px;
+}
+
+.emotion-10:hover,
+.emotion-10.focus-visible:focus,
+.emotion-10 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.emotion-10:hover svg,
+.emotion-10.focus-visible:focus svg,
+.emotion-10 .noop svg {
+  opacity: 1;
+}
+
+.emotion-10[aria-disabled=true],
+.emotion-10 .noop {
+  color: #808080;
+}
+
+<div
+    className="emotion-0"
+  >
+    <div
+      className="emotion-1"
+    >
+      <div>
+        Select a dataset
+      </div>
+      <div>
+        <a
+          className="emotion-2"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/datasets/add"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          + New Data Set
+        </a>
+      </div>
+    </div>
+    <div
+      className="emotion-3"
+    />
+    <div
+      className="emotion-4"
+    >
+      <label
+        className="emotion-5"
+      >
+        Dataset:
+        <div
+          className="emotion-6"
+        >
+          <select
+            className="emotion-7"
+            defaultValue="111d0534-7736-135f-8a62-d29da837913f"
+            disabled={false}
+            onChange={[Function]}
+          >
+            <option
+              disabled={true}
+              value=""
+            >
+              Select an option...
+            </option>
+            <option
+              value="111d0534-7736-135f-8a62-d29da837913f"
+            >
+              faces
+            </option>
+            <option
+              value="4b0b10a8-cec1-155c-b12f-ee2bc8787e06"
+            >
+              cats
+            </option>
+            <option
+              value="1c237c5c-8b64-11eb-882c-a6e78dab3824"
+            >
+              pets
+            </option>
+            <option
+              value="4b0b10a9-cec1-155c-b12f-ee2bc8787e06"
+            >
+              mystery
+            </option>
+          </select>
+        </div>
+      </label>
+      <div
+        className="emotion-8"
+      >
+        <div
+          className="emotion-9"
+        >
+          <button
+            aria-label="Toggle Actions Menu"
+            className="emotion-10"
+            onBlur={[Function]}
+            onClick={[Function]}
+            type="button"
+          >
+            <svg
+              data-file-name="kebab.svg"
+              height={20}
+            />
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>,
+  .emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 470px;
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+  width: 100%;
+  padding: 0;
+  overflow: hidden;
+}
+
+.emotion-1 {
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.emotion-2 button,
+.emotion-2 a {
+  margin-right: 16px;
+}
+
+.emotion-2 button:last-child,
+.emotion-2 a:last-child {
+  margin-right: 0;
+}
+
+.emotion-3 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-3,
+.emotion-3:hover,
+.emotion-3:visited,
+.emotion-3 .noop {
+  background-color: #808080;
+}
+
+.emotion-3:hover,
+.emotion-3 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #b3b3b3;
+}
+
+.emotion-3[aria-disabled=true],
+.emotion-3 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-4 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: not-allowed;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-4,
+.emotion-4:hover,
+.emotion-4:visited,
+.emotion-4 .noop {
+  background-color: #3A5DFF;
+}
+
+.emotion-4:hover,
+.emotion-4 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #6088FE;
+}
+
+.emotion-4[aria-disabled=true],
+.emotion-4 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+<form
+    action=""
+    className="emotion-0"
+    method="post"
+    onSubmit={[Function]}
+  >
+    <BulkAssetLabelingForm
+      datasetType="FaceRecognition"
+      dispatch={[Function]}
+      projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+      state={
+        Object {
+          "datasetId": "111d0534-7736-135f-8a62-d29da837913f",
+          "errors": Object {},
+          "isLoading": false,
+          "labels": Object {},
+          "lastLabel": "",
+          "lastScope": "TRAIN",
+          "trainPct": 50,
+        }
+      }
+    />
+    <div
+      className="emotion-1"
+    >
+      <div
+        className="emotion-2"
+      >
+        <button
+          className="emotion-3"
+          onClick={[Function]}
+          type="button"
+        >
+          Cancel
+        </button>
+        <button
+          aria-disabled={true}
+          className="emotion-4"
+          onClick={[Function]}
+          type="submit"
+        >
+          Save
+        </button>
+      </div>
+    </div>
+  </form>,
+]
+`;
+
+exports[`BulkAssetLabeling should render properly 3`] = `
+Array [
+  .emotion-0 {
+  padding: 8px;
+  padding-left: 16px;
+  border-bottom: 1px solid #3b3b3b;
+  color: #e0e0e0;
+}
+
+<div
+    className="emotion-0"
+  >
+    All Assets in Search
+  </div>,
+  .emotion-0 {
+  padding: 16px;
+  border-bottom: 1px solid #3b3b3b;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+  font-weight: 700;
+}
+
+.emotion-2 {
+  color: #6088FE;
+}
+
+.emotion-3 {
+  height: 8px;
+}
+
+.emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-end;
+  -webkit-box-align: flex-end;
+  -ms-flex-align: flex-end;
+  align-items: flex-end;
+}
+
+.emotion-4 label {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.emotion-5 {
+  color: #b3b3b3;
+}
+
+.emotion-6 {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.emotion-7 {
+  background-color: #3b3b3b;
+  border-radius: 2px;
+  border: none;
+  width: 100%;
+  color: #ffffff;
+  font-size: 15px;
+  line-height: 20px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  padding-left: 12px;
+  padding-right: 32px;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgPHBhdGggZD0iTTE0LjI0MyA3LjU4NkwxMCAxMS44MjggNS43NTcgNy41ODYgNC4zNDMgOSAxMCAxNC42NTcgMTUuNjU3IDlsLTEuNDE0LTEuNDE0eiIgZmlsbD0iI2ZmZmZmZiIgLz4KPC9zdmc+');
+  background-repeat: no-repeat,repeat;
+  -webkit-background-position: right 8px top 50%;
+  background-position: right 8px top 50%;
+  -webkit-background-size: 20px;
+  background-size: 20px;
+}
+
+.emotion-8 {
+  padding-bottom: 8px;
+}
+
+.emotion-9 {
+  position: relative;
+  height: 100%;
+}
+
+.emotion-10 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 8px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #808080;
+  background-color: transparent;
+  margin-bottom: 4px;
+  margin-right: -12px;
+}
+
+.emotion-10:hover,
+.emotion-10.focus-visible:focus,
+.emotion-10 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.emotion-10:hover svg,
+.emotion-10.focus-visible:focus svg,
+.emotion-10 .noop svg {
+  opacity: 1;
+}
+
+.emotion-10[aria-disabled=true],
+.emotion-10 .noop {
+  color: #808080;
+}
+
+<div
+    className="emotion-0"
+  >
+    <div
+      className="emotion-1"
+    >
+      <div>
+        Select a dataset
+      </div>
+      <div>
+        <a
+          className="emotion-2"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/datasets/add"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          + New Data Set
+        </a>
+      </div>
+    </div>
+    <div
+      className="emotion-3"
+    />
+    <div
+      className="emotion-4"
+    >
+      <label
+        className="emotion-5"
+      >
+        Dataset:
+        <div
+          className="emotion-6"
+        >
+          <select
+            className="emotion-7"
+            defaultValue="111d0534-7736-135f-8a62-d29da837913f"
+            disabled={false}
+            onChange={[Function]}
+          >
+            <option
+              disabled={true}
+              value=""
+            >
+              Select an option...
+            </option>
+            <option
+              value="111d0534-7736-135f-8a62-d29da837913f"
+            >
+              faces
+            </option>
+            <option
+              value="4b0b10a8-cec1-155c-b12f-ee2bc8787e06"
+            >
+              cats
+            </option>
+            <option
+              value="1c237c5c-8b64-11eb-882c-a6e78dab3824"
+            >
+              pets
+            </option>
+            <option
+              value="4b0b10a9-cec1-155c-b12f-ee2bc8787e06"
+            >
+              mystery
+            </option>
+          </select>
+        </div>
+      </label>
+      <div
+        className="emotion-8"
+      >
+        <div
+          className="emotion-9"
+        >
+          <button
+            aria-label="Toggle Actions Menu"
+            className="emotion-10"
+            onBlur={[Function]}
+            onClick={[Function]}
+            type="button"
+          >
+            <svg
+              data-file-name="kebab.svg"
+              height={20}
+            />
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>,
+  .emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 470px;
+  padding: 16px;
+  padding-left: 0;
+  padding-right: 0;
+  width: 100%;
+  padding: 0;
+  overflow: hidden;
+}
+
+.emotion-1 {
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.emotion-2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.emotion-2 button,
+.emotion-2 a {
+  margin-right: 16px;
+}
+
+.emotion-2 button:last-child,
+.emotion-2 a:last-child {
+  margin-right: 0;
+}
+
+.emotion-3 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: not-allowed;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-3,
+.emotion-3:hover,
+.emotion-3:visited,
+.emotion-3 .noop {
+  background-color: #808080;
+}
+
+.emotion-3:hover,
+.emotion-3 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #b3b3b3;
+}
+
+.emotion-3[aria-disabled=true],
+.emotion-3 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-4 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-4,
+.emotion-4:hover,
+.emotion-4:visited,
+.emotion-4 .noop {
+  background-color: #3A5DFF;
+}
+
+.emotion-4:hover,
+.emotion-4 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #6088FE;
+}
+
+.emotion-4[aria-disabled=true],
+.emotion-4 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 480px;
+  border-radius: 2px;
+  overflow: hidden;
+  box-shadow: 0 0 8px 5px rgba(0, 0, 0, 0.5);
+}
+
+.emotion-6 {
+  background-color: #191919;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 16px;
+  text-transform: uppercase;
+}
+
+.emotion-7 {
+  color: #b3b3b3;
+}
+
+.emotion-8 {
+  height: 100%;
+  background-color: #4a4a4a;
+  padding: 32px;
+}
+
+.emotion-9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  padding-top: 32px;
+}
+
+.emotion-10 button {
+  height: 40px;
+  padding: 0 32px;
+  border: none;
+  border-radius: 2px;
+}
+
+.emotion-11 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+  margin-right: 16px;
+}
+
+.emotion-11,
+.emotion-11:hover,
+.emotion-11:visited,
+.emotion-11 .noop {
+  background-color: #808080;
+}
+
+.emotion-11:hover,
+.emotion-11 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #b3b3b3;
+}
+
+.emotion-11[aria-disabled=true],
+.emotion-11 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+.emotion-12 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-12,
+.emotion-12:hover,
+.emotion-12:visited,
+.emotion-12 .noop {
+  background-color: #3A5DFF;
+}
+
+.emotion-12:hover,
+.emotion-12 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #6088FE;
+}
+
+.emotion-12[aria-disabled=true],
+.emotion-12 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
+}
+
+<form
+    action=""
+    className="emotion-0"
+    method="post"
+    onSubmit={[Function]}
+  >
+    <BulkAssetLabelingForm
+      datasetType="FaceRecognition"
+      dispatch={[Function]}
+      projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+      state={
+        Object {
+          "datasetId": "111d0534-7736-135f-8a62-d29da837913f",
+          "errors": Object {},
+          "isLoading": false,
+          "labels": Object {},
+          "lastLabel": "cat",
+          "lastScope": "TRAIN",
+          "trainPct": 50,
+        }
+      }
+    />
+    <div
+      className="emotion-1"
+    >
+      <div
+        className="emotion-2"
+      >
+        <button
+          aria-disabled={true}
+          className="emotion-3"
+          onClick={[Function]}
+          type="button"
+        >
+          Cancel
+        </button>
+        <button
+          className="emotion-4"
+          onClick={[Function]}
+          type="submit"
+        >
+          Save
+        </button>
+        <ReactAriaModal
+          getApplicationNode={[Function]}
+          onExit={[Function]}
+          titleId="Label All Assets in Search"
+          underlayColor="rgba(0, 0, 0, 0.75)"
+          verticallyCenter={true}
+        >
+          <div
+            className="emotion-5"
+          >
+            <header
+              className="emotion-6"
+            >
+              <div
+                className="emotion-7"
+              >
+                Label All Assets in Search
+              </div>
+              <div
+                aria-label="Close Modal"
+                onClick={[Function]}
+                onKeyDown={[Function]}
+                role="button"
+                tabIndex="-1"
+              >
+                <svg
+                  color="#ffffff"
+                  data-file-name="cross.svg"
+                  height={20}
+                />
+              </div>
+            </header>
+            <div
+              className="emotion-8"
+            >
+              <div
+                className="emotion-9"
+              >
+                Are you sure you want to label all 4 assets in the search?
+              </div>
+              <div
+                className="emotion-10"
+              >
+                <button
+                  className="emotion-11"
+                  onClick={[Function]}
+                  type="button"
+                >
+                  Cancel
+                </button>
+                <button
+                  className="emotion-12"
+                  onClick={[Function]}
+                  type="button"
+                >
+                  Label 4 Assets
+                </button>
+              </div>
+            </div>
+          </div>
+        </ReactAriaModal>
+      </div>
+    </div>
+  </form>,
+]
+`;
+
+exports[`BulkAssetLabeling should succeed properly 1`] = `
+Array [
+  .emotion-0 {
+  padding: 8px;
+  padding-left: 16px;
+  border-bottom: 1px solid #3b3b3b;
+  color: #e0e0e0;
+}
+
+<div
+    className="emotion-0"
+  >
+    All Assets in Search
+  </div>,
+  .emotion-0 {
+  padding: 16px;
+  border-bottom: 1px solid #3b3b3b;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+  font-weight: 700;
+}
+
+.emotion-2 {
+  color: #6088FE;
+}
+
+.emotion-3 {
+  height: 8px;
+}
+
+.emotion-4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-end;
+  -webkit-box-align: flex-end;
+  -ms-flex-align: flex-end;
+  align-items: flex-end;
+}
+
+.emotion-4 label {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.emotion-5 {
+  color: #b3b3b3;
+}
+
+.emotion-6 {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.emotion-7 {
+  background-color: #3b3b3b;
+  border-radius: 2px;
+  border: none;
+  width: 100%;
+  color: #ffffff;
+  font-size: 15px;
+  line-height: 20px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  padding-left: 12px;
+  padding-right: 32px;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMCAyMCI+CiAgPHBhdGggZD0iTTE0LjI0MyA3LjU4NkwxMCAxMS44MjggNS43NTcgNy41ODYgNC4zNDMgOSAxMCAxNC42NTcgMTUuNjU3IDlsLTEuNDE0LTEuNDE0eiIgZmlsbD0iI2ZmZmZmZiIgLz4KPC9zdmc+');
+  background-repeat: no-repeat,repeat;
+  -webkit-background-position: right 8px top 50%;
+  background-position: right 8px top 50%;
+  -webkit-background-size: 20px;
+  background-size: 20px;
+}
+
+.emotion-8 {
+  padding-bottom: 8px;
+}
+
+.emotion-9 {
+  position: relative;
+  height: 100%;
+}
+
+.emotion-10 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 8px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: not-allowed;
+  color: #808080;
+  background-color: transparent;
+  margin-bottom: 4px;
+  margin-right: -12px;
+}
+
+.emotion-10:hover,
+.emotion-10.focus-visible:focus,
+.emotion-10 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.emotion-10:hover svg,
+.emotion-10.focus-visible:focus svg,
+.emotion-10 .noop svg {
+  opacity: 1;
+}
+
+.emotion-10[aria-disabled=true],
+.emotion-10 .noop {
+  color: #808080;
+}
+
+<div
+    className="emotion-0"
+  >
+    <div
+      className="emotion-1"
+    >
+      <div>
+        Select a dataset
+      </div>
+      <div>
+        <a
+          className="emotion-2"
+          href="/76917058-b147-4556-987a-0a0f11e46d9b/datasets/add"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+        >
+          + New Data Set
+        </a>
+      </div>
+    </div>
+    <div
+      className="emotion-3"
+    />
+    <div
+      className="emotion-4"
+    >
+      <label
+        className="emotion-5"
+      >
+        Dataset:
+        <div
+          className="emotion-6"
+        >
+          <select
+            className="emotion-7"
+            defaultValue=""
+            disabled={false}
+            onChange={[Function]}
+          >
+            <option
+              disabled={true}
+              value=""
+            >
+              Select an option...
+            </option>
+            <option
+              value="111d0534-7736-135f-8a62-d29da837913f"
+            >
+              faces
+            </option>
+            <option
+              value="4b0b10a8-cec1-155c-b12f-ee2bc8787e06"
+            >
+              cats
+            </option>
+            <option
+              value="1c237c5c-8b64-11eb-882c-a6e78dab3824"
+            >
+              pets
+            </option>
+            <option
+              value="4b0b10a9-cec1-155c-b12f-ee2bc8787e06"
+            >
+              mystery
+            </option>
+          </select>
+        </div>
+      </label>
+      <div
+        className="emotion-8"
+      >
+        <div
+          className="emotion-9"
+        >
+          <button
+            aria-disabled={true}
+            aria-label="Toggle Actions Menu"
+            className="emotion-10"
+            onBlur={[Function]}
+            onClick={[Function]}
+            type="button"
+          >
+            <svg
+              data-file-name="kebab.svg"
+              height={20}
+            />
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>,
+  .emotion-0 {
+  padding: 16px;
+  background-color: #191919;
+  border-bottom: 1px solid #3b3b3b;
+}
+
+.emotion-1 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  background-color: #e3f7e8;
+  border-radius: 2px;
+  padding: 12px;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.emotion-2 {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  padding-left: 12px;
+  color: #191919;
+  font-weight: 500;
+  white-space: pre-line;
+}
+
+.emotion-2 a {
+  color: #191919;
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+  margin-left: 4px;
+}
+
+.emotion-2 a:hover {
+  color: #3A5DFF;
+}
+
+<div
+    className="emotion-0"
+  >
+    <div
+      className="emotion-1"
+    >
+      <svg
+        color="#009f22"
+        data-file-name="checkmark.svg"
+        height={20}
+      />
+      <div
+        className="emotion-2"
+        role="alert"
+      >
+        -1
+         assets labeled "
+        
+        ".
+      </div>
+    </div>
+  </div>,
+]
+`;

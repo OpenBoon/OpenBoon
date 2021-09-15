@@ -304,7 +304,8 @@ class ProcessorWrapper:
             if self.instance:
                 self.instance.preprocess(assets)
                 total_time = round(time.monotonic() - start_time, 2)
-                self.instance.logger.info("completed preprocess in {0:.2f}".format(total_time))
+                self.instance.logger.info(
+                    "completed {0} preprocess in {1:.2f}".format(self.class_name, total_time))
             else:
                 logger.warning(
                     "The processor {} has no instance, the class was not found".format(
@@ -386,7 +387,7 @@ class ProcessorWrapper:
         finally:
             # Always show metrics even if it was skipped because otherwise
             # the pipeline checksums don't work.
-            logger.info("completed processor in {0:.2f}".format(total_time))
+            self.instance.logger.info("completed processor in {0:.2f}".format(total_time))
             self.apply_metrics(frame.asset, processed, total_time, error)
             self.reactor.write_event("asset", {
                 "asset": frame.asset.for_json(),

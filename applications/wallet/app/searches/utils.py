@@ -8,7 +8,8 @@ from searches.schemas import (SimilarityAnalysisSchema, ContentAnalysisSchema,
                               LabelsAnalysisSchema, FIELD_TYPE_FILTER_MAPPING)
 from searches.filters import (ExistsFilter, FacetFilter, RangeFilter, LabelConfidenceFilter,
                               TextContentFilter, SimilarityFilter, LabelFilter, DateFilter,
-                              PredictionCountFilter)
+                              PredictionCountFilter, LimitFilter, SimpleSortFilter,
+                              LabelsExistFilter)
 
 
 ANALYSIS_SCHEMAS = [SimilarityAnalysisSchema, ContentAnalysisSchema, LabelsAnalysisSchema]
@@ -17,10 +18,15 @@ logger = logging.getLogger(__name__)
 
 class FieldUtility(object):
 
+    @property
+    def utility_fields(self):
+        return {'utility': {'Search Results Limit': ['limit']}}
+
     def get_filter_map(self, client=None):
         """Returns the list of fields and their valid filters."""
         field_types = self.get_field_type_map(client)
-        return self._get_child_filters_from_field_types(field_types)
+        fields = self._get_child_filters_from_field_types(field_types)
+        return self._add_utility_fields(fields)
 
     def _get_child_filters_from_field_types(self, field_types):
         """Recursive helper to parse the list of fields and convert fieldTypes to filters."""
@@ -125,6 +131,19 @@ class FieldUtility(object):
 
         raise ParseError(detail=['Attribute given is not a valid filterable or visualizable field.'])
 
+    def _add_utility_fields(self, fields):
+        """Adds any one-off utility fields to the field mapping so the UI can display them properly.
+
+        Args:
+            fields (dict): Current set of determined fields from the ES Field Mapping.
+
+        Returns:
+            (dict): All fields plus the additional utility fields.
+        """
+        for field in self.utility_fields:
+            fields[field] = self.utility_fields[field]
+        return fields
+
 
 class FilterBuddy(object):
 
@@ -136,7 +155,10 @@ class FilterBuddy(object):
                SimilarityFilter,
                LabelFilter,
                DateFilter,
-               PredictionCountFilter]
+               PredictionCountFilter,
+               LimitFilter,
+               SimpleSortFilter,
+               LabelsExistFilter]
 
     def get_filter_from_request(self, request):
         """Gets Filter object from a requests querystring.
@@ -233,11 +255,11 @@ class FilterBuddy(object):
 
         return Filter(raw_filter, request)
 
-    def reduce_filters_to_query(self, filters):
+    def reduce_filters_to_query(self, filters, request):
         """Takes a list of Filters and combines their separate queries into one."""
         query = {}
         for _filter in filters:
-            query = _filter.add_to_query(query)
+            query = _filter.add_to_query(query, request)
         return query
 
     def reduce_filters_to_clip_query(self, filters):
@@ -246,3 +268,28 @@ class FilterBuddy(object):
         for _filter in filters:
             query = _filter.add_to_clip_query(query)
         return query
+
+    def validate_filters(self, filters):
+        """Ensures every filter was valid, while also catching the Limit filter and
+        setting the max_assets value on the overall request object."""
+        for _filter in filters:
+            _filter.is_valid(query=True, raise_exception=True)
+
+    def finalize_query_from_filters_and_request(self, filters, request):
+        """Converts a list of filters and request into a usable query with updated request.
+
+        Validates given filters, builds an ES query from them, and updates the given request
+        with additional attributes for certain filters that affect it.
+
+        Args:
+            filters (list): Set of Filter objects to convert to a query
+            request (Request): Current request object to modify, if needed
+
+        Raises:
+            ValidationError: If any given filters are not properly configured
+
+        Returns:
+            (dict): The final ES query generated from the given filters
+        """
+        self.validate_filters(filters)
+        return self.reduce_filters_to_query(filters, request)

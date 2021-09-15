@@ -200,6 +200,11 @@ def get_video_metadata(src_path):
             result['height'] = stream.get('height')
             result['videoCodec'] = stream.get('codec_name')
 
+        elif stream.get('codec_type') == 'audio':
+            lang = stream.get('tags', {}).get("language")
+            if lang:
+                result['language'] = lang
+
     # Set the video duration.
     duration = props.get('format', {}).get('duration')
     if duration:

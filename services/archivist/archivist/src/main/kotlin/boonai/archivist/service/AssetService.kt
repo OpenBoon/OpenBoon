@@ -14,6 +14,8 @@ import boonai.archivist.domain.BatchCreateAssetsResponse
 import boonai.archivist.domain.BatchDeleteAssetResponse
 import boonai.archivist.domain.BatchIndexFailure
 import boonai.archivist.domain.BatchIndexResponse
+import boonai.archivist.domain.BatchLabelBySearchRequest
+import boonai.archivist.domain.BatchLabelBySearchResponse
 import boonai.archivist.domain.BatchUpdateCustomFieldsRequest
 import boonai.archivist.domain.BatchUpdateResponse
 import boonai.archivist.domain.BatchUploadAssetsRequest
@@ -22,6 +24,9 @@ import boonai.archivist.domain.FileExtResolver
 import boonai.archivist.domain.FileStorage
 import boonai.archivist.domain.InternalTask
 import boonai.archivist.domain.Job
+import boonai.archivist.domain.Label
+import boonai.archivist.domain.LabelResult
+import boonai.archivist.domain.LabelScope
 import boonai.archivist.domain.ProcessorRef
 import boonai.archivist.domain.ProjectDirLocator
 import boonai.archivist.domain.ProjectFileLocator
@@ -55,7 +60,11 @@ import com.google.pubsub.v1.PubsubMessage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import org.elasticsearch.ElasticsearchStatusException
 import org.elasticsearch.action.DocWriteRequest
+import org.elasticsearch.action.DocWriteResponse
+import org.elasticsearch.action.bulk.BackoffPolicy
+import org.elasticsearch.action.bulk.BulkProcessor
 import org.elasticsearch.action.bulk.BulkRequest
 import org.elasticsearch.action.bulk.BulkResponse
 import org.elasticsearch.action.support.WriteRequest
@@ -211,6 +220,12 @@ interface AssetService {
      */
     fun updateLabels(req: UpdateAssetLabelsRequest): BulkResponse
     fun updateLabelsV4(req: UpdateAssetLabelsRequestV4): BulkResponse
+    fun batchLabelAssetsBySearch(lreq: BatchLabelBySearchRequest, wait: Boolean = false): BatchLabelBySearchResponse
+
+    /**
+     * Manually set languages on an existing asset.
+     */
+    fun setLanguages(id: String, languages: List<String>?): Boolean
 }
 
 @Service
@@ -251,6 +266,9 @@ class AssetServiceImpl : AssetService {
 
     @Autowired
     lateinit var publisherService: PublisherService
+
+    @Autowired
+    lateinit var assetSearchService: AssetSearchService
 
     override fun getAsset(id: String): Asset {
         val rest = indexRoutingService.getProjectRestClient()
@@ -371,6 +389,27 @@ class AssetServiceImpl : AssetService {
         }
     }
 
+    override fun setLanguages(id: String, languages: List<String>?): Boolean {
+        validateLanguages(languages)
+        val rest = indexRoutingService.getProjectRestClient()
+        val req = rest.newUpdateRequest(id)
+
+        // Don't allow empty lists.
+        val langs = if (languages.isNullOrEmpty()) {
+            null
+        } else {
+            languages
+        }
+
+        req.doc(mapOf("media" to mapOf("languages" to langs)))
+        return try {
+            rest.client.update(req, RequestOptions.DEFAULT).result == DocWriteResponse.Result.UPDATED
+        } catch (e: ElasticsearchStatusException) {
+            logger.warn("Failed to update language for Asset ID: $id", e)
+            throw EmptyResultDataAccessException("The Asset $id was not found", 1)
+        }
+    }
+
     override fun batchUpload(req: BatchUploadAssetsRequest): BatchCreateAssetsResponse {
 
         val pipeline = if (req.analyze) {
@@ -435,7 +474,10 @@ class AssetServiceImpl : AssetService {
             asset
         }
 
-        return bulkIndexAndAnalyzePendingAssets(assets, existingAssetIds, pipeline, request.credentials, null)
+        return bulkIndexAndAnalyzePendingAssets(
+            assets,
+            existingAssetIds, pipeline, request.credentials, request.jobName
+        )
     }
 
     override fun update(assetId: String, req: UpdateAssetRequest): Response {
@@ -547,7 +589,6 @@ class AssetServiceImpl : AssetService {
         val stateChangedIds = mutableSetOf<String>()
         val failedAssets = mutableListOf<BatchIndexFailure>()
         val postTimelines = mutableMapOf<String, List<String>>()
-        val tempAssets = mutableListOf<String>()
         val assetMetrics = mutableMapOf<String, AssetMetricsEvent>()
 
         docs.forEach { (id, doc) ->
@@ -579,27 +620,18 @@ class AssetServiceImpl : AssetService {
                     postTimelines[id] = timelines
                 }
 
-                val tmpAsset = asset.getAttr("tmp.transient", Boolean::class.java) ?: false
-                if (tmpAsset) {
-                    tempAssets.add(id)
-                }
-
                 prepAssetForUpdate(asset)
                 if (setAnalyzed && !asset.isAnalyzed()) {
                     asset.setAttr("system.state", AssetState.Analyzed.name)
                     stateChangedIds.add(id)
                 }
 
-                if (tmpAsset) {
-                    bulk.add(rest.newDeleteRequest(id))
-                } else {
-                    bulk.add(
-                        rest.newIndexRequest(id)
-                            .create(id in notFound)
-                            .source(doc)
-                            .opType(DocWriteRequest.OpType.INDEX)
-                    )
-                }
+                bulk.add(
+                    rest.newIndexRequest(id)
+                        .create(id in notFound)
+                        .source(doc)
+                        .opType(DocWriteRequest.OpType.INDEX)
+                )
             } catch (ex: Exception) {
                 failedAssets.add(
                     BatchIndexFailure(id, asset.getAttr("source.path"), ex.message ?: "Unknown error")
@@ -664,27 +696,9 @@ class AssetServiceImpl : AssetService {
                 incrementProjectIngestCounters(stateChangedIds.intersect(indexedIds), docs)
             }
 
-            /**
-             logger.info("Post processing ${postTimelines.size} assets for deep video search.")
-             if (postTimelines.isNotEmpty() and properties.getBoolean("archivist.deep-video-analysis.enabled")) {
-             val jobId = getZmlpActor().getAttr("jobId")
-             if (jobId == null) {
-             logger.warn("There was post timelines to process but not jobId was found.")
-             } else {
-             logger.info("Launching deep video analysis on ${postTimelines.size} assets.")
-             jobLaunchService.addMultipleTimelineAnalysisTask(
-             UUID.fromString(jobId), postTimelines
-             )
-             }
-             }
-             **/
-
-            // Delete associated files with the transient assets.
-            deleteAssociatedFiles(tempAssets)
-
-            BatchIndexResponse(indexedIds, failedAssets, tempAssets)
+            BatchIndexResponse(indexedIds, failedAssets)
         } else {
-            BatchIndexResponse(emptyList(), failedAssets, emptyList())
+            BatchIndexResponse(emptyList(), failedAssets)
         }
     }
 
@@ -697,12 +711,6 @@ class AssetServiceImpl : AssetService {
             .build()
 
         publisherService.publish("metrics", msg)
-    }
-
-    private fun deleteTemporaryAssets(
-        indexedIds: Set<String>
-    ): BatchDeleteAssetResponse {
-        return batchDelete(indexedIds.toSet())
     }
 
     override fun batchDelete(ids: Set<String>): BatchDeleteAssetResponse {
@@ -1010,6 +1018,7 @@ class AssetServiceImpl : AssetService {
             asset.setAttr(k, v)
         }
 
+        // Set temp vars
         spec.tmp?.forEach { (k, v) ->
             val key = if (k.startsWith("tmp.")) {
                 k
@@ -1017,6 +1026,12 @@ class AssetServiceImpl : AssetService {
                 "tmp.$k"
             }
             asset.setAttr(key, v)
+        }
+
+        // Set language
+        spec.languages?.let {
+            validateLanguages(it)
+            asset.setAttr("media.languages", it)
         }
 
         val time = java.time.Clock.systemUTC().instant().toString()
@@ -1119,6 +1134,11 @@ class AssetServiceImpl : AssetService {
             // If there was an error, we'll reprocess.
             if (oldPipeline.any { e -> e.error != null }) {
                 logger.info("Reprocessing asset ${asset.id}, errors detected.")
+                return true
+            }
+
+            if (pipeline.any { m -> m.force }) {
+                logger.info("Reprocessing asset ${asset.id}, forced modules detected.")
                 return true
             }
 
@@ -1298,6 +1318,104 @@ class AssetServiceImpl : AssetService {
         return result
     }
 
+    override fun batchLabelAssetsBySearch(lreq: BatchLabelBySearchRequest, wait: Boolean): BatchLabelBySearchResponse {
+
+        if (lreq.maxAssets > 10000 || lreq.maxAssets < 1) {
+            throw IllegalArgumentException("Invalid maxAssets value, must be between 1 and 10000")
+        }
+
+        if (lreq.testRatio < 0 || lreq.testRatio > 1) {
+            throw IllegalArgumentException("Invalid testRatio, must be between 0 and 1")
+        }
+
+        val ds = datasetService.getDataset(lreq.datasetId)
+        val testLabel = Label(ds.id, lreq.label, LabelScope.TEST)
+        val trainLabel = Label(ds.id, lreq.label, LabelScope.TRAIN)
+        val rest = indexRoutingService.getProjectRestClient()
+
+        // Make sure not to touch the sort or else you'll end up
+        // tagging the wrong assets.
+        val req = rest.newSearchRequest()
+        req.source(assetSearchService.mapToSearchSourceBuilder(lreq.search))
+        req.scroll(TimeValue(60000))
+        req.source().size(100)
+        req.source().fetchSource("labels", null)
+
+        val listener: BulkProcessor.Listener = object : BulkProcessor.Listener {
+            override fun beforeBulk(executionId: Long, request: BulkRequest) {}
+            override fun afterBulk(
+                executionId: Long,
+                request: BulkRequest,
+                response: BulkResponse
+            ) {
+            }
+
+            override fun afterBulk(
+                executionId: Long,
+                request: BulkRequest,
+                failure: Throwable
+            ) {
+                logger.warn("Bulk labeling error ", failure)
+            }
+        }
+
+        val builder = BulkProcessor.builder(
+            { request, bulkListener -> rest.client.bulkAsync(request, RequestOptions.DEFAULT, bulkListener) },
+            listener
+        )
+
+        builder.setBulkActions(100)
+        builder.setConcurrentRequests(2)
+        builder.setBackoffPolicy(
+            BackoffPolicy
+                .constantBackoff(TimeValue.timeValueSeconds(1L), 3)
+        )
+        val bulk = builder.build()
+        val rsp = rest.client.search(req, RequestOptions.DEFAULT)
+
+        var testCount = 0
+        var totalCount = 0
+        var dupCount = 0
+
+        for (
+            asset in AssetIterator(
+                rest.client,
+                rsp, lreq.maxAssets.toLong()
+            )
+        ) {
+            val label = if (totalCount == 0) {
+                if (lreq.testRatio > .5) {
+                    testLabel
+                } else {
+                    trainLabel
+                }
+            } else if (lreq.testRatio >= 1.0 || testCount / totalCount.toDouble() < lreq.testRatio) {
+                testLabel
+            } else {
+                trainLabel
+            }
+
+            val labelRsp = asset.addLabel(label)
+            if (labelRsp == LabelResult.Duplicate) {
+                dupCount += 1
+            } else {
+                bulk.add(rest.newUpdateRequest(asset.id).doc(asset.document))
+                if (label.scope == LabelScope.TEST) {
+                    testCount += 1
+                }
+                totalCount += 1
+            }
+        }
+
+        if (wait) {
+            bulk.awaitClose(10, TimeUnit.SECONDS)
+        } else {
+            bulk.close()
+        }
+
+        return BatchLabelBySearchResponse(totalCount, totalCount - testCount, testCount, dupCount)
+    }
+
     /**
      * Increment the project counters for the given collection of asset ids.
      */
@@ -1309,12 +1427,20 @@ class AssetServiceImpl : AssetService {
         projectService.incrementQuotaCounters(counters)
     }
 
+    fun validateLanguages(langs: List<String>?) {
+        langs?.forEach {
+            if (!it.matches(Regex("^[a-z]{2}-[A-Z]{2}$"))) {
+                throw IllegalArgumentException("Invalid language code format: $it")
+            }
+        }
+    }
+
     /**
      * A cache to store parent assets so we don't load them over and over again.
      */
     private val parentAssetCache = CacheBuilder.newBuilder()
-        .maximumSize(50)
-        .initialCapacity(10)
+        .maximumSize(100)
+        .initialCapacity(20)
         .concurrencyLevel(4)
         .expireAfterWrite(5, TimeUnit.MINUTES)
         .build(object : CacheLoader<String, Asset>() {

@@ -184,6 +184,26 @@ class UpdateLabelRequest(
     val newLabel: String? = null
 )
 
+/**
+ * The response for when adding a label to an Asset.
+ */
+enum class LabelResult {
+    /**
+     * The label was created.
+     */
+    Created,
+
+    /**
+     * The label was updated.
+     */
+    Updated,
+
+    /**
+     * The label was a duplicate.
+     */
+    Duplicate
+}
+
 @ApiModel("Label", description = "A Label which denotes a ground truth classification.")
 class Label(
     @ApiModelProperty("The ID of the Model")

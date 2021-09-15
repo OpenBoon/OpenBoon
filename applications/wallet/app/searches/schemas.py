@@ -1,19 +1,20 @@
 from searches.filters import (RangeFilter, ExistsFilter, FacetFilter,
                               LabelConfidenceFilter, TextContentFilter,
                               SimilarityFilter, DateFilter, LabelFilter,
-                              PredictionCountFilter)
+                              PredictionCountFilter, SimpleSortFilter,
+                              LabelsExistFilter)
 
 # Applicable filter sets for an ES Field type
-NUMBER_FILTERS = [RangeFilter.type, ExistsFilter.type]
-KEYWORD_FILTERS = [FacetFilter.type, ExistsFilter.type]
+NUMBER_FILTERS = [RangeFilter.type, ExistsFilter.type, SimpleSortFilter.type]
+KEYWORD_FILTERS = [FacetFilter.type, ExistsFilter.type, SimpleSortFilter.type]
 SIMILARITY_FILTERS = [ExistsFilter.type, SimilarityFilter.type]
 BOOLEAN_FILTERS = [ExistsFilter.type]
 DEFAULT_FILTERS = [ExistsFilter.type]
-TEXT_FILTERS = [ExistsFilter.type]
+TEXT_FILTERS = [ExistsFilter.type, SimpleSortFilter.type]
 PREDICTION_FILTERS = [LabelConfidenceFilter.type, PredictionCountFilter.type, ExistsFilter.type]
 TEXT_CONTENT_FILTERS = [TextContentFilter.type, ExistsFilter.type]
-DATE_FILTERS = [ExistsFilter.type, DateFilter.type]
-LABEL_FILTERS = [LabelFilter.type]
+DATE_FILTERS = [ExistsFilter.type, DateFilter.type, SimpleSortFilter.type]
+LABEL_FILTERS = [LabelFilter.type, LabelsExistFilter.type]
 
 
 FIELD_TYPE_FILTER_MAPPING = {

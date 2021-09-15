@@ -1,5 +1,6 @@
 /* eslint-disable react/no-array-index-key */
 import PropTypes from 'prop-types'
+import useSWR from 'swr'
 
 import filterShape from '../Filter/shape'
 
@@ -11,12 +12,14 @@ import SearchFilter from '../SearchFilter'
 import Button, { VARIANTS } from '../Button'
 import FilterText from '../FilterText'
 import FilterExists from '../FilterExists'
+import FilterLabelsExist from '../FilterLabelsExist'
 import FilterFacet from '../FilterFacet'
 import FilterLabel from '../FilterLabel'
 import FilterRange from '../FilterRange'
 import FilterLabelConfidence from '../FilterLabelConfidence'
 import FilterSimilarity from '../FilterSimilarity'
 import FilterDateRange from '../FilterDateRange'
+import FilterLimit from '../FilterLimit'
 
 import { dispatch, ACTIONS } from './helpers'
 
@@ -32,6 +35,10 @@ const FiltersContent = ({
   setIsMenuOpen,
 }) => {
   const hasFilters = filters.length > 0
+
+  const { data: fields } = useSWR(
+    `/api/v1/projects/${projectId}/searches/fields/`,
+  )
 
   return (
     <>
@@ -96,6 +103,7 @@ const FiltersContent = ({
           projectId={projectId}
           assetId={assetId}
           filters={filters}
+          fields={fields}
         />
       </div>
 
@@ -105,6 +113,19 @@ const FiltersContent = ({
             case 'exists':
               return (
                 <FilterExists
+                  key={`${filter.type}-${index}`}
+                  pathname={pathname}
+                  projectId={projectId}
+                  assetId={assetId}
+                  filters={filters}
+                  filter={filter}
+                  filterIndex={index}
+                />
+              )
+
+            case 'labelsExist':
+              return (
+                <FilterLabelsExist
                   key={`${filter.type}-${index}`}
                   pathname={pathname}
                   projectId={projectId}
@@ -197,6 +218,19 @@ const FiltersContent = ({
             case 'date':
               return (
                 <FilterDateRange
+                  key={`${filter.type}-${index}`}
+                  pathname={pathname}
+                  projectId={projectId}
+                  assetId={assetId}
+                  filters={filters}
+                  filter={filter}
+                  filterIndex={index}
+                />
+              )
+
+            case 'limit':
+              return (
+                <FilterLimit
                   key={`${filter.type}-${index}`}
                   pathname={pathname}
                   projectId={projectId}

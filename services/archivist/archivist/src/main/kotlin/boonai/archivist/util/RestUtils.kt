@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest
 object RestUtils {
 
     fun updated(type: LogObject, id: Any): Map<String, Any> {
-        return mapOf("type" to type.toString().toLowerCase(), "id" to id, "op" to "update")
+        return mapOf("type" to type.toString().lowercase(), "id" to id, "op" to "update")
     }
 
     /**
@@ -22,9 +22,18 @@ object RestUtils {
      */
     fun batchUpdated(type: LogObject, op: String, updated: Int, errors: Int): MutableMap<String, Any> {
         return mutableMapOf(
-            "type" to type.toString().toLowerCase(),
+            "type" to type.toString().lowercase(),
             "op" to op,
             "updated" to updated,
+            "errors" to errors
+        )
+    }
+
+    fun batchSubmitted(type: LogObject, op: String, updated: Int, errors: Int): MutableMap<String, Any> {
+        return mutableMapOf(
+            "type" to type.toString().lowercase(),
+            "op" to op,
+            "submitted" to updated,
             "errors" to errors
         )
     }

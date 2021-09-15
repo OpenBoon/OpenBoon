@@ -13,11 +13,12 @@ from datasets.serializers import (DatasetSerializer, RemoveLabelsSerializer,
                                   AddLabelsSerializer,
                                   UpdateLabelsSerializer, DestroyLabelSerializer,
                                   RenameLabelSerializer, DatasetDetailSerializer,
-                                  DatasetTypeSerializer)
+                                  DatasetTypeSerializer, AddLabelsBySearchSerializer)
 from models.serializers import SimpleModelSerializer
 from projects.viewsets import (BaseProjectViewSet, ZmlpListMixin, ZmlpCreateMixin,
                                ZmlpDestroyMixin, ZmlpRetrieveMixin, ListViewType,
                                ZmlpUpdateMixin)
+from searches.utils import FilterBuddy
 from wallet.exceptions import InvalidRequestError
 from wallet.utils import validate_zmlp_data
 
@@ -117,6 +118,46 @@ class DatasetsViewSet(ZmlpCreateMixin,
             return Response(status=status.HTTP_400_BAD_REQUEST, data={'detail': [msg]})
 
         return Response(status=status.HTTP_201_CREATED, data={})
+
+    @action(methods=['put'], detail=True)
+    def add_labels_by_search_filters(self, request, project_pk, pk):
+        """Create labels for each asset returned by the specified search, on this dataset.
+
+        Expected Body:
+
+            {
+                "filters": [<list of JSON filters>],
+                "label": "Label Name",
+                "testRatio": 0.70
+            }
+        """
+        boon_endpoint = '/api/v3/assets/_batch_label_by_search'
+        serializer = AddLabelsBySearchSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        data = serializer.validated_data
+
+        # Get the search
+        raw_search_json = data['filters']
+        filter_buddy = FilterBuddy()
+        # Get filters from the JSON
+        _filters = []
+        for raw_filter in raw_search_json:
+            _filters.append(filter_buddy.get_filter_from_json(raw_filter, request))
+        # Get final query and update the request if necessary
+        query = filter_buddy.finalize_query_from_filters_and_request(_filters, request)
+
+        # Send batch label request to Boon
+        request_body = {
+            'search': query,
+            'datasetId': pk,
+            'label': data['label'],
+            'testRatio': data['testRatio']
+        }
+        # Include the max assets if it exists
+        if hasattr(request, 'max_assets'):
+            request_body['maxAssets'] = int(request.max_assets)
+        response = request.client.put(boon_endpoint, request_body)
+        return Response(status=status.HTTP_200_OK, data=response)
 
     @action(methods=['post'], detail=True)
     def update_labels(self, request, project_pk, pk):
@@ -313,13 +354,16 @@ class DatasetsViewSet(ZmlpCreateMixin,
         labels = []
         for raw in data:
             asset = app.assets.get_asset(raw['assetId'])
-            if raw['scope'] == 'TRAIN':
-                scope = LabelScope.TRAIN
-            elif raw['scope'] == 'TEST':
-                scope = LabelScope.TEST
-            else:
-                scope = None
+            scope = self._get_label_scope(raw['scope'])
             label = dataset.make_label(raw['label'], bbox=raw['bbox'],
                                        simhash=raw['simhash'], scope=scope)
             labels.append((asset, label))
         return labels
+
+    def _get_label_scope(self, raw_scope):
+        """Converts a scope string into the appropriate LabelScope enum."""
+        if raw_scope.upper() == 'TRAIN':
+            return LabelScope.TRAIN
+        elif raw_scope.upper() == 'TEST':
+            return LabelScope.TEST
+        return None

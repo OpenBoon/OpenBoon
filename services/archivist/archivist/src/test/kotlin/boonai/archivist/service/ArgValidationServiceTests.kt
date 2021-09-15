@@ -3,9 +3,9 @@ package boonai.archivist.service
 import boonai.archivist.AbstractTest
 import boonai.archivist.domain.ArgRequiredException
 import boonai.archivist.domain.ArgSchema
-import boonai.archivist.domain.Argument
 import boonai.archivist.domain.ArgTypeException
 import boonai.archivist.domain.ArgUnknownException
+import boonai.archivist.domain.Argument
 import boonai.archivist.domain.ArgumentType
 import boonai.common.util.Json
 import junit.framework.Assert.assertEquals
@@ -109,5 +109,39 @@ class ArgValidationServiceTests : AbstractTest() {
         val expecting =
             """{"n_clusters":4,"cat":{"hair":"blue","eyes":"brown"}}"""
         assertEquals(expecting, Json.serializeToString(args))
+    }
+
+    @Test
+    fun testLoadArgSchemaImageSegmenterList() {
+        val schema = argValidationService.getArgSchema("training/TORCH_MAR_IMAGE_SEGMENTER")
+        val args1 = mapOf(
+            "labels" to listOf("1" to "Person", "2" to "Animal"),
+            "colors" to listOf("Person" to "Black", "Animal" to "White")
+        )
+        val args = argValidationService.buildArgs(
+            schema,
+            args1
+        )
+        val expecting =
+            """{"labels":[
+                    {"first":"1","second":"Person"},
+                    {"first":"2","second":"Animal"}],
+                "colors":[
+                    {"first":"Person","second":"Black"},
+                    {"first":"Animal","second":"White"}]}
+            """.replace("\\s".toRegex(), "")
+
+        argValidationService.validateArgs(schema, args1)
+        assertEquals(expecting, Json.serializeToString(args))
+    }
+
+    @Test(expected = ArgTypeException::class)
+    fun testLoadArgSchemaImageSegmenterTypeString() {
+        val schema = argValidationService.getArgSchema("training/TORCH_MAR_IMAGE_SEGMENTER")
+        val args1 = mapOf(
+            "labels" to "Animal",
+            "colors" to "Black"
+        )
+        argValidationService.validateArgs(schema, args1)
     }
 }

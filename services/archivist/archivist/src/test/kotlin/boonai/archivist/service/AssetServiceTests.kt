@@ -4,7 +4,9 @@ import boonai.archivist.AbstractTest
 import boonai.archivist.domain.Asset
 import boonai.archivist.domain.AssetMetrics
 import boonai.archivist.domain.AssetSpec
+import boonai.archivist.domain.AssetState
 import boonai.archivist.domain.BatchCreateAssetsRequest
+import boonai.archivist.domain.BatchLabelBySearchRequest
 import boonai.archivist.domain.BatchUpdateCustomFieldsRequest
 import boonai.archivist.domain.BatchUploadAssetsRequest
 import boonai.archivist.domain.DatasetSpec
@@ -34,7 +36,6 @@ import boonai.archivist.util.FileUtils
 import boonai.common.util.Json
 import org.elasticsearch.client.ResponseException
 import org.junit.Test
-import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.DataRetrievalFailureException
 import org.springframework.dao.EmptyResultDataAccessException
@@ -620,34 +621,6 @@ class AssetServiceTests : AbstractTest() {
     }
 
     @Test
-    fun testBatchIndexAssetsWithTemporaryAssets() {
-        val batchCreate = BatchCreateAssetsRequest(
-            assets = listOf(
-                AssetSpec("gs://cats/large-brown-deleted-cat.jpg"),
-                AssetSpec("gs://cats/large-brown-not-deleted-cat.jpg")
-            )
-        )
-
-        val createRsp = assetService.batchCreate(batchCreate)
-
-        // Delete only the first
-        var assets = assetService.getAll(createRsp.created)
-        assets[0].setAttr("tmp.transient", true)
-
-        val batchIndex = assets.associate { it.id to it.document }
-        val indexRsp = assetService.batchIndex(batchIndex)
-
-        assertTrue(indexRsp.failed.isEmpty())
-        assertEquals(2, indexRsp.indexed.size)
-
-        assertNotNull(assetService.getAsset(createRsp.created[1]))
-        assertEquals(1, indexRsp.transient.size)
-        assertThrows<EmptyResultDataAccessException> {
-            assetService.getAsset(createRsp.created[0])
-        }
-    }
-
-    @Test
     fun testBatchIndexAssetsWithTempFields() {
         val batchCreate = BatchCreateAssetsRequest(
             assets = listOf(AssetSpec("gs://cats/large-brown-cat.jpg"))
@@ -791,8 +764,14 @@ class AssetServiceTests : AbstractTest() {
         // No processing, checksum match
         metrics = AssetMetrics(listOf(ProcessorMetric("foo.Bar", "bing", 281740160, null)))
         asset.setAttr("metrics", metrics)
-        val ref = ProcessorRef("foo.Bar", "core")
+        var ref = ProcessorRef("foo.Bar", "core")
         assertFalse(assetService.assetNeedsReprocessing(asset, listOf(ref)))
+
+        // processing, checksum match but forced!
+        metrics = AssetMetrics(listOf(ProcessorMetric("foo.Bar", "bing", 281740160, null)))
+        asset.setAttr("metrics", metrics)
+        ref = ProcessorRef("foo.Bar", "core").apply { force = true }
+        assertTrue(assetService.assetNeedsReprocessing(asset, listOf(ref)))
 
         // processing, checksum does not match
         metrics = AssetMetrics(listOf(ProcessorMetric("foo.Bar", "bing", 1, null)))
@@ -929,5 +908,150 @@ class AssetServiceTests : AbstractTest() {
         asset = assetService.getAsset(asset.id)
         labels = asset.getAttr("labels", Label.LIST_OF) ?: listOf()
         assert(labels.isNullOrEmpty())
+    }
+
+    @Test
+    fun testLabelAssetsBySearch() {
+        addTestAssets(getTestAssets("images"), analyzed = true)
+        val ds = datasetService.createDataset(DatasetSpec("test", DatasetType.Classification))
+
+        refreshElastic()
+
+        val search = mapOf(
+            "query" to mapOf("match_all" to emptyMap<String, Any>())
+        )
+        val req = BatchLabelBySearchRequest(search, ds.id, "cat", 0.2, 100)
+        var rsp = assetService.batchLabelAssetsBySearch(req, wait = true)
+        refreshElastic()
+
+        assertEquals(20, rsp.total)
+        assertEquals(4, rsp.test)
+        assertEquals(16, rsp.train)
+        assertEquals(0, rsp.duplicates)
+
+        rsp = assetService.batchLabelAssetsBySearch(req, wait = true)
+        assertEquals(0, rsp.total)
+        assertEquals(0, rsp.test)
+        assertEquals(0, rsp.train)
+        assertEquals(20, rsp.duplicates)
+    }
+
+    @Test
+    fun testLabelAssetsBySearchAllTrain() {
+        addTestAssets(getTestAssets("images"), analyzed = true)
+        val ds = datasetService.createDataset(DatasetSpec("test", DatasetType.Classification))
+
+        refreshElastic()
+
+        val search = mapOf(
+            "query" to mapOf("match_all" to emptyMap<String, Any>())
+        )
+        val req = BatchLabelBySearchRequest(search, ds.id, "cat", 0.0, 100)
+        var rsp = assetService.batchLabelAssetsBySearch(req)
+        refreshIndex(500)
+
+        assertEquals(20, rsp.total)
+        assertEquals(0, rsp.test)
+        assertEquals(20, rsp.train)
+        assertEquals(0, rsp.duplicates)
+    }
+
+    @Test
+    fun testLabelAssetsBySearchAllTest() {
+        addTestAssets(getTestAssets("images"), analyzed = true)
+        val ds = datasetService.createDataset(DatasetSpec("test", DatasetType.Classification))
+
+        refreshElastic()
+
+        val search = mapOf(
+            "query" to mapOf("match_all" to emptyMap<String, Any>())
+        )
+        val req = BatchLabelBySearchRequest(search, ds.id, "cat", 1.0, 100)
+        var rsp = assetService.batchLabelAssetsBySearch(req)
+        refreshIndex(500)
+
+        assertEquals(20, rsp.total)
+        assertEquals(20, rsp.test)
+        assertEquals(0, rsp.train)
+        assertEquals(0, rsp.duplicates)
+    }
+
+    @Test
+    fun testLabelAssetsBySearchMaxAssets() {
+        addTestAssets(getTestAssets("images"), analyzed = true)
+        val ds = datasetService.createDataset(DatasetSpec("test", DatasetType.Classification))
+
+        refreshElastic()
+
+        val search = mapOf(
+            "query" to mapOf("match_all" to emptyMap<String, Any>())
+        )
+        val req = BatchLabelBySearchRequest(search, ds.id, "cat", 0.0, 10)
+        var rsp = assetService.batchLabelAssetsBySearch(req)
+        refreshIndex(500)
+
+        assertEquals(10, rsp.total)
+        assertEquals(0, rsp.test)
+        assertEquals(10, rsp.train)
+        assertEquals(0, rsp.duplicates)
+    }
+
+    @Test
+    fun testSetLanguage() {
+        val batchCreate = BatchCreateAssetsRequest(
+            assets = listOf(
+                AssetSpec("gs://cats/large-brown-deleted-cat.jpg"),
+            ),
+            state = AssetState.Analyzed
+        )
+        assetService.batchCreate(batchCreate)
+        refreshElastic()
+
+        var asset = this.getSample(1)[0]
+        val rsp = assetService.setLanguages(asset.id, listOf("en-US"))
+        assertTrue(rsp)
+
+        refreshElastic()
+        asset = assetService.getAsset(asset.id)
+        assertEquals(listOf("en-US"), (asset.getAttr("media.languages")))
+    }
+
+    @Test(expected = IllegalArgumentException::class)
+    fun testSetLanguageErrorBadLanguage() {
+        val batchCreate = BatchCreateAssetsRequest(
+            assets = listOf(
+                AssetSpec("gs://cats/large-brown-deleted-cat.jpg"),
+            ),
+            state = AssetState.Analyzed
+        )
+        assetService.batchCreate(batchCreate)
+        refreshElastic()
+
+        var asset = this.getSample(1)[0]
+        assetService.setLanguages(asset.id, listOf("eng"))
+    }
+
+    @Test(expected = EmptyResultDataAccessException::class)
+    fun testSetLanguageErrorMissingAsset() {
+        assertFalse(assetService.setLanguages("1234", listOf("en-US")))
+    }
+
+    @Test
+    fun testSetLanguageToNull() {
+        val batchCreate = BatchCreateAssetsRequest(
+            assets = listOf(
+                AssetSpec("gs://cats/large-brown-deleted-cat.jpg"),
+            ),
+            state = AssetState.Analyzed
+        )
+        assetService.batchCreate(batchCreate)
+        refreshElastic()
+
+        var asset = this.getSample(1)[0]
+        assetService.setLanguages(asset.id, listOf("en-US"))
+        assetService.setLanguages(asset.id, null)
+
+        asset = assetService.getAsset(asset.id)
+        assertNull(asset.getAttr("media.languages"))
     }
 }

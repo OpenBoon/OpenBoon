@@ -635,6 +635,10 @@ class DockerContainerWrapper:
             event_type = event["type"]
             if event_type == "preprocess":
                 break
+            elif event_type == 'error':
+                raise RuntimeError(
+                    "Container {} in bad state. Error event received: {}".format(
+                        self.image, event))
             else:
                 self.client.emit_event(self.task, event_type, event["payload"])
 

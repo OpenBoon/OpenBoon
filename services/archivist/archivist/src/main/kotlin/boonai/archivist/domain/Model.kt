@@ -64,6 +64,7 @@ enum class ModelType(
     val enabled: Boolean,
     val datasetType: DatasetType?,
     val fileName: String = "model.zip",
+    val requiredArgs: Set<String> = emptySet()
 ) {
     KNN_CLASSIFIER(
         "K-Nearest Neighbors Classifier",
@@ -190,12 +191,13 @@ enum class ModelType(
         true,
         true,
         DatasetType.Classification,
-        "model.mar"
+        "model.mar",
+        setOf("endpoint")
     ),
     TORCH_MAR_DETECTOR(
         "Torch Model Archive Object Detector",
         "None",
-        "boonai_analysis.custom.TorchModelArchiveDetector",
+        "boonai_analysis.deployed.mar.TorchModelArchiveDetector",
         null,
         "Upload a pre-trained Pytorch Model Archive",
         ModelObjective.OBJECT_DETECTION,
@@ -208,14 +210,15 @@ enum class ModelType(
         true,
         false,
         DatasetType.Detection,
-        "model.mar"
+        "model.mar",
+        setOf("endpoint")
     ),
     TORCH_MAR_TEXT_CLASSIFIER(
         "Torch Model Archive Text Classifier",
         "None",
-        "boonai_analysis.custom.TorchModelArchiveDetector",
+        "boonai_analysis.deployed.mar.TorchModelTextClassifier",
         null,
-        "Upload a pre-trained Pytorch Model Archive",
+        "Upload a pre-trained Pytorch Model Archive for Text Classification",
         ModelObjective.LABEL_DETECTION,
         Provider.BOONAI,
         true,
@@ -224,9 +227,10 @@ enum class ModelType(
         listOf(),
         false,
         true,
-        false,
-        null,
-        "model.mar"
+        true,
+        DatasetType.Detection,
+        "model.mar",
+        setOf("endpoint")
     ),
     BOON_FUNCTION(
         "Boon Function",
@@ -244,7 +248,27 @@ enum class ModelType(
         true,
         true,
         DatasetType.Classification,
-        "model.zip"
+        "model.zip",
+        setOf("endpoint")
+    ),
+    TORCH_MAR_IMAGE_SEGMENTER(
+        "Torch Model Archive Image Segmenter",
+        "None",
+        "boonai_analysis.deployed.mar.TorchModelImageSegmenter",
+        null,
+        "Upload a pre-trained Pytorch Model Archive to perform image segmentation.",
+        ModelObjective.IMAGE_SEGMENTATION,
+        Provider.BOONAI,
+        true,
+        0,
+        0,
+        listOf(),
+        false,
+        true,
+        true,
+        DatasetType.Classification,
+        "model.mar",
+        setOf("endpoint")
     );
 
     fun asMap(): Map<String, Any?> {
@@ -330,7 +354,7 @@ class ModelSpec(
     val trainingArgs: Map<String, Any> = emptyMap(),
 
     @ApiModelProperty("Module dependencies")
-    val dependsOn: List<String> = emptyList()
+    var dependencies: List<String>? = null
 )
 
 class ModelUpdateRequest(
@@ -388,7 +412,7 @@ class ModelPatchRequest(
     val datasetId: UUID? = null,
 
     @ApiModelProperty("Module dependencies")
-    val dependsOn: List<String>? = null
+    val dependencies: List<String>? = null
 )
 
 @Entity

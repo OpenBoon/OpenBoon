@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 
-import { constants, spacing } from '../Styles'
+import { constants } from '../Styles'
 
 import AssetNavigation from './Navigation'
 import AssetVideo from './Video'
@@ -79,7 +79,6 @@ const AssetAsset = ({ isQuickView }) => {
             display: 'flex',
             width: '100%',
             height: '100%',
-            marginTop: spacing.hairline,
             overflow: 'hidden',
           }}
         >

@@ -9,6 +9,7 @@ const PROJECT_ID = '76917058-b147-4556-987a-0a0f11e46d9b'
 const ASSET_ID = 'vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C'
 
 jest.mock('../Form', () => 'AssetLabelingForm')
+jest.mock('../../BulkAssetLabeling', () => 'BulkAssetLabeling')
 
 describe('AssetLabeling', () => {
   it('should render properly with no asset selected', async () => {
@@ -18,6 +19,59 @@ describe('AssetLabeling', () => {
     })
 
     const component = TestRenderer.create(<AssetLabeling />)
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  it('should render properly with bulk labeling selected', async () => {
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/visualizer',
+      query: { projectId: PROJECT_ID },
+    })
+
+    const component = TestRenderer.create(<AssetLabeling />)
+
+    act(() => {
+      component.root
+        .findByProps({
+          children: 'Bulk Label All Images & Documents in Search',
+        })
+        .props.onClick()
+    })
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  it('should render properly with bulk labeling selected', async () => {
+    const query = btoa(
+      JSON.stringify([
+        {
+          type: 'limit',
+          attribute: 'utility.Search Results Limit',
+          values: { maxAssets: 10_000 },
+        },
+        {
+          type: 'facet',
+          attribute: 'media.type',
+          values: { facets: ['image', 'document'] },
+        },
+      ]),
+    )
+
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/visualizer',
+      query: { projectId: PROJECT_ID, query },
+    })
+
+    const component = TestRenderer.create(<AssetLabeling />)
+
+    act(() => {
+      component.root
+        .findByProps({
+          children: 'Bulk Label All Images & Documents in Search',
+        })
+        .props.onClick()
+    })
 
     expect(component.toJSON()).toMatchSnapshot()
   })

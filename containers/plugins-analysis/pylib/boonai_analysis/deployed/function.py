@@ -56,7 +56,7 @@ class BoonFunctionProcessor(CustomModelProcessor):
             if analysis_type == 'labels':
                 labels = LabelDetectionAnalysis()
                 for pred in analysis.get('predictions', []):
-                    labels.add_label_and_score(pred['label'], pred['score'])
+                    labels.add_label_and_score(pred['label'], pred['score'], bbox=pred.get('bbox'))
                 asset.add_analysis(ns, labels)
             elif analysis_type == 'content':
                 content = ContentDetectionAnalysis()

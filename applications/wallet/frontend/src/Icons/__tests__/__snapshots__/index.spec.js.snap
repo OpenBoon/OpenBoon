@@ -70,6 +70,22 @@ exports[`<Icons /> should render properly 1`] = `
       className="emotion-2"
     >
       <div>
+        ./all.svg
+      </div>
+      <div
+        className="emotion-3"
+      >
+        <svg
+          data-file-name="all.svg"
+          height="100%"
+          width="100%"
+        />
+      </div>
+    </div>
+    <div
+      className="emotion-2"
+    >
+      <div>
         ./assets.svg
       </div>
       <div
@@ -1053,6 +1069,22 @@ exports[`<Icons /> should render properly 1`] = `
       >
         <svg
           data-file-name="rocket.svg"
+          height="100%"
+          width="100%"
+        />
+      </div>
+    </div>
+    <div
+      className="emotion-2"
+    >
+      <div>
+        ./runbook.svg
+      </div>
+      <div
+        className="emotion-3"
+      >
+        <svg
+          data-file-name="runbook.svg"
           height="100%"
           width="100%"
         />

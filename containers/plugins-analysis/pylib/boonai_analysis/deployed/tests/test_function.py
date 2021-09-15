@@ -38,7 +38,12 @@ class BoonFunctionTests(PluginUnitTestCase):
                     'predictions': [
                         {
                             'label': 'cat',
-                            'score': 0.99
+                            'score': 0.99,
+                            'bbox': [0.1, 0.1, 0.1, 0.1]
+                        },
+                        {
+                            'label': 'dog',
+                            'score': 0.98
                         }
                     ]
                 },
@@ -69,6 +74,8 @@ class BoonFunctionTests(PluginUnitTestCase):
         analysis = frame.asset.get_analysis('foo')
         labels = get_prediction_labels(analysis)
         assert 'cat' in labels
+        assert 'bbox' in analysis['predictions'][0]
+        assert analysis['predictions'][0]['bbox'] == [0.1, 0.1, 0.1, 0.1]
 
         content = frame.asset.get_analysis('foo-caption')
         assert content['content'] == 'I can has cheeseburger'

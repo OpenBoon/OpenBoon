@@ -100,7 +100,7 @@ class LabelDetectionAnalysis:
     more suitable for ElasticSearch.
 
     """
-    MAX_PREDICTIONS = 32
+    MAX_PREDICTIONS = 1024
     """maximum number of predictions for this analysis"""
 
     def __init__(self,

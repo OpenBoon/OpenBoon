@@ -1,0 +1,424 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BulkAssetLabelingForm should render properly 1`] = `
+.emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  height: 0%;
+}
+
+.emotion-1 {
+  padding: 16px;
+  font-weight: 700;
+}
+
+.emotion-2 {
+  border-bottom: 1px solid #3b3b3b;
+  background-color: #191919;
+  overflow: auto;
+}
+
+.emotion-3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 16px;
+}
+
+.emotion-4 {
+  color: #4a4a4a;
+  margin-right: 16px;
+}
+
+.emotion-5 {
+  color: #b3b3b3;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.emotion-6 {
+  position: relative;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.emotion-7 {
+  width: 100%;
+  padding: 10px 8px;
+  outline: 1px solid transparent;
+  background-color: #3b3b3b;
+  color: #ffffff;
+  line-height: 20px;
+  font-weight: 500;
+  border: 2px solid transparent;
+  border-radius: 2px;
+  border-width: 2px;
+  margin-bottom: 1px;
+}
+
+.emotion-7:hover {
+  border: 2px solid #ffffff;
+}
+
+.emotion-7:focus {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.emotion-8 {
+  margin: 16px;
+  margin-top: 0;
+  margin-bottom: 0;
+  border-bottom: 1px solid #3b3b3b;
+}
+
+.emotion-9 {
+  padding: 16px;
+}
+
+.emotion-10 {
+  font-weight: 700;
+}
+
+.emotion-11 {
+  height: 16px;
+}
+
+.emotion-12 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: flex-end;
+  -webkit-box-align: flex-end;
+  -ms-flex-align: flex-end;
+  align-items: flex-end;
+}
+
+.emotion-13 {
+  position: relative;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.emotion-13 label {
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  align-items: flex-start;
+  color: #b3b3b3;
+  font-family: Roboto Condensed;
+}
+
+.emotion-13 label input {
+  width: 100%;
+  margin-top: 8px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.emotion-14 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.emotion-15 {
+  text-align: center;
+  border-radius: 2px;
+  background-color: #252525;
+  color: #ffffff;
+  padding-left: 12px;
+  padding-right: 12px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  border: 1px solid transparent;
+  width: 60%;
+}
+
+.emotion-15:focus {
+  outline: 1px solid transparent;
+  border: 1px solid #3A5DFF;
+  color: #191919;
+  background-color: #ffffff;
+}
+
+.emotion-15:hover {
+  border: 1px solid #808080;
+}
+
+.emotion-16 {
+  position: absolute;
+  right: 15%;
+  bottom: 8px;
+}
+
+.emotion-17 {
+  -webkit-flex: 3;
+  -ms-flex: 3;
+  flex: 3;
+  padding: 16px;
+}
+
+.emotion-18 {
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  -webkit-transform: translate(0%, -50%);
+  -moz-transform: translate(0%, -50%);
+  -ms-transform: translate(0%, -50%);
+  transform: translate(0%, -50%);
+  cursor: pointer;
+}
+
+.emotion-19 {
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  -webkit-transform: translate(0%, -50%);
+  -moz-transform: translate(0%, -50%);
+  -ms-transform: translate(0%, -50%);
+  transform: translate(0%, -50%);
+  pointer-events: none;
+  background-color: #4a4a4a;
+}
+
+.emotion-20 {
+  padding: 0;
+  border: none;
+  left: 50%;
+  position: absolute;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  width: 8px;
+  height: 24px;
+  background-color: #808080;
+  border-radius: 1px;
+  cursor: pointer;
+}
+
+.emotion-20:hover,
+.emotion-20:active {
+  background-color: #ffffff;
+}
+
+<div
+  className="emotion-0"
+>
+  <div
+    className="emotion-1"
+  >
+    Add Classification Label
+  </div>
+  <div
+    className="emotion-2"
+  >
+    <div
+      className="emotion-3"
+    >
+      <svg
+        className="emotion-4"
+        data-file-name="all.svg"
+        height={56}
+      />
+      <label
+        className="emotion-5"
+      >
+        Label:
+        <div
+          className="emotion-6"
+          data-reach-combobox=""
+          data-state="idle"
+        >
+          <input
+            aria-autocomplete="both"
+            aria-controls="listbox--1"
+            aria-expanded={false}
+            aria-haspopup="listbox"
+            autoComplete="off"
+            className="emotion-7"
+            data-reach-combobox-input=""
+            data-state="idle"
+            onBlur={[Function]}
+            onChange={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onKeyDown={[Function]}
+            role="combobox"
+            value=""
+          />
+          <span />
+        </div>
+      </label>
+    </div>
+    <div
+      className="emotion-8"
+    />
+    <div
+      className="emotion-9"
+    >
+      <div
+        className="emotion-10"
+      >
+        Set Scope Type Ratio
+      </div>
+      <div
+        className="emotion-11"
+      />
+      <div
+        className="emotion-12"
+      >
+        <div
+          className="emotion-13"
+        >
+          <label
+            className="emotion-14"
+          >
+            TRAIN
+              
+            <input
+              className="emotion-15"
+              onBlur={[Function]}
+              onChange={[Function]}
+              onKeyPress={[Function]}
+              type="text"
+              value={50}
+            />
+          </label>
+          <div
+            className="emotion-16"
+          >
+            %
+          </div>
+        </div>
+        <div
+          className="emotion-17"
+        >
+          <div
+            style={
+              Object {
+                "position": "relative",
+                "width": "100%",
+              }
+            }
+          >
+            <div
+              className="emotion-18"
+              onMouseDown={[Function]}
+              onTouchStart={[Function]}
+            />
+            <div
+              className="emotion-19"
+            />
+            <div>
+              <button
+                aria-valuenow={50}
+                className="emotion-20"
+                onKeyDown={[Function]}
+                onMouseDown={[Function]}
+                onTouchStart={[Function]}
+                role="slider"
+                type="button"
+              />
+            </div>
+            <div>
+              <div
+                onMouseDown={[Function]}
+                onTouchStart={[Function]}
+                style={
+                  Object {
+                    "backgroundColor": "#6088FE",
+                    "cursor": "pointer",
+                    "height": 4,
+                    "left": "0%",
+                    "position": "absolute",
+                    "transform": "translate(0%, -50%)",
+                    "width": "50%",
+                    "zIndex": 1,
+                  }
+                }
+              />
+              <div
+                onMouseDown={[Function]}
+                onTouchStart={[Function]}
+                style={
+                  Object {
+                    "backgroundColor": "#3A5DFF",
+                    "cursor": "pointer",
+                    "height": 4,
+                    "left": "50%",
+                    "position": "absolute",
+                    "transform": "translate(0%, -50%)",
+                    "width": "50%",
+                    "zIndex": 1,
+                  }
+                }
+              />
+            </div>
+          </div>
+        </div>
+        <div
+          className="emotion-13"
+        >
+          <label
+            className="emotion-14"
+          >
+            TEST
+              
+            <input
+              className="emotion-15"
+              onBlur={[Function]}
+              onChange={[Function]}
+              onKeyPress={[Function]}
+              type="text"
+              value={50}
+            />
+          </label>
+          <div
+            className="emotion-16"
+          >
+            %
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`BulkAssetLabelingForm should render properly for a non-Classification dataset 1`] = `
+.emotion-0 {
+  padding: 16px;
+  color: #ffffff;
+  font-style: italic;
+  border-bottom: 1px solid #3b3b3b;
+}
+
+<div
+  className="emotion-0"
+>
+  Bulk Labeling is only possible for "Classification" type datasets. Please select another dataset.
+</div>
+`;

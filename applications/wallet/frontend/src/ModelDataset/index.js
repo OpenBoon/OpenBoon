@@ -7,13 +7,16 @@ import DatasetConcepts from '../DatasetConcepts'
 import ModelDatasetHeader from './Header'
 
 const REQUIRES_UPLOAD = 'RequiresUpload'
+const DEPLOYING = 'Deploying'
+const DEPLOY_ERROR = 'DeployError'
+const UPLOAD_STATES = [REQUIRES_UPLOAD, DEPLOYING, DEPLOY_ERROR]
 
 const ModelDataset = ({ model, setErrors }) => {
   const {
     query: { projectId },
   } = useRouter()
 
-  if (model.state === REQUIRES_UPLOAD) {
+  if (UPLOAD_STATES.includes(model.state)) {
     return null
   }
 

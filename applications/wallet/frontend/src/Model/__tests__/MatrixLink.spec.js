@@ -135,6 +135,28 @@ describe('<ModelMatrixLink />', () => {
     expect(component.toJSON()).toMatchSnapshot()
   })
 
+  it('should render properly when a model is uploadable', () => {
+    require('swr').__setMockUseSWRResponse({
+      data: { ...matrix, matrix: [] },
+    })
+
+    const component = TestRenderer.create(
+      <ModelMatrixLink
+        projectId={PROJECT_ID}
+        model={{
+          ...model,
+          unappliedChanges: false,
+          datasetId: '',
+          timeLastTrained: 0,
+          timeLastApplied: 0,
+          uploadable: true,
+        }}
+      />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
   it('should render properly when a matrix will never exist', () => {
     require('swr').__setMockUseSWRResponse({
       data: { ...matrix, isMatrixApplicable: false },

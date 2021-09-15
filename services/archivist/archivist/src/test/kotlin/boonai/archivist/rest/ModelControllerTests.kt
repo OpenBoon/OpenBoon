@@ -25,6 +25,8 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import java.io.FileInputStream
 import java.nio.file.Files
 import java.nio.file.Paths
+import javax.persistence.EntityManager
+import javax.persistence.PersistenceContext
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
@@ -42,6 +44,9 @@ class ModelControllerTests : MockMvcTest() {
 
     @Autowired
     lateinit var pipelineModService: PipelineModService
+
+    @PersistenceContext
+    lateinit var entityManager: EntityManager
 
     val modelSpec = ModelSpec("Dog Breeds", ModelType.TF_CLASSIFIER)
 
@@ -94,6 +99,7 @@ class ModelControllerTests : MockMvcTest() {
 
     @Test
     fun testFindOne() {
+        entityManager.flush()
         val filter =
             """
             {
@@ -115,7 +121,7 @@ class ModelControllerTests : MockMvcTest() {
 
     @Test
     fun testSearch() {
-
+        entityManager.flush()
         val filter =
             """
             {
@@ -319,6 +325,25 @@ class ModelControllerTests : MockMvcTest() {
                     CoreMatchers.equalTo(20)
                 )
             )
+            .andReturn()
+    }
+
+    @Test
+    fun testPatchModelInvalidTrainingArguments() {
+        val modelSpec = ModelSpec("Dolphin Breeds", ModelType.TORCH_MAR_IMAGE_SEGMENTER)
+        val model = modelService.createModel(modelSpec)
+        val args = mapOf(
+            "labels" to "Animal",
+            "colors" to "Black"
+        )
+
+        mvc.perform(
+            MockMvcRequestBuilders.patch("/api/v3/models/${model.id}/_training_args")
+                .headers(admin())
+                .content(Json.serialize(args))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+            .andExpect(MockMvcResultMatchers.status().isBadRequest)
             .andReturn()
     }
 

@@ -503,22 +503,148 @@ Array [
         "labels": Object {},
         "lastLabel": "",
         "lastScope": "TRAIN",
+        "trainPct": 50,
       }
     }
   />,
 ]
 `;
 
+exports[`AssetLabeling should render properly with bulk labeling selected 1`] = `
+<BulkAssetLabeling
+  projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+  setIsBulkLabeling={[Function]}
+/>
+`;
+
+exports[`AssetLabeling should render properly with bulk labeling selected 2`] = `
+<BulkAssetLabeling
+  projectId="76917058-b147-4556-987a-0a0f11e46d9b"
+  query="W3sidHlwZSI6ImxpbWl0IiwiYXR0cmlidXRlIjoidXRpbGl0eS5TZWFyY2ggUmVzdWx0cyBMaW1pdCIsInZhbHVlcyI6eyJtYXhBc3NldHMiOjEwMDAwfX0seyJ0eXBlIjoiZmFjZXQiLCJhdHRyaWJ1dGUiOiJtZWRpYS50eXBlIiwidmFsdWVzIjp7ImZhY2V0cyI6WyJpbWFnZSIsImRvY3VtZW50Il19fV0="
+  setIsBulkLabeling={[Function]}
+/>
+`;
+
 exports[`AssetLabeling should render properly with no asset selected 1`] = `
 .emotion-0 {
   padding: 16px;
-  color: #ffffff;
+  color: #b3b3b3;
   font-style: italic;
+}
+
+.emotion-1 {
+  margin: 0;
+  font-size: 15px;
+  line-height: 19px;
+}
+
+.emotion-2 {
+  margin-top: 0;
+  font-size: 15px;
+  line-height: 19px;
+}
+
+.emotion-6 {
+  height: 16px;
+}
+
+.emotion-7 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 12px 32px;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: transparent;
+}
+
+.emotion-7,
+.emotion-7:hover,
+.emotion-7:visited,
+.emotion-7 .noop {
+  background-color: #3A5DFF;
+}
+
+.emotion-7:hover,
+.emotion-7 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: #6088FE;
+}
+
+.emotion-7[aria-disabled=true],
+.emotion-7 .noop {
+  color: #2e2e2e;
+  background-color: #808080;
 }
 
 <div
   className="emotion-0"
 >
-  Select an asset to add labels.
+  <h5
+    className="emotion-1"
+  >
+    Label a Single Asset:
+  </h5>
+  <p
+    className="emotion-2"
+  >
+    Select an asset in the asset viewer to the left to label individually.
+     
+  </p>
+  <h5
+    className="emotion-1"
+  >
+    Label All Assets in Search:
+  </h5>
+  <p
+    className="emotion-1"
+  >
+    Click the button below to label all assets in search. Video assets will be excluded from labeling and a maximum of 10,000 assets can be labeled at once.
+  </p>
+  <p
+    className="emotion-2"
+  >
+    Filters automatically added:
+  </p>
+  <ul>
+    <li>
+      File Type (video deselected)
+    </li>
+    <li>
+      Search limit
+    </li>
+  </ul>
+  <div
+    className="emotion-6"
+  />
+  <button
+    className="emotion-7"
+    onClick={[Function]}
+    type="button"
+  >
+    Bulk Label All Images & Documents in Search
+  </button>
 </div>
 `;

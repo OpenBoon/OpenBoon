@@ -126,6 +126,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
+  white-space: nowrap;
 }
 
 .emotion-11 {
@@ -1129,6 +1130,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
                   >
                     <span
                       className="emotion-45"
+                      title="pink (2)"
                     >
                       pink
                        
@@ -1340,6 +1342,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
                   >
                     <span
                       className="emotion-45"
+                      title="red (2)"
                     >
                       red
                        
@@ -1551,6 +1554,7 @@ exports[`<ModelMatrix /> should render properly 1`] = `
                   >
                     <span
                       className="emotion-45"
+                      title="yellow (0)"
                     >
                       yellow
                        
@@ -2071,6 +2075,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
   font-size: 15px;
   line-height: 19px;
   font-weight: 500;
+  white-space: nowrap;
 }
 
 .emotion-11 {
@@ -3081,6 +3086,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
                   >
                     <span
                       className="emotion-45"
+                      title="pink (2)"
                     >
                       pink
                        
@@ -3292,6 +3298,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
                   >
                     <span
                       className="emotion-45"
+                      title="red (2)"
                     >
                       red
                        
@@ -3503,6 +3510,7 @@ exports[`<ModelMatrix /> should render properly 2`] = `
                   >
                     <span
                       className="emotion-45"
+                      title="yellow (0)"
                     >
                       yellow
                        
@@ -4664,6 +4672,7 @@ exports[`<ModelMatrix /> should render properly when out of date 1`] = `
                   >
                     <span
                       className="emotion-13"
+                      title="pink (2)"
                     >
                       pink
                        
@@ -4875,6 +4884,7 @@ exports[`<ModelMatrix /> should render properly when out of date 1`] = `
                   >
                     <span
                       className="emotion-13"
+                      title="red (2)"
                     >
                       red
                        
@@ -5086,6 +5096,7 @@ exports[`<ModelMatrix /> should render properly when out of date 1`] = `
                   >
                     <span
                       className="emotion-13"
+                      title="yellow (0)"
                     >
                       yellow
                        

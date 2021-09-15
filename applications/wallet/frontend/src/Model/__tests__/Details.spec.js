@@ -34,7 +34,114 @@ describe('<ModelDetails />', () => {
     expect(component.toJSON()).toMatchSnapshot()
   })
 
-  it('should render properly when trained and applied', async () => {
+  it('should render properly when uploadable trained and tested', async () => {
+    const mockMutate = jest.fn()
+
+    require('swr').__setMockMutateFn(mockMutate)
+
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/models/[modelId]',
+      query: {
+        projectId: PROJECT_ID,
+        modelId: MODEL_ID,
+      },
+    })
+
+    require('swr').__setMockUseSWRResponse({ data: modelTypes })
+
+    const component = TestRenderer.create(
+      <ModelDetails
+        projectId={PROJECT_ID}
+        model={{
+          ...model,
+          datasetId: DATASET_ID,
+          timeLastTrained: 1625774562852,
+          timeLastTested: 1625774664673,
+          modelTypeRestrictions: { missingLabels: 0 },
+          state: 'Deployed',
+          uploadable: true,
+        }}
+      />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+
+    // Mock Failure
+    fetch.mockResponseOnce(null, { status: 400 })
+
+    await act(async () => {
+      component.root
+        .findByProps({ children: 'Test Model', isDisabled: false })
+        .props.onClick({ preventDefault: noop, stopPropagation: noop })
+    })
+
+    // Mock Success
+    fetch.mockResponseOnce(JSON.stringify({ jobId: JOB_ID }), {
+      headers: { 'content-type': 'application/json' },
+    })
+
+    await act(async () => {
+      component.root
+        .findByProps({ children: 'Test Model', isDisabled: false })
+        .props.onClick({ preventDefault: noop, stopPropagation: noop })
+    })
+
+    expect(fetch.mock.calls[0][0]).toEqual(
+      `/api/v1/projects/${PROJECT_ID}/models/${MODEL_ID}/test/`,
+    )
+
+    expect(fetch.mock.calls[0][1]).toEqual({
+      headers: {
+        'X-CSRFToken': 'CSRF_TOKEN',
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      method: 'POST',
+    })
+
+    expect(mockMutate).toHaveBeenCalledWith({
+      ...model,
+      datasetId: DATASET_ID,
+      timeLastTrained: 1625774562852,
+      timeLastTested: 1625774664673,
+      modelTypeRestrictions: { missingLabels: 0 },
+      state: 'Deployed',
+      uploadable: true,
+      ready: true,
+      runningJobId: JOB_ID,
+    })
+  })
+
+  it('should render properly when uploadable just created', async () => {
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/models/[modelId]',
+      query: {
+        projectId: PROJECT_ID,
+        modelId: MODEL_ID,
+      },
+    })
+
+    require('swr').__setMockUseSWRResponse({ data: modelTypes })
+
+    const component = TestRenderer.create(
+      <ModelDetails
+        projectId={PROJECT_ID}
+        model={{
+          ...model,
+          datasetId: DATASET_ID,
+          runningJobId: '',
+          timeLastTrained: null,
+          timeLastTested: null,
+          modelTypeRestrictions: { missingLabels: 0 },
+          state: 'Deployed',
+          uploadable: true,
+        }}
+      />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  it('should render properly when trained and tested', async () => {
     require('next/router').__setUseRouter({
       pathname: '/[projectId]/models/[modelId]',
       query: {
@@ -51,8 +158,9 @@ describe('<ModelDetails />', () => {
         model={{
           ...model,
           timeLastTrained: 1625774562852,
-          timeLastApplied: 1625774664673,
+          timeLastTested: 1625774664673,
           modelTypeRestrictions: { missingLabels: 0 },
+          state: 'Deployed',
         }}
       />,
     )
@@ -79,8 +187,9 @@ describe('<ModelDetails />', () => {
           datasetId: DATASET_ID,
           runningJobId: '',
           timeLastTrained: null,
-          timeLastApplied: null,
+          timeLastTested: null,
           modelTypeRestrictions: { missingLabels: 0 },
+          state: 'Deployed',
         }}
       />,
     )
@@ -106,9 +215,66 @@ describe('<ModelDetails />', () => {
           ...model,
           datasetId: DATASET_ID,
           timeLastTrained: null,
-          timeLastApplied: null,
+          timeLastTested: null,
           modelTypeRestrictions: { missingLabels: 0 },
           state: 'RequiresUpload',
+          uploadable: true,
+        }}
+      />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  it('should render properly when file upload is processing', async () => {
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/models/[modelId]',
+      query: {
+        projectId: PROJECT_ID,
+        modelId: MODEL_ID,
+      },
+    })
+
+    require('swr').__setMockUseSWRResponse({ data: modelTypes })
+
+    const component = TestRenderer.create(
+      <ModelDetails
+        projectId={PROJECT_ID}
+        model={{
+          ...model,
+          datasetId: DATASET_ID,
+          timeLastTrained: null,
+          timeLastTested: null,
+          modelTypeRestrictions: { missingLabels: 0 },
+          state: 'Deploying',
+        }}
+      />,
+    )
+
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  it('should render properly when file upload failed', async () => {
+    require('next/router').__setUseRouter({
+      pathname: '/[projectId]/models/[modelId]',
+      query: {
+        projectId: PROJECT_ID,
+        modelId: MODEL_ID,
+      },
+    })
+
+    require('swr').__setMockUseSWRResponse({ data: modelTypes })
+
+    const component = TestRenderer.create(
+      <ModelDetails
+        projectId={PROJECT_ID}
+        model={{
+          ...model,
+          datasetId: DATASET_ID,
+          timeLastTrained: null,
+          timeLastTested: null,
+          modelTypeRestrictions: { missingLabels: 0 },
+          state: 'DeployError',
         }}
       />,
     )
@@ -134,7 +300,7 @@ describe('<ModelDetails />', () => {
           ...model,
           datasetId: DATASET_ID,
           timeLastTrained: 1625774562852,
-          timeLastApplied: 1625774664673,
+          timeLastTested: 1625774664673,
           modelTypeRestrictions: {
             requiredLabels: 5,
             missingLabels: 5,
@@ -174,7 +340,7 @@ describe('<ModelDetails />', () => {
           ...model,
           datasetId: DATASET_ID,
           timeLastTrained: 1625774562852,
-          timeLastApplied: 1625774664673,
+          timeLastTested: 1625774664673,
           modelTypeRestrictions: {
             requiredLabels: 0,
             missingLabels: 0,
@@ -208,7 +374,11 @@ describe('<ModelDetails />', () => {
     const component = TestRenderer.create(
       <ModelDetails
         projectId={PROJECT_ID}
-        model={{ ...model, modelTypeRestrictions: { missingLabels: 0 } }}
+        model={{
+          ...model,
+          datasetId: DATASET_ID,
+          modelTypeRestrictions: { missingLabels: 0 },
+        }}
       />,
     )
 
@@ -236,7 +406,7 @@ describe('<ModelDetails />', () => {
 
     await act(async () => {
       component.root
-        .findByProps({ children: 'Train Model', isDisabled: false })
+        .findByProps({ children: 'Train & Test Model', isDisabled: false })
         .props.onClick({ preventDefault: noop, stopPropagation: noop })
     })
 
@@ -245,7 +415,7 @@ describe('<ModelDetails />', () => {
 
     await act(async () => {
       component.root
-        .findByProps({ children: 'Train & Test', isDisabled: false })
+        .findByProps({ children: 'Train & Test Model', isDisabled: false })
         .props.onClick({ preventDefault: noop, stopPropagation: noop })
     })
 
@@ -258,7 +428,7 @@ describe('<ModelDetails />', () => {
 
     await act(async () => {
       component.root
-        .findByProps({ children: 'Train & Analyze All', isDisabled: false })
+        .findByProps({ children: 'Train & Test Model', isDisabled: false })
         .props.onClick({ preventDefault: noop, stopPropagation: noop })
     })
 
@@ -272,11 +442,12 @@ describe('<ModelDetails />', () => {
         'Content-Type': 'application/json;charset=UTF-8',
       },
       method: 'POST',
-      body: '{"apply":false,"test":false}',
+      body: '{"apply":false,"test":true}',
     })
 
     expect(mockMutate).toHaveBeenCalledWith({
       ...model,
+      datasetId: DATASET_ID,
       modelTypeRestrictions: { missingLabels: 0 },
       runningJobId: JOB_ID,
       ready: true,

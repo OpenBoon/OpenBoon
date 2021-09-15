@@ -1,8 +1,9 @@
 import logging
 import os
 import requests
+import time
 
-from ..entity import Model, Job, ModelType, ModelTypeInfo, PostTrainAction
+from ..entity import Model, Job, ModelType, ModelState, ModelTypeInfo, PostTrainAction
 from ..util import as_collection, as_id, \
     is_valid_uuid, as_name_collection, as_id_collection, enum_name
 
@@ -21,7 +22,7 @@ class ModelApp:
     def __init__(self, app):
         self.app = app
 
-    def create_model(self, name, type, dataset=None):
+    def create_model(self, name, type, dataset=None, dependencies=None):
         """
         Create and return a new model .
 
@@ -29,14 +30,15 @@ class ModelApp:
             name (str): The name of the model.
             type (ModelType): The type of Model, see the ModelType class.
             dataset (DataSet): An optional DataSet for training or testing the model.
-
+            dependencies (list): A list of modules this model depends on.
         Returns:
             Model: The new model.
         """
         body = {
             "name": name,
             "type": getattr(type, 'name', str(type)),
-            "datasetId": as_id(dataset)
+            "datasetId": as_id(dataset),
+            "dependencies": dependencies or []
         }
         return Model(self.app.client.post("/api/v3/models", body))
 
@@ -133,7 +135,7 @@ class ModelApp:
         body = {
             "search": search
         }
-        return Job(self.app.client.post(f'/api/v3/models/{mid}/_apply', body))
+        return Job(self.app.client.post(f'/api/v3/models/{mid}/_apply', body)['job'])
 
     def test_model(self, model):
         """
@@ -146,7 +148,7 @@ class ModelApp:
             Job: The Job that is hosting the reprocess task.
         """
         mid = as_id(model)
-        return Job(self.app.client.post(f'/api/v3/models/{mid}/_test', {}))
+        return Job(self.app.client.post(f'/api/v3/models/{mid}/_test', {})['job'])
 
     def delete_model(self, model):
         """
@@ -193,6 +195,28 @@ class ModelApp:
 
         return self.app.client.post(f'/api/v3/models/{mid}/_deploy')
 
+    def update_model(self, model, **kwargs):
+        """
+        Update various model properties.
+
+        Args:
+            model (Model): A model object or unique Model Id.
+
+        Keyword Args:
+            name (str): A new name for the model. Changing the model
+                name will change where the results are stored in the Asset's analysis metadata.
+            dataset (Dataset): A dataset or unique Dataset Id.
+            dependencies (list): A list of modules that should run before this model.
+        Returns:
+            Model: The updated model.
+        """
+        mid = as_id(model)
+        if 'dataset' in kwargs:
+            kwargs['datasetId'] = as_id(kwargs.get('dataset'))
+            del kwargs['dataset']
+        self.app.client.patch(f'/api/v3/models/{mid}', kwargs)
+        return self.get_model(mid)
+
     def export_trained_model(self, model, dst_file, tag='latest'):
         """
         Download a zip file containing the model.
@@ -221,7 +245,7 @@ class ModelApp:
         type_name = getattr(model_type, 'name', str(model_type))
         return ModelTypeInfo(self.app.client.get(f'/api/v3/models/_types/{type_name}'))
 
-    def get_model_type_training_args(self, model_type):
+    def get_training_arg_schema(self, model_type):
         """
         Return a dictionary describing the available training args for a given Model.
 
@@ -320,3 +344,36 @@ class ModelApp:
 
         """
         return self.app.client.get(f'/api/v3/models/{as_id(model)}/_training_args')
+
+    def wait_on_deploy(self, model, timeout=None, callback=None):
+        """
+        Wait on the deployment of an uploadable model.
+
+        Args:
+            model (Model): The model to monitor.
+            timeout (int): The number of seconds to wait before timing out.
+                Defaults to None which means it will not timeout.
+            callback (func): A function that takes a single arg which will be called
+                everytime the model is polled for status.
+
+        Returns:
+            bool: True if the model was deployed, False if deploy fails or was never deplpyed.
+        """
+        if not model.uploadable:
+            return False
+
+        start_time = time.time()
+        while True:
+            model = self.get_model(as_id(model))
+            if callback:
+                callback(model)
+
+            false_states = [ModelState.DeployError, ModelState.RequiresUpload]
+            if model.state in false_states:
+                return False
+            elif model.state == ModelState.Deployed:
+                return True
+            else:
+                if timeout and time.time() - start_time >= timeout:
+                    return False
+                time.sleep(10)

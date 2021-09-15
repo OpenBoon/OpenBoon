@@ -20,7 +20,14 @@ import { getFilteredOptions } from './helpers'
 
 const MAX_HEIGHT = 350
 
-const Listbox = ({ label, options, onChange, value, placeholder }) => {
+const Listbox = ({
+  label,
+  inputLabel,
+  options,
+  onChange,
+  value,
+  placeholder,
+}) => {
   const [searchString, setSearchString] = useState('')
 
   const filteredOptions = getFilteredOptions({ options, searchString })
@@ -46,6 +53,7 @@ const Listbox = ({ label, options, onChange, value, placeholder }) => {
       >
         {label}
       </div>
+
       <ListboxInput
         defaultValue={value}
         css={{
@@ -75,7 +83,7 @@ const Listbox = ({ label, options, onChange, value, placeholder }) => {
             />
           }
         >
-          {placeholder}
+          <span>{placeholder}</span>
         </ListboxButton>
 
         <ListboxPopover
@@ -108,8 +116,8 @@ const Listbox = ({ label, options, onChange, value, placeholder }) => {
             >
               <div css={{ padding: spacing.small }}>
                 <InputSearch
-                  aria-label="Filter Types"
-                  placeholder="Filter types"
+                  aria-label={inputLabel}
+                  placeholder={inputLabel}
                   value={searchString}
                   onChange={({ value: v }) => setSearchString(v)}
                   variant={INPUT_SEARCH_VARIANTS.LIGHT}
@@ -148,10 +156,11 @@ const Listbox = ({ label, options, onChange, value, placeholder }) => {
 
 Listbox.propTypes = {
   label: PropTypes.string.isRequired,
+  inputLabel: PropTypes.string.isRequired,
   options: listboxShape.isRequired,
   onChange: PropTypes.func.isRequired,
   value: PropTypes.string.isRequired,
-  placeholder: PropTypes.string.isRequired,
+  placeholder: PropTypes.node.isRequired,
 }
 
 export default Listbox

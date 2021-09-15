@@ -96,6 +96,7 @@ const constants = {
   timeline: {
     rulerRowHeight: 44,
   },
+  default: 44,
   bbox: 56,
 }
 

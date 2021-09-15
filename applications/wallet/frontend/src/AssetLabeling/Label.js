@@ -125,6 +125,8 @@ const AssetLabelingLabel = ({
           errorMessage={state.error}
         />
 
+        <div css={{ height: spacing.base }} />
+
         <RadioGroup
           legend="Select Scope"
           options={SCOPE_OPTIONS.map((option) => ({

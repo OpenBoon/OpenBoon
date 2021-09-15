@@ -215,6 +215,35 @@ class SearchViewSet(CreateModelMixin,
             like a Range filter, but adds the `.count` field to the analysis name to filter
             over the given prediction count.
 
+        Limit:
+
+            {
+                "type": "limit",
+                "values": {
+                    "maxAssets": $value
+                }
+            }
+
+        SimpleSort:
+
+            {
+                "type": "simpleSort",
+                "attribute": "$metadata_attribute_dot_path"
+                "values": {
+                    "order": "asc"  # or "desc"
+                }
+            }
+
+        LabelsExist:
+
+            {
+                "type": "labelsExist",
+                "datasetId": $datasetId,
+                "values": {
+                    "exists": True  # or False
+                }
+            }
+
         """
         path = 'api/v3/assets'
         fields = ['id',
@@ -240,19 +269,9 @@ class SearchViewSet(CreateModelMixin,
 
     def _build_query_from_querystring(self, request):
         """Helper to build the query used for query and raw_query."""
-        filter_boy = FilterBuddy()
-
-        _filters = filter_boy.get_filters_from_request(request)
-        for _filter in _filters:
-            _filter.is_valid(query=True, raise_exception=True)
-        query = filter_boy.reduce_filters_to_query(_filters)
-
-        # If there's no specific query at this point, let's sort by the created date
-        # to make the visual display in Visualizer more useful
-        if not query:
-            query['sort'] = {'system.timeCreated': {'order': 'desc'}}
-
-        return query
+        filter_buddy = FilterBuddy()
+        _filters = filter_buddy.get_filters_from_request(request)
+        return filter_buddy.finalize_query_from_filters_and_request(_filters, request)
 
     @action(detail=False, methods=['get'])
     def raw_query(self, request, project_pk):
@@ -359,7 +378,7 @@ class MetadataExportViewSet(BaseProjectViewSet):
         _filters = filter_boy.get_filters_from_request(request)
         for _filter in _filters:
             _filter.is_valid(query=True, raise_exception=True)
-        query = filter_boy.reduce_filters_to_query(_filters)
+        query = filter_boy.reduce_filters_to_query(_filters, None)
 
         return self._yield_all_items_from_es(request, base_url=path, search_filter=query)
 

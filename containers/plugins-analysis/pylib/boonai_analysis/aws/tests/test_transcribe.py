@@ -137,3 +137,18 @@ class AmazonTranscribeProcessorTestCase(PluginUnitTestCase):
         self.processor.process(frame)
 
         assert not self.asset.get_attr('analysis.aws-transcribe.content')
+
+    def test_get_default_languages(self):
+        asset = TestAsset('gs://boonai-dev-data/video/no_audio.mp4')
+        asset.set_attr('media.length', 15.0)
+        frame = Frame(asset)
+        langs = self.processor.get_languages(frame.asset)
+        assert langs == ['en-US', 'fr-FR', 'es-US', 'pt-BR']
+
+    def test_get_asset_languages(self):
+        asset = TestAsset('gs://boonai-dev-data/video/no_audio.mp4')
+        asset.set_attr('media.length', 15.0)
+        asset.set_attr('media.languages', ['fr-FR'])
+        frame = Frame(asset)
+        langs = self.processor.get_languages(frame.asset)
+        assert langs == ['fr-FR']

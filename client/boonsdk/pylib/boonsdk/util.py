@@ -1,15 +1,27 @@
+import datetime
+import decimal
 import functools
+import json
+import os
 import re
 import uuid
-import decimal
 import zipfile
-import os
-import json
-import datetime
 from enum import Enum
 
 
 def enum_name(en, value, caps=False):
+    """
+    Covert a string into an enum value.
+
+    Args:
+        en (Enum): The enum itself.
+        value (mixed): An Enum value or string
+        caps (bool): Capitalize name
+
+    Returns:
+        Enum: An enum value
+
+    """
     if isinstance(value, Enum):
         return value.name
     else:

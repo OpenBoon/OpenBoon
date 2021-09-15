@@ -3,15 +3,101 @@
 exports[`<MetadataCuesContent /> should render properly with metadata 1`] = `
 Array [
   .emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
   padding: 8px;
-  padding-left: 12px;
-  border-bottom: 1px solid #3b3b3b;
+  padding-left: 16px;
+  background-color: #252525;
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 19px;
+}
+
+.emotion-1 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 0;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #808080;
+  background-color: transparent;
+}
+
+.emotion-1:hover,
+.emotion-1.focus-visible:focus,
+.emotion-1 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.emotion-1:hover svg,
+.emotion-1.focus-visible:focus svg,
+.emotion-1 .noop svg {
+  opacity: 1;
+}
+
+.emotion-1[aria-disabled=true],
+.emotion-1 .noop {
+  color: #808080;
+}
+
+.emotion-2 {
+  -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  transform: rotate(-90deg);
 }
 
 <div
     className="emotion-0"
   >
-    Clip Metadata:
+    <div>
+      Clip Metadata
+    </div>
+    <button
+      aria-label="Close Panel"
+      className="emotion-1"
+      onClick={[Function]}
+      type="button"
+    >
+      <svg
+        className="emotion-2"
+        data-file-name="doubleChevron.svg"
+        height={20}
+      />
+    </button>
   </div>,
   .emotion-0 {
   -webkit-flex: 1;
@@ -237,15 +323,101 @@ Array [
 exports[`<MetadataCuesContent /> should render properly with no metadata 1`] = `
 Array [
   .emotion-0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
   padding: 8px;
-  padding-left: 12px;
-  border-bottom: 1px solid #3b3b3b;
+  padding-left: 16px;
+  background-color: #252525;
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 19px;
+}
+
+.emotion-1 {
+  -webkit-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 0;
+  white-space: nowrap;
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  color: #808080;
+  background-color: transparent;
+}
+
+.emotion-1:hover,
+.emotion-1.focus-visible:focus,
+.emotion-1 .noop {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.emotion-1:hover svg,
+.emotion-1.focus-visible:focus svg,
+.emotion-1 .noop svg {
+  opacity: 1;
+}
+
+.emotion-1[aria-disabled=true],
+.emotion-1 .noop {
+  color: #808080;
+}
+
+.emotion-2 {
+  -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  transform: rotate(-90deg);
 }
 
 <div
     className="emotion-0"
   >
-    Clip Metadata:
+    <div>
+      Clip Metadata
+    </div>
+    <button
+      aria-label="Close Panel"
+      className="emotion-1"
+      onClick={[Function]}
+      type="button"
+    >
+      <svg
+        className="emotion-2"
+        data-file-name="doubleChevron.svg"
+        height={20}
+      />
+    </button>
   </div>,
   .emotion-0 {
   -webkit-flex: 1;

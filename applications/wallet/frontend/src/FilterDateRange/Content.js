@@ -193,6 +193,7 @@ const FilterDateRangeContent = ({
         </div>
         <div css={{ padding: spacing.small }}>
           <Slider
+            mode="both"
             step={DAY_MS_VALUE}
             domain={sliderDomain}
             values={sliderValues}
@@ -216,8 +217,12 @@ const FilterDateRangeContent = ({
                     type,
                     attribute,
                     values: {
-                      min: new Date(newMin).toISOString(),
-                      max: new Date(newMax).toISOString(),
+                      min: new Date(newMin)
+                        .toISOString()
+                        .replace(/T\d\d:\d\d:\d\d/, 'T00:00:00'),
+                      max: new Date(newMax)
+                        .toISOString()
+                        .replace(/T\d\d:\d\d:\d\d/, 'T23:59:59'),
                     },
                   },
                   filterIndex,

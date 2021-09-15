@@ -123,6 +123,7 @@ class AbstractVideoDetectProcessor(AssetProcessor):
         job_completed_count = 0
 
         self.logger.info(f'Waiting for {job_count} assets submitted to AWS')
+        start_time = time.time()
 
         # While our job count greater than completed job count, then
         # we wait for more jobs to complete.
@@ -138,11 +139,13 @@ class AbstractVideoDetectProcessor(AssetProcessor):
                 time.sleep(2)
                 sleep_counter += 1
                 if sleep_counter >= 30:
-                    self.logger.info(f'Waiting on AWS for {job_count} assets')
+                    self.logger.info(f'Waiting on AWS job for {job_count} assets')
                     sleep_counter = 0
                 continue
 
             for message in rsp['Messages']:
+                total_time = time.time() - start_time
+                self.logger.info('Finished in {} seconds'.format(total_time))
                 body = json.loads(message['Body'])
                 rek = json.loads(body['Message'])
                 job_tag = rek.get('JobTag', "unknown job tag")
@@ -262,7 +265,7 @@ class RekognitionLabelDetection(AbstractVideoDetectProcessor):
 
                 label = detection['Label']
                 name = label['Name']
-                confidence = label['Confidence'] / 100.0
+                confidence = min(label['Confidence'] / 100.0, 1.0)
 
                 labels[name] = confidence
                 analysis.add_label_and_score(name, confidence)
@@ -313,7 +316,7 @@ class RekognitionUnsafeDetection(AbstractVideoDetectProcessor):
 
                 content = detection['ModerationLabel']
                 name = content['Name']
-                confidence = content['Confidence'] / 100.0
+                confidence = min(content['Confidence'] / 100.0, 1.0)
 
                 labels[name] = confidence
                 analysis.add_label_and_score(name, confidence)
@@ -365,7 +368,7 @@ class RekognitionCelebrityDetection(AbstractVideoDetectProcessor):
 
                 content = detection['Celebrity']
                 name = content['Name']
-                confidence = content['Confidence'] / 100.0
+                confidence = min(content['Confidence'] / 100.0, 1.0)
 
                 labels[name] = confidence
                 analysis.add_label_and_score(name, confidence)
@@ -427,7 +430,7 @@ class SegmentVideoDetectProcessor(AbstractVideoDetectProcessor):
                 if segment['Type'] == 'TECHNICAL_CUE':
                     segment_type = segment['TechnicalCueSegment']['Type']
                     if segment_type == self.cue:
-                        confidence = segment['TechnicalCueSegment']['Confidence'] / 100.0
+                        confidence = min(segment['TechnicalCueSegment']['Confidence'] / 100.0, 1.0)
                         start_time = segment['StartTimestampMillis'] / 1000.0  # ms to s
                         track = self.cue_map.get(self.cue, self.cue)
 

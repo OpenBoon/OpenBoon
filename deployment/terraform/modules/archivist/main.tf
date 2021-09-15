@@ -107,7 +107,11 @@ resource "google_project_iam_custom_role" "archivist" {
     "run.routes.list",
     "run.services.get",
     "run.services.getIamPolicy",
-    "run.services.list"
+    "run.services.list",
+    "logging.logEntries.list",
+    "logging.logs.list",
+    "logging.views.get",
+    "logging.views.list"
   ]
 }
 

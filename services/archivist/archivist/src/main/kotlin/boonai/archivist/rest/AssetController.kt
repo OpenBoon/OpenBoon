@@ -6,12 +6,13 @@ import boonai.archivist.domain.BatchCreateAssetsResponse
 import boonai.archivist.domain.BatchDeleteAssetResponse
 import boonai.archivist.domain.BatchDeleteAssetsRequest
 import boonai.archivist.domain.BatchIndexAssetsEvent
+import boonai.archivist.domain.BatchLabelBySearchRequest
 import boonai.archivist.domain.BatchUpdateCustomFieldsRequest
 import boonai.archivist.domain.BatchUpdateResponse
 import boonai.archivist.domain.BatchUploadAssetsRequest
-import boonai.archivist.domain.UpdateAssetLabelsRequest
 import boonai.archivist.domain.ReprocessAssetSearchRequest
 import boonai.archivist.domain.ReprocessAssetSearchResponse
+import boonai.archivist.domain.UpdateAssetLabelsRequest
 import boonai.archivist.domain.UpdateAssetLabelsRequestV4
 import boonai.archivist.service.AssetSearchService
 import boonai.archivist.service.AssetService
@@ -162,6 +163,15 @@ class AssetController @Autowired constructor(
         return RestUtils.status("asset", "delete", id, rsp.deleted.contains(id))
     }
 
+    @ApiOperation("Set languages")
+    @PreAuthorize("hasAuthority('AssetsImport')")
+    @PutMapping(value = ["/api/v3/assets/{id}/_set_languages"])
+    @ResponseBody
+    fun setLanguages(@PathVariable id: String, @RequestBody req: List<String>?): Any {
+        val rsp = assetService.setLanguages(id, req)
+        return RestUtils.status("asset", "_set_languages", id, rsp)
+    }
+
     @ApiOperation("Delete assets by query.")
     @PreAuthorize("hasAuthority('AssetsImport')")
     @DeleteMapping(value = ["/api/v3/assets/_batch_delete"])
@@ -192,6 +202,14 @@ class AssetController @Autowired constructor(
             LogObject.ASSET,
             "_batch_update_labels", rsp.items.count { !it.isFailed }, rsp.items.count { it.isFailed }
         )
+    }
+
+    @ApiOperation("Update labels")
+    @PreAuthorize("hasAuthority('AssetsImport')")
+    @PutMapping(value = ["/api/v3/assets/_batch_label_by_search"])
+    @ResponseBody
+    fun updateLabelsBySearch(@RequestBody req: BatchLabelBySearchRequest): Any {
+        return assetService.batchLabelAssetsBySearch(req)
     }
 
     @PreAuthorize("hasAuthority('AssetsRead')")

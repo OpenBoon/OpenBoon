@@ -8,7 +8,7 @@ from unittest.mock import patch
 import pytest
 
 from boonsdk import Asset, BoonClient, app_from_env, \
-    FileImport, FileUpload, StoredFile, BoonSdkException, Dataset, TrainingSetFilter
+    FileImport, FileUpload, StoredFile, BoonSdkException, Dataset, DatasetFilter
 from .util import get_test_file
 
 
@@ -235,11 +235,11 @@ class AssetAppTests(unittest.TestCase):
         search = {
             'query': {'match_all': {}}
         }
-        filt = TrainingSetFilter('abc123')
+        filt = DatasetFilter('abc123')
         rsp = self.app.assets.search(search=search, filters=filt)
         path = rsp.raw_response['hits']['hits'][0]['_source']['source']['path']
         assert path == 'https://i.imgur.com/SSN26nN.jpg'
-        assert 'training_set' in post_patch.call_args[0][1]
+        assert 'dataset' in post_patch.call_args[0][1]
 
     @patch.object(BoonClient, 'post')
     def test_search_iter(self, post_patch):
@@ -470,6 +470,24 @@ class AssetAppTests(unittest.TestCase):
         res = self.app.assets.apply_modules('12345', ['boonai-face-detection'])
         assert '12345' == res.id
         assert "/foo/bar.jpg" == res.uri
+
+    @patch.object(BoonClient, 'put')
+    def test_set_languages(self, put):
+        put.return_value = {}
+        self.app.assets.set_languages('12345', ['en-US'])
+
+    @patch.object(BoonClient, 'put')
+    def test_label_search(self, put_patch):
+        put_patch.return_value = {'total': 100}
+        search = {"match_all": {}}
+        res = self.app.assets.label_search(search, Dataset({"id": "abc123"}), "cat")
+        assert res['total'] == 100
+
+    def test_label_search_bad_ratio(self):
+        search = {"match_all": {}}
+        pytest.raises(ValueError,
+                      self.app.assets.label_search, search,
+                      Dataset({"id": "abc123"}), "cat", test_ratio=1.5)
 
     @patch.object(BoonClient, 'send_data')
     def test_analyze_file(self, post_patch):

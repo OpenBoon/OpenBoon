@@ -9,7 +9,7 @@ import Button, { VARIANTS } from '../Button'
 
 import { dispatch, ACTIONS } from '../Filters/helpers'
 
-import { formatOptions } from './helpers'
+import { formatOptions, getOptions, getValues } from './helpers'
 
 const FilterReset = ({
   pathname,
@@ -24,9 +24,9 @@ const FilterReset = ({
     `/api/v1/projects/${projectId}/searches/fields/`,
   )
 
-  const options =
-    filter.attribute.split('.').reduce((acc, cur) => acc && acc[cur], fields) ||
-    []
+  const { type, values: { ids } = {} } = filter
+
+  const options = getOptions({ filter, fields })
 
   if (filter.type === 'exists' && options.includes('similarity')) {
     return null
@@ -43,7 +43,7 @@ const FilterReset = ({
         <select
           defaultValue={filter.type}
           onChange={({ target: { value } }) => {
-            const values = value === 'exists' ? { exists: true } : {}
+            const values = getValues({ type: value, ids })
 
             onReset()
 
@@ -86,44 +86,42 @@ const FilterReset = ({
             },
           }}
         >
-          {options.map((option) => {
-            return (
-              <option key={option} value={option}>
-                {formatOptions({ option })}
-              </option>
-            )
-          })}
+          {options
+            .filter((option) => option !== 'simpleSort')
+            .map((option) => {
+              return (
+                <option key={option} value={option}>
+                  {formatOptions({ option })}
+                </option>
+              )
+            })}
         </select>
       )}
 
       <div css={{ flex: 1 }} />
 
-      {filter.type !== 'exists' && (
-        <Button
-          variant={VARIANTS.MICRO}
-          onClick={() => {
-            const { type, values: { ids } = {} } = filter
+      <Button
+        variant={VARIANTS.MICRO}
+        onClick={() => {
+          const values = getValues({ type, ids })
 
-            const values = type === 'similarity' && ids ? { ids } : {}
+          onReset()
 
-            onReset()
-
-            dispatch({
-              type: ACTIONS.UPDATE_FILTER,
-              payload: {
-                pathname,
-                projectId,
-                assetId,
-                filters,
-                updatedFilter: { ...filter, values },
-                filterIndex,
-              },
-            })
-          }}
-        >
-          Reset
-        </Button>
-      )}
+          dispatch({
+            type: ACTIONS.UPDATE_FILTER,
+            payload: {
+              pathname,
+              projectId,
+              assetId,
+              filters,
+              updatedFilter: { ...filter, values },
+              filterIndex,
+            },
+          })
+        }}
+      >
+        Reset
+      </Button>
     </div>
   )
 }

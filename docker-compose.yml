@@ -200,6 +200,7 @@ services:
       BOONAI_SERVER: http://archivist:8080
       OFFICER_URL: ws://officer:7078
       BOONAI_BILLING_METRICS_SERVICE: http://metrics
+      ENVIRONMENT: localdev
 
   # Console web application.
   wallet:

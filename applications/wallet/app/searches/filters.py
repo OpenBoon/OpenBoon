@@ -83,7 +83,7 @@ class BaseFilter(object):
             if 'values' not in self.data:
                 self.errors.append({'values': 'This value is required.'})
             for key in self.required_query_keys:
-                if key not in self.data['values']:
+                if key not in self.data.get('values', {}):
                     self.errors.append({key: 'This value is required.'})
 
         if self.errors:
@@ -110,34 +110,49 @@ class BaseFilter(object):
         """Gives the `clip` query for the current filter values."""
         return {}
 
-    def add_to_query(self, query):
+    def add_to_query(self, query, request):
         """Adds the given filters information to a pre-existing query.
 
         Adds this query to a prebuilt query. Every clause will be appended to the list
         of existing `bool` clauses if they exist, in an additive manner.
+
+        Args:
+            query (dict): The current query to add to
+            request (Request): The incoming DRF request to modify if needed
         """
         this_query = self.get_es_query()
         if not this_query:
             # Catches the case where a filter doesn't have a relevant query to add
             return query
 
-        bool_clauses = this_query['query'].get('bool', {})
+        # Add the "query" section of this filters query
+        if 'query' in this_query:
+            if 'query' not in query:
+                # If the query key doesn't exist at all, add this filters whole query to it
+                query['query'] = this_query['query']
+            elif 'bool' not in query['query']:
+                # If this query is not setup as a bool, then add this filters bool section to it
+                query['query']['bool'] = this_query['query']['bool']
+            else:
+                # Check that every clause (ex. 'filter', 'must_not', 'should', etc) in
+                # this filter's query gets added if it's missing, or extends what is
+                # already existing
+                bool_clauses = this_query['query'].get('bool', {})
+                for clause in bool_clauses:
+                    if clause not in query['query']['bool']:
+                        query['query']['bool'][clause] = this_query['query']['bool'][clause]
+                    else:
+                        query['query']['bool'][clause].extend(this_query['query']['bool'][clause])
 
-        if 'query' not in query:
-            # If the query key doesn't exist at all, add this filters whole query to it
-            query.update(this_query)
-        elif 'bool' not in query['query']:
-            # If this query is not setup as a bool, then add this filters bool section to it
-            query['query']['bool'] = this_query['query']['bool']
-        else:
-            # Check that every clause (ex. 'filter', 'must_not', 'should', etc) in
-            # this filter's query gets added if it's missing, or extends what is
-            # already existing
-            for clause in bool_clauses:
-                if clause not in query['query']['bool']:
-                    query['query']['bool'][clause] = this_query['query']['bool'][clause]
-                else:
-                    query['query']['bool'][clause].extend(this_query['query']['bool'][clause])
+        # Add the "sort" section of this filters query
+        if 'sort' in this_query:
+            if 'sort' not in query:
+                # If the query doesn't have a sort, just add the whole thing
+                query['sort'] = this_query['sort']
+            else:
+                # Append all elements in this queries sort to the current
+                # list of sort clauses that exist
+                query['sort'].extend(this_query['sort'])
 
         return query
 
@@ -495,6 +510,73 @@ class SimilarityFilter(BaseFilter):
         return hashes
 
 
+class LabelsExistFilter(BaseFilter):
+
+    type = 'labelsExist'
+    required_agg_keys = ['datasetId']
+    required_query_keys = ['exists']
+
+    # No agg needed to load the UI for this filter
+
+    def get_es_query(self):
+        exists = self.data['values']['exists']
+
+        dataset_id = self.data['datasetId']
+        if exists:
+            query = {
+                "query": {
+                    "nested": {
+                        "path": "labels",
+                        "query": {
+                            "bool": {
+                                "filter": [
+                                    {"term": {"labels.datasetId": dataset_id}}]
+                            }
+                        }
+                    }
+                }
+            }
+        else:
+            query = {
+                'query': {
+                    'bool': {
+                        # Should says one of the following clauses needs to be met (like an OR)
+                        'should': [
+                            # Returns all docs with a missing "labels" nested property
+                            {
+                                'bool': {
+                                    'must_not': [
+                                        {
+                                            'nested': {
+                                                'path': 'labels',
+                                                'query': {
+                                                    'exists': {'field': 'labels'}
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
+                            # Returns all docs where there is a nested property that contains
+                            # an entry/doc with a matching dataset id
+                            {
+                                'nested': {
+                                    'path': 'labels',
+                                    'query': {
+                                        'bool': {
+                                            'must_not': [{"term": {"labels.datasetId": dataset_id}}]
+                                        }
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                }
+            }
+
+        return query
+
+
 class LabelFilter(BaseFilter):
 
     type = 'label'
@@ -624,4 +706,46 @@ class DateFilter(BaseFilter):
                     ]
                 }
             }
+        }
+
+
+class LimitFilter(BaseFilter):
+    """The Limit Filter has no Agg and has no Query. The UI is always set to either:
+        1 - 10,000
+            or
+        1 - Current Total Assets in Query.
+    There is no query because the actual limiting happens outside of the Filter system
+    since ES has no way of limiting the total amount of assets returned."""
+
+    type = 'limit'
+    required_query_keys = ['maxAssets']
+
+    @property
+    def max_assets(self):
+        return self.data.get('values', {}).get('maxAssets')
+
+    def add_to_query(self, query, request):
+        # Set the max_assets value on the given request rather than modifying anything
+        # in the query
+        request.max_assets = self.max_assets
+        return query
+
+
+class SimpleSortFilter(BaseFilter):
+    """The SimpleSortFilter has no agg, but will add to the query.
+
+    Possible `order` values are 'asc' and 'desc'.
+    """
+
+    type = 'simpleSort'
+    required_agg_keys = ['attribute']
+    required_query_keys = ['order']
+
+    # No agg needed to load the UI for this filter
+
+    def get_es_query(self):
+        order_direction = self.data['values']['order']
+        attribute = self.data['attribute']
+        return {
+            'sort': [{attribute: {'order': order_direction}}]
         }

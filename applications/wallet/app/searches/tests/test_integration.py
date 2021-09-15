@@ -234,8 +234,8 @@ class TestFieldsAction:
         assert content['analysis']['knn-quality'] == ['labelConfidence',
                                                       'predictionCount',
                                                       'exists']
-        assert content['media']['type'] == ['facet', 'exists']
-        assert content['labels']['313e28b1-9f0e-1595-a6c0-ea38f4c81474'] == ['label']
+        assert content['media']['type'] == ['facet', 'exists', 'simpleSort']
+        assert content['labels']['313e28b1-9f0e-1595-a6c0-ea38f4c81474'] == ['label', 'labelsExist']
         assert content['aux'] == ['exists']
         assert content['tmp'] == ['exists']
         assert get_patch.call_count == 1
@@ -252,8 +252,8 @@ class TestFieldsAction:
         monkeypatch.setattr(BoonClient, 'get', mock_response)
         response = api_client.get(reverse('search-fields', kwargs={'project_pk': project.id}))
         content = check_response(response)
-        assert content['analysis']['analyis_underscore']['tinyProxy'] == ['exists']
-        assert content['media']['type'] == ['facet', 'exists']
+        assert content['analysis']['analyis_underscore']['tinyProxy'] == ['exists', 'simpleSort']
+        assert content['media']['type'] == ['facet', 'exists', 'simpleSort']
         assert content['aux'] == ['exists']
         assert content['tmp'] == ['exists']
 
@@ -294,6 +294,14 @@ class BaseFiltersTestCase(object):
     @pytest.fixture
     def facet_query_qs(self, facet_query):
         return convert_json_to_base64([facet_query])
+
+    @pytest.fixture
+    def facet_query_limited_qs(self, facet_query):
+        return convert_json_to_base64([
+            facet_query,
+            {'type': 'limit',
+             'values': {'maxAssets': 1}}
+        ])
 
 
 class TestSearchAssetModifier:
@@ -376,6 +384,18 @@ class TestQuery(BaseFiltersTestCase):
         # Should only be the requested fields on this request
         assert list(content['results'][0]['metadata']) == ['source']
 
+    def test_get_with_max_assets_limited(self, login, api_client, project, monkeypatch,
+                                         facet_query_limited_qs, mock_response, snapshot):
+        def _response(*args, **kwargs):
+            return mock_response
+
+        monkeypatch.setattr(BoonClient, 'post', _response)
+        response = api_client.get(reverse('search-query', kwargs={'project_pk': project.id}),
+                                  {'query': facet_query_limited_qs})
+
+        content = check_response(response, status=status.HTTP_200_OK)
+        snapshot.assert_match(content)
+
     def test_get_md_missing_media(self, login, api_client, project, monkeypatch, facet_query_qs):
         def _response(*args, **kwargs):
             return {"took":6,"timed_out":False,"_shards":{"total":2,"successful":2,"skipped":0,"failed":0},"hits":{"total":{"value":2,"relation":"eq"},"max_score":0.0,"hits":[{"_index":"fgctsfya3pdk0oib","_type":"_doc","_id":"_V_suiBEd3QEPBWxMq6yW6SII8cCuP1U","_score":0.0,"_source":{"files":[{"size":119497,"name":"image_744x1024.jpg","mimetype":"image/jpeg","id":"assets/_V_suiBEd3QEPBWxMq6yW6SII8cCuP1U/proxy/image_744x1024.jpg","category":"proxy","attrs":{"width":744,"height":1024}},{"size":119497,"name":"web-proxy.jpg","mimetype":"image/jpeg","id":"assets/_V_suiBEd3QEPBWxMq6yW6SII8cCuP1U/web-proxy/web-proxy.jpg","category":"web-proxy","attrs":{"width":744,"height":1024}},{"size":43062,"name":"image_372x512.jpg","mimetype":"image/jpeg","id":"assets/_V_suiBEd3QEPBWxMq6yW6SII8cCuP1U/proxy/image_372x512.jpg","category":"proxy","attrs":{"width":372,"height":512}},{"size":21318,"name":"image_232x320.jpg","mimetype":"image/jpeg","id":"assets/_V_suiBEd3QEPBWxMq6yW6SII8cCuP1U/proxy/image_232x320.jpg","category":"proxy","attrs":{"width":232,"height":320}}],"source":{"path":"gs://zorroa-dev-data/image/singlepage.tiff","extension":"tiff","filename":"singlepage.tiff","checksum":754419346,"mimetype":"image/tiff","filesize":11082}}},{"_index":"fgctsfya3pdk0oib","_type":"_doc","_id":"vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C","_score":0.0,"_source":{"media":{},"files":[{"size":89643,"name":"image_650x434.jpg","mimetype":"image/jpeg","id":"assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/proxy/image_650x434.jpg","category":"proxy","attrs":{"width":650,"height":434}},{"size":60713,"name":"image_512x341.jpg","mimetype":"image/jpeg","id":"assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/proxy/image_512x341.jpg","category":"proxy","attrs":{"width":512,"height":341}},{"size":30882,"name":"image_320x213.jpg","mimetype":"image/jpeg","id":"assets/vZgbkqPftuRJ_-Of7mHWDNnJjUpFQs0C/proxy/image_320x213.jpg","category":"proxy","attrs":{"width":320,"height":213}}],"source":{"path":"gs://zorroa-dev-data/image/TIFF_1MB.tiff","extension":"tiff","filename":"TIFF_1MB.tiff","checksum":1867533868,"mimetype":"image/tiff","filesize":1131930}}}]}}  # noqa
@@ -414,8 +434,7 @@ class TestQuery(BaseFiltersTestCase):
     def test_empty_query_sorts(self, login, api_client, project):
         def mock_list(*args, **kwargs):
             query = kwargs['search_filter']
-            assert query == {'sort': {'system.timeCreated': {'order': 'desc'}},
-                             '_source': ['id',
+            assert query == {'_source': ['id',
                                          'source*',
                                          'files*',
                                          'media*'],
@@ -429,8 +448,7 @@ class TestQuery(BaseFiltersTestCase):
     def test_fields_querystring_parsed(self, login, api_client, project):
         def mock_list(*args, **kwargs):
             query = kwargs['search_filter']
-            assert query == {'sort': {'system.timeCreated': {'order': 'desc'}},
-                             '_source': ['id',
+            assert query == {'_source': ['id',
                                          'source*',
                                          'files*',
                                          'media*',

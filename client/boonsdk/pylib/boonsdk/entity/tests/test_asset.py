@@ -1,8 +1,10 @@
 import json
 import logging
+import os
 import unittest
 
-from boonsdk import Asset, StoredFile, FileImport, FileUpload, FileTypes, Label, Model
+from boonsdk import Asset, StoredFile, FileImport, FileUpload, \
+    FileTypes, Label, Model, CsvFileImport, Dataset, LabelScope
 from boonsdk.client import to_json
 
 logging.basicConfig(level=logging.DEBUG)
@@ -13,38 +15,38 @@ class AssetTests(unittest.TestCase):
 
     def setUp(self):
         self.test_files = [{
-            "id": "assets/123/proxy/proxy_200x200.jpg",
-            "category": "proxy",
-            "name": "proxy_200x200.jpg",
-            "mimetype": "image/jpeg",
-            "attrs": {
-                "width": 200,
-                "height": 200
+            'id': 'assets/123/proxy/proxy_200x200.jpg',
+            'category': 'proxy',
+            'name': 'proxy_200x200.jpg',
+            'mimetype': 'image/jpeg',
+            'attrs': {
+                'width': 200,
+                'height': 200
                 }
             },
             {
-                "id": "assets/123/proxy/proxy_400x400.jpg",
-                "category": "proxy",
-                "name": "proxy_400x400.jpg",
-                "mimetype": "image/jpeg",
-                "attrs": {
-                    "width": 400,
-                    "height": 400
+                'id': 'assets/123/proxy/proxy_400x400.jpg',
+                'category': 'proxy',
+                'name': 'proxy_400x400.jpg',
+                'mimetype': 'image/jpeg',
+                'attrs': {
+                    'width': 400,
+                    'height': 400
                 }
             }]
 
     def test_from_hit(self):
         asset = Asset.from_hit({
-            "_id": "12345",
-            "_source": {"foo": "bar"},
-            "inner_hits": {
-                "children": {
-                    "hits": {
-                        "hits": [
+            '_id': '12345',
+            '_source': {'foo': 'bar'},
+            'inner_hits': {
+                'children': {
+                    'hits': {
+                        'hits': [
                             {
-                                "_id": "45678",
-                                "_source": {
-                                    "bing": "bong"
+                                '_id': '45678',
+                                '_source': {
+                                    'bing': 'bong'
                                 }
                             }
                         ]
@@ -53,224 +55,224 @@ class AssetTests(unittest.TestCase):
             }
         })
 
-        assert "12345" == asset.id
-        assert "bar" == asset['foo']
-        assert 1 == len(asset.get_inner_hits("children"))
-        assert 0 == len(asset.get_inner_hits("corn"))
+        assert '12345' == asset.id
+        assert 'bar' == asset['foo']
+        assert 1 == len(asset.get_inner_hits('children'))
+        assert 0 == len(asset.get_inner_hits('corn'))
 
     def test_add_file(self):
-        asset = Asset({"id": "123"})
+        asset = Asset({'id': '123'})
         asset.add_file(StoredFile(self.test_files[0]))
-        assert 1 == len(asset.get_files(name="proxy_200x200.jpg"))
-        assert 1 == len(asset.get_files(name=["proxy_200x200.jpg"]))
-        assert 0 == len(asset.get_files(name="spock"))
+        assert 1 == len(asset.get_files(name='proxy_200x200.jpg'))
+        assert 1 == len(asset.get_files(name=['proxy_200x200.jpg']))
+        assert 0 == len(asset.get_files(name='spock'))
 
     def test_add_and_get_analysis(self):
         class Labels:
             def for_json(self):
-                return {"predictions": [{"cat": 12345}]}
+                return {'predictions': [{'cat': 12345}]}
 
-        asset = Asset({"id": "123"})
-        asset.add_analysis("boonai-foo", Labels())
-        analysis = asset.get_analysis("boonai-foo")
+        asset = Asset({'id': '123'})
+        asset.add_analysis('boonai-foo', Labels())
+        analysis = asset.get_analysis('boonai-foo')
         assert len(analysis['predictions']) == 1
         assert analysis['predictions'][0]['cat'] == 12345
 
     def test_get_files_filter_name(self):
-        asset = Asset({"id": "123"})
-        asset.set_attr("files", self.test_files)
+        asset = Asset({'id': '123'})
+        asset.set_attr('files', self.test_files)
 
-        assert 1 == len(asset.get_files(name="proxy_200x200.jpg"))
-        assert 1 == len(asset.get_files(name=["proxy_200x200.jpg"]))
-        assert 0 == len(asset.get_files(name="spock"))
+        assert 1 == len(asset.get_files(name='proxy_200x200.jpg'))
+        assert 1 == len(asset.get_files(name=['proxy_200x200.jpg']))
+        assert 0 == len(asset.get_files(name='spock'))
 
     def test_get_files_filter_category(self):
-        asset = Asset({"id": "123"})
-        asset.set_attr("files", self.test_files)
+        asset = Asset({'id': '123'})
+        asset.set_attr('files', self.test_files)
 
-        assert 2 == len(asset.get_files(category="proxy"))
-        assert 2 == len(asset.get_files(category=["proxy"]))
-        assert 0 == len(asset.get_files(name="face"))
+        assert 2 == len(asset.get_files(category='proxy'))
+        assert 2 == len(asset.get_files(category=['proxy']))
+        assert 0 == len(asset.get_files(name='face'))
 
     def test_get_files_filter_mimetype(self):
-        asset = Asset({"id": "123"})
-        asset.set_attr("files", self.test_files)
+        asset = Asset({'id': '123'})
+        asset.set_attr('files', self.test_files)
 
-        assert 2 == len(asset.get_files(mimetype="image/jpeg"))
-        assert 2 == len(asset.get_files(mimetype=["image/", "video/mp4"]))
-        assert 0 == len(asset.get_files(mimetype="video/mp4"))
+        assert 2 == len(asset.get_files(mimetype='image/jpeg'))
+        assert 2 == len(asset.get_files(mimetype=['image/', 'video/mp4']))
+        assert 0 == len(asset.get_files(mimetype='video/mp4'))
 
     def test_get_files_by_extension(self):
-        asset = Asset({"id": "123"})
-        asset.set_attr("files", self.test_files)
+        asset = Asset({'id': '123'})
+        asset.set_attr('files', self.test_files)
 
-        assert 2 == len(asset.get_files(extension="jpg"))
-        assert 0 == len(asset.get_files(extension="png"))
-        assert 2 == len(asset.get_files(extension=["png", "jpg"]))
+        assert 2 == len(asset.get_files(extension='jpg'))
+        assert 0 == len(asset.get_files(extension='png'))
+        assert 2 == len(asset.get_files(extension=['png', 'jpg']))
 
     def test_get_files_by_attrs(self):
-        asset = Asset({"id": "123"})
-        asset.set_attr("files", self.test_files)
+        asset = Asset({'id': '123'})
+        asset.set_attr('files', self.test_files)
 
-        assert 1 == len(asset.get_files(attrs={"width": 200}))
-        assert 0 == len(asset.get_files(attrs={"width": 200, "height": 100}))
+        assert 1 == len(asset.get_files(attrs={'width': 200}))
+        assert 0 == len(asset.get_files(attrs={'width': 200, 'height': 100}))
 
     def test_get_files_by_attr_keys(self):
-        asset = Asset({"id": "123"})
-        asset.set_attr("files", self.test_files)
+        asset = Asset({'id': '123'})
+        asset.set_attr('files', self.test_files)
 
-        assert 2 == len(asset.get_files(attr_keys=["width"]))
-        assert 2 == len(asset.get_files(attr_keys="width"))
-        assert 0 == len(asset.get_files(attr_keys=["kirk"]))
+        assert 2 == len(asset.get_files(attr_keys=['width']))
+        assert 2 == len(asset.get_files(attr_keys='width'))
+        assert 0 == len(asset.get_files(attr_keys=['kirk']))
 
     def test_get_files_sort_func(self):
-        asset = Asset({"id": "123"})
+        asset = Asset({'id': '123'})
         test_files = [
             {
-                "category": "proxy",
-                "name": "zzz.jpg",
-                "mimetype": "image/jpeg",
-                "attrs": {
-                    "width": 200,
-                    "height": 200
+                'category': 'proxy',
+                'name': 'zzz.jpg',
+                'mimetype': 'image/jpeg',
+                'attrs': {
+                    'width': 200,
+                    'height': 200
                 }
             },
             {
-                "category": "proxy",
-                "name": "aaa.jpg",
-                "mimetype": "image/jpeg",
-                "attrs": {
-                    "width": 200,
-                    "height": 200
+                'category': 'proxy',
+                'name': 'aaa.jpg',
+                'mimetype': 'image/jpeg',
+                'attrs': {
+                    'width': 200,
+                    'height': 200
                 }
             }
         ]
-        asset.set_attr("files", test_files)
-        top = asset.get_files(attr_keys=["width"], sort_func=lambda x: x.name)[0]
-        assert top.name == "aaa.jpg"
+        asset.set_attr('files', test_files)
+        top = asset.get_files(attr_keys=['width'], sort_func=lambda x: x.name)[0]
+        assert top.name == 'aaa.jpg'
 
     def test_get_files_sort_func_and_filtered(self):
-        asset = Asset({"id": "123"})
-        asset.set_attr("files", self.test_files)
-        top = asset.get_files(attr_keys=["dog"], sort_func=lambda x: x.name)
+        asset = Asset({'id': '123'})
+        asset.set_attr('files', self.test_files)
+        top = asset.get_files(attr_keys=['dog'], sort_func=lambda x: x.name)
         assert len(top) == 0
 
     def test_get_files_by_all(self):
-        asset = Asset({"id": "123"})
-        asset.set_attr("files", self.test_files)
+        asset = Asset({'id': '123'})
+        asset.set_attr('files', self.test_files)
 
-        assert 1 == len(asset.get_files(mimetype="image/jpeg",
-                                        extension=["png", "jpg"],
-                                        attrs={"width": 200}))
+        assert 1 == len(asset.get_files(mimetype='image/jpeg',
+                                        extension=['png', 'jpg'],
+                                        attrs={'width': 200}))
 
     def test_equal(self):
-        assert Asset({"id": "123"}) == Asset({"id": "123"})
+        assert Asset({'id': '123'}) == Asset({'id': '123'})
 
     def test_get_item_and_set_item(self):
-        asset = Asset({"id": "123"})
-        asset["foo.bar.bing"] = "123"
-        assert asset["foo.bar.bing"] == "123"
+        asset = Asset({'id': '123'})
+        asset['foo.bar.bing'] = '123'
+        assert asset['foo.bar.bing'] == '123'
 
     def test_get_thumbnail(self):
-        asset = Asset({"id": "123"})
-        asset.set_attr("files", self.test_files)
+        asset = Asset({'id': '123'})
+        asset.set_attr('files', self.test_files)
 
         f = asset.get_thumbnail(0)
-        assert "assets/123/proxy/proxy_200x200.jpg" == f.id
+        assert 'assets/123/proxy/proxy_200x200.jpg' == f.id
 
         f = asset.get_thumbnail(1)
-        assert "assets/123/proxy/proxy_400x400.jpg" == f.id
+        assert 'assets/123/proxy/proxy_400x400.jpg' == f.id
 
         f = asset.get_thumbnail(100)
-        assert "assets/123/proxy/proxy_400x400.jpg" == f.id
+        assert 'assets/123/proxy/proxy_400x400.jpg' == f.id
 
     def test_get_predicted_labels(self):
-        asset = Asset({"id": "123"})
-        asset.set_attr("analysis.boonai-label-detection.predictions", [
+        asset = Asset({'id': '123'})
+        asset.set_attr('analysis.boonai-label-detection.predictions', [
             {
-                "score": 0.99,
-                "label": "house"
+                'score': 0.99,
+                'label': 'house'
             },
             {
-                "score": 0.5,
-                "label": "house"
+                'score': 0.5,
+                'label': 'house'
             },
             {
-                "score": 0.1,
-                "label": "market"
+                'score': 0.1,
+                'label': 'market'
             }
         ])
-        assert 3 == len(asset.get_predicted_labels("boonai-label-detection"))
-        assert 1 == len(asset.get_predicted_labels("boonai-label-detection", min_score=0.85))
+        assert 3 == len(asset.get_predicted_labels('boonai-label-detection'))
+        assert 1 == len(asset.get_predicted_labels('boonai-label-detection', min_score=0.85))
 
     def test_get_predicted_label(self):
-        asset = Asset({"id": "123"})
-        asset.set_attr("analysis.boonai-label-detection.predictions", [
+        asset = Asset({'id': '123'})
+        asset.set_attr('analysis.boonai-label-detection.predictions', [
             {
-                "score": 0.99,
-                "label": "house"
+                'score': 0.99,
+                'label': 'house'
             },
             {
-                "score": 0.5,
-                "label": "broom"
+                'score': 0.5,
+                'label': 'broom'
             }
         ])
         # Get by index
-        pred = asset.get_predicted_label("boonai-label-detection", 0)
-        assert "house" == pred["label"]
-        assert 0.99 == pred["score"]
+        pred = asset.get_predicted_label('boonai-label-detection', 0)
+        assert 'house' == pred['label']
+        assert 0.99 == pred['score']
 
-        pred = asset.get_predicted_label("boonai-label-detection", "broom")
-        assert "broom" == pred["label"]
-        assert 0.5 == pred["score"]
+        pred = asset.get_predicted_label('boonai-label-detection', 'broom')
+        assert 'broom' == pred['label']
+        assert 0.5 == pred['score']
 
     def test_get_analysis(self):
-        asset = Asset({"id": "123"})
-        asset.set_attr("analysis.boonai-label-detection.predictions", [
+        asset = Asset({'id': '123'})
+        asset.set_attr('analysis.boonai-label-detection.predictions', [
             {
-                "score": 0.99,
-                "label": "house"
+                'score': 0.99,
+                'label': 'house'
             },
             {
-                "score": 0.5,
-                "label": "broom"
+                'score': 0.5,
+                'label': 'broom'
             }
         ])
-        analysis = asset.get_analysis("boonai-label-detection")
-        assert "house" == analysis['predictions'][0]['label']
+        analysis = asset.get_analysis('boonai-label-detection')
+        assert 'house' == analysis['predictions'][0]['label']
 
     def test_get_analysis_by_model(self):
-        asset = Asset({"id": "123"})
-        asset.set_attr("analysis.dogs.predictions", [
+        asset = Asset({'id': '123'})
+        asset.set_attr('analysis.dogs.predictions', [
             {
-                "score": 0.99,
-                "label": "house"
+                'score': 0.99,
+                'label': 'house'
             },
             {
-                "score": 0.5,
-                "label": "broom"
+                'score': 0.5,
+                'label': 'broom'
             }
         ])
 
-        model = Model({"id": "123", "moduleName": "dogs"})
+        model = Model({'id': '123', 'moduleName': 'dogs'})
         analysis = asset.get_analysis(model)
-        assert "house" == analysis['predictions'][0]['label']
+        assert 'house' == analysis['predictions'][0]['label']
 
     def test_extension(self):
-        asset = Asset({"id": "123", "document": {"source": {"extension": "JPG"}}})
-        assert asset.extension == "jpg"
+        asset = Asset({'id': '123', 'document': {'source': {'extension': 'JPG'}}})
+        assert asset.extension == 'jpg'
 
 
 class FileImportTests(unittest.TestCase):
 
     def test_get_item_and_set_item(self):
-        imp = FileImport("gs://zorroa-dev-data/image/pluto.png")
-        imp["foo"] = "bar"
-        assert imp["foo"] == "bar"
+        imp = FileImport('gs://zorroa-dev-data/image/pluto.png')
+        imp['foo'] = 'bar'
+        assert imp['foo'] == 'bar'
 
     def test_for_json(self):
         imp = FileImport('gs://zorroa-dev-data/image/pluto.png',
-                         label=Label("12345", "dog"))
+                         label=Label('12345', 'dog'))
 
         d = json.loads(to_json(imp))
         assert 'gs://zorroa-dev-data/image/pluto.png' == d['uri']
@@ -284,13 +286,110 @@ class FileUploadTests(unittest.TestCase):
     def test_for_json(self):
         imp = FileUpload(__file__,
                          page=1,
-                         label=Label("12345", "dog"))
+                         label=Label('12345', 'dog'))
 
         d = json.loads(to_json(imp))
         assert __file__ == d['uri']
         assert 1 == d['page']
         assert '12345' == d['label']['datasetId']
         assert 'dog' == d['label']['label']
+
+
+class CsvFileImportTests(unittest.TestCase):
+
+    test_file = os.path.dirname(__file__) + '/flipkart.csv'
+
+    def test_iterate(self):
+        csv = CsvFileImport(self.test_file)
+        batches = list(csv)
+        assert len(batches) == 1
+        assert len(batches[0]) == 19
+
+    def test_max_assets(self):
+        csv = CsvFileImport(self.test_file, max_assets=5)
+        batches = list(csv)
+        assert len(batches[0]) == 5
+
+    def test_max_assets_batches(self):
+        csv = CsvFileImport(self.test_file, uri_column=8, max_assets=9)
+        csv.batch_size = 2
+        batches = list(csv)
+        assert len(batches) == 5
+        assert len(batches[4]) == 1
+        assert len(batches[0]) == 2
+
+    def test_label(self):
+        ds = Dataset({'id': '12345'})
+        csv = CsvFileImport(self.test_file, uri_column=8, dataset=ds, label_column=0)
+        batches = list(csv)
+        assert batches[0][0].label.label == 'c2d766ca982eca8304150849735ffef9'
+        assert batches[0][0].label.dataset_id == '12345'
+
+    def test_custom_fields(self):
+        csv = CsvFileImport(self.test_file, uri_column=8,
+                            field_map={'product_id': 0, 'product_name': 3})
+        count = 0
+        for batch in csv:
+            for item in batch:
+                count += 1
+                assert 'product_id' in item.custom
+                assert 'product_name' in item.custom
+        assert count == 19
+
+    def test_get_label_scope_from_string(self):
+        ds = Dataset({'id': '12345'})
+        csv = CsvFileImport(self.test_file,
+                            uri_column=8, dataset=ds, label_column=0, label_scope='TEST')
+        batches = list(csv)
+        assert batches[0][0].label.label == 'c2d766ca982eca8304150849735ffef9'
+        assert batches[0][0].label.dataset_id == '12345'
+        assert batches[0][0].label.scope == LabelScope.TEST
+
+    def test_get_label_scope_from_file(self):
+        ds = Dataset({'id': '12345'})
+        path = os.path.dirname(__file__) + '/simple.csv'
+        csv = CsvFileImport(path,
+                            uri_column=2, dataset=ds, label_column=1, label_scope=0)
+        batches = list(csv)
+        assert batches[0][0].label.label == 'horse'
+        assert batches[0][0].label.dataset_id == '12345'
+        assert batches[0][0].label.scope == LabelScope.TEST
+
+        assert batches[0][1].label.label == 'horse'
+        assert batches[0][1].label.dataset_id == '12345'
+        assert batches[0][1].label.scope == LabelScope.TRAIN
+
+    def test_get_label_scope_from_callable(self):
+        def get_scope(row):
+            return LabelScope.TEST
+
+        ds = Dataset({'id': '12345'})
+        path = os.path.dirname(__file__) + '/simple.csv'
+        csv = CsvFileImport(path,
+                            uri_column=2, dataset=ds, label_column=1, label_scope=get_scope)
+        batches = list(csv)
+        assert batches[0][0].label.label == 'horse'
+        assert batches[0][0].label.dataset_id == '12345'
+        assert batches[0][0].label.scope == LabelScope.TEST
+
+        assert batches[0][1].label.label == 'horse'
+        assert batches[0][1].label.dataset_id == '12345'
+        assert batches[0][1].label.scope == LabelScope.TEST
+
+    def test_get_label_scope_dynamic(self):
+        ds = Dataset({'id': '12345'})
+        csv = CsvFileImport(self.test_file,
+                            uri_column=2, dataset=ds, label_column=1, label_scope=0.2)
+        batches = list(csv)
+        for b in batches:
+            for a in b:
+                print(a.label.scope)
+        assert batches[0][0].label.scope == LabelScope.TEST
+        assert batches[0][1].label.scope == LabelScope.TRAIN
+        assert batches[0][2].label.scope == LabelScope.TRAIN
+        assert batches[0][3].label.scope == LabelScope.TRAIN
+        assert batches[0][4].label.scope == LabelScope.TRAIN
+        assert batches[0][5].label.scope == LabelScope.TEST
 
 
 class FileTypesTests(unittest.TestCase):

@@ -73,7 +73,8 @@ class PipelineModServiceImpl(
 
     @Transactional(readOnly = true)
     override fun getByNames(names: Collection<String>): List<PipelineMod> {
-        val trimmedNames = names.map { it.trim('+', '-') }
+        val forcedModules = names.filter { it.startsWith('+') }.map { it.trim('+') }.toSet()
+        val trimmedNames = names.map { it.trim('+') }
         val byIds = trimmedNames.filter { it.isUUID() }.map { UUID.fromString(it) }
         val byNames = trimmedNames.filter { !it.isUUID() }
 
@@ -84,7 +85,14 @@ class PipelineModServiceImpl(
         }
 
         val idsFound = getByIds(byIds)
-        return namesFound.plus(idsFound)
+        val result = namesFound.plus(idsFound)
+        result.forEach {
+            if (it.name in forcedModules) {
+                it.force = true
+            }
+        }
+
+        return result
     }
 
     @Transactional(readOnly = true)
@@ -110,10 +118,8 @@ class PipelineModServiceImpl(
         val actor = getZmlpActor().toString()
 
         val projectId = if (spec.standard) {
-            logger.info("Creating standard module: {}", spec.name)
             null
         } else {
-            logger.info("Creating project module: {}", id)
             getProjectId()
         }
 

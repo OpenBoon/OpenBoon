@@ -174,7 +174,10 @@ class ProcessorRef(
     var module: String = "standard",
 
     @ApiModelProperty("The Processor name to use for the checksum")
-    var checksumName: String? = null
+    var checksumName: String? = null,
+
+    @ApiModelProperty("Set to true foe the processor to run even if it's been run.s")
+    var force: Boolean = false
 
 ) {
     /**

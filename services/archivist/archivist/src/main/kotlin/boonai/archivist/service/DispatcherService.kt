@@ -48,9 +48,6 @@ import boonai.common.service.logging.MeterRegistryHolder.getTags
 import boonai.common.service.logging.MeterRegistryHolder.meterRegistry
 import boonai.common.service.storage.SystemStorageService
 import boonai.common.util.Json
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.DataIntegrityViolationException
@@ -58,6 +55,7 @@ import org.springframework.stereotype.Component
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
+import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 import javax.annotation.PostConstruct
 
@@ -315,6 +313,8 @@ class DispatcherServiceImpl @Autowired constructor(
 
     @Autowired
     lateinit var analystService: AnalystService
+
+    val requestPool = Executors.newFixedThreadPool(16)
 
     @PostConstruct
     fun init() {
@@ -579,12 +579,13 @@ class DispatcherServiceImpl @Autowired constructor(
     override fun retryTask(task: InternalTask, reason: String): Boolean {
         meterRegistry.counter("zorroa.task.retry", getTags()).increment()
         return if (task.state.isDispatched()) {
-            GlobalScope.launch(Dispatchers.IO) {
+            requestPool.execute {
                 if (!killRunningTaskOnAnalyst(task, TaskState.Waiting, reason)) {
                     logger.warn("Manually setting task {} to Waiting", task)
                     jobService.setTaskState(task, TaskState.Waiting, null)
                 }
             }
+
             // just assuming true here as the call to the analyst is backgrounded
             true
         } else {
@@ -594,7 +595,7 @@ class DispatcherServiceImpl @Autowired constructor(
 
     override fun skipTask(task: InternalTask): Boolean {
         return if (task.state.isDispatched()) {
-            GlobalScope.launch {
+            requestPool.execute {
                 killRunningTaskOnAnalyst(task, TaskState.Skipped, "Task skipped")
             }
             // just assuming true here as the call to the analyst is backgrounded
@@ -609,7 +610,7 @@ class DispatcherServiceImpl @Autowired constructor(
         logger.info("Handling job state changes event.")
         val auth = getAuthentication()
         if (event.newState == JobState.Cancelled) {
-            GlobalScope.launch(Dispatchers.IO) {
+            requestPool.execute {
                 withAuth(auth) {
                     handleJobCanceled(event.job)
                 }

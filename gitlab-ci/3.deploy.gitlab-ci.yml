@@ -102,12 +102,7 @@ deploy-prod:
       when: manual
   after_script:
     - >-
-      curl -X POST \
-      https://hooks.slack.com/services/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 \
-      -H 'Content-Type: application/json' \
-      -H 'Postman-Token: 54229103-b659-4b88-973f-af547266e9d5' \
-      -H 'cache-control: no-cache' \
-      -d "{\"text\": \"Deployed commit <https://gitlab.com/zorroa-zvi/zmlp/-/commits/$CI_COMMIT_SHA|$CI_COMMIT_SHORT_SHA> to Production. Review the deploy job <$CI_JOB_URL|here>.\"}"
+      curl -X POST https://hooks.slack.com/services/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 -H 'Content-Type: application/json' -H 'cache-control: no-cache' -d "{\"text\": \"Deployed commit <https://gitlab.com/zorroa-zvi/zmlp/-/commits/$CI_COMMIT_SHA|$CI_COMMIT_SHORT_SHA> to Production. Review the deploy job <$CI_JOB_URL|here>.\"}"
 
 # Build and deploy the BoonSDK python docs.
 .deploy-boonsdk-docs:

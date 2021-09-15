@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 const filterShape = {
   type: PropTypes.oneOf([
     'exists',
+    'labelsExist',
     'range',
     'predictionCount',
     'facet',
@@ -11,6 +12,8 @@ const filterShape = {
     'similarity',
     'date',
     'label',
+    'limit',
+    'simpleSort',
   ]),
   attribute: PropTypes.string.isRequired,
   values: PropTypes.shape({}),
