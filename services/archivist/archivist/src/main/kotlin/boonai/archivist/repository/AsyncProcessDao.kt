@@ -3,6 +3,8 @@ package boonai.archivist.repository
 import boonai.archivist.domain.AsyncProcess
 import boonai.archivist.domain.AsyncProcessState
 import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.jpa.repository.Modifying
+import org.springframework.data.jpa.repository.Query
 import org.springframework.stereotype.Repository
 import java.util.UUID
 
@@ -10,22 +12,19 @@ import java.util.UUID
 interface AsyncProcessDao : JpaRepository<AsyncProcess, UUID> {
     fun findTopByStateOrderByTimeCreatedAsc(state: AsyncProcessState): AsyncProcess?
     fun findByStateAndTimeRefreshLessThan(state: AsyncProcessState, time: Long): List<AsyncProcess>
+
+    @Modifying
+    @Query("UPDATE AsyncProcess a SET a.timeRefresh = ?1 WHERE a.id = ?2")
+    fun updateRefreshTime(time: Long, id: UUID): Int
 }
 
 interface AsyncProcessJdbcDao {
     fun setState(proc: AsyncProcess, newState: AsyncProcessState, oldState: AsyncProcessState): Boolean
     fun setState(proc: AsyncProcess, newState: AsyncProcessState): Boolean
-    fun updateRefreshTime(id: UUID): Boolean
 }
 
 @Repository
 class AsyncProcessJdbcDaoImpl : AsyncProcessJdbcDao, AbstractDao() {
-
-    override fun updateRefreshTime(id: UUID): Boolean {
-        return jdbc.update(
-            "UPDATE process SET time_refresh=? WHERE pk_process=?", System.currentTimeMillis(), id
-        ) == 1
-    }
 
     override fun setState(proc: AsyncProcess, newState: AsyncProcessState, oldState: AsyncProcessState): Boolean {
         return jdbc.update(
