@@ -292,4 +292,11 @@ class FilterBuddy(object):
             (dict): The final ES query generated from the given filters
         """
         self.validate_filters(filters)
-        return self.reduce_filters_to_query(filters, request)
+        query = self.reduce_filters_to_query(filters, request)
+
+        # If there's no specific query at this point, we sort by the created date
+        # to make the visual display in Visualizer more useful
+        if not query:
+            query['sort'] = {'system.timeCreated': {'order': 'desc'}}
+
+        return query
