@@ -127,10 +127,13 @@ const FilterLabelsExist = ({
             }}
           >
             {exists ? (
-              <span>Show assets with a &quot;{datasetName}&quot; label</span>
+              <span>
+                Show assets existing in the &quot;{datasetName}&quot; dataset
+              </span>
             ) : (
               <span>
-                Show assets <u>missing</u> a &quot;{datasetName}&quot; label
+                Show assets <u>missing</u> from the &quot;{datasetName}&quot;
+                dataset
               </span>
             )}
           </div>
