@@ -44,6 +44,14 @@ class AsyncProcessConfiguration {
      * Enable async processing.
      */
     var enabled: Boolean = true
+
+    var watchDelay: Long = 30000
+
+    var watchPeriod: Long = 30000
+
+    var initialScheduledDelay: Long? = null
+
+    var scheduledDelay: Long = 30000L
 }
 
 @Service
@@ -112,7 +120,7 @@ class AsyncProcessHandler(
                         runWatchDog()
                     }
                 },
-                30000, 30000
+                config.watchDelay, config.watchPeriod
             )
         }
     }
@@ -123,7 +131,12 @@ class AsyncProcessHandler(
             AsyncProcessState.PENDING
         ) ?: return
 
-        if (!asyncProcessJdbcDao.setState(proc, AsyncProcessState.RUNNING, AsyncProcessState.PENDING)) {
+        if (!asyncProcessJdbcDao.setState(
+                proc,
+                AsyncProcessState.RUNNING,
+                AsyncProcessState.PENDING
+            )
+        ) {
             logger.warn("AsyncProcess ${proc.id} was already running")
             return
         }
@@ -144,7 +157,7 @@ class AsyncProcessHandler(
             withAuth(InternalThreadAuthentication(proc.projectId, setOf())) {
                 when (proc.type) {
                     AsyncProcessType.DELETE_PROJECT_STORAGE -> {
-                        projectService.delete(proc.projectId)
+                        projectService.deleteProjectStorage(proc.projectId)
                     }
 
                     AsyncProcessType.DELETE_PROJECT_INDEXES -> {
@@ -188,7 +201,12 @@ class AsyncProcessHandler(
 
         // go back 5 min from now.
         val expireTime = System.currentTimeMillis() - (60000 * 5)
-        for (proc in asyncProcessDao.findByStateAndTimeRefreshLessThan(AsyncProcessState.RUNNING, expireTime)) {
+        for (
+            proc in asyncProcessDao.findByStateAndTimeRefreshLessThan(
+                AsyncProcessState.RUNNING,
+                expireTime
+            )
+        ) {
             logger.warn("Setting AsyncProc ${proc.id} / ${proc.description} back to pending")
             asyncProcessJdbcDao.setState(proc, AsyncProcessState.PENDING)
         }
@@ -199,7 +217,11 @@ class AsyncProcessHandler(
     }
 
     override fun scheduler(): Scheduler {
-        return Scheduler.newFixedDelaySchedule(Random.nextLong(30, 60), 30, TimeUnit.SECONDS)
+        return Scheduler.newFixedDelaySchedule(
+            config.initialScheduledDelay ?: Random.nextLong(30000, 60000),
+            config.scheduledDelay,
+            TimeUnit.MILLISECONDS
+        )
     }
 
     companion object {
