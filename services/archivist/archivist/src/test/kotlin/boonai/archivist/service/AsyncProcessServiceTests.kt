@@ -2,22 +2,30 @@ package boonai.archivist.service
 
 import boonai.archivist.AbstractTest
 import boonai.archivist.domain.AsyncProcessSpec
+import boonai.archivist.domain.AsyncProcessState
 import boonai.archivist.domain.AsyncProcessType
+import boonai.archivist.domain.EntityNotFoundException
 import boonai.archivist.domain.ProjectFileLocator
 import boonai.archivist.domain.ProjectStorageCategory
 import boonai.archivist.domain.ProjectStorageEntity
 import boonai.archivist.domain.ProjectStorageSpec
-import boonai.archivist.repository.AsyncProcessDao
+import boonai.archivist.mock.zany
+import boonai.archivist.repository.AsyncProcessJdbcDao
 import boonai.archivist.security.getProjectId
 import boonai.archivist.storage.ProjectStorageException
 import boonai.archivist.storage.ProjectStorageService
 import boonai.common.service.storage.SystemStorageException
 import boonai.common.service.storage.SystemStorageService
+import com.nhaarman.mockito_kotlin.doThrow
 import org.junit.Test
 import org.junit.jupiter.api.assertThrows
+import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.test.util.ReflectionTestUtils
+import java.util.UUID
 import javax.persistence.EntityManager
 import javax.persistence.PersistenceContext
+import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
 class AsyncProcessServiceTests : AbstractTest() {
@@ -27,6 +35,9 @@ class AsyncProcessServiceTests : AbstractTest() {
 
     @Autowired
     lateinit var asyncProcessHandler: AsyncProcessHandler
+
+    @Autowired
+    lateinit var asyncProcessJdbcDao: AsyncProcessJdbcDao
 
     @Autowired
     lateinit var projectStorageService: ProjectStorageService
@@ -91,5 +102,32 @@ class AsyncProcessServiceTests : AbstractTest() {
                 Map::class.java
             )
         }
+    }
+
+    @Test
+    fun testAsyncProcessExceptionHandler() {
+
+        val indexRoutingMock = Mockito.mock(IndexRoutingService::class.java)
+        ReflectionTestUtils.setField(asyncProcessHandler, "indexRoutingService", indexRoutingMock)
+
+        doThrow(
+            EntityNotFoundException("Test")
+        ).`when`(indexRoutingMock)
+            .closeAndDeleteProjectIndexes(zany(UUID::class.java))
+
+        val createAsyncProcess = asyncProcessService.createAsyncProcess(
+            AsyncProcessSpec(
+                getProjectId(),
+                "Delete some stuff",
+                AsyncProcessType.DELETE_PROJECT_INDEXES
+            )
+        )
+        asyncProcessHandler.handleNextAsyncProcess()
+
+        val errorState = jdbc.queryForObject(
+            "select int_state from process where pk_process='${createAsyncProcess.id}'",
+            AsyncProcessState::class.java
+        )
+        assertEquals(AsyncProcessState.ERROR, errorState)
     }
 }
