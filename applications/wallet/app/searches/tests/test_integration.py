@@ -438,6 +438,7 @@ class TestQuery(BaseFiltersTestCase):
                                          'source*',
                                          'files*',
                                          'media*'],
+                             'sort': {'system.timeCreated': {'order': 'desc'}},
                              'track_total_hits': True}
             return Response(status=status.HTTP_200_OK)
 
@@ -454,6 +455,7 @@ class TestQuery(BaseFiltersTestCase):
                                          'media*',
                                          'analysis.first*',
                                          'analysis.second*'],
+                             'sort': {'system.timeCreated': {'order': 'desc'}},
                              'track_total_hits': True}
             return Response(status=status.HTTP_200_OK)
 

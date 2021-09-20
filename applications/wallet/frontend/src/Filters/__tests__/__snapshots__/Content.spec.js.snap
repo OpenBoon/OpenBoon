@@ -11010,9 +11010,9 @@ Array [
               className="emotion-22"
             >
               <span>
-                Show assets with a "
+                Show assets existing in the "
                 pets
-                " label
+                " dataset
               </span>
             </div>
           </div>

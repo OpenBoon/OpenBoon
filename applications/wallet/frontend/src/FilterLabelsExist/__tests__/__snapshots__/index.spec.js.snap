@@ -456,9 +456,9 @@ exports[`<FilterLabelsExist /> should select "Exists" 1`] = `
             <u>
               missing
             </u>
-             a "
+             from the "
             pets
-            " label
+            " dataset
           </span>
         </div>
       </div>
@@ -919,9 +919,9 @@ exports[`<FilterLabelsExist /> should select "Missing" 1`] = `
           className="emotion-21"
         >
           <span>
-            Show assets with a "
+            Show assets existing in the "
             pets
-            " label
+            " dataset
           </span>
         </div>
       </div>
