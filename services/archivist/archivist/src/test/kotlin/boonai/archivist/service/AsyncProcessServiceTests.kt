@@ -10,6 +10,7 @@ import boonai.archivist.domain.ProjectStorageCategory
 import boonai.archivist.domain.ProjectStorageEntity
 import boonai.archivist.domain.ProjectStorageSpec
 import boonai.archivist.mock.zany
+import boonai.archivist.repository.AsyncProcessDao
 import boonai.archivist.repository.AsyncProcessJdbcDao
 import boonai.archivist.security.getProjectId
 import boonai.archivist.storage.ProjectStorageException
@@ -21,6 +22,7 @@ import org.junit.Test
 import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.jdbc.core.queryForObject
 import org.springframework.test.util.ReflectionTestUtils
 import java.util.UUID
 import javax.persistence.EntityManager
@@ -38,6 +40,9 @@ class AsyncProcessServiceTests : AbstractTest() {
 
     @Autowired
     lateinit var asyncProcessJdbcDao: AsyncProcessJdbcDao
+
+    @Autowired
+    lateinit var asyncProcessDao: AsyncProcessDao
 
     @Autowired
     lateinit var projectStorageService: ProjectStorageService
@@ -129,5 +134,37 @@ class AsyncProcessServiceTests : AbstractTest() {
             AsyncProcessState::class.java
         )
         assertEquals(AsyncProcessState.ERROR, errorState)
+    }
+
+    @Test
+    fun testWatchDogOrphanTask() {
+        val createAsyncProcess = asyncProcessService.createAsyncProcess(
+            AsyncProcessSpec(
+                getProjectId(),
+                "Delete some stuff",
+                AsyncProcessType.DELETE_PROJECT_INDEXES
+            )
+        )
+        entityManager.flush()
+
+        jdbc.update(
+            "UPDATE process SET int_state=?, time_refresh=?  WHERE pk_process=?",
+            AsyncProcessState.RUNNING.ordinal,
+            System.currentTimeMillis() - (60000 * 10),
+            createAsyncProcess.id
+        )
+
+        val oldState = jdbc.queryForObject(
+            "SELECT int_state FROM process where pk_process=?",
+            AsyncProcessState::class.java,
+            createAsyncProcess.id
+        )
+        asyncProcessHandler.runWatchDog()
+        entityManager.flush()
+
+        val watchedAsyncProcess = asyncProcessDao.getOne(createAsyncProcess.id)
+
+        assertEquals(AsyncProcessState.RUNNING, oldState)
+        assertEquals(AsyncProcessState.PENDING, watchedAsyncProcess.state)
     }
 }
