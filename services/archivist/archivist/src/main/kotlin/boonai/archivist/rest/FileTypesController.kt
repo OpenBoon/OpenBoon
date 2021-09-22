@@ -19,11 +19,6 @@ class FileTypesController {
         return FileExtResolver.video.toList().sorted()
     }
 
-    @GetMapping("/api/v1/file-types/documents")
-    fun getDocumentTypes(): Collection<String> {
-        return FileExtResolver.doc.toList().sorted()
-    }
-
     @GetMapping("/api/v1/file-types/all")
     fun getAllTypes(): Collection<String> {
         return FileExtResolver.all.toList().sorted()

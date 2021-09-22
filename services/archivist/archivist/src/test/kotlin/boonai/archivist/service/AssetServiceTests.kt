@@ -91,20 +91,8 @@ class AssetServiceTests : AbstractTest() {
     }
 
     @Test
-    fun testGetExistingAssetIdDoc() {
-        val spec = AssetSpec("gs://cats/large-brown-cat.pdf", page = 5)
-        assertNull(assetService.getExistingAssetId(spec))
-
-        val req = BatchCreateAssetsRequest(
-            assets = listOf(spec)
-        )
-        assetService.batchCreate(req)
-        assertNotNull(assetService.getExistingAssetId(spec))
-    }
-
-    @Test
     fun testGetExistingAssetIdById() {
-        val spec = AssetSpec("gs://cats/large-brown-cat.pdf", id = "abcd12345")
+        val spec = AssetSpec("gs://cats/large-brown-cat.jpg", id = "abcd12345")
         assertNull(assetService.getExistingAssetId(spec))
 
         val req = BatchCreateAssetsRequest(
@@ -284,7 +272,7 @@ class AssetServiceTests : AbstractTest() {
     @Test
     fun testBatchCreateAssetsWithPage() {
         val spec = AssetSpec(
-            "gs://cats/large-brown-cat.pdf",
+            "gs://cats/large-brown-cat.tiff",
             page = 2
         )
 
@@ -295,7 +283,7 @@ class AssetServiceTests : AbstractTest() {
         val assets = assetService.getAll(rsp.created)
 
         assertEquals(2, assets[0].getAttr("media.pageNumber"))
-        assertEquals("YJDNyJHRvJV2umLKQTvxiWuvVgBsIS8M", assets[0].getAttr("media.pageStack"))
+        assertEquals("9yCf6hr5c-DF81k1SDsElQg_iNZxUSgR", assets[0].getAttr("media.pageStack"))
     }
 
     @Test
@@ -518,8 +506,7 @@ class AssetServiceTests : AbstractTest() {
         val batchCreate = BatchCreateAssetsRequest(
             assets = listOf(
                 AssetSpec("gs://cats/large-brown-cat.jpg"),
-                AssetSpec("gs://cats/large-brown-cat.mov"),
-                AssetSpec("gs://cats/large-brown-cat.pdf")
+                AssetSpec("gs://cats/large-brown-cat.mov")
             )
         )
 
@@ -540,14 +527,13 @@ class AssetServiceTests : AbstractTest() {
 
         val counts = jdbc.queryForMap("SELECT * FROM project_quota")
         assertEquals(BigDecimal("10.73"), counts["float_video_seconds"])
-        assertEquals(2L, counts["int_page_count"])
+        assertEquals(1L, counts["int_page_count"])
 
         val time = jdbc.queryForMap("SELECT * FROM project_quota_time_series WHERE int_video_file_count > 0 LIMIT 1")
         assertEquals(1L, time["int_video_file_count"])
-        assertEquals(1L, time["int_document_file_count"])
         assertEquals(1L, time["int_image_file_count"])
         assertEquals(BigDecimal("10.73"), counts["float_video_seconds"])
-        assertEquals(2L, time["int_page_count"])
+        assertEquals(1L, time["int_page_count"])
         assertEquals(1L, time["int_video_clip_count"])
     }
 
@@ -556,8 +542,7 @@ class AssetServiceTests : AbstractTest() {
         val batchCreate = BatchCreateAssetsRequest(
             assets = listOf(
                 AssetSpec("gs://cat/large-brown-cat.jpg"),
-                AssetSpec("gs://cat/large-brown-cat.mov", attrs = mutableMapOf("media.length" to 10.732)),
-                AssetSpec("gs://cat/large-brown-cat.pdf")
+                AssetSpec("gs://cat/large-brown-cat.mov", attrs = mutableMapOf("media.length" to 10.732))
             )
         )
 
@@ -570,14 +555,13 @@ class AssetServiceTests : AbstractTest() {
             "SELECT * FROM project_quota_time_series WHERE int_deleted_image_file_count > 0 limit 1"
         )
         assertEquals(1L, quotaTimeSeries["int_deleted_image_file_count"])
-        assertEquals(1L, quotaTimeSeries["int_deleted_document_file_count"])
         assertEquals(1L, quotaTimeSeries["int_deleted_video_file_count"])
         assertEquals(BigDecimal("10.73"), quotaTimeSeries["float_deleted_video_seconds"])
         assertEquals(1L, quotaTimeSeries["int_deleted_video_clip_count"])
-        assertEquals(2L, quotaTimeSeries["int_deleted_page_count"])
+        assertEquals(1L, quotaTimeSeries["int_deleted_page_count"])
 
         var quota = projectQuotasDao.getQuotas(getProjectId())
-        assertEquals(2L, quota.deletedPageCount)
+        assertEquals(1L, quota.deletedPageCount)
         assertEquals(BigDecimal("10.73"), quota.deletedVideoSecondsCount)
     }
 
@@ -712,7 +696,7 @@ class AssetServiceTests : AbstractTest() {
     fun testDerivePageFromExistingAsset() {
 
         val batchCreate = BatchCreateAssetsRequest(
-            assets = listOf(AssetSpec("gs://cats/cat-info.pdf"))
+            assets = listOf(AssetSpec("gs://cats/cat-info.tiff"))
         )
 
         val sourceAsset = assetService.getAsset(assetService.batchCreate(batchCreate).created[0])
@@ -724,9 +708,9 @@ class AssetServiceTests : AbstractTest() {
         val newAsset = Asset()
         assetService.derivePage(newAsset, spec)
 
-        assertEquals("5kQEjlZwTrH3ABa9JItyqlakor22j_lF", sourceAsset.id)
-        assertEquals("5kQEjlZwTrH3ABa9JItyqlakor22j_lF", sourceAsset.getAttr("media.pageStack"))
-        assertEquals("5kQEjlZwTrH3ABa9JItyqlakor22j_lF", newAsset.getAttr("media.pageStack"))
+        assertEquals("rM1u_0G5dI7051JHS6S-LwNPDcOgQkNc", sourceAsset.id)
+        assertEquals("rM1u_0G5dI7051JHS6S-LwNPDcOgQkNc", sourceAsset.getAttr("media.pageStack"))
+        assertEquals("rM1u_0G5dI7051JHS6S-LwNPDcOgQkNc", newAsset.getAttr("media.pageStack"))
         assertEquals(5, newAsset.getAttr("media.pageNumber"))
     }
 
@@ -735,13 +719,13 @@ class AssetServiceTests : AbstractTest() {
         val batchCreate = BatchCreateAssetsRequest(
             assets = listOf(
                 AssetSpec(
-                    "gs://cats/cat-stuff.pdf", page = 2
+                    "gs://cats/cat-stuff.tiff", page = 2
                 )
             )
         )
         val sourceAsset = assetService.getAsset(assetService.batchCreate(batchCreate).created[0])
-        assertEquals("EJvwFoCQ-ARK30i3bXJRIfW9gRfOXMn9", sourceAsset.id)
-        assertEquals("X45qGhIXYgiFcqOn0KuQxUG6ojZrRPuM", sourceAsset.getAttr("media.pageStack"))
+        assertEquals("gIco1Qh2pbvfmJGbh_wbcTuSfDzlXAud", sourceAsset.id)
+        assertEquals("bgSFZv7pUAdkpGl0NpOq-hWGV5u_5dQh", sourceAsset.getAttr("media.pageStack"))
         assertEquals(2, sourceAsset.getAttr("media.pageNumber"))
     }
 

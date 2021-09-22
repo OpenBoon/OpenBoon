@@ -165,23 +165,6 @@ services:
       - "./dev/config/monitoring:/monitoring"
       - "./dev/config/archivist/application.properties:/service/config/application.properties"
 
-  officer:
-    image: boonai/officer:latest
-    depends_on:
-      - jvm-common
-      - minio
-      - redis
-    build:
-      context: services/officer
-    ports:
-      - 7078:7078
-    environment:
-      BOONAI_STORAGE_PROJECT_URL: http://minio:9000
-      BOONAI_STORAGE_PROJECT_ACCESSKEY: qwerty123
-      BOONAI_STORAGE_PROJECT_SECRETKEY: 123qwerty
-      BOONAI_STORAGE_CLIENT: minio
-      REDIS_HOST: redis:6379
-
   analyst:
     image: boonai/analyst:latest
     depends_on:
@@ -198,7 +181,6 @@ services:
       ANALYST_DOCKER_PULL: "false"
       ANALYST_SHAREDKEY: 8248911982254469B56C849A29CE0E0F
       BOONAI_SERVER: http://archivist:8080
-      OFFICER_URL: ws://officer:7078
       BOONAI_BILLING_METRICS_SERVICE: http://metrics
       ENVIRONMENT: localdev
 

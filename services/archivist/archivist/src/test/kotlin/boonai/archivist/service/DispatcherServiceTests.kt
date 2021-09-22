@@ -107,8 +107,7 @@ class DispatcherServiceTests : AbstractTest() {
         val batchCreate = BatchCreateAssetsRequest(
             assets = listOf(
                 AssetSpec("gs://cats/large-brown-cat.jpg"),
-                AssetSpec("gs://cats/large-brown-cat.mov"),
-                AssetSpec("gs://cats/large-brown-cat.pdf")
+                AssetSpec("gs://cats/large-brown-cat.mov")
             )
         )
 

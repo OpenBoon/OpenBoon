@@ -52,7 +52,7 @@ class PipelineControllerTests : MockMvcTest() {
             Provider.BOONAI,
             Category.BOONAI_STD,
             ModelObjective.LABEL_DETECTION,
-            listOf(FileType.Documents),
+            listOf(FileType.Images),
             listOf(
                 ModOp(
                     ModOpType.SET_ARGS,

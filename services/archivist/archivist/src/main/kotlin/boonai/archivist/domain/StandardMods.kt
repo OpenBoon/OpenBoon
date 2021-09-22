@@ -54,22 +54,6 @@ object ModelObjective {
 fun getStandardModules(): List<PipelineModSpec> {
     return listOf(
         PipelineModSpec(
-            "boonai-extract-pages",
-            "Extract all pages in MS Office/PDF documents into separate assets.",
-            Provider.BOONAI,
-            Category.BOONAI_TL,
-            ModelObjective.CLIPIFIER,
-            listOf(FileType.Documents),
-            listOf(
-                ModOp(
-                    ModOpType.SET_ARGS,
-                    mapOf("extract_doc_pages" to true),
-                    OpFilter(OpFilterType.REGEX, ".*FileImportProcessor")
-                )
-            ),
-            true
-        ),
-        PipelineModSpec(
             "boonai-extract-layers",
             "Extract all layers in multilayer or multi-page image formats such as tiff and psd as as " +
                 "separate assets",
@@ -92,7 +76,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.BOONAI,
             Category.BOONAI_STD,
             ModelObjective.OBJECT_DETECTION,
-            listOf(FileType.Images, FileType.Documents),
+            listOf(FileType.Images),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
@@ -112,7 +96,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.BOONAI,
             Category.BOONAI_STD,
             ModelObjective.FACE_RECOGNITION,
-            listOf(FileType.Images, FileType.Documents),
+            listOf(FileType.Images),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
@@ -132,7 +116,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.BOONAI,
             Category.BOONAI_STD,
             ModelObjective.LABEL_DETECTION,
-            listOf(FileType.Images, FileType.Documents),
+            listOf(FileType.Images),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
@@ -152,7 +136,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.BOONAI,
             Category.BOONAI_STD,
             ModelObjective.TEXT_DETECTION,
-            listOf(FileType.Images, FileType.Documents),
+            listOf(FileType.Images),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
@@ -177,7 +161,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.CLARIFAI,
             Category.CLARIFAI_STD,
             ModelObjective.LABEL_DETECTION,
-            listOf(FileType.Images, FileType.Documents, FileType.Videos),
+            listOf(FileType.Images, FileType.Videos),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
@@ -201,7 +185,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.CLARIFAI,
             Category.CLARIFAI_STD,
             ModelObjective.LABEL_DETECTION,
-            listOf(FileType.Images, FileType.Documents, FileType.Videos),
+            listOf(FileType.Images, FileType.Videos),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
@@ -225,7 +209,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.CLARIFAI,
             Category.CLARIFAI_STD,
             ModelObjective.LABEL_DETECTION,
-            listOf(FileType.Images, FileType.Documents, FileType.Videos),
+            listOf(FileType.Images, FileType.Videos),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
@@ -249,7 +233,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.CLARIFAI,
             Category.CLARIFAI_STD,
             ModelObjective.LABEL_DETECTION,
-            listOf(FileType.Images, FileType.Documents, FileType.Videos),
+            listOf(FileType.Images, FileType.Videos),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
@@ -273,7 +257,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.CLARIFAI,
             Category.CLARIFAI_STD,
             ModelObjective.LABEL_DETECTION,
-            listOf(FileType.Images, FileType.Documents, FileType.Videos),
+            listOf(FileType.Images, FileType.Videos),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
@@ -297,7 +281,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.CLARIFAI,
             Category.CLARIFAI_STD,
             ModelObjective.EXPLICIT_DETECTION,
-            listOf(FileType.Images, FileType.Documents, FileType.Videos),
+            listOf(FileType.Images, FileType.Videos),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
@@ -321,7 +305,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.CLARIFAI,
             Category.CLARIFAI_STD,
             ModelObjective.EXPLICIT_DETECTION,
-            listOf(FileType.Images, FileType.Documents, FileType.Videos),
+            listOf(FileType.Images, FileType.Videos),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
@@ -345,7 +329,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.CLARIFAI,
             Category.CLARIFAI_STD,
             ModelObjective.EXPLICIT_DETECTION,
-            listOf(FileType.Images, FileType.Documents, FileType.Videos),
+            listOf(FileType.Images, FileType.Videos),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
@@ -369,7 +353,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.CLARIFAI,
             Category.CLARIFAI_STD,
             ModelObjective.LOGO_DETECTION,
-            listOf(FileType.Images, FileType.Documents, FileType.Videos),
+            listOf(FileType.Images, FileType.Videos),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
@@ -393,7 +377,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.CLARIFAI,
             Category.CLARIFAI_STD,
             ModelObjective.FACE_DETECTION,
-            listOf(FileType.Images, FileType.Documents, FileType.Videos),
+            listOf(FileType.Images, FileType.Videos),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
@@ -417,7 +401,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.CLARIFAI,
             Category.CLARIFAI_STD,
             ModelObjective.FACE_DETECTION,
-            listOf(FileType.Images, FileType.Documents, FileType.Videos),
+            listOf(FileType.Images, FileType.Videos),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
@@ -441,7 +425,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.CLARIFAI,
             Category.CLARIFAI_STD,
             ModelObjective.LABEL_DETECTION,
-            listOf(FileType.Images, FileType.Documents, FileType.Videos),
+            listOf(FileType.Images, FileType.Videos),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
@@ -465,7 +449,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.CLARIFAI,
             Category.CLARIFAI_STD,
             ModelObjective.LABEL_DETECTION,
-            listOf(FileType.Images, FileType.Documents, FileType.Videos),
+            listOf(FileType.Images, FileType.Videos),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
@@ -489,7 +473,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.CLARIFAI,
             Category.CLARIFAI_STD,
             ModelObjective.LABEL_DETECTION,
-            listOf(FileType.Images, FileType.Documents, FileType.Videos),
+            listOf(FileType.Images, FileType.Videos),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
@@ -530,7 +514,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.GOOGLE,
             Category.GOOGLE_VISION,
             ModelObjective.LABEL_DETECTION,
-            listOf(FileType.Images, FileType.Documents),
+            listOf(FileType.Images),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
@@ -550,7 +534,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.GOOGLE,
             Category.GOOGLE_VISION,
             ModelObjective.OBJECT_DETECTION,
-            listOf(FileType.Images, FileType.Documents),
+            listOf(FileType.Images),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
@@ -570,7 +554,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.GOOGLE,
             Category.GOOGLE_VISION,
             ModelObjective.LOGO_DETECTION,
-            listOf(FileType.Images, FileType.Documents),
+            listOf(FileType.Images),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
@@ -590,7 +574,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.GOOGLE,
             Category.GOOGLE_VISION,
             ModelObjective.IMAGE_TEXT_DETECTION,
-            listOf(FileType.Images, FileType.Documents),
+            listOf(FileType.Images),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
@@ -615,7 +599,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.GOOGLE,
             Category.GOOGLE_VISION,
             ModelObjective.TEXT_DETECTION,
-            listOf(FileType.Images, FileType.Documents),
+            listOf(FileType.Images),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
@@ -640,7 +624,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.GOOGLE,
             Category.GOOGLE_VISION,
             ModelObjective.LANDMARK_DETECTION,
-            listOf(FileType.Images, FileType.Documents),
+            listOf(FileType.Images),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
@@ -807,7 +791,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.GOOGLE,
             Category.GOOGLE_DLP,
             ModelObjective.TEXT_DETECTION,
-            listOf(FileType.Images, FileType.Documents),
+            listOf(FileType.Images),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
@@ -833,7 +817,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.AMAZON,
             Category.AWS_REK,
             ModelObjective.LABEL_DETECTION,
-            listOf(FileType.Images, FileType.Documents, FileType.Videos),
+            listOf(FileType.Images, FileType.Videos),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
@@ -857,7 +841,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.AMAZON,
             Category.AWS_REK,
             ModelObjective.FACE_DETECTION,
-            listOf(FileType.Images, FileType.Documents),
+            listOf(FileType.Images),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
@@ -877,7 +861,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.AMAZON,
             Category.AWS_REK,
             ModelObjective.EXPLICIT_DETECTION,
-            listOf(FileType.Images, FileType.Documents, FileType.Videos),
+            listOf(FileType.Images, FileType.Videos),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
@@ -901,7 +885,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.AMAZON,
             Category.AWS_REK,
             ModelObjective.IMAGE_TEXT_DETECTION,
-            listOf(FileType.Images, FileType.Documents),
+            listOf(FileType.Images),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
@@ -921,7 +905,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.AMAZON,
             Category.AWS_REK,
             ModelObjective.FACE_RECOGNITION,
-            listOf(FileType.Images, FileType.Documents, FileType.Videos),
+            listOf(FileType.Images, FileType.Videos),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
@@ -1008,7 +992,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.MICROSOFT,
             Category.AZURE_VISION,
             ModelObjective.OBJECT_DETECTION,
-            listOf(FileType.Images, FileType.Documents, FileType.Videos),
+            listOf(FileType.Images, FileType.Videos),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
@@ -1032,7 +1016,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.MICROSOFT,
             Category.AZURE_VISION,
             ModelObjective.LABEL_DETECTION,
-            listOf(FileType.Images, FileType.Documents, FileType.Videos),
+            listOf(FileType.Images, FileType.Videos),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
@@ -1056,7 +1040,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.MICROSOFT,
             Category.AZURE_VISION,
             ModelObjective.IMAGE_DESCRIPTION,
-            listOf(FileType.Images, FileType.Documents, FileType.Videos),
+            listOf(FileType.Images, FileType.Videos),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
@@ -1080,7 +1064,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.MICROSOFT,
             Category.AZURE_VISION,
             ModelObjective.FACE_RECOGNITION,
-            listOf(FileType.Images, FileType.Documents, FileType.Videos),
+            listOf(FileType.Images, FileType.Videos),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
@@ -1104,7 +1088,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.MICROSOFT,
             Category.AZURE_VISION,
             ModelObjective.LANDMARK_DETECTION,
-            listOf(FileType.Images, FileType.Documents, FileType.Videos),
+            listOf(FileType.Images, FileType.Videos),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
@@ -1128,7 +1112,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.MICROSOFT,
             Category.AZURE_VISION,
             ModelObjective.LOGO_DETECTION,
-            listOf(FileType.Images, FileType.Documents, FileType.Videos),
+            listOf(FileType.Images, FileType.Videos),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
@@ -1152,7 +1136,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.MICROSOFT,
             Category.AZURE_VISION,
             ModelObjective.LABEL_DETECTION,
-            listOf(FileType.Images, FileType.Documents, FileType.Videos),
+            listOf(FileType.Images, FileType.Videos),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
@@ -1176,7 +1160,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.MICROSOFT,
             Category.AZURE_VISION,
             ModelObjective.EXPLICIT_DETECTION,
-            listOf(FileType.Images, FileType.Documents, FileType.Videos),
+            listOf(FileType.Images, FileType.Videos),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
@@ -1200,7 +1184,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.MICROSOFT,
             Category.AZURE_VISION,
             ModelObjective.FACE_RECOGNITION,
-            listOf(FileType.Images, FileType.Documents, FileType.Videos),
+            listOf(FileType.Images, FileType.Videos),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
@@ -1224,7 +1208,7 @@ fun getStandardModules(): List<PipelineModSpec> {
             Provider.MICROSOFT,
             Category.AZURE_VISION,
             ModelObjective.TEXT_DETECTION,
-            listOf(FileType.Images, FileType.Documents, FileType.Videos),
+            listOf(FileType.Images, FileType.Videos),
             listOf(
                 ModOp(
                     ModOpType.APPEND,

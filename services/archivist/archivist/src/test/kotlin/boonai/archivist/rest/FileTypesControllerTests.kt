@@ -35,18 +35,6 @@ class FileTypesControllerTests : MockMvcTest() {
     }
 
     @Test
-    fun testGetDocumentTypes() {
-        mvc.perform(
-            MockMvcRequestBuilders.get("/api/v1/file-types/documents")
-                .headers(admin())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-        )
-            .andExpect(MockMvcResultMatchers.status().isOk)
-            .andExpect(jsonPath("$[0]", CoreMatchers.equalTo("doc")))
-            .andReturn()
-    }
-
-    @Test
     fun testGetMediaType() {
         mvc.perform(
             MockMvcRequestBuilders.get("/api/v1/media-type/jpg")

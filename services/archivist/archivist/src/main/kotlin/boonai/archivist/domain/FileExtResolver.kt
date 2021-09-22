@@ -7,11 +7,10 @@ import org.apache.tika.Tika
  */
 enum class FileType(val extensions: Set<String>) {
     Images(FileExtResolver.image),
-    Videos(FileExtResolver.video),
-    Documents(FileExtResolver.doc);
+    Videos(FileExtResolver.video);
 
     companion object {
-        fun allTypes() = listOf(Images, Videos, Documents)
+        fun allTypes() = listOf(Images, Videos)
 
         fun fromArray(types: List<String>): List<FileType> {
             val result = types.mapNotNull {
@@ -27,9 +26,6 @@ enum class FileType(val extensions: Set<String>) {
                         }
                         in FileExtResolver.video -> {
                             Videos
-                        }
-                        in FileExtResolver.doc -> {
-                            Documents
                         }
                         else -> {
                             null
@@ -87,29 +83,14 @@ object FileExtResolver {
         "avi"
     )
 
-    val doc = setOf(
-        "pdf",
-        "doc",
-        "docx",
-        "ppt",
-        "pptx",
-        "xls",
-        "xlsx",
-        "vdw",
-        "vsd",
-        "vss",
-        "vst"
-    )
-
     val multipage = setOf(
         "exr",
-        "psd",
         "tiff",
         "tif",
         "gif"
-    ).plus(doc)
+    )
 
-    val all = doc.plus(video).plus(image).toList()
+    val all = video.plus(image).toList()
 
     val mediaTypes = mapOf(
         "exr" to "image/x-exr",
@@ -123,7 +104,7 @@ object FileExtResolver {
     }
 
     fun isSupported(ext: String): Boolean {
-        return (ext in image || ext in video || ext in doc)
+        return (ext in image || ext in video)
     }
 
     /**
@@ -142,9 +123,6 @@ object FileExtResolver {
                 }
                 FileType.Videos -> {
                     result.addAll(video)
-                }
-                FileType.Documents -> {
-                    result.addAll(doc)
                 }
                 else -> {
                     throw IllegalArgumentException("Invalid file type: $type")
@@ -166,9 +144,6 @@ object FileExtResolver {
             }
             in video -> {
                 "video"
-            }
-            in doc -> {
-                "document"
             }
             else -> {
                 throw IllegalArgumentException("$ext not a supported file type")

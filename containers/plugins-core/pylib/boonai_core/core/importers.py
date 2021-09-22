@@ -1,7 +1,6 @@
 import reverse_geocode
 
 from boonai_core.image.importers import ImageImporter
-from boonai_core.office.importers import OfficeImporter
 from boonai_core.video.importers import VideoImporter
 from boonflow import AssetProcessor, FatalProcessorException
 
@@ -24,7 +23,6 @@ class FileImportProcessor(AssetProcessor):
         super(FileImportProcessor, self).__init__()
 
         self.image_proc = ImageImporter()
-        self.doc_proc = OfficeImporter()
         self.video_proc = VideoImporter()
         self.procs = [self.image_proc, self.doc_proc, self.video_proc]
 

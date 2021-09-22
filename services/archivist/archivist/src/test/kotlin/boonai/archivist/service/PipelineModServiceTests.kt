@@ -56,7 +56,7 @@ class PipelineModServiceTests : AbstractTest() {
             Provider.BOONAI,
             Category.BOONAI_STD,
             ModelObjective.LABEL_DETECTION,
-            listOf(FileType.Documents),
+            listOf(FileType.Images),
             listOf(op1, op2), true
         )
         mod = pipelineModService.create(spec)
@@ -78,7 +78,7 @@ class PipelineModServiceTests : AbstractTest() {
             Provider.BOONAI,
             Category.BOONAI_STD,
             ModelObjective.LABEL_DETECTION,
-            listOf(FileType.Documents),
+            listOf(FileType.Images),
             listOf(), false
         )
         pipelineModService.create(spec2)
@@ -91,7 +91,7 @@ class PipelineModServiceTests : AbstractTest() {
             Provider.BOONAI,
             Category.BOONAI_STD,
             ModelObjective.LABEL_DETECTION,
-            listOf(FileType.Documents),
+            listOf(FileType.Images),
             listOf(), false
         )
         val spec2 = PipelineModSpec(
@@ -99,7 +99,7 @@ class PipelineModServiceTests : AbstractTest() {
             Provider.BOONAI,
             Category.BOONAI_STD,
             ModelObjective.LABEL_DETECTION,
-            listOf(FileType.Documents),
+            listOf(FileType.Images),
             listOf(), false
         )
         pipelineModService.create(spec1)
@@ -113,7 +113,7 @@ class PipelineModServiceTests : AbstractTest() {
             Provider.BOONAI,
             Category.BOONAI_STD,
             ModelObjective.LABEL_DETECTION,
-            listOf(FileType.Documents),
+            listOf(FileType.Images),
             listOf(), true
         )
         pipelineModService.create(spec2)
@@ -127,7 +127,7 @@ class PipelineModServiceTests : AbstractTest() {
             Provider.BOONAI,
             Category.BOONAI_STD,
             ModelObjective.LABEL_DETECTION,
-            listOf(FileType.Documents),
+            listOf(FileType.Images),
             listOf(ModOp(ModOpType.PREPEND, listOf(ProcessorRef("foo", "boonai-plugins-foo"))))
         )
 

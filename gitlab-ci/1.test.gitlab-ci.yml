@@ -273,7 +273,6 @@ boonai-services-build-artifacts:
         - "services/auth-server/**/*"
         - "services/elasticsearch/**/*"
         - "services/mlbbq/**/*"
-        - "services/officer/**/*"
         - "services/reporter/**/*"
         - "services/jvm-common/**/*"
         - "services/swivel/**/*"
@@ -306,7 +305,6 @@ elasticsearch-push-to-local-registry:
         - "services/auth-server/**/*"
         - "services/elasticsearch/**/*"
         - "services/mlbbq/**/*"
-        - "services/officer/**/*"
         - "services/reporter/**/*"
         - "services/swivel/**/*"
         - "services/tugboat/**/*"
@@ -361,8 +359,6 @@ boonai-services-unit-tests:
     - BOONAI_STORAGE_SYSTEM_URL="http://${IP}:9000"
     - mvn clean install -f services/jvm-common -q -Dmaven.test.skip=true -Dmaven.wagon.http.pool=false
     - mvn test verify -f services/jvm-common -q -Dmaven.wagon.http.pool=false
-    - mvn clean install -f services/officer -q -Dmaven.test.skip=true -Dmaven.wagon.http.pool=false
-    - mvn test verify -f services/officer -q -Dmaven.wagon.http.pool=false
     - mvn clean install -f services/archivist -q -Dmaven.test.skip=true -Dmaven.wagon.http.pool=false
     - mvn test verify -f services/archivist -q -Dmaven.wagon.http.pool=false
     - SPRING_DATASOURCE_URL="jdbc:postgresql://localhost:5432/zorroa?currentSchema=auth_test"
@@ -381,7 +377,6 @@ boonai-services-unit-tests:
         - "services/auth-server/**/*"
         - "services/elasticsearch/**/*"
         - "services/mlbbq/**/*"
-        - "services/officer/**/*"
         - "services/jvm-common/**/*"
     # MR to QA with any change
     - if: $CI_MERGE_REQUEST_IID && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "qa"

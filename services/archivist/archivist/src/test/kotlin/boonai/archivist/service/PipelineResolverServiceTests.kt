@@ -159,7 +159,7 @@ class PipelineResolverServiceTests : AbstractTest() {
             Provider.BOONAI,
             Category.BOONAI_STD,
             ModelObjective.LABEL_DETECTION,
-            listOf(FileType.Documents),
+            listOf(FileType.Images),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
@@ -172,7 +172,7 @@ class PipelineResolverServiceTests : AbstractTest() {
             Provider.BOONAI,
             Category.BOONAI_STD,
             ModelObjective.LABEL_DETECTION,
-            listOf(FileType.Documents),
+            listOf(FileType.Images),
             listOf(
                 ModOp(
                     ModOpType.LAST,
@@ -202,7 +202,7 @@ class PipelineResolverServiceTests : AbstractTest() {
             Provider.BOONAI,
             Category.BOONAI_STD,
             ModelObjective.LABEL_DETECTION,
-            listOf(FileType.Documents),
+            listOf(FileType.Images),
             listOf(
                 ModOp(ModOpType.DEPEND, listOf("depend-module")),
                 ModOp(
@@ -216,7 +216,7 @@ class PipelineResolverServiceTests : AbstractTest() {
             Provider.BOONAI,
             Category.BOONAI_STD,
             ModelObjective.LABEL_DETECTION,
-            listOf(FileType.Documents),
+            listOf(FileType.Images),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
@@ -247,7 +247,7 @@ class PipelineResolverServiceTests : AbstractTest() {
             Provider.BOONAI,
             Category.BOONAI_STD,
             ModelObjective.LABEL_DETECTION,
-            listOf(FileType.Documents),
+            listOf(FileType.Images),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
@@ -266,7 +266,7 @@ class PipelineResolverServiceTests : AbstractTest() {
             Provider.BOONAI,
             Category.BOONAI_STD,
             ModelObjective.LABEL_DETECTION,
-            listOf(FileType.Documents),
+            listOf(FileType.Images),
             listOf(
                 ModOp(
                     ModOpType.APPEND_MERGE,
@@ -284,7 +284,7 @@ class PipelineResolverServiceTests : AbstractTest() {
             Provider.BOONAI,
             Category.BOONAI_STD,
             ModelObjective.LABEL_DETECTION,
-            listOf(FileType.Documents),
+            listOf(FileType.Images),
             listOf(
                 ModOp(
                     ModOpType.APPEND_MERGE,
@@ -313,7 +313,7 @@ class PipelineResolverServiceTests : AbstractTest() {
             Provider.BOONAI,
             Category.BOONAI_STD,
             ModelObjective.LABEL_DETECTION,
-            listOf(FileType.Documents),
+            listOf(FileType.Images),
             listOf(
                 ModOp(
                     ModOpType.APPEND,
@@ -336,7 +336,7 @@ class PipelineResolverServiceTests : AbstractTest() {
             Provider.BOONAI,
             Category.BOONAI_STD,
             ModelObjective.LABEL_DETECTION,
-            listOf(FileType.Documents),
+            listOf(FileType.Images),
             listOf(
                 ModOp(
                     ModOpType.REMOVE,
@@ -357,7 +357,7 @@ class PipelineResolverServiceTests : AbstractTest() {
             Provider.BOONAI,
             Category.BOONAI_STD,
             ModelObjective.LABEL_DETECTION,
-            listOf(FileType.Documents),
+            listOf(FileType.Images),
             listOf(
                 ModOp(
                     ModOpType.REPLACE,
@@ -378,7 +378,7 @@ class PipelineResolverServiceTests : AbstractTest() {
             Provider.BOONAI,
             Category.BOONAI_STD,
             ModelObjective.LABEL_DETECTION,
-            listOf(FileType.Documents),
+            listOf(FileType.Images),
             listOf(
                 ModOp(
                     ModOpType.ADD_BEFORE,
@@ -399,7 +399,7 @@ class PipelineResolverServiceTests : AbstractTest() {
             Provider.BOONAI,
             Category.BOONAI_STD,
             ModelObjective.LABEL_DETECTION,
-            listOf(FileType.Documents),
+            listOf(FileType.Images),
             listOf(
                 ModOp(
                     ModOpType.ADD_AFTER,
@@ -420,7 +420,7 @@ class PipelineResolverServiceTests : AbstractTest() {
             Provider.BOONAI,
             Category.BOONAI_STD,
             ModelObjective.LABEL_DETECTION,
-            listOf(FileType.Documents),
+            listOf(FileType.Images),
             listOf(
                 ModOp(
                     ModOpType.SET_ARGS,
@@ -441,7 +441,7 @@ class PipelineResolverServiceTests : AbstractTest() {
             Provider.BOONAI,
             Category.BOONAI_STD,
             ModelObjective.LABEL_DETECTION,
-            listOf(FileType.Documents),
+            listOf(FileType.Images),
             listOf(
                 ModOp(
                     ModOpType.REMOVE,
@@ -463,7 +463,7 @@ class PipelineResolverServiceTests : AbstractTest() {
             Provider.BOONAI,
             Category.BOONAI_STD,
             ModelObjective.LABEL_DETECTION,
-            listOf(FileType.Documents),
+            listOf(FileType.Images),
             listOf(
                 ModOp(
                     ModOpType.REMOVE,

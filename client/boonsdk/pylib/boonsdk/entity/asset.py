@@ -780,10 +780,7 @@ class FileTypes:
                         "dcm", "rla"])
     """A set of supported image file formats."""
 
-    documents = frozenset(['pdf', 'doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx', 'vsd', 'vsdx'])
-    """A set of supported document file formats."""
-
-    all = frozenset(videos.union(images).union(documents))
+    all = frozenset(videos.union(images))
 
     """A set of all supported file formats."""
 
