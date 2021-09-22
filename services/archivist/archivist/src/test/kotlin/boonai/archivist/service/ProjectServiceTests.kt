@@ -200,7 +200,7 @@ class ProjectServiceTests : AbstractTest() {
         var allProjectIndex = indexRoutingService.getAll(IndexRouteFilter(projectIds = listOf(getProjectId())))
         assertNotEquals(0, allProjectIndex.size())
 
-        projectService.delete(project)
+        projectService.delete(project.id)
 
         allProjectIndex = indexRoutingService.getAll(IndexRouteFilter(projectIds = listOf(getProjectId())))
         assertEquals(0, allProjectIndex.size())
