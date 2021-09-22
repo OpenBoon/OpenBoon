@@ -1,14 +1,11 @@
 package boonai.archivist.config
 
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.data.redis.connection.MessageListener
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory
 import org.springframework.data.redis.core.RedisTemplate
-import org.springframework.data.redis.listener.PatternTopic
 import org.springframework.data.redis.listener.RedisMessageListenerContainer
 import org.springframework.data.redis.serializer.GenericToStringSerializer
 import org.springframework.scheduling.annotation.EnableScheduling
@@ -21,9 +18,6 @@ class RedisConfiguration {
 
     @Autowired
     lateinit var properties: ApplicationProperties
-
-    @Autowired
-    lateinit var applicationContext: ApplicationContext
 
     @Bean
     fun redisClient(): JedisPool {
@@ -67,29 +61,6 @@ class RedisConfiguration {
     fun redisContainer(): RedisMessageListenerContainer {
         val container = RedisMessageListenerContainer()
         container.connectionFactory = jedisConnectionFactory()
-        listeners.entries.forEach {
-            container.addMessageListener(
-                applicationContext.getBean(it.value, MessageListener::class.java),
-                applicationContext.getBean(it.key, PatternTopic::class.java)
-            )
-        }
         return container
-    }
-
-    @Bean("project-topic")
-    fun projectTopic(): PatternTopic {
-        return PatternTopic("project/*")
-    }
-
-    @Bean("index-routing-topic")
-    fun indexRoutingTopic(): PatternTopic {
-        return PatternTopic("index-routing/*")
-    }
-
-    companion object {
-        val listeners = mapOf(
-            "project-topic" to "project-listener",
-            "index-routing-topic" to "index-routing-listener"
-        )
     }
 }
