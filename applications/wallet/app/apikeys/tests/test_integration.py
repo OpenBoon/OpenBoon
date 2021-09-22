@@ -12,15 +12,62 @@ def detail_data():
         'id': 'b3a09695-b9fb-40bd-8ea8-bbe0c2cba33f',
         'name': 'Test',
         'projectId': '2fb4e52b-8791-4544-aafb-c16af66f19f8',
-        'accessKey': 'P1klR1U1RgT3YfdLYN4-AHPlnOhXZHeD',
-        'secretKey': '6Ti7kZZ7IcmWnR1bfdvCMUataoMh9Mbq9Kqvs3xctOM7y1OwbefdFiLewuEDAGBof_lV5y_JKuFtY11bmRjFEg',  # noqa
+        'accessKey': 'myAccessKey',
+        'secretKey': 'mySecretKey',
         'permissions': ['AssetsRead']
     }
 
 
 @pytest.fixture
 def list_data():
-    return {'page': {'from': 0, 'size': 50, 'totalCount': 2}, 'list': [{'id': 'a98360ed-3a2d-45b5-93cb-414e69cedf8d', 'projectId': '00000000-0000-0000-0000-000000000000', 'accessKey': 'JKrceu3wiSsRLSP4-F2_vg', 'secretKey': 'ENCRYPTED', 'name': 'Test', 'permissions': ['AssetsRead', 'DataSourceManage', 'AssetsDelete', 'DataQueueManage', 'AssetsImport', 'ProjectManage'], 'timeCreated': 1594157746720, 'timeModified': 1594157746720, 'actorCreated': '48a6795d-b6ee-4485-9e84-1a920c6071d5/Admin Console Generated Key - 07c31bde-7781-4223-8e4f-083c3e670ab8 - software@zorroa.com_00000000-0000-0000-0000-000000000000', 'actorModified': '48a6795d-b6ee-4485-9e84-1a920c6071d5/Admin Console Generated Key - 07c31bde-7781-4223-8e4f-083c3e670ab8 - software@zorroa.com_00000000-0000-0000-0000-000000000000', 'enabled': True, 'systemKey': False}, {'id': '48a6795d-b6ee-4485-9e84-1a920c6071d5', 'projectId': '00000000-0000-0000-0000-000000000000', 'accessKey': 'ySJvNu3s01uveGUDxAf5ug', 'secretKey': 'ENCRYPTED', 'name': 'Admin Console Generated Key - 07c31bde-7781-4223-8e4f-083c3e670ab8 - software@zorroa.com_00000000-0000-0000-0000-000000000000', 'permissions': ['AssetsRead', 'DataSourceManage', 'AssetsDelete', 'DataQueueManage', 'ProjectManage', 'AssetsImport'], 'timeCreated': 1594157552802, 'timeModified': 1594157552802, 'actorCreated': '4338a83f-a920-40ab-a251-a123b17df1ba/admin-key', 'actorModified': '4338a83f-a920-40ab-a251-a123b17df1ba/admin-key', 'enabled': True, 'systemKey': False}]}  # noqa
+    return {
+        "page": {"from": 0, "size": 50, "totalCount": 2},
+        "list": [
+            {
+                "id": "a98360ed-3a2d-45b5-93cb-414e69cedf8d",
+                "projectId": "00000000-0000-0000-0000-000000000000",
+                "accessKey": "myAccessKey",
+                "secretKey": "ENCRYPTED",
+                "name": "Test",
+                "permissions": [
+                    "AssetsRead",
+                    "DataSourceManage",
+                    "AssetsDelete",
+                    "DataQueueManage",
+                    "AssetsImport",
+                    "ProjectManage",
+                ],
+                "timeCreated": 1594157746720,
+                "timeModified": 1594157746720,
+                "actorCreated": "createdBy",
+                "actorModified": "modifiedBy",
+                "enabled": True,
+                "systemKey": False,
+            },
+            {
+                "id": "48a6795d-b6ee-4485-9e84-1a920c6071d5",
+                "projectId": "00000000-0000-0000-0000-000000000000",
+                "accessKey": "myAccessKey2",
+                "secretKey": "ENCRYPTED",
+                "name": "Admin Console Generated Key - 00000000-0000-0000-0000-000000000000",
+                "permissions": [
+                    "AssetsRead",
+                    "DataSourceManage",
+                    "AssetsDelete",
+                    "DataQueueManage",
+                    "ProjectManage",
+                    "AssetsImport",
+                ],
+                "timeCreated": 1594157552802,
+                "timeModified": 1594157552802,
+                "actorCreated": "createdBy",
+                "actorModified": "modifiedBy",
+                "enabled": True,
+                "systemKey": False,
+            },
+        ],
+    }
+
 
 
 class TestApikey:

@@ -56,7 +56,6 @@ variable "superuser-email" {
 }
 
 variable "superuser-password" {
-  default   = "admin"
   sensitive = true
 }
 
@@ -75,4 +74,3 @@ variable "django-log-level" {
 variable "log-requests" {
   default = "false"
 }
-

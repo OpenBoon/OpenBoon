@@ -12,24 +12,13 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 
 import os
 
-import sentry_sdk
+from django.core.management.utils import get_random_secret_key
 from django.http import JsonResponse
 from rest_framework import status
-from sentry_sdk.integrations.django import DjangoIntegration
 
 VERSION = '0.1.0'
 ENVIRONMENT = os.environ.get('ENVIRONMENT', 'localdev')
 FQDN = os.environ.get('FQDN', 'http://localhost')
-
-if os.environ.get('ENABLE_SENTRY', 'false').lower() == 'true':
-    # Sentry Configuration
-    sentry_sdk.init(
-        dsn="https://d772538aae2649d38a8931583ed7719b@sentry.io/1504338",
-        integrations=[DjangoIntegration()],
-        release=f'wallet-{VERSION}',
-        environment=ENVIRONMENT,
-        send_default_pii=True
-    )
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -40,7 +29,10 @@ REACT_APP_DIR = os.path.join(BASE_DIR, '..', 'frontend')
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '4*-c#z+_^gwef_ai&!5vfxf_al_#o^lx(4u70@q#n057a&65j$'
+# For a stable deployment, you MUST set the Secret Key env variable,
+# otherwise every new process will create a new secret key and cause
+# unpredictable behavior.
+SECRET_KEY = os.environ.get('SECRET_KEY', get_random_secret_key())
 
 # Default primary key field.
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'

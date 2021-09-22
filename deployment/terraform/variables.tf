@@ -206,7 +206,6 @@ variable "metrics-superuser-email" {
 
 variable "metrics-superuser-password" {
   description = "Sets Superuser password for Metrics Service."
-  default     = "admin"
   sensitive   = true
 }
 
@@ -240,6 +239,3 @@ locals {
   region = "${var.country}-${var.region}"
   zone   = "${var.country}-${var.region}-${var.zone}"
 }
-
-
-

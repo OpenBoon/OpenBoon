@@ -3,15 +3,11 @@ import pprint
 import uuid
 from time import sleep
 
-import sentry_sdk
 from django.conf import settings
 from django.core.management import BaseCommand
 
 from gcpmarketplace.models import MarketplaceEntitlement
 from gcpmarketplace.utils import get_service_control_api, get_procurement_api, sum_ml_usage
-
-sentry_sdk.init(
-    dsn='https://5c1ab0d8be954c35b92283c1290e9924@o280392.ingest.sentry.io/5218609')
 
 
 class UsageReporter():

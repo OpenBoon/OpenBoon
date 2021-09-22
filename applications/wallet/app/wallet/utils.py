@@ -6,7 +6,6 @@ import logging
 from boonsdk.client import BoonSdkNotFoundException, BoonSdkRequestException
 from django.conf import settings
 from boonsdk import BoonClient
-from sentry_sdk import capture_message
 
 from wallet.exceptions import InvalidZmlpDataError
 
@@ -114,7 +113,7 @@ def sync_project_with_zmlp(project, create=False):
             zmlp_project = client.post('/api/v1/projects', body)
             project.apikey = None
         else:
-            capture_message(f'Tried to sync ZMLP project {project.name} ({project.id}) but it does not exist.')
+            print(f'Tried to sync ZMLP project {project.name} ({project.id}) but it does not exist.')
             return
 
     # Sync the project name.
