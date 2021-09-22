@@ -142,6 +142,25 @@ const ModelTrain = ({ projectId, model, setError }) => {
           />
 
           <ButtonGroup>
+            {!uploadable && (
+              <Button
+                variant={BUTTON_VARIANTS.PRIMARY}
+                onClick={() =>
+                  onTrainAndTest({
+                    model,
+                    test: false,
+                    apply: false,
+                    projectId,
+                    modelId: model.id,
+                    setError,
+                  })
+                }
+                isDisabled={!!missingLabels}
+              >
+                Train Model
+              </Button>
+            )}
+
             {uploadable ? (
               <Button
                 variant={BUTTON_VARIANTS.PRIMARY}
@@ -163,6 +182,8 @@ const ModelTrain = ({ projectId, model, setError }) => {
                 onClick={() =>
                   onTrainAndTest({
                     model,
+                    test: true,
+                    apply: false,
                     projectId,
                     modelId: model.id,
                     setError,
@@ -174,7 +195,24 @@ const ModelTrain = ({ projectId, model, setError }) => {
               </Button>
             )}
 
-            <ModelTip />
+            <Button
+              variant={BUTTON_VARIANTS.PRIMARY}
+              onClick={() =>
+                onTrainAndTest({
+                  model,
+                  test: false,
+                  apply: true,
+                  projectId,
+                  modelId: model.id,
+                  setError,
+                })
+              }
+              isDisabled={!!missingLabels}
+            >
+              {uploadable ? 'Apply to All' : 'Train & Analyze All'}
+            </Button>
+
+            <ModelTip uploadable={uploadable} />
           </ButtonGroup>
         </div>
 
