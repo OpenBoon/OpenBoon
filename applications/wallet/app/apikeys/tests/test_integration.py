@@ -69,7 +69,6 @@ def list_data():
     }
 
 
-
 class TestApikey:
 
     def test_get_zmlp_list(self, zmlp_project_user, project, api_client, monkeypatch, list_data):
