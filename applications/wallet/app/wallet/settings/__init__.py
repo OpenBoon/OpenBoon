@@ -308,7 +308,10 @@ ROLES = [
 ]
 
 # The registered email address of the superuser for this instance.
-SUPERUSER_EMAIL = 'software@zorroa.com'
+SUPERUSER_EMAIL = os.environ.get('WALLET_SUPERUSER_EMAIL', 'software@zorroa.com')
+
+# The Password for your default superuser
+SUPERUSER_PASSWORD = os.environ.get('WALLET_SUPERUSER_PASSWORD', 'admin')
 
 # If true a full featured django admin page is available.
 SUPERADMIN = os.environ.get('SUPERADMIN') == 'true'
