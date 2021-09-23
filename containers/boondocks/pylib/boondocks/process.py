@@ -9,14 +9,11 @@ import time
 from queue import Queue
 
 import requests
-import sentry_sdk
 
-from boonsdk import Asset
 from boonflow import Frame, Context, FatalProcessorException, BoonEnv
+from boonsdk import Asset
 from .logs import AssetLogger
 
-sentry_sdk.init('https://8d2c5bb15a2241349c05f8915e10a888@o280392.ingest.sentry.io/5600983',
-                environment=os.environ.get('ENVIRONMENT', 'local-dev'))
 logger = logging.getLogger(__name__)
 
 
@@ -543,7 +540,7 @@ class ProcessorWrapper:
                 'image_count': image_count,
                 'video_seconds': video_seconds,
             }
-            sentry_sdk.set_context('billing_metric', body)
+
             try:
                 # Attention: please only log internal messages stuff to debug.  This way it shows
                 # up in GCP logs but not in the users log or affects their job.
@@ -554,13 +551,10 @@ class ProcessorWrapper:
                         msg = (f'Unable to register billing metrics. {response.status_code}: '
                                f'{response.reason}')
                         logger.debug(msg)
-                        sentry_sdk.capture_message(msg)
                         msg = f'Metric missed: {body}'
                         logger.debug(msg)
             except requests.exceptions.ConnectionError as e:
-                msg = ('Unable to register billing metrics, could not connect to metrics service.')
-                sentry_sdk.capture_message(msg)
-                sentry_sdk.capture_exception(e)
+                msg = 'Unable to register billing metrics, could not connect to metrics service.'
                 logger.debug(msg)
 
     def _get_count_and_seconds(self, asset):

@@ -2,4 +2,3 @@ docker
 pyzmq
 backoff
 pytest
-sentry-sdk
