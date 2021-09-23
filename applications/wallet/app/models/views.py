@@ -157,6 +157,18 @@ class ModelViewSet(ZmlpCreateMixin,
         job = app.models.test_model(model)
         return Response(status=status.HTTP_200_OK, data=job._data)
 
+    @action(methods=['post'], detail=True)
+    def apply(self, request, project_pk, pk):
+        """Applies the specified model to all assets.
+
+        Returns:
+            (Response): Returns a 200 response if the apply job is launched successfully.
+        """
+        app = request.app
+        model = self._get_model(app, pk)
+        job = app.models.apply_model(model)
+        return Response(status=status.HTTP_200_OK, data=job._data)
+
     @action(methods=['get'], detail=True)
     def confusion_matrix(self, request, project_pk, pk):
         """Returns data required to construct a confusion matrix for the model.
