@@ -15,7 +15,7 @@ import { formatFullDate } from '../Date/helpers'
 import { usePanel, ACTIONS } from '../Panel/helpers'
 import { useLabelTool } from '../AssetLabeling/helpers'
 
-import { onTrainAndTest, onTest } from './helpers'
+import { onTrainAndTest, onTest, onApply } from './helpers'
 
 import ModelMatrixLink from './MatrixLink'
 import ModelTip from './Tip'
@@ -195,22 +195,39 @@ const ModelTrain = ({ projectId, model, setError }) => {
               </Button>
             )}
 
-            <Button
-              variant={BUTTON_VARIANTS.PRIMARY}
-              onClick={() =>
-                onTrainAndTest({
-                  model,
-                  test: false,
-                  apply: true,
-                  projectId,
-                  modelId: model.id,
-                  setError,
-                })
-              }
-              isDisabled={!!missingLabels}
-            >
-              {uploadable ? 'Apply to All' : 'Train & Analyze All'}
-            </Button>
+            {uploadable ? (
+              <Button
+                variant={BUTTON_VARIANTS.PRIMARY}
+                onClick={() =>
+                  onApply({
+                    model,
+                    projectId,
+                    modelId: model.id,
+                    setError,
+                  })
+                }
+                isDisabled={!!missingLabels}
+              >
+                Apply to All
+              </Button>
+            ) : (
+              <Button
+                variant={BUTTON_VARIANTS.PRIMARY}
+                onClick={() =>
+                  onTrainAndTest({
+                    model,
+                    test: false,
+                    apply: true,
+                    projectId,
+                    modelId: model.id,
+                    setError,
+                  })
+                }
+                isDisabled={!!missingLabels}
+              >
+                Train &amp; Analyze All
+              </Button>
+            )}
 
             <ModelTip uploadable={uploadable} />
           </ButtonGroup>

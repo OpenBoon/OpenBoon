@@ -473,7 +473,7 @@ exports[`<ModelDetails /> should render properly 1`] = `
       >
         "
         console_face_recognition
-        " training in progress.
+        " job in progress.
          
         <Link
           as="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/223fd17d-7028-1519-94a8-d2f0132bc0c8"
@@ -1234,7 +1234,7 @@ exports[`<ModelDetails /> should render properly 2`] = `
       >
         "
         console_face_recognition
-        " training in progress.
+        " job in progress.
          
         <Link
           as="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/223fd17d-7028-1519-94a8-d2f0132bc0c8"
@@ -1953,7 +1953,7 @@ exports[`<ModelDetails /> should render properly for edit 1`] = `
       >
         "
         console_face_recognition
-        " training in progress.
+        " job in progress.
          
         <Link
           as="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/223fd17d-7028-1519-94a8-d2f0132bc0c8"
@@ -2462,7 +2462,7 @@ exports[`<ModelDetails /> should render properly when file upload failed 1`] = `
       >
         "
         console_face_recognition
-        " training in progress.
+        " job in progress.
          
         <Link
           as="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/223fd17d-7028-1519-94a8-d2f0132bc0c8"
@@ -2836,7 +2836,7 @@ exports[`<ModelDetails /> should render properly when file upload is processing 
       >
         "
         console_face_recognition
-        " training in progress.
+        " job in progress.
          
         <Link
           as="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/223fd17d-7028-1519-94a8-d2f0132bc0c8"
@@ -3965,7 +3965,7 @@ exports[`<ModelDetails /> should render properly when requiring a file upload 1`
       >
         "
         console_face_recognition
-        " training in progress.
+        " job in progress.
          
         <Link
           as="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/223fd17d-7028-1519-94a8-d2f0132bc0c8"
@@ -4638,7 +4638,7 @@ exports[`<ModelDetails /> should render properly when trained and tested 1`] = `
       >
         "
         console_face_recognition
-        " training in progress.
+        " job in progress.
          
         <Link
           as="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/223fd17d-7028-1519-94a8-d2f0132bc0c8"
@@ -6042,7 +6042,7 @@ exports[`<ModelDetails /> should render properly when uploadable trained and tes
       >
         "
         console_face_recognition
-        " training in progress.
+        " job in progress.
          
         <Link
           as="/76917058-b147-4556-987a-0a0f11e46d9b/jobs/223fd17d-7028-1519-94a8-d2f0132bc0c8"
