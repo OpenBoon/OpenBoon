@@ -1,4 +1,0 @@
-flask
-gevent
-PyJWT==2.1.0
-boonsdk
