@@ -256,14 +256,6 @@ services:
       context: client/boonsdk
     command: echo
 
-  boonlab:
-    image: boonai/boonlab:latest
-    depends_on:
-      - boonsdk
-    build:
-      context: client/boonlab
-    command: echo
-
   boonflow:
     image: boonai/boonflow:latest
     depends_on:
