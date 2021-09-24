@@ -43,9 +43,32 @@ export const onTest = async ({ model, projectId, modelId, setError }) => {
 
     const { jobId } = await fetcher(
       `/api/v1/projects/${projectId}/models/${modelId}/test/`,
+      { method: 'POST' },
+    )
+
+    mutate(
+      `/api/v1/projects/${projectId}/models/${modelId}/`,
       {
-        method: 'POST',
+        ...model,
+        ready: true,
+        runningJobId: jobId,
       },
+      false,
+    )
+  } catch (response) {
+    const { global } = await parseResponse({ response })
+
+    setError(global)
+  }
+}
+
+export const onApply = async ({ model, projectId, modelId, setError }) => {
+  try {
+    setError('')
+
+    const { jobId } = await fetcher(
+      `/api/v1/projects/${projectId}/models/${modelId}/apply/`,
+      { method: 'POST' },
     )
 
     mutate(
