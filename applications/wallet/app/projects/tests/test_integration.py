@@ -200,11 +200,6 @@ def test_project_sync_with_zmlp(monkeypatch, project_zero_user, organization, da
     monkeypatch.setattr(BoonClient, 'post', mock_get_project)
     project.sync_with_zmlp(create=True)
 
-    # Test a sync when the project doesn't exist and create == False.
-    with patch('wallet.utils.capture_message') as capture_mock:
-        project.sync_with_zmlp(create=False)
-        assert capture_mock.call_count == 1
-
     # Test failed status sync.
     monkeypatch.setattr(BoonClient, 'put', mock_put_failed_enable)
     with pytest.raises(IOError):
