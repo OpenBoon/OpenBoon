@@ -4,6 +4,8 @@ import { fetcher, parseResponse } from '../Fetch/helpers'
 
 export const onTrainAndTest = async ({
   model,
+  test,
+  apply,
   projectId,
   modelId,
   setError,
@@ -14,7 +16,7 @@ export const onTrainAndTest = async ({
     const { jobId } = await fetcher(
       `/api/v1/projects/${projectId}/models/${modelId}/train/`,
       {
-        body: JSON.stringify({ apply: false, test: true }),
+        body: JSON.stringify({ test, apply }),
         method: 'POST',
       },
     )
@@ -41,9 +43,32 @@ export const onTest = async ({ model, projectId, modelId, setError }) => {
 
     const { jobId } = await fetcher(
       `/api/v1/projects/${projectId}/models/${modelId}/test/`,
+      { method: 'POST' },
+    )
+
+    mutate(
+      `/api/v1/projects/${projectId}/models/${modelId}/`,
       {
-        method: 'POST',
+        ...model,
+        ready: true,
+        runningJobId: jobId,
       },
+      false,
+    )
+  } catch (response) {
+    const { global } = await parseResponse({ response })
+
+    setError(global)
+  }
+}
+
+export const onApply = async ({ model, projectId, modelId, setError }) => {
+  try {
+    setError('')
+
+    const { jobId } = await fetcher(
+      `/api/v1/projects/${projectId}/models/${modelId}/apply/`,
+      { method: 'POST' },
     )
 
     mutate(

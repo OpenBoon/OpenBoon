@@ -15,7 +15,7 @@ import { formatFullDate } from '../Date/helpers'
 import { usePanel, ACTIONS } from '../Panel/helpers'
 import { useLabelTool } from '../AssetLabeling/helpers'
 
-import { onTrainAndTest, onTest } from './helpers'
+import { onTrainAndTest, onTest, onApply } from './helpers'
 
 import ModelMatrixLink from './MatrixLink'
 import ModelTip from './Tip'
@@ -142,6 +142,25 @@ const ModelTrain = ({ projectId, model, setError }) => {
           />
 
           <ButtonGroup>
+            {!uploadable && (
+              <Button
+                variant={BUTTON_VARIANTS.PRIMARY}
+                onClick={() =>
+                  onTrainAndTest({
+                    model,
+                    test: false,
+                    apply: false,
+                    projectId,
+                    modelId: model.id,
+                    setError,
+                  })
+                }
+                isDisabled={!!missingLabels}
+              >
+                Train Model
+              </Button>
+            )}
+
             {uploadable ? (
               <Button
                 variant={BUTTON_VARIANTS.PRIMARY}
@@ -163,6 +182,8 @@ const ModelTrain = ({ projectId, model, setError }) => {
                 onClick={() =>
                   onTrainAndTest({
                     model,
+                    test: true,
+                    apply: false,
                     projectId,
                     modelId: model.id,
                     setError,
@@ -174,7 +195,41 @@ const ModelTrain = ({ projectId, model, setError }) => {
               </Button>
             )}
 
-            <ModelTip />
+            {uploadable ? (
+              <Button
+                variant={BUTTON_VARIANTS.PRIMARY}
+                onClick={() =>
+                  onApply({
+                    model,
+                    projectId,
+                    modelId: model.id,
+                    setError,
+                  })
+                }
+                isDisabled={!!missingLabels}
+              >
+                Apply to All
+              </Button>
+            ) : (
+              <Button
+                variant={BUTTON_VARIANTS.PRIMARY}
+                onClick={() =>
+                  onTrainAndTest({
+                    model,
+                    test: false,
+                    apply: true,
+                    projectId,
+                    modelId: model.id,
+                    setError,
+                  })
+                }
+                isDisabled={!!missingLabels}
+              >
+                Train &amp; Analyze All
+              </Button>
+            )}
+
+            <ModelTip uploadable={uploadable} />
           </ButtonGroup>
         </div>
 

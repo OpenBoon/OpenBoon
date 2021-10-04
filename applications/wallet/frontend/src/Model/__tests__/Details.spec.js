@@ -109,6 +109,38 @@ describe('<ModelDetails />', () => {
       ready: true,
       runningJobId: JOB_ID,
     })
+
+    // Mock Failure
+    fetch.mockResponseOnce(null, { status: 400 })
+
+    await act(async () => {
+      component.root
+        .findByProps({ children: 'Apply to All', isDisabled: false })
+        .props.onClick({ preventDefault: noop, stopPropagation: noop })
+    })
+
+    // Mock Success
+    fetch.mockResponseOnce(JSON.stringify({ jobId: JOB_ID }), {
+      headers: { 'content-type': 'application/json' },
+    })
+
+    await act(async () => {
+      component.root
+        .findByProps({ children: 'Apply to All', isDisabled: false })
+        .props.onClick({ preventDefault: noop, stopPropagation: noop })
+    })
+
+    expect(fetch.mock.calls[3][0]).toEqual(
+      `/api/v1/projects/${PROJECT_ID}/models/${MODEL_ID}/apply/`,
+    )
+
+    expect(fetch.mock.calls[3][1]).toEqual({
+      headers: {
+        'X-CSRFToken': 'CSRF_TOKEN',
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      method: 'POST',
+    })
   })
 
   it('should render properly when uploadable just created', async () => {
@@ -442,7 +474,7 @@ describe('<ModelDetails />', () => {
         'Content-Type': 'application/json;charset=UTF-8',
       },
       method: 'POST',
-      body: '{"apply":false,"test":true}',
+      body: '{"test":true,"apply":false}',
     })
 
     expect(mockMutate).toHaveBeenCalledWith({
@@ -451,6 +483,36 @@ describe('<ModelDetails />', () => {
       modelTypeRestrictions: { missingLabels: 0 },
       runningJobId: JOB_ID,
       ready: true,
+    })
+
+    await act(async () => {
+      component.root
+        .findByProps({ children: 'Train Model', isDisabled: false })
+        .props.onClick({ preventDefault: noop, stopPropagation: noop })
+    })
+
+    expect(fetch.mock.calls[3][1]).toEqual({
+      headers: {
+        'X-CSRFToken': 'CSRF_TOKEN',
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      method: 'POST',
+      body: '{"test":false,"apply":false}',
+    })
+
+    await act(async () => {
+      component.root
+        .findByProps({ children: 'Train & Analyze All', isDisabled: false })
+        .props.onClick({ preventDefault: noop, stopPropagation: noop })
+    })
+
+    expect(fetch.mock.calls[4][1]).toEqual({
+      headers: {
+        'X-CSRFToken': 'CSRF_TOKEN',
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      method: 'POST',
+      body: '{"test":false,"apply":true}',
     })
   })
 })

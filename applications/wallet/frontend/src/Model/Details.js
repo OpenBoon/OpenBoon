@@ -36,7 +36,7 @@ const ModelDetails = ({ projectId, model }) => {
       {runningJobId && (
         <div css={{ display: 'flex', paddingBottom: spacing.normal }}>
           <FlashMessage variant={FLASH_VARIANTS.PROCESSING}>
-            &quot;{name}&quot; training in progress.{' '}
+            &quot;{name}&quot; job in progress.{' '}
             <Link
               href="/[projectId]/jobs/[jobId]"
               as={`/${projectId}/jobs/${runningJobId}`}
