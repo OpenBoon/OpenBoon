@@ -50,7 +50,6 @@ ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'agreements',
-    'gcpmarketplace',
     'jobs',
     'modules',
     'organizations',
@@ -315,12 +314,6 @@ SUPERUSER_PASSWORD = os.environ.get('WALLET_SUPERUSER_PASSWORD', 'admin')
 
 # If true a full featured django admin page is available.
 SUPERADMIN = os.environ.get('SUPERADMIN') == 'true'
-
-# Google Marketplace Integration Settings
-MARKETPLACE_PROJECT_ID = os.environ.get('MARKETPLACE_PROJECT_ID')
-MARKETPLACE_PUBSUB_SUBSCRIPTION = os.environ.get('MARKETPLACE_PUBSUB_SUBSCRIPTION')
-MARKETPLACE_SERVICE_NAME = os.environ.get('MARKETPLACE_SERVICE_NAME')
-MARKETPLACE_CREDENTIALS = os.environ.get('MARKETPLACE_CREDENTIALS')
 
 FEATURE_FLAGS = {
     'USE_MODEL_IDS_FOR_LABEL_FILTERS': os.environ.get('USE_MODEL_IDS_FOR_LABEL_FILTERS', 'false') == 'true'  # noqa
