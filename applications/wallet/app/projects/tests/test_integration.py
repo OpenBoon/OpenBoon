@@ -1,7 +1,6 @@
 import base64
 import copy
 from datetime import datetime, timedelta
-from unittest.mock import patch
 from uuid import uuid4
 
 import pytest
