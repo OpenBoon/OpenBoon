@@ -164,14 +164,6 @@ resource "kubernetes_deployment" "wallet" {
             value = var.browsable
           }
           env {
-            name  = "MARKETPLACE_PROJECT_ID"
-            value = var.marketplace-project
-          }
-          env {
-            name  = "MARKETPLACE_CREDENTIALS"
-            value = var.marketplace-credentials
-          }
-          env {
             name  = "SUPERADMIN"
             value = var.superadmin
           }
@@ -186,6 +178,18 @@ resource "kubernetes_deployment" "wallet" {
           env {
             name  = "SA_KEY_DATE"
             value = var.sql-service-account-key-date
+          }
+          env {
+            name  = "WALLET_DEFAULT_FROM_EMAIL"
+            value = var.smtp-from-email
+          }
+          env {
+            name  = "WALLET_EMAIL_HOST"
+            value = var.smtp-host
+          }
+          env {
+            name  = "WALLET_EMAIL_HOST_USER"
+            value = var.smtp-user
           }
         }
       }

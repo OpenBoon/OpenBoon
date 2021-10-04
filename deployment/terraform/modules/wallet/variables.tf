@@ -23,6 +23,15 @@ variable "image-pull-secret" {
 variable "zmlp-api-url" {
 }
 
+variable "smtp-host" {
+}
+
+variable "smtp-user" {
+}
+
+variable "smtp-from-email" {
+}
+
 variable "smtp-password" {
   sensitive = true
 }
@@ -35,13 +44,6 @@ variable "environment" {
 
 variable "domains" {
   type = list(string)
-}
-
-variable "marketplace-project" {
-}
-
-variable "marketplace-credentials" {
-  sensitive = true
 }
 
 variable "container-tag" {

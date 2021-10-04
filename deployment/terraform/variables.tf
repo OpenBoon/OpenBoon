@@ -51,6 +51,18 @@ variable "smtp-password" {
   sensitive   = true
 }
 
+variable "smtp-host" {
+  description = "Hostname for the SMTP server."
+}
+
+variable "smtp-user" {
+  description = "Username for the SMTP server"
+}
+
+variable "smtp-from-email" {
+  description = "Default email address the SMTP server uses to send mail."
+}
+
 variable "google-oauth-client-id" {
   description = "Client ID to enable Google OAuth based login."
 }
@@ -157,16 +169,6 @@ variable "zone" {
 variable "sql-tier" {
   description = "Machine tier to use for the Postgres server."
   default     = "db-custom-1-4096"
-}
-
-variable "deploy-marketplace-integration" {
-  description = "If this variable exists the GCP Marketplace integration will be deployed."
-  default     = ""
-}
-
-variable "marketplace-credentials" {
-  description = "GCP Service Account JSON key to use with the GCP Procurement API."
-  default     = ""
 }
 
 variable "wallet-debug" {

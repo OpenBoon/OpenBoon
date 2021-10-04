@@ -326,11 +326,12 @@ module "wallet" {
   domains                         = var.wallet-domains
   container-tag                   = var.container-tag
   browsable                       = var.wallet-browsable-api
-  marketplace-project             = "zorroa-public"
-  marketplace-credentials         = var.marketplace-credentials
   superadmin                      = var.wallet-superadmin
   use-model-ids-for-label-filters = var.wallet-use-model-ids-for-label-filters
   metrics-ip-address              = module.metrics.ip-address
+  smtp-from-email                 = var.smtp-from-email
+  smtp-host                       = var.smtp-host
+  smtp-user                       = var.smtp-user
 }
 
 module "ml-bbq" {
@@ -340,30 +341,6 @@ module "ml-bbq" {
   archivist-url          = "http://${module.archivist.ip-address}"
   container-cluster-name = module.gke-cluster.name
   container-tag          = var.container-tag
-}
-
-module "gcp-marketplace-integration" {
-  source                       = "./modules/gcp-marketplace-integration"
-  project                      = var.project
-  image-pull-secret            = kubernetes_secret.dockerhub.metadata[0].name
-  pg_host                      = module.postgres.ip-address
-  sql-instance-name            = module.postgres.instance-name
-  sql-connection-name          = module.postgres.connection-name
-  sql-service-account-key-date = module.postgres.sql-service-account-key-date
-  zmlp-api-url                 = "http://${module.api-gateway.ip-address}"
-  smtp-password                = var.smtp-password
-  google-oauth-client-id       = var.google-oauth-client-id
-  marketplace-project          = "zorroa-public"
-  marketplace-subscription     = "zorroa-public"
-  marketplace-credentials      = var.marketplace-credentials
-  marketplace-service-name     = "zorroa-visual-intelligence-zorroa-public.cloudpartnerservices.goog"
-  fqdn                         = var.wallet-domains[0]
-  environment                  = var.environment
-  inception-key-b64            = local.inception-key-b64
-  pg_password                  = module.wallet.pg_password
-  enabled                      = var.deploy-marketplace-integration
-  container-tag                = var.container-tag
-  metrics-ip-address           = module.metrics.ip-address
 }
 
 module "elasticsearch-hq" {
