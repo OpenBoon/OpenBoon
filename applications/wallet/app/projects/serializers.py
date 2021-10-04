@@ -4,7 +4,6 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from rest_framework.relations import HyperlinkedIdentityField
-from sentry_sdk import capture_exception
 
 from projects.utils import is_user_project_organization_owner
 from wallet.utils import convert_base64_to_json
@@ -130,7 +129,7 @@ class ProjectDetailSerializer(ProjectOrganizationNameSerializer,
         try:
             data = obj.ml_usage_this_month()
         except Exception as e:
-            capture_exception(e)
+            print(e)
             data = {'tier_1': {'image_count': -1,
                                'video_seconds': -1,
                                'video_minutes': -1,
