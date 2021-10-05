@@ -2,7 +2,6 @@ import json
 import pprint
 from time import sleep
 
-import sentry_sdk
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.management import BaseCommand
@@ -15,9 +14,6 @@ from gcpmarketplace.utils import get_procurement_api, get_google_credentials
 from organizations.models import Organization
 
 User = get_user_model()
-
-sentry_sdk.init(
-    dsn='https://5c1ab0d8be954c35b92283c1290e9924@o280392.ingest.sentry.io/5218609')
 
 
 class MessageHandler(object):

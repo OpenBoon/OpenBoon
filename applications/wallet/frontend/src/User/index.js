@@ -1,7 +1,6 @@
-import { createContext, useState, useEffect } from 'react'
+import { createContext, useState } from 'react'
 import PropTypes from 'prop-types'
 import useSWR from 'swr'
-import * as Sentry from '@sentry/browser'
 
 import { noop, meFetcher } from './helpers'
 
@@ -17,13 +16,6 @@ const User = ({ initialUser, children }) => {
   const { data } = useSWR(`/api/v1/me/`, meFetcher)
 
   const user = initialUser.id ? initialUser : data
-
-  useEffect(() => {
-    /* istanbul ignore next */
-    Sentry.configureScope((scope) => {
-      scope.setUser(user)
-    })
-  }, [user])
 
   if (!user) return null
 

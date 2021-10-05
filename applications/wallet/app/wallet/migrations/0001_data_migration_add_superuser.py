@@ -7,7 +7,8 @@ from django.conf import settings
 
 def forwards(apps, schema_editor):
     User.objects.create_superuser(username=settings.SUPERUSER_EMAIL, email=settings.SUPERUSER_EMAIL,
-                                  password='admin', first_name='Admin', last_name='Adminson')
+                                  password=settings.SUPERUSER_PASSWORD, first_name='Admin',
+                                  last_name='Adminson')
 
 
 def reverse(apps, schema_editor):
@@ -19,4 +20,3 @@ class Migration(migrations.Migration):
     dependencies = []
 
     operations = [migrations.RunPython(forwards, reverse)]
-

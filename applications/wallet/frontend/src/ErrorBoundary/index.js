@@ -1,5 +1,4 @@
 import { Component } from 'react'
-import * as Sentry from '@sentry/browser'
 import PropTypes from 'prop-types'
 
 import { colors, typography, constants, spacing } from '../Styles'
@@ -26,13 +25,6 @@ class ErrorBoundary extends Component {
 
   static getDerivedStateFromError() {
     return { hasError: true }
-  }
-
-  componentDidCatch(error, info) {
-    Sentry.withScope((scope) => {
-      scope.setExtras(info)
-      Sentry.captureException(error)
-    })
   }
 
   render() {

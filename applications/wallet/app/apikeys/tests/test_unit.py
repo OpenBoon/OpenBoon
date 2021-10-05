@@ -11,8 +11,8 @@ def data():
         'id': 'b3a09695-b9fb-40bd-8ea8-bbe0c2cba33f',
         'name': 'Test',
         'projectId': '2fb4e52b-8791-4544-aafb-c16af66f19f8',
-        'accessKey': 'P1klR1U1RgT3YfdLYN4-AHPlnOhXZHeD',
-        'secretKey': '6Ti7kZZ7IcmWnR1bfdvCMUataoMh9Mbq9Kqvs3xctOM7y1OwbefdFiLewuEDAGBof_lV5y_JKuFtY11bmRjFEg',  # noqa
+        'accessKey': 'myAccessKey',
+        'secretKey': 'mySecretKey',
         'permissions': ['AssetsRead']
     }
 
