@@ -3,7 +3,7 @@ FROM boonai/plugins-models:latest
 
 USER boonai
 WORKDIR /home/boonai
-RUN curl -s https://storage.googleapis.com/zorroa-public/models/keras_base.tar.gz | tar -xz
+#RUN curl -s https://storage.googleapis.com/zorroa-public/models/keras_base.tar.gz | tar -xz
 WORKDIR /boonai
 
 USER root

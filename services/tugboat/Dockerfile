@@ -1,4 +1,4 @@
-FROM google/cloud-sdk
+FROM google/cloud-sdk:361.0.0
 
 RUN apt-get update && apt-get -y upgrade && apt-get --no-install-recommends -y install \
     docker \

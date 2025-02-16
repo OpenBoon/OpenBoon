@@ -14,7 +14,7 @@ RUN --mount=type=cache,target=/root/.cache/pip pip3 install protobuf
 
 USER boonai
 WORKDIR /home/boonai
-RUN curl -s https://storage.googleapis.com/zorroa-public/models/models.tar.gz | tar -xz
+#RUN curl -s https://storage.googleapis.com/zorroa-public/models/models.tar.gz | tar -xz
 
 WORKDIR /boonai
 USER root
