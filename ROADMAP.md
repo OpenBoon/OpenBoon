@@ -23,6 +23,9 @@ The plan is to make OpenBoin into a platform for preparing and curating datasets
 
 ## Moving it forward
 
+These are in no particular order, issues should be created and prioritized/assigned/etc:
+
+- Move to OpenSearch
 - Delete GCS, Amazon, Clarifai models
 - Replace Resnet embeddings with CLIP
 - Add Natural Language search that uses CLIP
