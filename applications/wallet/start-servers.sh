@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
-# Simple script that handles the startup of the servers. The first argument is the
-# hostname of the postgres instance to wait for.
 set -e
+
+# Activate the virtual environment
+source /venv/bin/activate
 
 # Wait for postgres database to be ready.
 until pg_isready -h $PG_HOST; do
@@ -17,7 +18,7 @@ done
 
 # Do any needed database migrations.
 cd applications/wallet
-python3 ./app/manage.py migrate --no-input
+python ./app/manage.py migrate --no-input
 
 # Start django server.
 gunicorn -c python:gunicornconfig wallet.wsgi &

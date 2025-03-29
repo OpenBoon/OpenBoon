@@ -11,7 +11,10 @@ RUN --mount=type=cache,target=/root/.cache/pip pip3 install -r requirements.txt
 RUN rm requirements.txt
 
 WORKDIR /models
-RUN curl -s https://storage.googleapis.com/zorroa-public/models/resnet.tar.gz | tar -xz
+# RUN curl -s https://storage.googleapis.com/zorroa-public/models/resnet.tar.gz | tar -xz
+COPY resnet.tar.gz .
+RUN tar -xzvf resnet.tar.gz
+RUN rm resnet.tar.gz
 
 COPY pylib /boonai/pylib
 
@@ -19,4 +22,4 @@ WORKDIR /boonai
 USER boonai
 
 COPY model_setup.py .
-RUN python3 model_setup.py > /dev/null 2>&1
+RUN python3 model_setup.py # > /dev/null 2>&1

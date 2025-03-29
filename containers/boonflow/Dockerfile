@@ -1,3 +1,4 @@
+# filepath: /Users/jbuhler/Development/OpenBoon/containers/boonflow/Dockerfile
 # syntax = docker/dockerfile:experimental
 FROM boonai/boonsdk:latest
 ENV DEBIAN_FRONTEND=noninteractive
@@ -24,9 +25,14 @@ RUN apt-get update && apt-get -y upgrade && apt-get -y install \
     curl \
     unzip
 
+# Upgrade pip and setuptools
+RUN pip3 install --upgrade pip setuptools
+
 RUN mkdir /build
 COPY ./ /build
 WORKDIR /build
+
+# Use cache for pip installs
 RUN --mount=type=cache,target=/root/.cache/pip pip3 install .
 
 ARG ffmver=4.2.2-amd64

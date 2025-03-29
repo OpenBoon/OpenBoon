@@ -1,7 +1,8 @@
 scikit-learn
 scipy
 mxnet==1.8.0.post0
-protobuf
+numpy==1.21.2
+protobuf==3.20.1
 opencv-python-headless
 opencv-contrib-python-headless
 google-api-core
